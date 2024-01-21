@@ -1,0 +1,23 @@
+{
+  "edit": "تعديل",
+  "exit": "الخروج",
+  "delete": "حذف",
+  "save": "حفظ",
+  "cancel": "إلغاء",
+  "close": "إغلاق",
+  "yes": "نعم",
+  "no": "لا",
+  "ok": "حسنا",
+  "confirm": "تاكيد",
+  "search": "بحث",
+  "select": "اختر",
+  "publish": "نشر",
+  "unPublish": "إلغاء النشر",
+  "course": { "plural": "كورسات", "single": "كورس" },
+  "option": { "plural": "إختيارات", "single": "إختيار" },
+  "file": { "plural": "ملفات", "single": "ملف" },
+  "category": { "plural": "تصنيفات", "single": "تصنيف" },
+  "image": { "plural": "صور", "single": "صورة" },
+  "menu": { "plural": "قوائم", "single": "قائمة" },
+  "notFound": "لم يتم العثور على {{instance}}"
+}

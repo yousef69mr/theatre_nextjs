@@ -1,0 +1,55 @@
+{
+  "sidebarRoutes": {
+    "guestRoutes": [
+      {
+        "id": 1,
+        "label": "الصفحة الرئيسية"
+      },
+      {
+        "id": 2,
+        "label": "تصفح"
+      }
+    ],
+    "teacherRoutes": [
+      {
+        "id": 1,
+        "label": "كورسات"
+      },
+      {
+        "id": 2,
+        "label": "إحصائيات"
+      }
+    ]
+  },
+  "navbar": {
+    "localization": {
+      "toggleText": "تغيير اللغة",
+      "teacherMode": { "toggleText": "نظام المعلم" },
+      "locales": {
+        "en": "English",
+        "ar": "العربية"
+      }
+    }
+  },
+  "status": {
+    "draft": "مسودة",
+    "published": "منشور",
+    "archived": "محفوظ",
+    "unpublished": "غير منشور",
+    "free": "مجانى",
+    "paid": "مدفوع"
+  },
+  "paginations": {
+    "previous": "السابق",
+    "next": "التالي"
+  },
+  "actions": {
+    "add": "إضافة {{instance}}",
+    "edit": "تعديل {{instance}}",
+    "open": "فتح {{instance}}",
+    "select": "إختار {{instance}}",
+    "search": "بحث عن {{instance}}",
+    "filter": "تنقية {{instance}}",
+    "cancel": "إلغاء"
+  }
+}

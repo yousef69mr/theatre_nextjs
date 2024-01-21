@@ -1,0 +1,56 @@
+{
+  "sidebarRoutes": {
+    "guestRoutes": [
+      {
+        "id": 1,
+
+        "label": "Dashboard"
+      },
+      {
+        "id": 2,
+        "label": "Browse"
+      }
+    ],
+    "teacherRoutes": [
+      {
+        "id": 1,
+        "label": "Courses"
+      },
+      {
+        "id": 2,
+        "label": "Analytics"
+      }
+    ]
+  },
+  "navbar": {
+    "localization": {
+      "toggleText": "Language Toggle",
+      "teacherMode": { "toggleText": "Teacher Mode" },
+      "locales": {
+        "en": "English",
+        "ar": "العربية"
+      }
+    }
+  },
+  "status": {
+    "draft": "draft",
+    "published": "published",
+    "archived": "archived",
+    "unpublished": "unpublished",
+    "free":"free",
+    "paid":"paid"
+  },
+  "paginations": {
+    "previous": "previous",
+    "next": "next"
+  },
+  "actions": {
+    "add": "add {{instance}}",
+    "edit": "edit {{instance}}",
+    "open": "open {{instance}}",
+    "search": "search {{instance}}",
+    "select": "select {{instance}}",
+    "filter": "filter {{instance}}",
+    "cancel": "cancel"
+  }
+}
