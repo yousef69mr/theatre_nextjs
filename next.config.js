@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     reactStrictMode: true,
-    // output: process.env.NEXT_OUTPUT_MODE,
-//  distDir: 'build',
+    output: process.env.NEXT_OUTPUT_MODE,
+
 //     /**
 //   *
 //   * @param {import('webpack').Configuration} config
@@ -25,7 +25,9 @@ const nextConfig = {
 
 //         return config
 //     }
-
+images:{
+    domains : ["flagcdn.com"]
+}
 }
 
 module.exports = nextConfig

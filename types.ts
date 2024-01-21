@@ -1,6 +1,8 @@
 import { Locale } from "./next-i18next.config";
 import { ReactElement } from "react";
 
+export type DataTransationModeType = "serverAction" | "api";
+
 export type LanguageParamsProps = {
   params: {
     locale: Locale;

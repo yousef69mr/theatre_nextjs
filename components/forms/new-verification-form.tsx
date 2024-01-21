@@ -1,6 +1,6 @@
 "use client";
 
-import { newVerification } from "@/lib/actions/new-verification";
+// import { newVerification } from "@/lib/actions/new-verification";
 import { redirect, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import BeatLoader from "react-spinners/BeatLoader";
@@ -21,12 +21,12 @@ const NewVerificationForm = () => {
     if (!token) {
       return setError("Missing token!");
     }
-    newVerification(token)
-      .then((data) => {
-        setSuccess(data.success);
-        setError(data.error);
-      })
-      .catch(() => setError("Something went wrong!"));
+    // newVerification(token)
+    //   .then((data) => {
+    //     setSuccess(data.success);
+    //     setError(data.error);
+    //   })
+    //   .catch(() => setError("Something went wrong!"));
   }, [success, error, token]);
 
   useEffect(() => {

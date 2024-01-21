@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import FormError from "./form-error";
 import FormSuccess from "./form-success";
-import { register } from "@/lib/actions/register";
+// import { register } from "@/lib/actions/register";
 import { useState, useTransition } from "react";
 
 type registerValues = Zod.infer<typeof registerSchema>;
@@ -40,10 +40,10 @@ const RegisterForm = () => {
     setSuccess("");
 
     startTransition(() => {
-      register(values).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
-      });
+      // register(values).then((data) => {
+      //   setError(data.error);
+      //   setSuccess(data.success);
+      // });
     });
   };
 

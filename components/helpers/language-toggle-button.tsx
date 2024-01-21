@@ -89,12 +89,12 @@ export default function LanguageToggle() {
           {currentLocale && i18nConfig.locales.includes(currentLocale) ? (
             <Image
               loading="lazy"
-              width="20"
+              width={20}
+              height={20}
               // style={{ margin: 2 }}
               src={`https://flagcdn.com/w20/${
                 LocaleFlags[currentLocale.toLocaleLowerCase()]
               }.png`}
-              
               // srcSet={`https://flagcdn.com/w40/${
               //   LocaleFlags[currentLocale.toLocaleLowerCase()]
               // }.png 2x`}
@@ -125,8 +125,9 @@ export default function LanguageToggle() {
               {localeCountryCode && (
                 <Image
                   loading="lazy"
-                  width="20"
+                  width={20}
                   className="mx-1"
+                  height={20}
                   // style={{ margin: 2 }}
                   src={`https://flagcdn.com/w20/${localeCountryCode.toLowerCase()}.png`}
                   // srcSet={`https://flagcdn.com/w40/${localeCountryCode.toLowerCase()}.png 2x`}

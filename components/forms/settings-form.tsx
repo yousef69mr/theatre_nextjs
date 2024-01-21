@@ -13,7 +13,7 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { settingsSchema } from "@/lib/validations";
-import { settings } from "@/lib/actions/settings";
+// import { settings } from "@/lib/actions/settings";
 import { Button } from "@/components/ui/button";
 import FormSuccess from "./form-success";
 import FormError from "./form-error";
@@ -58,19 +58,19 @@ const SettingsForm = (props: Props) => {
     setSuccess("");
 
     startTransition(() => {
-      settings(values)
-        .then((data) => {
-          if (data?.error) {
-            // form.reset();
-            setError(data?.error);
-          }
+      // settings(values)
+      //   .then((data) => {
+      //     if (data?.error) {
+      //       // form.reset();
+      //       setError(data?.error);
+      //     }
 
-          if (data?.success) {
-            // form.reset();
-            setSuccess(data?.success);
-          }
-        })
-        .catch(() => setError("Something went wrong!"));
+      //     if (data?.success) {
+      //       // form.reset();
+      //       setSuccess(data?.success);
+      //     }
+      //   })
+      //   .catch(() => setError("Something went wrong!"));
     });
   };
 

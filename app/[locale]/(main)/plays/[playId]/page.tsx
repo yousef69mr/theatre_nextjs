@@ -7,6 +7,11 @@ interface SinglePlayPageProps {
     playId: string;
   };
 }
+
+export async function generateStaticParams() {
+  return [{ playId: "22" }];
+}
+
 const SinglePlayPage: FC<SinglePlayPageProps> = (props) => {
   const {
     params: { locale, playId },

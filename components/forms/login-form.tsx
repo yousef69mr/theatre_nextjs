@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import FormError from "./form-error";
 import FormSuccess from "./form-success";
-import { login } from "@/lib/actions/login";
+// import { login } from "@/lib/actions/login";
 import { useState, useTransition } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -51,23 +51,23 @@ const LoginForm = () => {
     setSuccess("");
 
     startTransition(() => {
-      login(values)
-        .then((data) => {
-          if (data?.error) {
-            // form.reset();
-            setError(data?.error);
-          }
+      // login(values)
+      //   .then((data) => {
+      //     if (data?.error) {
+      //       // form.reset();
+      //       setError(data?.error);
+      //     }
 
-          if (data?.success) {
-            form.reset();
-            setSuccess(data?.success);
-          }
+      //     if (data?.success) {
+      //       form.reset();
+      //       setSuccess(data?.success);
+      //     }
 
-          if (data?.twoFactor) {
-            setShowTwoFactor(true);
-          }
-        })
-        .catch(() => setError("Something went wrong!"));
+      //     if (data?.twoFactor) {
+      //       setShowTwoFactor(true);
+      //     }
+        // })
+        // .catch(() => setError("Something went wrong!"));
     });
   };
 

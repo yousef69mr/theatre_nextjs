@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import FormError from "./form-error";
 import FormSuccess from "./form-success";
-import { reset } from "@/lib/actions/reset";
+// import { reset } from "@/lib/actions/reset";
 
 type resetValues = Zod.infer<typeof resetSchema>;
 
@@ -38,10 +38,10 @@ const ResetForm = () => {
     setSuccess("");
 
     startTransition(() => {
-      reset(values).then((data) => {
-        setError(data?.error);
-        setSuccess(data?.success);
-      });
+      // reset(values).then((data) => {
+      //   setError(data?.error);
+      //   setSuccess(data?.success);
+      // });
     });
   };
 

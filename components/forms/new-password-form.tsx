@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import FormError from "./form-error";
 import FormSuccess from "./form-success";
-import { newPassword } from "@/lib/actions/new-password";
+// import { newPassword } from "@/lib/actions/new-password";
 import { useSearchParams } from "next/navigation";
 
 type newPasswordValues = Zod.infer<typeof newPasswordSchema>;
@@ -43,10 +43,10 @@ const NewPasswordForm = () => {
     setSuccess("");
 
     startTransition(() => {
-      newPassword(values, token).then((data) => {
-        setError(data?.error);
-        setSuccess(data?.success);
-      });
+      // newPassword(values, token).then((data) => {
+      //   setError(data?.error);
+      //   setSuccess(data?.success);
+      // });
     });
   };
 
