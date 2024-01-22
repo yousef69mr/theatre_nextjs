@@ -15,15 +15,16 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import FormError from "./form-error";
 import FormSuccess from "./form-success";
-// import { login } from "@/lib/actions/login";
+// import { loginRequest } from "@/lib/api-calls/login";
 import { useState, useTransition } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { login } from "@/lib/actions/login";
 
 type loginValues = Zod.infer<typeof loginSchema>;
 
 const LoginForm = () => {
-  const params=useParams()
+  const params = useParams();
   const [isPending, startTransition] = useTransition();
   const [showTwoFactor, setShowTwoFactor] = useState(false);
   const [success, setSuccess] = useState<string | undefined>("");
@@ -35,7 +36,7 @@ const LoginForm = () => {
       ? "Email already in use with diffrent provider"
       : "";
 
-      const locale=params.locale
+  const locale = params.locale;
 
   const form = useForm<Zod.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -51,23 +52,43 @@ const LoginForm = () => {
     setSuccess("");
 
     startTransition(() => {
-      // login(values)
-      //   .then((data) => {
-      //     if (data?.error) {
-      //       // form.reset();
-      //       setError(data?.error);
-      //     }
+      // if (process.env.NEXT_DATA_TRANSITION_MODE !== "serverAction") {
+      //   loginRequest(values)
+      //     .then((response) => response.data)
+      //     .then((data) => {
+      //       if (data?.error) {
+      //         // form.reset();
+      //         setError(data?.error);
+      //       }
 
-      //     if (data?.success) {
-      //       form.reset();
-      //       setSuccess(data?.success);
-      //     }
+      //       if (data?.success) {
+      //         form.reset();
+      //         setSuccess(data?.success);
+      //       }
 
-      //     if (data?.twoFactor) {
-      //       setShowTwoFactor(true);
-      //     }
-        // })
-        // .catch(() => setError("Something went wrong!"));
+      //       if (data?.twoFactor) {
+      //         setShowTwoFactor(true);
+      //       }
+      //     })
+
+      //     .catch(() => setError("Something went!"));
+      // } else {
+        login(values)
+          .then((data) => {
+            if (data?.error) {
+              // form.reset();
+              setError(data?.error);
+            }
+            if (data?.success) {
+              form.reset();
+              setSuccess(data?.success);
+            }
+            if (data?.twoFactor) {
+              setShowTwoFactor(true);
+            }
+          })
+          .catch(() => setError("Something went wrong!"));
+      // }
     });
   };
 
@@ -116,7 +137,9 @@ const LoginForm = () => {
                       asChild
                       variant={"link"}
                     >
-                      <Link href={`/${locale}/auth/reset`}>Forgot password ?</Link>
+                      <Link href={`/${locale}/auth/reset`}>
+                        Forgot password ?
+                      </Link>
                     </Button>
                     <FormMessage />
                   </FormItem>

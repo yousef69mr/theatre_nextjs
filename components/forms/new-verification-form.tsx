@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 import BeatLoader from "react-spinners/BeatLoader";
 import FormSuccess from "./form-success";
 import FormError from "./form-error";
+import { newVerificationRequest } from "@/lib/api-calls/new-verification";
 
 const NewVerificationForm = () => {
   const [error, setError] = useState<string | undefined>();
@@ -21,6 +22,17 @@ const NewVerificationForm = () => {
     if (!token) {
       return setError("Missing token!");
     }
+
+    //api call
+    newVerificationRequest(token)
+      .then((response) => response.data)
+      .then((data) => {
+        setSuccess(data.success);
+        setError(data.error);
+      })
+      .catch(() => setError("Something went wrong!"));
+      
+    //server action
     // newVerification(token)
     //   .then((data) => {
     //     setSuccess(data.success);

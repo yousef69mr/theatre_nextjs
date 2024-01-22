@@ -19,6 +19,8 @@ enum UserRole {
   CAST_VICE_PRESIDENT
 }
 
+// Auth models
+
 model User {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
   name          String
@@ -28,10 +30,13 @@ model User {
   image         String?
   role          UserRole  @default(USER)
 
-  isTwoFactorEnabled    Boolean                @default(false)
-  twoFactorConfirmation TwoFactorConfirmation?
+  isTwoFactorEnabled Boolean @default(false)
 
-  accounts Account[]
+  twoFactorConfirmation TwoFactorConfirmation?
+  actor                 Actor?
+
+  executors Executor[]
+  accounts  Account[]
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
@@ -101,4 +106,155 @@ model TwoFactorConfirmation {
   createdAt DateTime @default(now())
 
   @@unique([userId])
+}
+
+// 
+
+model Festival {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  name        String
+  imgUrl      String?
+  description String?
+
+  playsInFestival PlayFestival[]
+  Award           Award[]
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
+model PlayFestival {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  playId String @db.ObjectId
+  play   Play   @relation(fields: [playId], references: [id], onDelete: Cascade)
+
+  festivalId String   @db.ObjectId
+  festival   Festival @relation(fields: [festivalId], references: [id], onDelete: Cascade)
+
+  @@unique([festivalId, playId])
+  @@index([festivalId])
+  @@index([playId])
+}
+
+model Play {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  videoUrl String
+  imgUrl   String
+  images   String[]
+
+  showtimes               PlayShowtime[]
+  festivalsParticipatedIn PlayFestival[]
+  actors                  ActorInPlay[]
+  awards                  Award[]
+  executors               Executor[]
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
+model PlayShowtime {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  showTime DateTime
+
+  festivalId String @db.ObjectId
+
+  playId String @db.ObjectId
+  play   Play   @relation(fields: [playId], references: [id], onDelete: Cascade)
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  @@index([playId])
+}
+
+model ActorInPlay {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  playId String @db.ObjectId
+  play   Play   @relation(fields: [playId], references: [id], onDelete: Cascade)
+
+  actorId String @db.ObjectId
+  actor   Actor  @relation(fields: [actorId], references: [id], onDelete: Cascade)
+
+  @@unique([actorId, playId])
+  @@index([actorId])
+  @@index([playId])
+}
+
+model Actor {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  name   String
+  imgUrl String
+
+  userId String? @unique @db.ObjectId
+  user   User?   @relation(fields: [userId], references: [id])
+
+  // playId String? @db.ObjectId
+  // Play   Play?   @relation(fields: [playId], references: [id])
+
+  plays    ActorInPlay[]
+  awards   Award[]
+  Executor Executor[]
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  // @@index([playId])
+}
+
+// create for each play (Executor profile)
+model Executor {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  name          String
+  imgUrl        String
+  executorTitle String
+
+  userId String? @unique @db.ObjectId
+  user   User?   @relation(fields: [userId], references: [id])
+
+  actorId String? @db.ObjectId
+  actor   Actor?  @relation(fields: [actorId], references: [id])
+
+  playId String @db.ObjectId
+  Play   Play   @relation(fields: [playId], references: [id])
+
+  awards Award[]
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  @@index([playId])
+  @@index([actorId])
+}
+
+model Award {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  postion         Int
+  acquisitionDate DateTime
+
+  playId String @db.ObjectId
+  play   Play   @relation(fields: [playId], references: [id])
+
+  actorId String? @db.ObjectId
+  actor   Actor?  @relation(fields: [actorId], references: [id])
+
+  executorId String?   @db.ObjectId
+  executor   Executor? @relation(fields: [actorId], references: [id])
+
+  festivalId String   @db.ObjectId
+  festival   Festival @relation(fields: [festivalId], references: [id])
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  @@index([playId])
+  @@index([executorId])
+  @@index([festivalId])
+  @@index([actorId])
 }

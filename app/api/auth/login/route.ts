@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import { DEFAULT_LOGIN_REDIRCT } from "@/routes";
 import { signIn } from "@/auth";
@@ -21,12 +21,12 @@ import {
 } from "@/lib/actions/models/two-factor-confirmation";
 
 export async function POST(request: NextRequest) {
-  const res = await request.json();
-  console.log(res);
-  const validatedFields = loginSchema.safeParse(res);
+  const values = await request.json();
+
+  const validatedFields = loginSchema.safeParse(values);
 
   if (!validatedFields.success) {
-    return { error: "Invalid fields" };
+    return NextResponse.json({ error: "Invalid fields" }, { status: 400 });
   }
 
   const { email, password, code } = validatedFields.data;
@@ -34,7 +34,10 @@ export async function POST(request: NextRequest) {
   const existingUser = await getUserByEmail(email);
 
   if (!existingUser || !existingUser.email || !existingUser.password) {
-    return { error: "Email doesn't exist!" };
+    return NextResponse.json(
+      { error: "Email doesn't exist!" },
+      { status: 404 }
+    );
   }
 
   if (!existingUser.emailVerified) {
@@ -43,14 +46,20 @@ export async function POST(request: NextRequest) {
     );
 
     if (!verificationToken) {
-      return { error: "Verification token not created" };
+      return NextResponse.json(
+        { error: "Verification token not created" },
+        { status: 400 }
+      );
     }
     await sendVerificationEmail(
       verificationToken.email,
       verificationToken.token
     );
 
-    return { success: "Confirmation email sent to your mail!" };
+    return NextResponse.json(
+      { success: "Confirmation email sent to your mail!" },
+      { status: 200 }
+    );
   }
 
   if (existingUser.isTwoFactorEnabled && existingUser.email) {
@@ -58,13 +67,16 @@ export async function POST(request: NextRequest) {
       const twoFactorToken = await getTwoFactorTokenByEmail(existingUser.email);
 
       if (!twoFactorToken || twoFactorToken.token !== code) {
-        return { error: "Invalid code!" };
+        return NextResponse.json({ error: "Invalid code!" }, { status: 400 });
       }
 
       const hasExpired = new Date(twoFactorToken.expires) < new Date();
 
       if (hasExpired) {
-        return { error: "Code expired! Please try again." };
+        return NextResponse.json(
+          { error: "Code expired! Please try again." },
+          { status: 400 }
+        );
       }
 
       await deleteTwoFactorTokenById(twoFactorToken.id);
@@ -81,29 +93,45 @@ export async function POST(request: NextRequest) {
     } else {
       const twoFactorToken = await generateTwoFactorToken(existingUser.email);
       if (!twoFactorToken) {
-        return { error: "2FA token not created" };
+        return NextResponse.json(
+          { error: "2FA token not created" },
+          { status: 400 }
+        );
       }
       await sendTwoFactorTokenEmail(twoFactorToken.email, twoFactorToken.token);
 
-      return { twoFactor: true };
+      return NextResponse.json({ twoFactor: true }, { status: 200 });
     }
   }
-
+  
   try {
     await signIn("credentials", {
       email,
       password,
       redirectTo: DEFAULT_LOGIN_REDIRCT,
     });
+
+    return NextResponse.json(
+      { success: "logged successfully!" },
+      { status: 200 }
+    );
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
-          return { error: "Invalid credintinals" };
+          return NextResponse.json(
+            { error: "Invalid credintinals" },
+            { status: 400 }
+          );
         default:
-          return { error: "Something went wrong" };
+          return NextResponse.json(
+            { error: "Something went wrong" },
+            { status: 500 }
+          );
       }
     }
-    throw error;
+
+    return NextResponse.json({ error: "Internal error" }, { status: 500 });
+    // throw error;
   }
 }

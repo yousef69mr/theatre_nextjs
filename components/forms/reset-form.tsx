@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import FormError from "./form-error";
 import FormSuccess from "./form-success";
+import { resetRequest } from "@/lib/api-calls/reset";
 // import { reset } from "@/lib/actions/reset";
 
 type resetValues = Zod.infer<typeof resetSchema>;
@@ -38,6 +39,16 @@ const ResetForm = () => {
     setSuccess("");
 
     startTransition(() => {
+      //api call
+      resetRequest(values)
+      .then((response) => response.data)
+      .then((data) => {
+        setError(data?.error);
+        setSuccess(data?.success);
+      })
+      .catch((error) => setError("Something went wrong!"));
+
+       //server action 
       // reset(values).then((data) => {
       //   setError(data?.error);
       //   setSuccess(data?.success);

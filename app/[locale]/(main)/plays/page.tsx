@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Locale } from "@/next-i18next.config";
+import i18nConfig, { Locale } from "@/next-i18next.config";
 import { FC } from "react";
 interface PlaysPageProps {
   params: {
@@ -12,6 +12,11 @@ interface PlaysPageProps {
  
 //   return[]
 // }
+
+export async function generateStaticParams() {
+  return i18nConfig.locales.map((locale) => ({ locale: locale }));
+}
+
 
 const PlaysPage: FC<PlaysPageProps> = (props) => {
   return <main className={cn("w-full general-padding")}>PlaysPage</main>;

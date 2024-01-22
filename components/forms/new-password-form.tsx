@@ -18,6 +18,7 @@ import FormError from "./form-error";
 import FormSuccess from "./form-success";
 // import { newPassword } from "@/lib/actions/new-password";
 import { useSearchParams } from "next/navigation";
+import { newPasswordRequest } from "@/lib/api-calls/new-password";
 
 type newPasswordValues = Zod.infer<typeof newPasswordSchema>;
 
@@ -43,6 +44,15 @@ const NewPasswordForm = () => {
     setSuccess("");
 
     startTransition(() => {
+      //api call
+      newPasswordRequest(values, token)
+        .then((response) => response.data)
+        .then((data) => {
+          setError(data?.error);
+          setSuccess(data?.success);
+        });
+
+        //server action 
       // newPassword(values, token).then((data) => {
       //   setError(data?.error);
       //   setSuccess(data?.success);

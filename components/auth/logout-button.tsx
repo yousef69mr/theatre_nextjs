@@ -1,24 +1,38 @@
 "use client";
 
 import { logout } from "@/lib/actions/logout";
+import { Button } from "@/components/ui/button";
+// import { logoutRequest } from "@/lib/api-calls/logout";
+// import toast from "react-hot-toast";
 
-interface LoginButtonProps {
+interface LogoutButtonProps {
   children: React.ReactNode;
   asChild?: boolean;
 }
 
-const LoginButton = (props: LoginButtonProps) => {
+const LogoutButton = (props: LogoutButtonProps) => {
   const { children, asChild } = props;
 
   const onClick = () => {
     logout();
+    // logoutRequest()
+    //   .then((response) => response.data)
+    //   .then(()=>window.location.reload())
+    //   .catch((error) => toast.error(error as string));
   };
 
+  if (asChild) {
+    return (
+      <span onClick={onClick} className="cursor-pointer">
+        {children}
+      </span>
+    );
+  }
   return (
-    <span onClick={onClick} className="cursor-pointer">
+    <Button onClick={onClick} className="cursor-pointer">
       {children}
-    </span>
+    </Button>
   );
 };
 
-export default LoginButton;
+export default LogoutButton;

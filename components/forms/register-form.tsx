@@ -17,6 +17,7 @@ import FormError from "./form-error";
 import FormSuccess from "./form-success";
 // import { register } from "@/lib/actions/register";
 import { useState, useTransition } from "react";
+import { registerRequest } from "@/lib/api-calls/register";
 
 type registerValues = Zod.infer<typeof registerSchema>;
 
@@ -40,14 +41,25 @@ const RegisterForm = () => {
     setSuccess("");
 
     startTransition(() => {
-      // register(values).then((data) => {
-      //   setError(data.error);
-      //   setSuccess(data.success);
-      // });
+      if (process.env.NEXT_DATA_TRANSITION_MODE !== "serverAction") {
+        registerRequest(values)
+          .then((response) => response.data)
+          .then((data) => {
+            setError(data.error);
+            setSuccess(data.success);
+          });
+      } else {
+         //server action 
+        // register(values).then((data) => {
+        //   setError(data.error);
+        //   setSuccess(data.success);
+        // });
+      }
     });
   };
 
   const isSubmitting = form.formState.isSubmitting;
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">

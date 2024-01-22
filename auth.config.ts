@@ -8,8 +8,12 @@ import { getUserByEmail } from "./lib/actions/models/user";
 
 export default {
   providers: [
-    GitHub({}),
-    Google,
+    GitHub({
+      allowDangerousEmailAccountLinking: true,
+    }),
+    Google({
+      allowDangerousEmailAccountLinking: true,
+    }),
     Credentials({
       async authorize(credentials) {
         const validatedFields = loginSchema.safeParse(credentials);

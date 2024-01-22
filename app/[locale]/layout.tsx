@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "@/app/globals.css";
+// import "@/app/globals.css";
 import Navbar from "@/components/navigation/navbar";
 import { dir } from "i18next";
 import i18nConfig, { Locale } from "@/next-i18next.config";
@@ -22,7 +22,7 @@ export async function generateStaticParams() {
   return i18nConfig.locales.map((locale) => ({ locale: locale }));
 }
 
-export default function RootLayout({
+export default function MainLayout({
   children,
   params,
 }: {

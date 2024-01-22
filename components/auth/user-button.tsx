@@ -48,7 +48,7 @@ const UserButton = () => {
         </TooltipProvider>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-40" align="end">
-        <LogoutButton>
+        <LogoutButton asChild>
           <DropdownMenuItem>
             <LogOutIcon className="h-4 w-4 mr-2" />
             Logout

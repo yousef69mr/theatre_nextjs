@@ -28,6 +28,7 @@ import {
 import { UserRole } from "@prisma/client";
 import { ExtendedUser } from "@/next-auth";
 import { Switch } from "@/components/ui/switch";
+import { settingsRequest } from "@/lib/api-calls/settings";
 
 interface Props {
   initialData: ExtendedUser | undefined;
@@ -58,6 +59,23 @@ const SettingsForm = (props: Props) => {
     setSuccess("");
 
     startTransition(() => {
+      //api call
+      settingsRequest(values)
+        .then((response) => response.data)
+        .then((data) => {
+          if (data?.error) {
+            // form.reset();
+            setError(data?.error);
+          }
+
+          if (data?.success) {
+            // form.reset();
+            setSuccess(data?.success);
+          }
+        })
+        .catch(() => setError("Something went wrong!"));
+
+      //server action
       // settings(values)
       //   .then((data) => {
       //     if (data?.error) {
@@ -205,7 +223,6 @@ const SettingsForm = (props: Props) => {
               )}
             />
           )}
-          
         </div>
         <FormError message={error} />
         <FormSuccess message={success} />

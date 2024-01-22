@@ -16,7 +16,7 @@ const LoginPage = (props: LoginPageProps) => {
   // console.log(locale);
   return (
     <main className="w-full flex items-center justify-center py-4 relative">
-      <Image fill src="/bg-login.jpg" alt="theatre background" className="-z-10"/>
+      <Image fill priority src="/bg-login.jpg" alt="theatre background" className="-z-10"/>
       <CardWrapper
         headerMainLabel="🔐 Auth"
         headerLabel="Welcome back"

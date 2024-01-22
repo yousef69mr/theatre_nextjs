@@ -1,6 +1,9 @@
+import { FC } from "react";
+import { getAllPlaysRequest } from "@/lib/api-calls/models/play";
 import { cn } from "@/lib/utils";
 import { Locale } from "@/next-i18next.config";
-import React, { FC } from "react";
+import { PlayType } from "@/types";
+
 interface SinglePlayPageProps {
   params: {
     locale: Locale;
@@ -9,7 +12,10 @@ interface SinglePlayPageProps {
 }
 
 export async function generateStaticParams() {
-  return [{ playId: "22" }];
+  const plays: PlayType[] = await getAllPlaysRequest();
+  return plays.map((play) => ({
+    playId: play.id,
+  }));
 }
 
 const SinglePlayPage: FC<SinglePlayPageProps> = (props) => {
