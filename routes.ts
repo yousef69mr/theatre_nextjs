@@ -71,6 +71,18 @@ export const authRoutes = [
  * @type {string}
  */
 export const apiAuthPrefix = "/api/auth";
+
+/**
+ * @type {string}
+ */
+export const publicApis = [
+  "/api/plays",
+  "/api/users",
+  "/api/users/:userId",
+  "/api/verification-tokens",
+  "/api/verification-tokens/:tokenId",
+];
+
 /**
  * @type {string}
  */

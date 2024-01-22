@@ -21,7 +21,7 @@ export async function generateStaticParams() {
         locale: locale,
       }));
     } else {
-      return { locale: locale };
+      return { locale: locale, playId: "" };
     }
   });
 }
