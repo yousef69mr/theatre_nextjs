@@ -1,0 +1,8 @@
+import { db } from "@/lib/database";
+import { NextRequest, NextResponse } from "next/server";
+
+export async function GET(request: NextRequest) {
+  const plays = await db.play.findMany();
+
+  return NextResponse.json(plays, { status: 200 });
+}
