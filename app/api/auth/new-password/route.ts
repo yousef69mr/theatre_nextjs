@@ -8,7 +8,7 @@ import { db } from "@/lib/database";
 export async function POST(request: NextRequest) {
   const { token, ...rest } = await request.json();
   if (!token) {
-    return { error: "Missing token!" };
+    return  NextResponse.json({ error: "Missing token!" },{status:400});
   }
 
   const validatedFields = newPasswordSchema.safeParse(rest);
@@ -23,18 +23,18 @@ export async function POST(request: NextRequest) {
   const existingToken = await getPasswordResetTokenByToken(token);
 
   if (!existingToken) {
-    return { error: "Invalid token!" };
+    return  NextResponse.json({ error: "Invalid token!" },{status:400});
   }
 
   const hasExpired = new Date(existingToken.expires) < new Date();
   if (hasExpired) {
-    return { error: "Token has expired!" };
+    return  NextResponse.json({ error: "Token has expired!" },{status:400});
   }
 
   const existingUser = await getUserByEmail(existingToken.email);
 
   if (!existingUser) {
-    return { error: "Email doesn't exist!" };
+    return  NextResponse.json({ error: "Email doesn't exist!" },{status:404});
   }
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -48,8 +48,8 @@ export async function POST(request: NextRequest) {
       where: { id: existingToken.id },
     });
 
-    return { success: "Password updated!" };
+    return  NextResponse.json({ success: "Password updated!" },{status:200});
   } catch (error) {
-    return { error: "Something went wrong!" };
+    return  NextResponse.json({ error: "Something went wrong!" },{status:500});
   }
 }
