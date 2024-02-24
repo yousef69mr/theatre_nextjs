@@ -1,56 +1,93 @@
 {
-  "sidebarRoutes": {
-    "guestRoutes": [
-      {
-        "id": 1,
+  "login": "login",
+  "logout": "logout",
+  "exit": "exit",
 
-        "label": "Dashboard"
-      },
-      {
-        "id": 2,
-        "label": "Browse"
-      }
-    ],
-    "teacherRoutes": [
-      {
-        "id": 1,
-        "label": "Courses"
-      },
-      {
-        "id": 2,
-        "label": "Analytics"
-      }
-    ]
+  "cancel": { "default": "cancel", "loading": "cancelling" },
+
+  "create": { "default": "create", "loading": "creating" },
+  "save": { "default": "save", "loading": "saving" },
+  "delete": { "default": "delete", "loading": "deleting" },
+  "edit": { "default": "edit", "loading": "editing" },
+  "add": { "default": "create", "loading": "adding" },
+  "close": { "default": "close", "loading": "closing" },
+  "link": { "default": "link", "loading": "linking" },
+
+  "yes": "yes",
+  "no": "no",
+  "ok": "ok",
+  "confirm": "confirm",
+  "search": "search",
+  "select": "select",
+  "publish": "publish",
+  "unPublish": "unpublish",
+  "columns": "columns",
+  "searchKey": "search key",
+  "next": "next",
+  "previous": "previous",
+  "play": { "plural": "plays", "single": "play" },
+  "id": { "plural": "ids", "single": "id" },
+  "nickname": { "plural": "nicknames", "single": "nickname" },
+  "relation": { "plural": "relations", "single": "relation" },
+  "actor": { "plural": "actors", "single": "actor" },
+  "festival": { "plural": "festivals", "single": "festival" },
+  "executor": { "plural": "executors", "single": "executor" },
+  "option": { "plural": "options", "single": "option" },
+  "category": { "plural": "categories", "single": "category" },
+  "file": { "plural": "files", "single": "file" },
+  "image": { "plural": "images", "single": "image" },
+  "menu": { "plural": "menus", "single": "menu" },
+  "notFound": "No {{instance}} found",
+  "messages": {
+    "updated": "{{instance}} updated",
+    "copied": "{{instance}} copied",
+    "deleted": "{{instance}} deleted",
+    "created": "{{instance}} created",
+    "published": "{{instance}} published",
+    "unpublished": "{{instance}} unpublished",
+    "confirm-message": "Are you sure you want to do this?",
+    "irreversible": "This operation is irreversible"
   },
-  "navbar": {
-    "localization": {
-      "toggleText": "Language Toggle",
-      "teacherMode": { "toggleText": "Teacher Mode" },
-      "locales": {
-        "en": "English",
-        "ar": "العربية"
-      }
+  "tables": {
+    "id": "ID",
+    "playName": "Play Name",
+    "director": "Director",
+    "crew": "Crew",
+    "poster": "Poster",
+    "actorName": "Actor Name",
+    "executorName": "Executor Name",
+    "awards": "Awards",
+    "profileImg": "Profile Image",
+    "actions": "Actions"
+  },
+  "forms": {
+    "labels": {
+      "id": "ID",
+      "playName": "Play Name",
+      "director": "Director",
+      "crew": "Crew",
+      "poster": "Poster",
+      "actorName": "Actor Name",
+      "executorName": "Executor Name",
+      "festivalName": "Festival Name",
+      "awards": "Awards",
+      "profileImg": "Profile Image",
+      "image": "image",
+      "actions": "Actions"
+    },
+    "placeholder": {
+      "id": "ID",
+      "playName": "Play Name",
+      "director": "Director",
+      "crew": "Crew",
+      "poster": "Poster",
+      "actorName": "Actor Name",
+      "executorName": "Executor Name",
+      "festivalName": "Festival Name",
+      "awards": "Awards",
+      "profileImg": "Profile Image",
+      "image": "image",
+      "actions": "Actions"
     }
-  },
-  "status": {
-    "draft": "draft",
-    "published": "published",
-    "archived": "archived",
-    "unpublished": "unpublished",
-    "free":"free",
-    "paid":"paid"
-  },
-  "paginations": {
-    "previous": "previous",
-    "next": "next"
-  },
-  "actions": {
-    "add": "add {{instance}}",
-    "edit": "edit {{instance}}",
-    "open": "open {{instance}}",
-    "search": "search {{instance}}",
-    "select": "select {{instance}}",
-    "filter": "filter {{instance}}",
-    "cancel": "cancel"
   }
 }

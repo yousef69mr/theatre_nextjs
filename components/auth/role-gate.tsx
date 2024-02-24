@@ -4,14 +4,16 @@ import { UserRole } from "@prisma/client";
 
 interface RoleGateProps {
   children: React.ReactNode;
-  allowedRole: UserRole;
+  allowedRoles: UserRole[];
 }
 export const RoleGate = async (props: RoleGateProps) => {
-  const { children, allowedRole } = props;
+  const { children, allowedRoles } = props;
   const role = await currentRole();
-  if (role !== allowedRole) {
+  if (!allowedRoles.includes(role as UserRole)) {
     return (
+      <main className="w-full flex items-center justify-center min-">
       <FormError message="You don't have permission to view this content!" />
+      </main>
     );
   }
 

@@ -16,6 +16,7 @@ import { useTranslation } from "react-i18next";
 import i18nConfig, { Locale } from "@/next-i18next.config";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { useNavigationStore } from "@/hooks/stores/use-navigation-store";
 
 export const LocaleFlags: Record<string, string> = {
   ar: "eg",
@@ -28,6 +29,8 @@ export default function LanguageToggle() {
   const currentLocale = i18n.language;
   const router = useRouter();
   const currentPathname = usePathname();
+  const isOpen = useNavigationStore((store) => store.isOpen);
+  const onClose = useNavigationStore((store) => store.onClose);
   // const {lang:}=useParams()
 
   // console.log(currentLocale);
@@ -78,6 +81,10 @@ export default function LanguageToggle() {
     }
 
     router.refresh();
+
+    if (isOpen) {
+      onClose();
+    }
   };
 
   return (
@@ -89,6 +96,7 @@ export default function LanguageToggle() {
           {currentLocale && i18nConfig.locales.includes(currentLocale) ? (
             <Image
               loading="lazy"
+              // className="object-contain"
               width={20}
               height={20}
               // style={{ margin: 2 }}

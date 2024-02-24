@@ -1,0 +1,83 @@
+{
+  "adminRoutes": [
+    { "id": 1, "href": "/admin/dashboard", "label": "Dashboard" },
+    { "id": 2, "href": "/admin/plays", "label": "Plays" },
+    { "id": 3, "href": "/admin/actors", "label": "Actors" },
+    { "id": 4, "href": "/admin/executors", "label": "Executors" }
+  ],
+  "permissions": {
+    "publish": {
+      "title": "publish {{instance}}",
+      "description": "{{instance}} will not be visiable for everyone until you publish it"
+    }
+  },
+  "playForm": {
+    "titleText": "basic information",
+    "title": "play",
+    "inputs-placeholder": {
+      "name": "ex: قصة لا يرويها بطل",
+      "festival": "festival",
+      "showTime": "pick show time",
+      "poster": "poster",
+      "videoUrl": "ex : <iframe src='https://www.youtube.com/embed/{video_code}' ></iframe>"
+    },
+    "inputs-label": {
+      "name": "play name",
+      "festival": "festival",
+      "showTime": "show time",
+      "poster": "poster",
+      "videoUrl": "video embed link",
+      "images": "play images",
+      "director": "director"
+    },
+    "inputs-default": {
+      "image": "لا يوجد صورة",
+      "festival": "لا يوجد مهرجانات"
+    },
+    "helper-texts": {
+      "dimensions": "يوصى بنسبة عرض إلى ارتفاع تبلغ 16:9"
+    },
+    "submit": "حفظ",
+    "loading": "... جارى الحفظ"
+  },
+  "executorForm": {
+    "titleText": "basic information",
+    "title": "executor",
+    "inputs-placeholder": {
+      "name": "enter name",
+      "image": "image",
+      "nickname": "nickname"
+    },
+    "inputs-label": {
+      "name": "name",
+      "image": "personal image",
+      "nickname": "nickname"
+    },
+    "inputs-default": {
+      "image": "لا يوجد صورة"
+    },
+    "helper-texts": {
+      "dimensions": "يوصى بنسبة عرض إلى ارتفاع تبلغ 16:9"
+    }
+  },
+  "actorForm": {
+    "titleText": "basic information",
+    "title": "actor",
+    "inputs-placeholder": {
+      "name": "enter name",
+      "image": "image",
+      "nickname": "nickname"
+    },
+    "inputs-label": {
+      "name": "name",
+      "image": "personal image",
+      "nickname": "nickname"
+    },
+    "inputs-default": {
+      "image": "لا يوجد صورة"
+    },
+    "helper-texts": {
+      "dimensions": "يوصى بنسبة عرض إلى ارتفاع تبلغ 16:9"
+    }
+  }
+}

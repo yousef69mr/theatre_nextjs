@@ -1,4 +1,4 @@
-import RegisterForm from "@/components/forms/register-form";
+import RegisterForm from "@/components/forms/auth/register-form";
 import CardWrapper from "@/components/helpers/card-wrapper";
 import { Locale } from "@/next-i18next.config";
 
@@ -9,7 +9,9 @@ interface RegisterPageProps {
 }
 
 const RegisterPage = (props: RegisterPageProps) => {
-  const { params: {locale} } = props;
+  const {
+    params: { locale },
+  } = props;
   return (
     <CardWrapper
       headerMainLabel="🔐 Auth"

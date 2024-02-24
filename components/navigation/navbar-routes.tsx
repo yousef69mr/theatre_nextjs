@@ -5,17 +5,23 @@ import { useParams, usePathname } from "next/navigation";
 import { LogOut } from "lucide-react";
 import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
 // import { isTeacher } from "@/lib/teacher";
 
 // import { SearchInput } from "./search-input";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
+import { FC, Fragment, HTMLAttributes } from "react";
+import { useNavigationStore } from "@/hooks/stores/use-navigation-store";
+
+import { isAdmin } from "@/lib/auth";
+import { UserRole } from "@prisma/client";
 
 // import { useEffect } from "react";
-
-export const NavbarRoutes = (props: React.HTMLAttributes<HTMLElement>) => {
-  const { className } = props;
+interface NavbarRoutesProps extends HTMLAttributes<HTMLElement> {
+  loggedUserRole?: string;
+}
+export const NavbarRoutes: FC<NavbarRoutesProps> = (props) => {
+  const { className, loggedUserRole } = props;
   //   const { userId } = useAuth();
   // const user = useCurrentUser();
   const { t } = useTranslation();
@@ -24,19 +30,28 @@ export const NavbarRoutes = (props: React.HTMLAttributes<HTMLElement>) => {
 
   const locale = params.locale;
 
-  // useEffect(() => {
-  //   alert(params.lang);
-  // }, [params.lang]);
+  const onClose = useNavigationStore((store) => store.onClose);
 
   const routes = [
     {
+      href: `/${locale}/admin/dashboard`,
+      label: t("navbar.routes.adminDashboard"),
+      isHidden: !isAdmin(loggedUserRole as UserRole),
+      active: pathname.startsWith(`/${locale}/admin`),
+    },
+    {
       href: `/${locale}/plays`,
-      label: "Plays",
+      label: t("navbar.routes.plays"),
       active: pathname === `/${locale}/plays`,
     },
     {
+      href: `/${locale}/actors`,
+      label: t("navbar.routes.actors"),
+      active: pathname === `/${locale}/actors`,
+    },
+    {
       href: `/${locale}/attend-play`,
-      label: "Attend Play",
+      label: t("navbar.routes.bookPlayTicket"),
       active: pathname === `/${locale}/attend-play`,
     },
   ];
@@ -44,23 +59,27 @@ export const NavbarRoutes = (props: React.HTMLAttributes<HTMLElement>) => {
   return (
     <nav
       className={cn(
-        "md:flex items-center space-x-2 lg:space-x-6 hidden",
+        "items-center",
+        // !isOpen && "space-x-2 lg:space-x-6",
+        // isOpen && "flex flex-col gap-y-2 space-y-2 lg:space-y-6",
         className
       )}
     >
       {routes.map((route) => (
-        <Link
-          href={route.href}
-          key={route.href}
-          className={cn(
-            "text-sm font-medium transition-colors hover:text-primary",
-            route.active
-              ? "text-black dark:text-white"
-              : "text-muted-foreground"
+        <Fragment key={route.href}>
+          {!route.isHidden && (
+            <Link
+              href={route.href}
+              onClick={() => onClose()}
+              className={cn(
+                "text-sm font-medium transition-colors hover:text-primary",
+                route.active ? " text-primary" : "text-muted-foreground"
+              )}
+            >
+              {route.label}
+            </Link>
           )}
-        >
-          {route.label}
-        </Link>
+        </Fragment>
       ))}
     </nav>
   );

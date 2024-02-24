@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Menu } from "lucide-react";
 
@@ -7,7 +7,7 @@ import { Sidebar } from "./sidebar";
 import { cn } from "@/lib/utils";
 import { Locale } from "@/next-i18next.config";
 import { dir } from "i18next";
-import { useNavigationStore } from "@/hooks/use-navigation-store";
+import { useNavigationStore } from "@/hooks/stores/use-navigation-store";
 // import { LanguageParamsProps } from "@/types";
 
 interface Props {
@@ -38,9 +38,9 @@ export const MobileSidebar = (props: Props) => {
       </SheetTrigger>
       <SheetContent
         side={dir(locale) === "ltr" ? "right" : "left"}
-        className="p-0 bg-white"
+        className="p-0 "
       >
-        <Sidebar />
+        <Sidebar locale={locale} />
       </SheetContent>
     </Sheet>
   );

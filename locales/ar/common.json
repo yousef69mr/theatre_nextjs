@@ -1,23 +1,72 @@
 {
-  "edit": "تعديل",
-  "exit": "الخروج",
-  "delete": "حذف",
-  "save": "حفظ",
-  "cancel": "إلغاء",
-  "close": "إغلاق",
-  "yes": "نعم",
-  "no": "لا",
-  "ok": "حسنا",
-  "confirm": "تاكيد",
-  "search": "بحث",
-  "select": "اختر",
-  "publish": "نشر",
-  "unPublish": "إلغاء النشر",
-  "course": { "plural": "كورسات", "single": "كورس" },
-  "option": { "plural": "إختيارات", "single": "إختيار" },
-  "file": { "plural": "ملفات", "single": "ملف" },
-  "category": { "plural": "تصنيفات", "single": "تصنيف" },
-  "image": { "plural": "صور", "single": "صورة" },
-  "menu": { "plural": "قوائم", "single": "قائمة" },
-  "notFound": "لم يتم العثور على {{instance}}"
+  "sidebarRoutes": {
+    "guestRoutes": [
+      {
+        "id": 1,
+        "label": "الصفحة الرئيسية"
+      },
+      {
+        "id": 2,
+        "label": "تصفح"
+      }
+    ],
+    "teacherRoutes": [
+      {
+        "id": 1,
+        "label": "كورسات"
+      },
+      {
+        "id": 2,
+        "label": "إحصائيات"
+      }
+    ]
+  },
+  "navbar": {
+    "localization": {
+      "toggleText": "تغيير اللغة",
+      "teacherMode": { "toggleText": "نظام المعلم" },
+      "locales": {
+        "en": "English",
+        "ar": "العربية"
+      }
+    },
+    "routes": {
+      "adminDashboard": "لوحة التحكم",
+      "plays": "المسرحيات",
+      "home": "الصفحة الرئيسية",
+      "actors": "الممثلون",
+      "bookPlayTicket": "حضور مسرحية"
+    }
+  },
+  "status": {
+    "draft": "مسودة",
+    "published": "منشور",
+    "archived": "محفوظ",
+    "unpublished": "غير منشور",
+    "free": "مجانى",
+    "paid": "مدفوع"
+  },
+  "paginations": {
+    "previous": "السابق",
+    "next": "التالي"
+  },
+  "actions": {
+    "add": "إضافة {{instance}}",
+    "create": "إنشاء {{instance}}",
+    "delete": "حذف {{instance}}",
+    "edit": "تعديل {{instance}}",
+    "open": "فتح {{instance}}",
+    "copy": "نسخ {{instance}}",
+    "select": "إختار {{instance}}",
+    "search": "بحث عن {{instance}}",
+    "filter": "تنقية {{instance}}",
+    "filterBy": "تنقية بواسطة {{instance}}",
+    "cancel": "إلغاء",
+    "link": "ربط {{instance}}",
+    "linkTo": "ربط {{instance}} ل{{to}}",
+    "save": "حفظ {{instance}}"
+  },
+  "menus": {
+    "admin": "قائمة الأدمن"
+  }
 }

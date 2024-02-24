@@ -26,11 +26,11 @@ const Navbar = async ({ locale, className }: NavbarProps) => {
   return (
     <section
       className={cn(
-        "flex w-full shadow-sm bg-red-100 dark:bg-red-700/15 backdrop-saturate-50 sticky top-0",
+        "flex w-full shadow-sm bg-red-100 dark:bg-red-700/15 backdrop-saturate-50 backdrop-blur sticky top-0 z-50",
         className
       )}
     >
-      <div className={cn("w-full flex flex-wrap items-center")}>
+      <div className={cn("w-full flex flex-wrap items-center px-4")}>
         <div
           className={cn(
             "flex gap-x-6"
@@ -41,7 +41,10 @@ const Navbar = async ({ locale, className }: NavbarProps) => {
             <Logo />
           </Link>
 
-          <NavbarRoutes className="gap-x-2" />
+          <NavbarRoutes
+            className="gap-x-2 hidden md:flex space-x-2 lg:space-x-6"
+            loggedUserRole={user?.role}
+          />
 
           {isSearchPage && (
             <div className="hidden md:block">{/* <SearchInput /> */}</div>
@@ -55,12 +58,8 @@ const Navbar = async ({ locale, className }: NavbarProps) => {
         >
           <LanguageToggle />
           <ThemeModeToggle />
-          {user ? (
-            <UserButton />
-          ) : (
-            <LoginButton mode="redirect">Login</LoginButton>
-          )}
-        </div> 
+          {user ? <UserButton /> : <LoginButton mode="redirect" />}
+        </div>
       </div>
       <MobileSidebar locale={locale} />
     </section>
