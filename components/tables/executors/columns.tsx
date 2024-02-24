@@ -15,6 +15,7 @@ import Image from "next/image";
 // import ProgressList from "@/components/helpers/progress-list";
 import CellAction from "./cell-actions";
 import { useTranslation } from "react-i18next";
+import Link from "next/link";
 // import { AspectRatio } from "@/components/ui/aspect-ratio";
 // import { ExecutorRole } from "@prisma/client";
 
@@ -107,16 +108,18 @@ export const ExecutorColumns: ExecutorColumnDef<ExecutorType>[] = [
     cell: ({ row }) => {
       const imgUrl = row.original.imgUrl;
       return (
-        <div className="relative h-24 w-24">
-          {/* <AspectRatio ratio={2 / 3} className="bg-muted"> */}
-          <Image
-            src={imgUrl ? imgUrl : "/default-profile.png"}
-            fill
-            alt="Image"
-            className="rounded-md object-contain"
-          />
-          {/* </AspectRatio> */}
-        </div>
+        <Link href={imgUrl as string} target="_blank">
+          <div className="relative h-24 w-24">
+            {/* <AspectRatio ratio={2 / 3} className="bg-muted"> */}
+            <Image
+              src={imgUrl ? imgUrl : "/default-profile.png"}
+              fill
+              alt="Image"
+              className="rounded-md object-contain"
+            />
+            {/* </AspectRatio> */}
+          </div>
+        </Link>
       );
     },
     type: "image",

@@ -17,6 +17,7 @@ import CellAction from "./cell-actions";
 import { useTranslation } from "react-i18next";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { ExecutorRole } from "@prisma/client";
+import Link from "next/link";
 
 export type ActorColumnDef<TData> = ColumnDef<TData> & {
   type: string; // Replace 'string' with the actual type you want to use
@@ -107,16 +108,18 @@ export const ActorColumns: ActorColumnDef<ActorType>[] = [
     cell: ({ row }) => {
       const imgUrl = row.original.imgUrl;
       return (
-        <div className="relative h-24 w-24">
-          {/* <AspectRatio ratio={2 / 3} className="bg-muted"> */}
-          <Image
-            src={imgUrl ? imgUrl : "/default-profile.png"}
-            fill
-            alt="Image"
-            className="rounded-md object-contain"
-          />
-          {/* </AspectRatio> */}
-        </div>
+        <Link href={imgUrl} target="_blank">
+          <div className="relative h-24 w-24">
+            {/* <AspectRatio ratio={2 / 3} className="bg-muted"> */}
+            <Image
+              src={imgUrl}
+              fill
+              alt="Image"
+              className="rounded-md object-contain"
+            />
+            {/* </AspectRatio> */}
+          </div>
+        </Link>
       );
     },
     type: "image",

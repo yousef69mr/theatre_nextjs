@@ -18,6 +18,7 @@ import { useTranslation } from "react-i18next";
 // import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { ExecutorRole } from "@prisma/client";
 import { Progress } from "@/components/ui/progress";
+import Link from "next/link";
 
 export type PlayColumnDef<TData> = ColumnDef<TData> & {
   type: string; // Replace 'string' with the actual type you want to use
@@ -155,7 +156,7 @@ export const PlayColumns: PlayColumnDef<PlayType>[] = [
                       )}%`}
                     />
                     <span className="w-16 text-center font-bold rtl:mr-1 ltr:ml-1">
-                      {actors.length}
+                      {executors.length}
                     </span>
                   </div>
                 </div>
@@ -184,16 +185,18 @@ export const PlayColumns: PlayColumnDef<PlayType>[] = [
     cell: ({ row }) => {
       const posterImgUrl = row.original.posterImgUrl;
       return (
-        <div className="relative h-24 w-24">
-          {/* <AspectRatio ratio={2 / 3} className="bg-muted"> */}
-          <Image
-            src={posterImgUrl}
-            fill
-            alt="Image"
-            className="rounded-md object-contain"
-          />
-          {/* </AspectRatio> */}
-        </div>
+        <Link href={posterImgUrl} target="_blank">
+          <div className="relative h-24 w-24">
+            {/* <AspectRatio ratio={2 / 3} className="bg-muted"> */}
+            <Image
+              src={posterImgUrl}
+              fill
+              alt="Image"
+              className="rounded-md object-contain"
+            />
+            {/* </AspectRatio> */}
+          </div>
+        </Link>
       );
     },
     type: "image",
