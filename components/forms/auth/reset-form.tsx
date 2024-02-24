@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { resetSchema } from "@/lib/validations/auth/index";
+import { resetSchema } from "@/lib/validations/auth";
 import {
   Form,
   FormControl,

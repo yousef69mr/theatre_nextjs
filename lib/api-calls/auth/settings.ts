@@ -1,4 +1,4 @@
-import { settingsSchema } from "@/lib/validations";
+import { settingsSchema } from "@/lib/validations/auth";
 import axios from "axios";
 
 export const settingsRequest = async (

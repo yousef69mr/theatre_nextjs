@@ -1,6 +1,6 @@
 "use client";
 
-import { registerSchema } from "@/lib/validations/auth/index";
+import { registerSchema } from "@/lib/validations/auth";
 import {
   Form,
   FormControl,

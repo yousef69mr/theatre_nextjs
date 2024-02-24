@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { newPasswordSchema } from "@/lib/validations/auth/index";
+import { newPasswordSchema } from "@/lib/validations/auth";
 import {
   Form,
   FormControl,
