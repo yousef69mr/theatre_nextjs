@@ -100,7 +100,7 @@ export function DataTable<TData, TValue>({
             >
               {table
                 .getAllColumns()
-                .filter((column) => column.columnDef.type === "string")
+                // .filter((column) => column.columnDef.type === "string")
                 .map((column) => {
                   // console.log(column)
                   return (
