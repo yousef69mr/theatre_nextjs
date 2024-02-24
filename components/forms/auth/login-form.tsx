@@ -1,6 +1,6 @@
 "use client";
 
-import { loginSchema } from "@/lib/validations/auth/index";
+import { loginSchema } from "@/lib/validations/auth";
 import {
   Form,
   FormControl,

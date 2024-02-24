@@ -1,4 +1,4 @@
-import { loginSchema } from "@/lib/validations";
+import { loginSchema } from "@/lib/validations/auth";
 import axios from "axios";
 
 export const loginRequest = async (values: Zod.infer<typeof loginSchema>) => {

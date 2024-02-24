@@ -2,7 +2,7 @@
 
 import { DEFAULT_LOGIN_REDIRCT } from "@/routes";
 import { signIn } from "@/auth";
-import { loginSchema } from "@/lib/validations";
+import { loginSchema } from "@/lib/validations/auth";
 import { AuthError } from "next-auth";
 import { getUserByEmail } from "./models/user";
 import {
