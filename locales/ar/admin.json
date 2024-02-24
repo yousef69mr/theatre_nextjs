@@ -1,0 +1,81 @@
+{
+  "adminRoutes": [
+    { "id": 1, "href": "/admin/dashboard", "label": "لوحة التحكم" },
+    { "id": 2, "href": "/admin/plays", "label": "عروض مسرحية" },
+    { "id": 3, "href": "/admin/actors", "label": "ممثلون" },
+    { "id": 4, "href": "/admin/executors", "label": "منفذون" }
+  ],
+  "permissions": {
+    "publish": {
+      "title": "نشر {{instance}}",
+      "description": "لن يكون {{instance}} مرئيا للجميع حتى تقوم بنشره"
+    }
+  },
+  "playForm": {
+    "titleText": "بيانات أساسية",
+    "title": "عرض مسرحى",
+    "inputs-placeholder": {
+      "name": "مثال : قصة لا يرويها بطل",
+      "festival": "مهرجان",
+      "showTime": "اختار تاريخ العرض",
+      "poster": "بوستر العرض",
+      "videoUrl": "مثال : <iframe src='https://www.youtube.com/embed/{video_code}' ></iframe>"
+    },
+    "inputs-label": {
+      "name": "اسم العرض المسرحى",
+      "festival": "مهرجان",
+      "showTime": "تاريخ العرض",
+      "poster": "بوستر العرض",
+      "videoUrl": "لينك العرض المضمن",
+      "images": "صور للعرض",
+      "director": "مخرج"
+    },
+    "inputs-default": {
+      "image": "لا يوجد صورة",
+      "festival": "لا يوجد مهرجانات"
+    },
+    "helper-texts": {
+      "dimensions": "يوصى بنسبة عرض إلى ارتفاع تبلغ 16:9"
+    }
+  },
+  "executorForm": {
+    "titleText": "بيانات أساسية",
+    "title": "المنفذ",
+    "inputs-placeholder": {
+      "name": "أدخل اسم المنفذ",
+      "image": "صورة",
+      "nickname": "اسم الشهرة"
+    },
+    "inputs-label": {
+      "name": "اسم المنفذ",
+      "image": "صورة شخصية",
+      "nickname": "اسم الشهرة"
+    },
+    "inputs-default": {
+      "image": "لا يوجد صورة"
+    },
+    "helper-texts": {
+      "dimensions": "يوصى بنسبة عرض إلى ارتفاع تبلغ 16:9"
+    }
+  },
+  "actorForm": {
+    "titleText": "بيانات أساسية",
+    "title": "الممثل",
+    "inputs-placeholder": {
+      "name": "أدخل اسم الممثل",
+      "image": "صورة",
+      "nickname": "اسم الشهرة"
+    },
+    "inputs-label": {
+      "name": "اسم الممثل",
+      "image": "صورة شخصية",
+      "nickname": "اسم الشهرة"
+    },
+    "inputs-default": {
+      "image": "لا يوجد صورة"
+    },
+    "helper-texts": {
+      "dimensions": "يوصى بنسبة عرض إلى ارتفاع تبلغ 16:9"
+    }
+  }
+}

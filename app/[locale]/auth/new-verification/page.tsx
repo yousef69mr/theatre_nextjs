@@ -1,4 +1,4 @@
-import NewVerificationForm from "@/components/forms/new-verification-form";
+import NewVerificationForm from "@/components/forms/auth/new-verification-form";
 import CardWrapper from "@/components/helpers/card-wrapper";
 import { Locale } from "@/next-i18next.config";
 import { FC } from "react";

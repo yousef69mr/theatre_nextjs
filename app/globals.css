@@ -51,6 +51,41 @@
 }
 
 @layer base {
+  /* Styles for the scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px; /* Width of the scrollbar */
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    @apply bg-red-100 backdrop-saturate-50 backdrop-blur rounded-sm;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-red-200;
+  }
+
+  /* Dark mode */
+  @media (prefers-color-scheme: dark) {
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      @apply bg-primary/40;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      @apply bg-primary/35;
+    }
+  }
+}
+
+@layer base {
   * {
     @apply border-border;
   }
@@ -58,14 +93,15 @@
     @apply bg-background text-foreground;
   }
 
-  main {
+  main,
+  .main-section {
     @apply min-h-[calc(100vh_-_var(--header-height))];
   }
 }
 
 @layer utilities {
   .general-padding {
-    @apply px-10;
+    @apply md:px-10 px-2;
   }
 
   .full-bleed {

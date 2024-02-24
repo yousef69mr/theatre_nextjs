@@ -2,13 +2,14 @@ import authConfig from "@/auth.config";
 import NextAuth from "next-auth";
 import {
   DEFAULT_LOGIN_REDIRCT,
+  apiRoutesPrefix,
   apiAuthPrefix,
   authRoutes,
   publicRoutes,
   routeChecker,
 } from "@/routes";
-import i18nConfig, { isValidLocale } from "./next-i18next.config";
-import { i18nMiddleware } from "./middlewares/i18n-middleware";
+import i18nConfig, { isValidLocale } from "@/next-i18next.config";
+import { i18nMiddleware } from "@/middlewares/i18n-middleware";
 
 export const { auth } = NextAuth(authConfig);
 
@@ -37,15 +38,13 @@ export default auth((req) => {
 
   const isPublicRoute = routeChecker(pathname, publicRoutes);
   const isAuthRoute = authRoutes.includes(pathname);
-  
-  if (isApiAuthRoute) {
+  // const isAdminRoute = nextUrl.pathname.startsWith(adminRoutesPrefix);
+
+  const isPublicApiRoute = nextUrl.pathname.startsWith(apiRoutesPrefix);
+
+  if (isApiAuthRoute || isPublicApiRoute) {
     return null;
   }
-  
-  // console.log(nextUrl.pathname, nextUrl.pathname.split("/")[1]);
-  
-  // console.log(pathname);
-  // console.log(isPublicRoute, isAuthRoute);
 
   if (isAuthRoute) {
     if (isLoggedIn) {
@@ -55,6 +54,10 @@ export default auth((req) => {
     }
     return i18nMiddleware(req);
   }
+
+  // if (isApiAuthRoute) {
+  //   return null;
+  // }
 
   if (!isLoggedIn && !isPublicRoute) {
     return Response.redirect(new URL(locale.concat("/auth/login"), nextUrl));

@@ -1,3 +1,4 @@
+import { ExecutorRole } from "@prisma/client";
 import { Locale } from "./next-i18next.config";
 import { ReactElement } from "react";
 
@@ -47,10 +48,11 @@ export type TwoFactorConfirmationType = {
 //////////////////////////////////////////////////
 
 //models
-export type ShowTimeType = {
-  showTime: Date;
+export type ActorInPlayType = {
+  id: string;
+  actor: ActorType;
   play: PlayType;
-  festivalId: string;
+  festival: FestivalType;
 };
 
 export type AwardType = {
@@ -66,36 +68,71 @@ export type AwardType = {
 export type FestivalType = {
   id: string;
   imgUrl?: string;
-  description?: string;
+  name: string;
   awards: AwardType[];
+  plays: PlayFestivalType[];
+  actors: ActorInPlayType[];
+  executors: ExecutorInPlayType[];
+};
+
+export type PlayFestivalType = {
+  id: string;
+  showTimes: Date[];
+  play: PlayType;
+  festival: FestivalType;
 };
 
 export type ActorType = {
   id: string;
   name: string;
+  nickname?: string;
   imgUrl: string;
   userId?: string;
-  plays: PlayType[];
+  numOfViews: string;
+  plays: ActorInPlayType[];
   awards: AwardType[];
+  isPublished: boolean;
 };
 
 export type ExecutorType = {
   id: string;
   name: string;
-  executorTitle: string;
-  imgUrl: string;
+  nickname?: string;
+  imgUrl?: string;
   userId?: string;
+  numOfViews: string;
+  // role: ExecutorRole;
   plays: PlayType[];
   awards: AwardType[];
+  isPublished: boolean;
+};
+
+export type ExecutorInPlayType = {
+  id: string;
+  role: ExecutorRole;
+  play: PlayType;
+  executor: ExecutorType;
+  festival: FestivalType;
 };
 
 export type PlayType = {
   id: string;
   name: string;
-  videoUrl: string;
-  imgUrl: string;
+  videoUrl?: string;
+  posterImgUrl: string;
+  director?: ExecutorType;
   images: string[];
+  numOfViews: string;
+  festivals: PlayFestivalType[];
+  actors: ActorInPlayType[];
+  awards: AwardType[];
+  executors: ExecutorInPlayType[];
+  isPublished: boolean;
+};
 
-  showTimes: ShowTimeType[];
-  actors: ActorType[];
+////////////////////////////////////////
+export type adminRouteType = {
+  id: number;
+  href: string;
+  label: string;
 };

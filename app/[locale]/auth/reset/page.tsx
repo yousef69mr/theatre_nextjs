@@ -1,4 +1,4 @@
-import ResetForm from "@/components/forms/reset-form";
+import ResetForm from "@/components/forms/auth/reset-form";
 import CardWrapper from "@/components/helpers/card-wrapper";
 import { Locale } from "@/next-i18next.config";
 import { FC } from "react";

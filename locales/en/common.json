@@ -1,24 +1,50 @@
 {
-  "edit": "edit",
-  "exit": "exit",
-  "delete": "delete",
-  "save": "save",
-  "cancel": "cancel",
-  "add": "add",
-  "close": "close",
-  "yes": "yes",
-  "no": "no",
-  "ok": "ok",
-  "confirm": "cinfirm",
-  "search": "search",
-  "select": "select",
-  "publish": "publish",
-  "unPublish": "unpublish",
-  "course": { "plural": "courses", "single": "course" },
-  "option": { "plural": "options", "single": "option" },
-  "category": { "plural": "categories", "single": "category" },
-  "file": { "plural": "files", "single": "file" },
-  "image": { "plural": "images", "single": "image" },
-  "menu": { "plural": "menus", "single": "menu" },
-  "notFound": "No {{instance}} found"
+  "navbar": {
+    "localization": {
+      "toggleText": "Language Toggle",
+      "teacherMode": { "toggleText": "Teacher Mode" },
+      "locales": {
+        "en": "English",
+        "ar": "العربية"
+      }
+    },
+    "routes": {
+      "adminDashboard": "Dashboard",
+      "plays": "Plays",
+      "home": "Home",
+      "actors": "Actors",
+      "bookPlayTicket": "Attend Play"
+    }
+  },
+  "status": {
+    "draft": "draft",
+    "published": "published",
+    "archived": "archived",
+    "unpublished": "unpublished",
+    "free": "free",
+    "paid": "paid"
+  },
+  "paginations": {
+    "previous": "previous",
+    "next": "next"
+  },
+  "actions": {
+    "add": "add {{instance}}",
+    "create": "create {{instance}}",
+    "delete": "delete {{instance}}",
+    "edit": "edit {{instance}}",
+    "open": "open {{instance}}",
+    "copy": "copy {{instance}}",
+    "search": "search {{instance}}",
+    "select": "select {{instance}}",
+    "filter": "filter {{instance}}",
+    "filterBy": "filter by {{instance}}",
+    "cancel": "cancel",
+    "link": "link {{instance}}",
+    "linkTo": "link {{instance}} to {{to}}",
+    "save": "save {{instance}}"
+  },
+  "menus": {
+    "admin": "admin menu"
+  }
 }

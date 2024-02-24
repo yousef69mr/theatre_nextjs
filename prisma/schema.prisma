@@ -33,10 +33,10 @@ model User {
   isTwoFactorEnabled Boolean @default(false)
 
   twoFactorConfirmation TwoFactorConfirmation?
-  actor                 Actor?
+  // actor                 Actor?
+  // executor              Executor?
 
-  executors Executor[]
-  accounts  Account[]
+  accounts Account[]
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
@@ -110,6 +110,19 @@ model TwoFactorConfirmation {
 
 // 
 
+model CastMember {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  role UserRole @default(ACTOR)
+
+  // actorId String? @unique @db.ObjectId
+  // actor   Actor?  @relation(fields: [actorId], references: [id])
+  actor Actor?
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
 model Festival {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
@@ -117,8 +130,12 @@ model Festival {
   imgUrl      String?
   description String?
 
-  playsInFestival PlayFestival[]
+  plays PlayFestival[]
   Award           Award[]
+  actors          ActorInPlay[]
+  executors       ExecutorInPlay[]
+
+  isPublished Boolean @default(true)
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
@@ -133,41 +150,32 @@ model PlayFestival {
   festivalId String   @db.ObjectId
   festival   Festival @relation(fields: [festivalId], references: [id], onDelete: Cascade)
 
+  showTimes DateTime[]
+
   @@unique([festivalId, playId])
   @@index([festivalId])
   @@index([playId])
 }
 
 model Play {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  name     String
-  videoUrl String
-  imgUrl   String
-  images   String[]
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  videoUrl     String?
+  posterImgUrl String
+  numOfViews   BigInt  @default(0)
 
-  showtimes               PlayShowtime[]
-  festivalsParticipatedIn PlayFestival[]
+  images String[]
+
+  // showtimes               PlayShowtime[]
+  festivals PlayFestival[]
   actors                  ActorInPlay[]
   awards                  Award[]
-  executors               Executor[]
+  executors               ExecutorInPlay[]
+
+  isPublished Boolean @default(true)
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
-}
-
-model PlayShowtime {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  showTime DateTime
-
-  festivalId String @db.ObjectId
-
-  playId String @db.ObjectId
-  play   Play   @relation(fields: [playId], references: [id], onDelete: Cascade)
-
-  updatedAt DateTime @updatedAt
-  createdAt DateTime @default(now())
-
-  @@index([playId])
 }
 
 model ActorInPlay {
@@ -179,26 +187,43 @@ model ActorInPlay {
   actorId String @db.ObjectId
   actor   Actor  @relation(fields: [actorId], references: [id], onDelete: Cascade)
 
-  @@unique([actorId, playId])
+  festivalId String   @db.ObjectId
+  festival   Festival @relation(fields: [festivalId], references: [id], onDelete: Cascade)
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  @@unique([actorId, playId, festivalId])
   @@index([actorId])
   @@index([playId])
+  @@index([festivalId])
 }
 
 model Actor {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  name   String
-  imgUrl String
+  name       String
+  imgUrl     String
+  nickname   String?
+  numOfViews BigInt  @default(0)
 
-  userId String? @unique @db.ObjectId
-  user   User?   @relation(fields: [userId], references: [id])
+  userId String? @db.ObjectId
+  // user   User?   @relation(fields: [userId], references: [id])
 
+  executorId String? @db.ObjectId
+  // executor   Executor? @relation(fields: [executorId], references: [id])
+
+  castMemberId String?     @unique @db.ObjectId
+  castMember   CastMember? @relation(fields: [castMemberId], references: [id])
+  // castMember CastMember?
   // playId String? @db.ObjectId
   // Play   Play?   @relation(fields: [playId], references: [id])
 
-  plays    ActorInPlay[]
-  awards   Award[]
-  Executor Executor[]
+  plays  ActorInPlay[]
+  awards Award[]
+  // Executor Executor[]
+
+  isPublished Boolean @default(true)
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
@@ -206,30 +231,68 @@ model Actor {
   // @@index([playId])
 }
 
-// create for each play (Executor profile)
-model Executor {
+enum ExecutorRole {
+  DIRECTOR
+  AUTHOR
+  CO_DIRECTOR
+  ACTING_COACH
+  MARKETER
+  MUSIC_EXECUTION
+  SOUND_DESIGNER
+  LIGHTING_DESIGNER
+  ASSISTANT_DIRECTOR
+  DECOR_DESIGNER
+  CAMERA_MAN
+  PRODUCTION_MANAGER
+  COSTUME_DESIGNER
+  OTHER
+}
+
+model ExecutorInPlay {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  name          String
-  imgUrl        String
-  executorTitle String
-
-  userId String? @unique @db.ObjectId
-  user   User?   @relation(fields: [userId], references: [id])
-
-  actorId String? @db.ObjectId
-  actor   Actor?  @relation(fields: [actorId], references: [id])
+  role ExecutorRole @default(OTHER)
 
   playId String @db.ObjectId
-  Play   Play   @relation(fields: [playId], references: [id])
+  play   Play   @relation(fields: [playId], references: [id], onDelete: Cascade)
 
-  awards Award[]
+  executorId String   @db.ObjectId
+  executor   Executor @relation(fields: [executorId], references: [id], onDelete: Cascade)
+
+  festivalId String   @db.ObjectId
+  festival   Festival @relation(fields: [festivalId], references: [id], onDelete: Cascade)
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
 
+  @@unique([executorId, playId, festivalId, role])
+  @@index([executorId])
   @@index([playId])
-  @@index([actorId])
+  @@index([festivalId])
+}
+
+model Executor {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  name       String
+  imgUrl     String?
+  nickname   String?
+  numOfViews BigInt  @default(0)
+
+  userId String? @db.ObjectId
+  // user   User?   @relation(fields: [userId], references: [id])
+
+  // actorId String? @unique @db.ObjectId
+  // actor   Actor?  @relation(fields: [actorId], references: [id])
+  // actor Actor?
+
+  awards Award[]
+  plays  ExecutorInPlay[]
+
+  isPublished Boolean @default(true)
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
 }
 
 model Award {

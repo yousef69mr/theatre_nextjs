@@ -7,6 +7,8 @@ export const publicRoutes = [
   "/",
   "/plays",
   "/plays/:playerId",
+  "/actors",
+  "/actors/:actorId",
   "/auth/new-verification",
 ];
 
@@ -21,30 +23,30 @@ export const routeChecker = (route: string, routesList: string[]) => {
     return true;
   }
 
-  // console.log(routeSections);
-
   if (routesList.includes(route)) {
     return true;
   }
 
+  // console.log(routeSections);
+
   let isFound = true;
 
-  routesList.every((route) => {
+  routesList.forEach((route) => {
     if (!isFound) {
-      return false;
+      return isFound;
     }
     const givenRouteSections = route.split("/");
     // console.log(givenRouteSections);
     // if (routeSections.length - 1 !== givenRouteSections.length) {
     //   continue;
     // }
-    for (let index in givenRouteSections) {
-      if (givenRouteSections[index].startsWith(":")) {
-        continue;
-      }
 
-      if (givenRouteSections[index] !== routeSections[index]) {
-        return false;
+    for (let index = 0; index < givenRouteSections.length; index++) {
+      if (
+        !givenRouteSections[index].startsWith(":") &&
+        givenRouteSections[index] !== routeSections[index]
+      ) {
+        isFound = false;
       }
     }
 
@@ -71,7 +73,19 @@ export const authRoutes = [
  * @type {string}
  */
 export const apiAuthPrefix = "/api/auth";
+
+/**
+ * @type {string[]}
+ *
+ */
+export const apiRoutesPrefix = "/api";
+
 /**
  * @type {string}
  */
 export const DEFAULT_LOGIN_REDIRCT = "/";
+
+/**
+ * @type {string}
+ */
+export const PUBLIC_DOMAIN = process.env.NEXT_PUBLIC_DOMAIN || "";

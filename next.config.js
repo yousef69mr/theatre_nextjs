@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    // reactStrictMode: true,
-    output: process.env.NEXT_OUTPUT_MODE,
+    reactStrictMode: true,
+    // output: process.env.NEXT_OUTPUT_MODE,
 
     //     /**
     //   *
@@ -26,7 +26,7 @@ const nextConfig = {
     //         return config
     //     }
     images: {
-        domains: ["flagcdn.com"]
+        domains: ["flagcdn.com","utfs.io", "files.edgestore.dev"]
     }
 }
 

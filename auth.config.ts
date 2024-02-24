@@ -3,7 +3,7 @@ import Google from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
 import Credentials from "next-auth/providers/credentials";
 import type { NextAuthConfig } from "next-auth";
-import { loginSchema } from "@/lib/validations";
+import { loginSchema } from "@/lib/validations/auth";
 import { getUserByEmail } from "./lib/actions/models/user";
 
 export default {

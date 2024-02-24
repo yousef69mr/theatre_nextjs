@@ -1,4 +1,4 @@
-import LoginForm from "@/components/forms/login-form";
+import LoginForm from "@/components/forms/auth/login-form";
 import Image from "next/image";
 import { Locale } from "@/next-i18next.config";
 import CardWrapper from "@/components/helpers/card-wrapper";
@@ -16,7 +16,13 @@ const LoginPage = (props: LoginPageProps) => {
   // console.log(locale);
   return (
     <main className="w-full flex items-center justify-center py-4 relative">
-      <Image fill priority src="/bg-login.jpg" alt="theatre background" className="-z-10"/>
+      <Image
+        fill
+        priority
+        src="/bg-login.jpg"
+        alt="theatre background"
+        className="-z-10"
+      />
       <CardWrapper
         headerMainLabel="🔐 Auth"
         headerLabel="Welcome back"
@@ -27,7 +33,6 @@ const LoginPage = (props: LoginPageProps) => {
         <LoginForm />
       </CardWrapper>
     </main>
-    
   );
 };
 
