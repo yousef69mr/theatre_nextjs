@@ -14,7 +14,7 @@ const ActorsPage: FC<ActorsPageProps> = async (props) => {
   return (
     <main className={cn("w-full general-padding")}>
       {actors.map((actor) => (
-        <div>{actor.name}</div>
+        <div key={actor.id}>{actor.name}</div>
       ))}
     </main>
   );

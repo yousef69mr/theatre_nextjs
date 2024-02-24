@@ -46,7 +46,7 @@ const AdminRoutes: FC<AdminRoutesProps> = (props) => {
         );
 
         return (
-          <Tooltip>
+          <Tooltip key={adminRoute.href}>
             <TooltipTrigger
               className={cn(
                 "transition-all duration-500",
@@ -54,7 +54,6 @@ const AdminRoutes: FC<AdminRoutesProps> = (props) => {
               )}
             >
               <div
-                key={adminRoute.href}
                 className={cn(
                   "bg-red-100 dark:bg-red-700/15 p-5 rounded-full relative "
                 )}

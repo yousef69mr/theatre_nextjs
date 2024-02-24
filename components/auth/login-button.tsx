@@ -31,7 +31,7 @@ const LoginButton = (props: LoginButtonProps) => {
 
   if (asChild) {
     if (mode === "modal") {
-      return <span>// Not Implemented</span>;
+      return <span>Not Implemented</span>;
     }
 
     return (
@@ -41,7 +41,7 @@ const LoginButton = (props: LoginButtonProps) => {
     );
   }
   if (mode === "modal") {
-    return <Button>// Not Implemented</Button>;
+    return <Button>Not Implemented</Button>;
   }
 
   return (

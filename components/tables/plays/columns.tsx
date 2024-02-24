@@ -166,7 +166,7 @@ export const PlayColumns: PlayColumnDef<PlayType>[] = [
         </div>
       );
     },
-    type: "string",
+    type: "number",
   },
   {
     accessorKey: "poster",
