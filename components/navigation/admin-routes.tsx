@@ -50,7 +50,7 @@ const AdminRoutes: FC<AdminRoutesProps> = (props) => {
             <TooltipTrigger
               className={cn(
                 "transition-all duration-500",
-                !isAdminOpen && `translate-y-96  -z-20`
+                !isAdminOpen && `translate-y-96`
               )}
             >
               <div

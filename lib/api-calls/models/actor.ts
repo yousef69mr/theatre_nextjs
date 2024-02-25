@@ -17,7 +17,7 @@ export const getAllActorsRequest = async () => {
 };
 
 export const getActorByIdRequest = async (actorId: string) => {
-  // try {
+  try {
   const promise = await fetch(PUBLIC_DOMAIN.concat(`/api/actors/${actorId}`), {
     method: "GET",
     cache: "no-store",
@@ -28,9 +28,9 @@ export const getActorByIdRequest = async (actorId: string) => {
   }
 
   return promise.json();
-  // } catch (error) {
-  //   return null;
-  // }
+  } catch (error) {
+    return null;
+  }
 };
 
 export const createActorRequest = async (

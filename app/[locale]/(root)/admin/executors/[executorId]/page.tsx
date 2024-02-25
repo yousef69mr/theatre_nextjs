@@ -42,9 +42,14 @@ const AdminSingleExecutorPage: FC<AdminSingleExecutorPageProps> = async (
   const { resources } = await initTranslations(locale, i18nextNamspaces);
 
   const festivals: FestivalType[] = await getAllFestivalsRequest();
-  
-  const executor: ExecutorType | null =
-    executorId !== "new" ? await getExecutorByIdRequest(executorId) : null;
+
+  const executor: ExecutorType | null = await getExecutorByIdRequest(
+    executorId
+  );
+
+  if (!executor && executorId !== "new") {
+    // throw new Error("Not found");
+  }
   return (
     <main className="w-full main-section general-padding">
       <TranslationsProvider

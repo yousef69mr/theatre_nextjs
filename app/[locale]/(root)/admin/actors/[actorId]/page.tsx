@@ -47,8 +47,11 @@ const AdminSingleActorPage: FC<AdminSingleActorPageProps> = async (props) => {
   const plays: PlayType[] = await getAllPlaysRequest();
   // const executors: ExecutorType[] = await getAllExecutorsRequest();
 
-  const actor: ActorType | null =
-    actorId !== "new" ? await getActorByIdRequest(actorId) : null;
+  const actor: ActorType | null = await getActorByIdRequest(actorId);
+
+  if (!actor && actorId !== "new") {
+    // throw new Error("Not found");
+  }
   return (
     <main className="w-full main-section general-padding">
       <TranslationsProvider

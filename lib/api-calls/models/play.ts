@@ -21,21 +21,21 @@ export const getAllPlaysRequest = async () => {
 
 export const getPlayByIdRequest = async (playId: string) => {
   // if
-  // try {
-  // console.log(playId);
-  const promise = await fetch(PUBLIC_DOMAIN.concat(`/api/plays/${playId}`), {
-    method: "GET",
-    cache: "no-store",
-  });
-  if (!promise.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch data");
+  try {
+    // console.log(playId);
+    const promise = await fetch(PUBLIC_DOMAIN.concat(`/api/plays/${playId}`), {
+      method: "GET",
+      cache: "no-store",
+    });
+    if (!promise.ok) {
+      // This will activate the closest `error.js` Error Boundary
+      throw new Error("Failed to fetch data");
+    }
+    // console.log(promise);
+    return promise.json();
+  } catch (error) {
+    return null;
   }
-  // console.log(promise);
-  return promise.json();
-  // } catch (error) {
-  //   return null;
-  // }
 };
 
 export const createPlayRequest = async (

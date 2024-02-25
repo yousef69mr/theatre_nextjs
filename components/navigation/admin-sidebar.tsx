@@ -30,8 +30,8 @@ const AdminSidebar: FC<AdminSidebarProps> = (props) => {
     <TooltipProvider>
       <section
         className={cn(
-          "flex flex-col justify-center items-start w-[4rem] md:w-[12rem] shadow-sm fixed transition-all bottom-16",
-          !isAdminOpen && "translate-y-96"
+          "flex flex-col justify-center items-start w-[4rem] md:w-[12rem] shadow-sm fixed transition-all bottom-16 z-40",
+          !isAdminOpen && "translate-y-96 -z-20"
         )}
       >
         <AdminRoutes />

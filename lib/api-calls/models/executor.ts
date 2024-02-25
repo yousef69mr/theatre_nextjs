@@ -16,23 +16,23 @@ export const getAllExecutorsRequest = async () => {
 };
 
 export const getExecutorByIdRequest = async (executorId: string) => {
-  // try {
-  const promise = await fetch(
-    PUBLIC_DOMAIN.concat(`/api/executors/${executorId}`),
-    {
-      method: "GET",
-      cache: "no-store",
+  try {
+    const promise = await fetch(
+      PUBLIC_DOMAIN.concat(`/api/executors/${executorId}`),
+      {
+        method: "GET",
+        cache: "no-store",
+      }
+    );
+    if (!promise.ok) {
+      // This will activate the closest `error.js` Error Boundary
+      throw new Error("Failed to fetch data");
     }
-  );
-  if (!promise.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch data");
-  }
 
-  return promise.json();
-  // } catch (error) {
-  //   return null;
-  // }
+    return promise.json();
+  } catch (error) {
+    return null;
+  }
 };
 
 export const createExecutorRequest = async (

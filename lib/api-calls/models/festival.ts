@@ -20,17 +20,21 @@ export const getAllFestivalsRequest = async () => {
 };
 
 export const getFestivalByIdRequest = async (festivalId: string) => {
-  const promise = await fetch(
-    PUBLIC_DOMAIN.concat(`/api/festivals/${festivalId}`),
-    {
-      method: "GET",
-      cache: "no-store",
+  try {
+    const promise = await fetch(
+      PUBLIC_DOMAIN.concat(`/api/festivals/${festivalId}`),
+      {
+        method: "GET",
+        cache: "no-store",
+      }
+    );
+    if (!promise.ok) {
+      throw Error(promise.statusText);
     }
-  );
-  if (!promise.ok) {
-    throw Error(promise.statusText);
+    return promise.json();
+  } catch (error) {
+    return null;
   }
-  return promise.json();
 };
 
 export const createFestivalRequest = async (
