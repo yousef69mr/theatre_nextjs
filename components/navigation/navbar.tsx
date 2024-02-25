@@ -30,7 +30,7 @@ const Navbar = async ({ locale, className }: NavbarProps) => {
         className
       )}
     >
-      <div className={cn("w-full flex flex-wrap items-center px-4")}>
+      <div className={cn("w-full flex flex-wrap items-center px-4 md:p-0")}>
         <div
           className={cn(
             "flex gap-x-6"

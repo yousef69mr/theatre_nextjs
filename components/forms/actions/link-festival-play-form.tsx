@@ -180,7 +180,7 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
   const isDisabled = isUploadingFile || isSubmitting;
 
   const handleFestivalsOptions = () => {
-    console.log();
+    // console.log();
     const selectedPlay = localPlays?.find((play) => play.id === playId);
     // console.log(selectedPlay);
     if (!selectedPlay) return;
@@ -188,7 +188,7 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
     const takenFestivalIDs: string[] = selectedPlay.festivals?.map(
       (festival) => festival.festival.id
     );
-    console.log();
+    // console.log();
     if (localFestivals) {
       const remainingFestivalOptions: FestivalType[] = localFestivals.filter(
         (festival) => !takenFestivalIDs.includes(festival.id)
@@ -200,7 +200,7 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
   };
   useEffect(() => {
     handleFestivalsOptions();
-  }, [localFestivals, localPlays]);
+  }, [localFestivals, localPlays, handleFestivalsOptions]);
   return (
     <Form {...form}>
       <form

@@ -10,7 +10,7 @@ import {
 import { useModal } from "@/hooks/stores/use-modal-store";
 // import ExecutorForm from "@/components/forms/executor-form";
 import { useTranslation } from "react-i18next";
-import LinkActorPlayForm from "@/components/forms/actions/link-actor-play";
+import LinkActorPlayForm from "@/components/forms/actions/link-actor-play-form";
 
 const LinkActorPlayModal = () => {
   const { isOpen, onClose, type, data } = useModal();

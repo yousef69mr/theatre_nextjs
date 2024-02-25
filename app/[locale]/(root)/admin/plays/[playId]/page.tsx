@@ -14,20 +14,20 @@ import { ActorType, ExecutorType, FestivalType, PlayType } from "@/types";
 import { ExecutorRole } from "@prisma/client";
 import { FC } from "react";
 
-// export async function generateStaticParams() {
-//   const plays: PlayType[] = await getAllPlaysRequest();
+export async function generateStaticParams() {
+  const plays: PlayType[] = await getAllPlaysRequest();
 
-//   return i18nConfig.locales.map((locale) => {
-//     if (plays.length > 0) {
-//       return plays.map((play) => ({
-//         playId: play.id,
-//         locale: locale,
-//       }));
-//     } else {
-//       return { locale: locale, playId: "" };
-//     }
-//   });
-// }
+  return i18nConfig.locales.map((locale) => {
+    if (plays.length > 0) {
+      return plays.map((play) => ({
+        playId: play.id,
+        locale: locale,
+      }));
+    } else {
+      return { locale: locale, playId: "new" };
+    }
+  });
+}
 
 const i18nextNamspaces = [...globalNamespaces, ...adminNamespaces];
 
