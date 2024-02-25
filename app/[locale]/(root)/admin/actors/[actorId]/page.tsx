@@ -15,20 +15,20 @@ import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
 import i18nConfig, { Locale } from "@/next-i18next.config";
 import { ActorType, FestivalType, PlayType } from "@/types";
 
-export async function generateStaticParams() {
-  const actors: ActorType[] = await getAllActorsRequest();
+// export async function generateStaticParams() {
+//   const actors: ActorType[] = await getAllActorsRequest();
 
-  return i18nConfig.locales.map((locale) => {
-    if (actors.length > 0) {
-      return actors.map((actor) => ({
-        actorId: actor.id,
-        locale: locale,
-      }));
-    } else {
-      return { locale: locale, actorId: "" };
-    }
-  });
-}
+//   return i18nConfig.locales.map((locale) => {
+//     if (actors.length > 0) {
+//       return actors.map((actor) => ({
+//         actorId: actor.id,
+//         locale: locale,
+//       }));
+//     } else {
+//       return { locale: locale, actorId: "" };
+//     }
+//   });
+// }
 
 interface AdminSingleActorPageProps {
   params: { locale: Locale; actorId: string };

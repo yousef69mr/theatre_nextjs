@@ -13,20 +13,20 @@ import i18nConfig, { Locale } from "@/next-i18next.config";
 import { ExecutorType, FestivalType } from "@/types";
 import { FC } from "react";
 
-export async function generateStaticParams() {
-  const executors: ExecutorType[] = await getAllExecutorsRequest();
+// export async function generateStaticParams() {
+//   const executors: ExecutorType[] = await getAllExecutorsRequest();
 
-  return i18nConfig.locales.map((locale) => {
-    if (executors.length > 0) {
-      return executors.map((executor) => ({
-        executorId: executor.id,
-        locale: locale,
-      }));
-    } else {
-      return { locale: locale, executorId: "" };
-    }
-  });
-}
+//   return i18nConfig.locales.map((locale) => {
+//     if (executors.length > 0) {
+//       return executors.map((executor) => ({
+//         executorId: executor.id,
+//         locale: locale,
+//       }));
+//     } else {
+//       return { locale: locale, executorId: "" };
+//     }
+//   });
+// }
 
 interface AdminSingleExecutorPageProps {
   params: { locale: Locale; executorId: string };
