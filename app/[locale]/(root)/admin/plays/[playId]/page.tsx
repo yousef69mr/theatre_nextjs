@@ -48,7 +48,7 @@ const AdminSinglePlayPage: FC<AdminSinglePlayPageProps> = async (props) => {
   const play: PlayType | null = await getPlayByIdRequest(playId);
   // console.log(play)
   if (!play && playId !== "new") {
-    //  throw new Error("Not found");
+     throw new Error("Not found");
   }
   const formattedPlay = play
     ? {
