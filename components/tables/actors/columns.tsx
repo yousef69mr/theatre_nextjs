@@ -15,8 +15,8 @@ import Image from "next/image";
 // import ProgressList from "@/components/helpers/progress-list";
 import CellAction from "./cell-actions";
 import { useTranslation } from "react-i18next";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { ExecutorRole } from "@prisma/client";
+// import { AspectRatio } from "@/components/ui/aspect-ratio";
+// import { ExecutorRole } from "@prisma/client";
 import Link from "next/link";
 
 export type ActorColumnDef<TData> = ColumnDef<TData> & {
@@ -59,7 +59,9 @@ export const ActorColumns: ActorColumnDef<ActorType>[] = [
       const play = row.original as unknown as ActorType;
       return (
         <div className="flex items-center justify-center">
-          <p>{play.name}</p>
+          <p>
+            {play.name} {play.nickname && `(${play.nickname})`}
+          </p>
         </div>
       );
     },

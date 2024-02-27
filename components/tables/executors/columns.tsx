@@ -59,7 +59,9 @@ export const ExecutorColumns: ExecutorColumnDef<ExecutorType>[] = [
       const executor = row.original as unknown as ExecutorType;
       return (
         <div className="flex items-center justify-center">
-          <p>{executor.name}</p>
+          <p>
+            {executor.name} {executor.nickname && `(${executor.nickname})`}
+          </p>
         </div>
       );
     },
