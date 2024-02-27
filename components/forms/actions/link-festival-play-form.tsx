@@ -200,7 +200,7 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
   };
   useEffect(() => {
     handleFestivalsOptions();
-  }, [localFestivals, localPlays, handleFestivalsOptions]);
+  }, [localFestivals, localPlays]);
   return (
     <Form {...form}>
       <form
@@ -311,7 +311,7 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
                         )}
                       >
                         {field.value
-                          ? festivals?.find(
+                          ? localFestivals?.find(
                               (festival) => festival.id === field.value
                             )?.name
                           : t("actions.select", {

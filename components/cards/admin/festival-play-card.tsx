@@ -16,10 +16,11 @@ import { Drama, Edit, PartyPopper, Theater, Trash } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 interface FestivalPlayCardProps {
   festivalPlay: PlayFestivalType;
+  mode?: "search" | "default";
 }
 
 const FestivalPlayCard: FC<FestivalPlayCardProps> = (props) => {
-  const { festivalPlay } = props;
+  const { festivalPlay, mode = "default" } = props;
   const onOpen = useModal((state) => state.onOpen);
 
   const params = useParams();
@@ -33,6 +34,81 @@ const FestivalPlayCard: FC<FestivalPlayCardProps> = (props) => {
   const handleDelete = () => {
     onOpen("deleteFestivalPlayLink", { festivalPlay: festivalPlay });
   };
+  
+  if (mode === "search") {
+    return (
+      <div className="flex justify-between items-center w-full ">
+        <div className="flex w-full py-2 gap-y-2 flex-col justify-center">
+          {!playId && (
+            <div className="flex items-center justify-start">
+              <Theater className="w-5 h-5 ltr:mr-2 rtl:ml-2 text-primary" />
+              <Link href={`/${locale}/admin/plays/${festivalPlay.play?.id}`}>
+                <span className="truncate font-medium">
+                  {festivalPlay.play?.name}
+                </span>
+              </Link>
+            </div>
+          )}
+
+          {!festivalId && (
+            <div className="flex items-center justify-start">
+              <PartyPopper className="w-5 h-5 ltr:mr-2 rtl:ml-2 text-primary" />
+              <span className="truncate font-medium">
+                {festivalPlay.festival?.name}
+              </span>
+            </div>
+          )}
+        </div>
+        <div className="flex items-center justify-center">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  onClick={() =>
+                    onOpen("linkFestivalPlay", { festivalPlay: festivalPlay })
+                  }
+                  size={"icon"}
+                  variant="ghost"
+                  className="capitalize"
+                >
+                  <Edit className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>
+                  {t("actions.edit", {
+                    instance: t(`relation.single`, { ns: "constants" }),
+                    ns: "common",
+                  })}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  onClick={handleDelete}
+                  variant="ghost"
+                  className="capitalize text-destructive dark:text-red-500"
+                  size={"icon"}
+                >
+                  <Trash className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>
+                  {t("actions.delete", {
+                    instance: t(`relation.single`, { ns: "constants" }),
+                    ns: "common",
+                  })}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="border p-5 space-y-2 w-full md:max-w-72">

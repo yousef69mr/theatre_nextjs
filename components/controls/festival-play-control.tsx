@@ -9,11 +9,20 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  // CommandSeparator,
+} from "@/components/ui/command";
 import { useModal } from "@/hooks/stores/use-modal-store";
 import { cn } from "@/lib/utils";
 import { PlayFestivalType } from "@/types";
-import { PlusCircle } from "lucide-react";
-import { FC } from "react";
+import { PlusCircle, Search } from "lucide-react";
+import { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import FestivalPlayCard from "@/components/cards/admin/festival-play-card";
 interface FestivalPlayControlProps {
@@ -24,6 +33,21 @@ const FestivalPlayControl: FC<FestivalPlayControlProps> = (props) => {
   const { festivalPlayList, type } = props;
   const { t } = useTranslation();
   const onOpen = useModal((state) => state.onOpen);
+  
+  const [isMounted, setIsMounted] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
+
+  const handleSearching = () => {
+    setIsSearching((prev) => !prev);
+  };
   //   console.log(actorInPlayList);
   return (
     <div className="mt-6 border rounded-md p-4 space-y-2">
@@ -53,6 +77,59 @@ const FestivalPlayControl: FC<FestivalPlayControlProps> = (props) => {
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
+        </div>
+        <div>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button onClick={handleSearching} variant={"ghost"} size={"sm"}>
+                  <Search className="w-5 h-5 md:ltr:mr-2 md:rtl:ml-2" />
+                  <span className="hidden md:block">
+                    {t("actions.search", {
+                      instance: t(`${type}.plural`, { ns: "constants" }),
+                    })}
+                  </span>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>
+                  {t("actions.search", {
+                    instance: t(`${type}.plural`, { ns: "constants" }),
+                  })}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <CommandDialog open={isSearching} onOpenChange={handleSearching}>
+            <CommandInput
+              placeholder={t("actions.search", {
+                ns: "common",
+                instance: t(`${type}.plural`, { ns: "constants" }),
+              })}
+            />
+            <CommandList>
+              <CommandEmpty>
+                {t("notFound", {
+                  ns: "constants",
+                  instance: t(`${type}.plural`, { ns: "constants" }),
+                })}
+              </CommandEmpty>
+              <CommandGroup
+                heading={t(`${type}.plural`, { ns: "constants" })}
+                className="capitalize"
+              >
+                {festivalPlayList.map((festivalPlay) => (
+                  <CommandItem key={festivalPlay.id}>
+                    <FestivalPlayCard
+                      key={festivalPlay.id}
+                      festivalPlay={festivalPlay}
+                      mode="search"
+                    />
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </CommandDialog>
         </div>
       </div>
       <Separator />

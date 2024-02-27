@@ -8,7 +8,7 @@
   "permissions": {
     "publish": {
       "title": "publish {{instance}}",
-      "description": "{{instance}} will not be visiable for everyone until you publish it"
+      "description": "{{instance}} will not be visible for everyone until you publish it"
     }
   },
   "playForm": {
