@@ -12,11 +12,27 @@ export async function GET(request: NextRequest) {
           executors: {
             include: {
               executor: {
-                select: { id: true, name: true },
+                select: {
+                  id: true,
+                  name: true,
+                  nickname: true,
+                  imgUrl: true,
+                },
               },
             },
           },
-          actors: true,
+          actors: {
+            include: {
+              actor: {
+                select: {
+                  id: true,
+                  name: true,
+                  nickname: true,
+                  imgUrl: true,
+                },
+              },
+            },
+          },
           awards: true,
           festivals: {
             include: {
@@ -161,7 +177,14 @@ export async function POST(request: NextRequest) {
       include: {
         actors: {
           include: {
-            actor: true,
+            actor: {
+              select: {
+                id: true,
+                name: true,
+                nickname: true,
+                imgUrl: true,
+              },
+            },
           },
         },
         executors: {
@@ -170,6 +193,8 @@ export async function POST(request: NextRequest) {
               select: {
                 id: true,
                 name: true,
+                nickname: true,
+                imgUrl: true,
               },
             },
           },

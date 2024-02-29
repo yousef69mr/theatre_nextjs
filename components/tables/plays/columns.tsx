@@ -116,7 +116,12 @@ export const PlayColumns: PlayColumnDef<PlayType>[] = [
       const { t } = useTranslation();
       const actors = row.original.actors;
       const executors = row.original.executors;
-      const crew = actors.length + executors.length;
+      // console.log(actors, executors);
+      const numOfActors = actors.length || 0;
+      const numOfExecutors = executors.length || 0;
+
+      const crew =
+        numOfActors + numOfExecutors > 0 ? numOfActors + numOfExecutors : 1;
       return (
         <div className="flex items-center justify-center">
           <TooltipProvider>
@@ -132,15 +137,13 @@ export const PlayColumns: PlayColumnDef<PlayType>[] = [
                     </span>
 
                     <Progress
-                      value={(actors.length * 100) / crew || 0}
+                      value={(numOfActors * 100) / crew || 0}
                       max={crew}
                       className="min-w-[80px] mx-1 cursor-pointer"
-                      title={`${((actors.length * 100) / crew || 0).toFixed(
-                        2
-                      )}%`}
+                      title={`${((numOfActors * 100) / crew || 0).toFixed(2)}%`}
                     />
                     <span className="w-16 text-center font-bold rtl:mr-1 ltr:ml-1">
-                      {actors.length}
+                      {numOfActors}
                     </span>
                   </div>
                   <div className="flex w-full items-center">
@@ -148,15 +151,15 @@ export const PlayColumns: PlayColumnDef<PlayType>[] = [
                       {t("executor.plural", { ns: "constants" })}
                     </span>
                     <Progress
-                      value={(executors.length * 100) / crew || 0}
+                      value={(numOfExecutors * 100) / crew || 0}
                       max={crew}
                       className="min-w-[80px] mx-1 cursor-pointer"
-                      title={`${((executors.length * 100) / crew || 0).toFixed(
+                      title={`${((numOfExecutors * 100) / crew || 0).toFixed(
                         2
                       )}%`}
                     />
                     <span className="w-16 text-center font-bold rtl:mr-1 ltr:ml-1">
-                      {executors.length}
+                      {numOfExecutors}
                     </span>
                   </div>
                 </div>

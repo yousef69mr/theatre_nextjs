@@ -219,13 +219,26 @@ export async function PATCH(request: NextRequest, props: PlayProps) {
             executor: {
               select: {
                 id: true,
+                name: true,
+                nickname: true,
                 imgUrl: true,
               },
             },
           },
         },
         // awards: true,
-        // actors: true,
+        actors: {
+          include: {
+            actor: {
+              select: {
+                id: true,
+                name: true,
+                nickname: true,
+                imgUrl: true,
+              },
+            },
+          },
+        },
         festivals: {
           include: {
             festival: {
