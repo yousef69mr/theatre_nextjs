@@ -12,6 +12,7 @@ import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
 import i18nConfig, { Locale } from "@/next-i18next.config";
 import { ActorType, ExecutorType, FestivalType, PlayType } from "@/types";
 import { ExecutorRole } from "@prisma/client";
+import { Metadata, ResolvingMetadata } from "next";
 import { FC } from "react";
 
 // export async function generateStaticParams() {
@@ -29,11 +30,36 @@ import { FC } from "react";
 //   });
 // }
 
-const i18nextNamspaces = [...globalNamespaces, ...adminNamespaces];
-
 interface AdminSinglePlayPageProps {
   params: { locale: Locale; playId: string };
 }
+
+export async function generateMetadata({
+  params,
+}: AdminSinglePlayPageProps): // parent: ResolvingMetadata
+Promise<Metadata> {
+  // fetch data
+  const id = params.playId;
+
+  const play: PlayType | null =
+    id !== "new" ? await getPlayByIdRequest(id) : null;
+
+  return {
+    title: play ? `${play?.name} | play` : "add play",
+    description: play?.name,
+    icons: {
+      icon: play?.posterImgUrl || "",
+      apple: [
+        {
+          url: play?.posterImgUrl || "",
+        },
+      ],
+    },
+  };
+}
+
+const i18nextNamspaces = [...globalNamespaces, ...adminNamespaces];
+
 const AdminSinglePlayPage: FC<AdminSinglePlayPageProps> = async (props) => {
   const {
     params: { locale, playId },
@@ -45,10 +71,11 @@ const AdminSinglePlayPage: FC<AdminSinglePlayPageProps> = async (props) => {
   const actors: ActorType[] = await getAllActorsRequest();
   // console.log(executors);
   // console.log(playId);
-  const play: PlayType | null = await getPlayByIdRequest(playId);
+  const play: PlayType | null =
+    playId !== "new" ? await getPlayByIdRequest(playId) : null;
   // console.log(play)
   if (!play && playId !== "new") {
-     throw new Error("Not found");
+    // throw new Error("Not found");
   }
   const formattedPlay = play
     ? {

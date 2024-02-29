@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
           },
           actors: true,
           awards: true,
-          festivals:{
+          festivals: {
             include: {
               festival: {
                 select: {
@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
                 },
               },
             },
-          }
+          },
         },
       })
     ).map((play) => ({

@@ -3,17 +3,23 @@ import TranslationsProvider from "@/components/providers/translation-provider";
 import { getAllActorsRequest } from "@/lib/api-calls/models/actor";
 
 import initTranslations from "@/lib/i18n";
+import type { Metadata } from "next";
 import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
 import { Locale } from "@/next-i18next.config";
 import { ActorType } from "@/types";
 import { FC } from "react";
-interface AdminPlaysPage {
+interface AdminPlaysPageProps {
   params: { locale: Locale };
 }
 
+export const metadata: Metadata = {
+  title: "Actors | admin",
+  description: "all actors",
+};
+
 const i18nextNamspaces = [...globalNamespaces, ...adminNamespaces];
 
-const AdminActorsPage: FC<AdminPlaysPage> = async (props) => {
+const AdminActorsPage: FC<AdminPlaysPageProps> = async (props) => {
   const {
     params: { locale },
   } = props;

@@ -1,15 +1,21 @@
+import { FC } from "react";
+import type { Metadata } from "next";
 import PlayListClient from "@/components/clients/play/play-client";
-import PlayForm from "@/components/forms/models/play-form";
 import TranslationsProvider from "@/components/providers/translation-provider";
 import { getAllPlaysRequest } from "@/lib/api-calls/models/play";
 import initTranslations from "@/lib/i18n";
 import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
 import { Locale } from "@/next-i18next.config";
 import { PlayType } from "@/types";
-import { FC } from "react";
+
 interface AdminPlaysPage {
   params: { locale: Locale };
 }
+
+export const metadata: Metadata = {
+  title: "Plays | admin",
+  description: "all theatre plays",
+};
 
 const i18nextNamspaces = [...globalNamespaces, ...adminNamespaces];
 
@@ -18,7 +24,7 @@ const AdminPlaysPage: FC<AdminPlaysPage> = async (props) => {
     params: { locale },
   } = props;
   const { resources } = await initTranslations(locale, i18nextNamspaces);
-  const plays = await getAllPlaysRequest();
+  const plays: PlayType[] = await getAllPlaysRequest();
 
   // console.log(plays);
   return (

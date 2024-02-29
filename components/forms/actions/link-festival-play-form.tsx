@@ -54,6 +54,7 @@ import {
   createFestivalPlayRequest,
   updateFestivalPlayRequest,
 } from "@/lib/api-calls/actions/festival-play";
+import { Input } from "@/components/ui/input";
 
 interface LinkActorPlayFormProps extends HtmlHTMLAttributes<HTMLElement> {
   initialData: PlayFestivalType | null;
@@ -153,7 +154,7 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
             // addActor(data);
             updatePlayFestivals(data);
             updateFestivalPlays(data);
-            console.log(localPlays);
+            // console.log(localPlays);
             router.refresh();
 
             if (mode === "page") {
@@ -163,7 +164,10 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
               form.reset();
             }
           })
-          .catch((error) => toast.error("something went wrong"))
+          .catch((error) => {
+            toast.error("something went wrong");
+            console.error(error);
+          })
           .finally(() => setIsLoading(false));
       }
     });
@@ -392,6 +396,34 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
             )}
           />
         )}
+        <FormField
+          control={form.control}
+          name="showTimes"
+          render={({ field }) => (
+            <FormItem className="flex-1">
+              <FormLabel>
+                {t("forms.labels.endDate", {
+                  ns: "constants",
+                })}
+              </FormLabel>
+              <FormControl>
+                <Input
+                  type="datetime-local"
+                  disabled={isDisabled}
+                  placeholder={t("forms.placeholder.endDate", {
+                    ns: "constants",
+                  })}
+                  onChange={(event) => {
+                    form.setValue("showTimes", [event.target.value]);
+                  }}
+                  value={field.value[0] || " "}
+                  // {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <Separator />
         <div className="flex w-full justify-end items-center">

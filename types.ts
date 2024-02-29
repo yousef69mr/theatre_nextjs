@@ -1,4 +1,4 @@
-import { ExecutorRole } from "@prisma/client";
+import { ExecutorRole, UserRole } from "@prisma/client";
 import { Locale } from "./next-i18next.config";
 import { ReactElement } from "react";
 
@@ -77,9 +77,16 @@ export type FestivalType = {
 
 export type PlayFestivalType = {
   id: string;
-  showTimes: Date[];
+  showTimes: string[];
   play: PlayType;
   festival: FestivalType;
+};
+
+export type CastMemberType = {
+  id: string;
+  startDate: Date;
+  endDate: Date;
+  role: UserRole;
 };
 
 export type ActorType = {
@@ -87,6 +94,7 @@ export type ActorType = {
   name: string;
   nickname?: string;
   imgUrl: string;
+  castMembers: CastMemberType[];
   userId?: string;
   numOfViews: string;
   plays: ActorInPlayType[];

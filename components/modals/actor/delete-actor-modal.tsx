@@ -60,7 +60,7 @@ export const DeleteActorModal = () => {
 
   return (
     <Dialog open={isModalOpen} onOpenChange={onClose}>
-      <DialogContent className=" p-0 overflow-hidden">
+      <DialogContent className="p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
             {t("actions.delete", {

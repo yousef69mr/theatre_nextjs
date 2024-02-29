@@ -70,9 +70,12 @@
       "actorName": "Actor Name",
       "executorName": "Executor Name",
       "festivalName": "Festival Name",
+      "nickname": "Nickname",
       "awards": "Awards",
       "profileImg": "Profile Image",
-      "image": "image",
+      "image": "Image",
+      "startDate":"Start Date",
+      "endDate":"End Date",
       "actions": "Actions"
     },
     "placeholder": {
@@ -84,9 +87,12 @@
       "actorName": "Actor Name",
       "executorName": "Executor Name",
       "festivalName": "Festival Name",
+      "nickname": "Nickname",
       "awards": "Awards",
       "profileImg": "Profile Image",
-      "image": "image",
+      "image": "Image",
+      "startDate":"Start Date",
+      "endDate":"End Date",
       "actions": "Actions"
     }
   }

@@ -115,12 +115,17 @@ model CastMember {
 
   role UserRole @default(ACTOR)
 
-  // actorId String? @unique @db.ObjectId
-  // actor   Actor?  @relation(fields: [actorId], references: [id])
-  actor Actor?
+  actorId String? @db.ObjectId
+  actor   Actor?  @relation(fields: [actorId], references: [id])
+  // actor Actor?
+
+  startDate DateTime
+  endDate   DateTime?
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
+
+  @@index([actorId])
 }
 
 model Festival {
@@ -130,10 +135,10 @@ model Festival {
   imgUrl      String?
   description String?
 
-  plays PlayFestival[]
-  Award           Award[]
-  actors          ActorInPlay[]
-  executors       ExecutorInPlay[]
+  plays     PlayFestival[]
+  Award     Award[]
+  actors    ActorInPlay[]
+  executors ExecutorInPlay[]
 
   isPublished Boolean @default(true)
 
@@ -168,9 +173,9 @@ model Play {
 
   // showtimes               PlayShowtime[]
   festivals PlayFestival[]
-  actors                  ActorInPlay[]
-  awards                  Award[]
-  executors               ExecutorInPlay[]
+  actors    ActorInPlay[]
+  awards    Award[]
+  executors ExecutorInPlay[]
 
   isPublished Boolean @default(true)
 
@@ -213,8 +218,7 @@ model Actor {
   executorId String? @db.ObjectId
   // executor   Executor? @relation(fields: [executorId], references: [id])
 
-  castMemberId String?     @unique @db.ObjectId
-  castMember   CastMember? @relation(fields: [castMemberId], references: [id])
+  castMembers CastMember[]
   // castMember CastMember?
   // playId String? @db.ObjectId
   // Play   Play?   @relation(fields: [playId], references: [id])

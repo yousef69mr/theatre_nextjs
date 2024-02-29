@@ -12,8 +12,11 @@ import {
 } from "@/components/ui/tooltip";
 import { PlayFestivalType } from "@/types";
 import { useModal } from "@/hooks/stores/use-modal-store";
-import { Drama, Edit, PartyPopper, Theater, Trash } from "lucide-react";
+import { Edit, PartyPopper, Theater, Trash } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import { format } from "date-fns";
+
 interface FestivalPlayCardProps {
   festivalPlay: PlayFestivalType;
   mode?: "search" | "default";
@@ -34,7 +37,7 @@ const FestivalPlayCard: FC<FestivalPlayCardProps> = (props) => {
   const handleDelete = () => {
     onOpen("deleteFestivalPlayLink", { festivalPlay: festivalPlay });
   };
-  
+
   if (mode === "search") {
     return (
       <div className="flex justify-between items-center w-full ">
@@ -179,6 +182,18 @@ const FestivalPlayCard: FC<FestivalPlayCardProps> = (props) => {
               {festivalPlay.festival.name}
             </span>
           </div>
+        )}
+        {festivalPlay.showTimes.length > 0 && (
+          <>
+            {/* <Separator className="bg-red-100 dark:bg-red-700/15 my-1" /> */}
+            <div className="flex gap-2 mt-2 items-center justify-start">
+              {festivalPlay.showTimes.map((showtime, index) => (
+                <Badge key={index} variant={"outline"}>
+                  {format(showtime, "MMMM do, yyyy")}
+                </Badge>
+              ))}
+            </div>
+          </>
         )}
       </div>
     </div>

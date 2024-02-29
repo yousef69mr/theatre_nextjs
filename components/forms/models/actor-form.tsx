@@ -37,15 +37,15 @@ import {
 } from "@/lib/api-calls/models/actor";
 import { useActorStore } from "@/hooks/stores/use-actor-store";
 
-interface ActorFormProps extends HtmlHTMLAttributes<HTMLElement> {
+interface formsProps extends HtmlHTMLAttributes<HTMLElement> {
   initialData: ActorType | null;
   mode?: "modal" | "page";
 }
 
-type ActorFormValues = Zod.infer<typeof actorSchema>;
+type formsValues = Zod.infer<typeof actorSchema>;
 // const i18nextNamspaces = [...globalNamespaces, ...adminNamespaces];
 
-const ActorForm: FC<ActorFormProps> = (props) => {
+const forms: FC<formsProps> = (props) => {
   const { initialData, className, mode = "page" } = props;
   const { onClose } = useModal();
   const addActor = useActorStore((state) => state.addActor);
@@ -67,14 +67,14 @@ const ActorForm: FC<ActorFormProps> = (props) => {
 
   const locale = params.locale;
 
-  const form = useForm<ActorFormValues>({
+  const form = useForm<formsValues>({
     resolver: zodResolver(actorSchema),
     defaultValues: {
       ...initialData,
     },
   });
 
-  const onSubmit = async (values: ActorFormValues) => {
+  const onSubmit = async (values: formsValues) => {
     setIsLoading(true);
 
     startTransition(() => {
@@ -206,8 +206,8 @@ const ActorForm: FC<ActorFormProps> = (props) => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
-                        {t("actorForm.inputs-label.image", {
-                          ns: "admin",
+                        {t("forms.labels.image", {
+                          ns: "constants",
                         })}
                       </FormLabel>
                       <FormControl>
@@ -226,7 +226,7 @@ const ActorForm: FC<ActorFormProps> = (props) => {
               <div
                 className={cn(
                   "gap-4 flex-1",
-                  mode === "page" && "grid md:grid-cols-2 gap-6",
+                  mode === "page" && "grid md:grid-cols-2 items-center",
                   mode === "modal" && "w-full"
                 )}
               >
@@ -236,13 +236,13 @@ const ActorForm: FC<ActorFormProps> = (props) => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
-                        {t("actorForm.inputs-label.name", { ns: "admin" })}
+                        {t("forms.labels.actorName", { ns: "constants" })}
                       </FormLabel>
                       <FormControl>
                         <Input
                           disabled={isDisabled}
-                          placeholder={t("actorForm.inputs-placeholder.name", {
-                            ns: "admin",
+                          placeholder={t("forms.placeholder.actorName", {
+                            ns: "constants",
                           })}
                           {...field}
                         />
@@ -257,15 +257,15 @@ const ActorForm: FC<ActorFormProps> = (props) => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
-                        {t("actorForm.inputs-label.nickname", { ns: "admin" })}
+                        {t("forms.labels.nickname", { ns: "constants" })}
                       </FormLabel>
                       <FormControl>
                         <Input
                           disabled={isDisabled}
                           placeholder={t(
-                            "actorForm.inputs-placeholder.nickname",
+                            "forms.placeholder.nickname",
                             {
-                              ns: "admin",
+                              ns: "constants",
                             }
                           )}
                           {...field}
@@ -275,7 +275,64 @@ const ActorForm: FC<ActorFormProps> = (props) => {
                     </FormItem>
                   )}
                 />
+                <div className="flex gap-x-2 items-center md:col-span-2">
+                  <FormField
+                    control={form.control}
+                    name="startDate"
+                    render={({ field }) => (
+                      <FormItem className="flex-1">
+                        <FormLabel>
+                          {t("forms.labels.startDate", {
+                            ns: "constants",
+                          })}
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            type="date"
+                            disabled={isDisabled}
+                            placeholder={t(
+                              "forms.placeholder.startDate",
+                              {
+                                ns: "constants",
+                              }
+                            )}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="endDate"
+                    render={({ field }) => (
+                      <FormItem className="flex-1">
+                        <FormLabel>
+                          {t("forms.labels.endDate", {
+                            ns: "constants",
+                          })}
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            type="date"
+                            disabled={isDisabled}
+                            placeholder={t(
+                              "forms.placeholder.endDate",
+                              {
+                                ns: "constants",
+                              }
+                            )}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
+        
             </div>
 
             <Separator />
@@ -298,4 +355,4 @@ const ActorForm: FC<ActorFormProps> = (props) => {
   );
 };
 
-export default ActorForm;
+export default forms;

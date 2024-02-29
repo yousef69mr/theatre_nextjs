@@ -70,9 +70,12 @@
       "actorName": "اسم الممثل",
       "executorName": "اسم المنفذ",
       "festivalName": "اسم المهرجان",
+      "nickname": "اسم الشهرة",
       "awards": "الجوائز",
       "profileImg": "صورة شخصية",
       "image": "صورة",
+      "startDate": "تاريخ البداية",
+      "endDate": "تاريخ النهاية",
       "actions": "الاجراءات"
     },
     "placeholder": {
@@ -84,9 +87,12 @@
       "actorName": "اسم الممثل",
       "executorName": "اسم المنفذ",
       "festivalName": "اسم المهرجان",
+      "nickname": "اسم الشهرة",
       "awards": "الجوائز",
       "profileImg": "صورة شخصية",
       "image": "صورة",
+      "startDate": "تاريخ البداية",
+      "endDate": "تاريخ النهاية",
       "actions": "الاجراءات"
     }
   }

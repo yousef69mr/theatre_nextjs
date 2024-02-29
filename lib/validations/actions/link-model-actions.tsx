@@ -9,5 +9,5 @@ export const actorInPlaySchema = object({
 export const festivalPlaySchema = object({
   playId: string().min(1, { message: "playId is required" }),
   festivalId: string().min(1, { message: "festivalId is required" }),
-  showTimes: array(date()),
+  showTimes: array(string()),
 });

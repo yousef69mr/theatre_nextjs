@@ -10,6 +10,7 @@ export async function GET(request: NextRequest) {
       await db.actor.findMany({
         include: {
           awards: true,
+          castMembers: true,
           plays: {
             include: {
               actor: {
@@ -62,10 +63,21 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid fields" }, { status: 400 });
   }
 
-  const { name, imgUrl, nickname } = values;
+  const { name, imgUrl, nickname, startDate, endDate } = validatedFields.data;
 
   if (!name) {
     return NextResponse.json({ error: "name is missing!" }, { status: 400 });
+  }
+
+  if (!imgUrl) {
+    return NextResponse.json({ error: "imgUrl is missing!" }, { status: 400 });
+  }
+
+  if (!startDate) {
+    return NextResponse.json(
+      { error: "startDate is missing!" },
+      { status: 400 }
+    );
   }
 
   // console.log("herer");
@@ -75,15 +87,19 @@ export async function POST(request: NextRequest) {
         name,
         imgUrl,
         nickname,
-        castMember: {
-          create: {
-            role: UserRole.ACTOR,
-          },
+        castMembers: {
+          create: [
+            {
+              // role: UserRole.ACTOR,
+              startDate: new Date(startDate),
+              endDate: endDate ? new Date(endDate) : null,
+            },
+          ],
         },
       },
       include: {
         awards: true,
-        castMember: true,
+        castMembers: true,
         plays: {
           include: {
             actor: {

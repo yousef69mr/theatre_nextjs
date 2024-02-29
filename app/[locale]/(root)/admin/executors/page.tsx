@@ -7,10 +7,15 @@ import initTranslations from "@/lib/i18n";
 import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
 import { Locale } from "@/next-i18next.config";
 import { ExecutorType } from "@/types";
+import type { Metadata } from "next";
 import { FC } from "react";
 interface AdminPlaysPage {
   params: { locale: Locale };
 }
+export const metadata: Metadata = {
+  title: "Executors | admin",
+  description: "all executors",
+};
 
 const i18nextNamspaces = [...globalNamespaces, ...adminNamespaces];
 

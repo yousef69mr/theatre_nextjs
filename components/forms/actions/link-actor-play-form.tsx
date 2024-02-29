@@ -326,7 +326,7 @@ const LinkActorPlayForm: FC<LinkActorPlayFormProps> = (props) => {
             render={({ field }) => (
               <FormItem className="flex flex-col justify-end">
                 <FormLabel>
-                  {t("forms.playName", { ns: "constants" })}
+                  {t("forms.labels.playName", { ns: "constants" })}
                 </FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>

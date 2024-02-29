@@ -14,6 +14,7 @@ import initTranslations from "@/lib/i18n";
 import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
 import i18nConfig, { Locale } from "@/next-i18next.config";
 import { ActorType, FestivalType, PlayType } from "@/types";
+import { Metadata } from "next";
 
 // export async function generateStaticParams() {
 //   const actors: ActorType[] = await getAllActorsRequest();
@@ -34,6 +35,31 @@ interface AdminSingleActorPageProps {
   params: { locale: Locale; actorId: string };
 }
 
+export async function generateMetadata({
+  params,
+}: AdminSingleActorPageProps): // parent: ResolvingMetadata
+Promise<Metadata> {
+  // fetch data
+
+  const id = params.actorId;
+
+  const actor: ActorType | null =
+    id !== "new" ? await getActorByIdRequest(id) : null;
+
+  return {
+    title: actor ? `${actor?.name} | actor` : "add actor",
+    description: actor?.name,
+    icons: {
+      icon: actor?.imgUrl || "",
+      apple: [
+        {
+          url: actor?.imgUrl || "",
+        },
+      ],
+    },
+  };
+}
+
 const i18nextNamspaces = [...globalNamespaces, ...adminNamespaces];
 
 const AdminSingleActorPage: FC<AdminSingleActorPageProps> = async (props) => {
@@ -47,10 +73,11 @@ const AdminSingleActorPage: FC<AdminSingleActorPageProps> = async (props) => {
   const plays: PlayType[] = await getAllPlaysRequest();
   // const executors: ExecutorType[] = await getAllExecutorsRequest();
 
-  const actor: ActorType | null = await getActorByIdRequest(actorId);
+  const actor: ActorType | null =
+    actorId !== "new" ? await getActorByIdRequest(actorId) : null;
 
   if (!actor && actorId !== "new") {
-    // throw new Error("Not found");
+    throw new Error("Not found");
   }
   return (
     <main className="w-full main-section general-padding">

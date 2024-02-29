@@ -193,12 +193,14 @@ export async function PATCH(request: NextRequest, props: FestivalPlayProps) {
     //   },
     // });
 
+    const formatedShowtimes = showTimes.map((showTime) => new Date(showTime));
+
     const festivalPlay = await db.playFestival.update({
       where: {
         id: festivalPlayId,
       },
       data: {
-        showTimes,
+        showTimes: formatedShowtimes,
         playId,
         festivalId,
       },

@@ -64,11 +64,12 @@ export async function POST(request: NextRequest) {
   }
 
   // console.log("herer");
+  const formatedShowtimes = showTimes.map((showTime) => new Date(showTime));
   try {
     const festivalPlay = await db.playFestival.create({
       data: {
         playId,
-        showTimes,
+        showTimes: formatedShowtimes,
         festivalId,
       },
       include: {
