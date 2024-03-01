@@ -27,7 +27,9 @@ import { useActorStore } from "@/hooks/stores/use-actor-store";
 import ActorInPlayControl from "../../controls/actor-in-play-control";
 import { useFestivalStore } from "@/hooks/stores/use-festivals-store";
 import { usePlayStore } from "@/hooks/stores/use-play-store";
-import { useExecutorStore } from "@/hooks/stores/use-executor-store";
+// import { useExecutorStore } from "@/hooks/stores/use-executor-store";
+import CastMemberControl from "@/components/controls/cast-member-control";
+import { UserRole } from "@prisma/client";
 
 interface ActorClientProps {
   actor: ActorType | null;
@@ -50,7 +52,7 @@ const ActorClient: FC<ActorClientProps> = (props) => {
 
   const headingTitle = actor
     ? `${t("actor.single", { ns: "constants" })} ${actor.name} ${
-        actor.nickname && `(${actor.nickname})`
+        actor.nickname ? `(${actor.nickname})` : ""
       }`
     : `${t("actions.add", {
         instance: t("actor.single", { ns: "constants" }),
@@ -61,35 +63,44 @@ const ActorClient: FC<ActorClientProps> = (props) => {
   };
   const handlePublished = (isPublished: boolean) => {
     // onOpen("deleteActor", { actor: actor });
-    updateActorRequest(
-      {
-        name: actor?.name as string,
-        imgUrl: actor?.imgUrl,
-        isPublished,
-      },
-      actor?.id as string
-    )
-      .then((response) => response.json())
-      .then(async (data) => {
-        // console.log("api success");
-        data.isPublished
-          ? toast.success(
-              t("messages.published", {
-                ns: "constants",
-                instance: t("actor.single", { ns: "constants" }),
-              })
-            )
-          : toast.success(
-              t("messages.unpublished", {
-                ns: "constants",
-                instance: t("actor.single", { ns: "constants" }),
-              })
-            );
+    if (actor) {
+      const isCastMember = Boolean(
+        actor.castMembers.find(
+          (castMember) => castMember.role === UserRole.ACTOR
+        )
+      );
+      updateActorRequest(
+        {
+          name: actor.name,
+          imgUrl: actor.imgUrl,
+          startDate: "",
+          isCastMember,
+          isPublished,
+        },
+        actor.id
+      )
+        .then((response) => response.json())
+        .then(async (data) => {
+          // console.log("api success");
+          data.isPublished
+            ? toast.success(
+                t("messages.published", {
+                  ns: "constants",
+                  instance: t("actor.single", { ns: "constants" }),
+                })
+              )
+            : toast.success(
+                t("messages.unpublished", {
+                  ns: "constants",
+                  instance: t("actor.single", { ns: "constants" }),
+                })
+              );
 
-        updateActor(data);
-        router.refresh();
-      })
-      .catch((error) => toast.error("something went wrong"));
+          updateActor(data);
+          router.refresh();
+        })
+        .catch((error) => toast.error("something went wrong"));
+    }
   };
 
   useEffect(() => {
@@ -100,6 +111,9 @@ const ActorClient: FC<ActorClientProps> = (props) => {
     setPlays(plays);
   }, [plays]);
 
+  useEffect(() => {
+    actor && updateActor(actor);
+  }, [actor]);
   // useEffect(() => {
   //   setExecutors(executors);
   // }, [executors]);
@@ -140,6 +154,8 @@ const ActorClient: FC<ActorClientProps> = (props) => {
         <>
           <Separator className="bg-red-100 dark:bg-red-700/15" />
           <ActorInPlayControl actorInPlayList={actor.plays} type="play" />
+          <Separator className="bg-red-100 dark:bg-red-700/15" />
+          <CastMemberControl castMembers={actor.castMembers} />
           <Separator className="bg-red-100 dark:bg-red-700/15" />
           <PermissionBox
             handleDelete={handleDelete}

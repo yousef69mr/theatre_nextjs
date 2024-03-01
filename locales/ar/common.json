@@ -50,6 +50,13 @@
     "previous": "السابق",
     "next": "التالي"
   },
+  "UserRole": {
+    "USER": "مستخدم",
+    "ADMIN": "أدمن",
+    "ACTOR": "ممثل",
+    "CAST_HEAD": "رئيس كاست",
+    "CAST_VICE_PRESIDENT": "نائب رئيس كاست"
+  },
   "actions": {
     "add": "إضافة {{instance}}",
     "create": "إنشاء {{instance}}",

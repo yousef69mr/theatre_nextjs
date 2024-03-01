@@ -42,17 +42,25 @@ Promise<Metadata> {
   const executor: ExecutorType | null =
     id !== "new" ? await getExecutorByIdRequest(id) : null;
 
+  if (executor) {
+    return {
+      title: `${executor.name} ${
+        executor.nickname ? `(${executor.nickname})` : ""
+      } | executor`,
+      description: executor.name,
+      icons: {
+        icon: executor.imgUrl || "",
+        apple: [
+          {
+            url: executor.imgUrl || "",
+          },
+        ],
+      },
+    };
+  }
   return {
-    title: executor ? `${executor?.name} | executor` : "add executor",
-    description: executor?.name,
-    icons: {
-      icon: executor?.imgUrl || "",
-      apple: [
-        {
-          url: executor?.imgUrl || "",
-        },
-      ],
-    },
+    title: "add executor",
+    description: "Add a new executor to the database.",
   };
 }
 
@@ -71,9 +79,6 @@ const AdminSingleExecutorPage: FC<AdminSingleExecutorPageProps> = async (
   const executor: ExecutorType | null =
     executorId !== "new" ? await getExecutorByIdRequest(executorId) : null;
 
-  if (!executor && executorId !== "new") {
-    throw new Error("Not found");
-  }
   return (
     <main className="w-full main-section general-padding">
       <TranslationsProvider

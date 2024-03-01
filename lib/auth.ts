@@ -19,6 +19,12 @@ export const adminRoles = [
   UserRole.CAST_VICE_PRESIDENT,
 ];
 
+export const actorRoles = [
+  UserRole.CAST_HEAD,
+  UserRole.ACTOR,
+  UserRole.CAST_VICE_PRESIDENT,
+];
+
 export const isAdmin = (loggedUserRole: UserRole) => {
   let isAdmin = false;
   adminRoles.map((role) => {

@@ -32,6 +32,7 @@
   "option": { "plural": "إختيارات", "single": "إختيار" },
   "file": { "plural": "ملفات", "single": "ملف" },
   "id": { "plural": "أكواد", "single": "كود" },
+  "role": { "plural": "مناصب", "single": "منصب" },
   "nickname": { "plural": "أسماء شهرة", "single": "اسم شهرة" },
   "relation": { "plural": "علاقات", "single": "علاقة" },
   "category": { "plural": "تصنيفات", "single": "تصنيف" },
@@ -39,6 +40,7 @@
   "menu": { "plural": "قوائم", "single": "قائمة" },
   "notFound": "لم يتم العثور على {{instance}}",
   "messages": {
+    "added": "تم إضافة {{instance}}",
     "updated": "تم تعديل {{instance}}",
     "copied": "تم نسخ {{instance}}",
     "deleted": "تم حذف {{instance}}",
@@ -53,6 +55,7 @@
     "playName": "اسم العرض",
     "director": "المخرج",
     "crew": "طاقم العمل",
+    "role": "منصب",
     "poster": "البوستر",
     "actorName": "اسم الممثل",
     "executorName": "اسم المنفذ",
@@ -66,6 +69,7 @@
       "playName": "اسم العرض",
       "director": "المخرج",
       "crew": "طاقم العمل",
+      "role": "منصب",
       "poster": "البوستر",
       "actorName": "اسم الممثل",
       "executorName": "اسم المنفذ",
@@ -74,6 +78,7 @@
       "awards": "الجوائز",
       "profileImg": "صورة شخصية",
       "image": "صورة",
+      "isCastMember": "هل هو/هى عضو فى الكاست؟",
       "startDate": "تاريخ البداية",
       "endDate": "تاريخ النهاية",
       "actions": "الاجراءات"
@@ -91,6 +96,7 @@
       "awards": "الجوائز",
       "profileImg": "صورة شخصية",
       "image": "صورة",
+      "isCastMember": "إذا تم تحديده ، سيتم التعامل مع الممثل الخاص بك كعضو في فريق التمثيل",
       "startDate": "تاريخ البداية",
       "endDate": "تاريخ النهاية",
       "actions": "الاجراءات"

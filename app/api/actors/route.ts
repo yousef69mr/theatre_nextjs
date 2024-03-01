@@ -1,6 +1,7 @@
 import { currentRole, currentUser, isAdmin } from "@/lib/auth";
 import { db } from "@/lib/database";
 import { actorSchema } from "@/lib/validations/models/actor";
+import { CastMemberType } from "@/types";
 import { UserRole } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -17,6 +18,7 @@ export async function GET(request: NextRequest) {
                 select: {
                   id: true,
                   name: true,
+                  nickname: true,
                   imgUrl: true,
                 },
               },
@@ -63,7 +65,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid fields" }, { status: 400 });
   }
 
-  const { name, imgUrl, nickname, startDate, endDate } = validatedFields.data;
+  const { name, imgUrl, nickname, startDate, endDate, isCastMember } =
+    validatedFields.data;
 
   if (!name) {
     return NextResponse.json({ error: "name is missing!" }, { status: 400 });
@@ -87,15 +90,6 @@ export async function POST(request: NextRequest) {
         name,
         imgUrl,
         nickname,
-        castMembers: {
-          create: [
-            {
-              // role: UserRole.ACTOR,
-              startDate: new Date(startDate),
-              endDate: endDate ? new Date(endDate) : null,
-            },
-          ],
-        },
       },
       include: {
         awards: true,
@@ -106,6 +100,7 @@ export async function POST(request: NextRequest) {
               select: {
                 id: true,
                 name: true,
+                nickname: true,
                 imgUrl: true,
               },
             },
@@ -138,9 +133,35 @@ export async function POST(request: NextRequest) {
         },
       },
     });
+    let castMember;
+
+    if (isCastMember) {
+      castMember = await db.castMember.create({
+        data: {
+          // role: UserRole.ACTOR,
+          actorId: actor.id,
+          startDate: new Date(startDate),
+          endDate: endDate ? new Date(endDate) : null,
+        },
+        include: {
+          actor: {
+            select: {
+              id: true,
+              name: true,
+              nickname: true,
+              imgUrl: true,
+            },
+          },
+        },
+      });
+    }
 
     return NextResponse.json(
-      { ...actor, numOfViews: actor.numOfViews.toString() },
+      {
+        ...actor,
+        numOfViews: actor.numOfViews.toString(),
+        castMembers: castMember ? [castMember] : [],
+      },
       { status: 201 }
     );
   } catch (error) {

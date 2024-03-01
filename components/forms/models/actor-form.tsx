@@ -4,6 +4,7 @@ import { FC, HtmlHTMLAttributes, useState, useTransition } from "react";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -36,16 +37,17 @@ import {
   updateActorRequest,
 } from "@/lib/api-calls/models/actor";
 import { useActorStore } from "@/hooks/stores/use-actor-store";
+import { Checkbox } from "@/components/ui/checkbox";
 
-interface formsProps extends HtmlHTMLAttributes<HTMLElement> {
+interface ActorFormProps extends HtmlHTMLAttributes<HTMLElement> {
   initialData: ActorType | null;
   mode?: "modal" | "page";
 }
 
-type formsValues = Zod.infer<typeof actorSchema>;
+type ActorFormValues = Zod.infer<typeof actorSchema>;
 // const i18nextNamspaces = [...globalNamespaces, ...adminNamespaces];
 
-const forms: FC<formsProps> = (props) => {
+const ActorForm: FC<ActorFormProps> = (props) => {
   const { initialData, className, mode = "page" } = props;
   const { onClose } = useModal();
   const addActor = useActorStore((state) => state.addActor);
@@ -67,14 +69,16 @@ const forms: FC<formsProps> = (props) => {
 
   const locale = params.locale;
 
-  const form = useForm<formsValues>({
+  const form = useForm<ActorFormValues>({
     resolver: zodResolver(actorSchema),
     defaultValues: {
       ...initialData,
+      startDate: new Date().toDateString(),
+      nickname: initialData?.nickname || undefined,
     },
   });
 
-  const onSubmit = async (values: formsValues) => {
+  const onSubmit = async (values: ActorFormValues) => {
     setIsLoading(true);
 
     startTransition(() => {
@@ -182,7 +186,7 @@ const forms: FC<formsProps> = (props) => {
         >
           {initialData
             ? `${initialData.name} ${
-                initialData.nickname && `(${initialData.nickname})`
+                initialData.nickname ? `(${initialData.nickname})` : ""
               }`
             : t("actorForm.inputs-default.name")}
         </p>
@@ -262,12 +266,9 @@ const forms: FC<formsProps> = (props) => {
                       <FormControl>
                         <Input
                           disabled={isDisabled}
-                          placeholder={t(
-                            "forms.placeholder.nickname",
-                            {
-                              ns: "constants",
-                            }
-                          )}
+                          placeholder={t("forms.placeholder.nickname", {
+                            ns: "constants",
+                          })}
                           {...field}
                         />
                       </FormControl>
@@ -275,64 +276,89 @@ const forms: FC<formsProps> = (props) => {
                     </FormItem>
                   )}
                 />
-                <div className="flex gap-x-2 items-center md:col-span-2">
-                  <FormField
-                    control={form.control}
-                    name="startDate"
-                    render={({ field }) => (
-                      <FormItem className="flex-1">
-                        <FormLabel>
-                          {t("forms.labels.startDate", {
-                            ns: "constants",
-                          })}
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            type="date"
-                            disabled={isDisabled}
-                            placeholder={t(
-                              "forms.placeholder.startDate",
-                              {
+                {!initialData && (
+                  <>
+                    <div className="flex gap-x-2 w-full flex-wrap items-center md:col-span-2">
+                      <FormField
+                        control={form.control}
+                        name="startDate"
+                        render={({ field }) => (
+                          <FormItem className="flex-1">
+                            <FormLabel>
+                              {t("forms.labels.startDate", {
                                 ns: "constants",
-                              }
-                            )}
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="endDate"
-                    render={({ field }) => (
-                      <FormItem className="flex-1">
-                        <FormLabel>
-                          {t("forms.labels.endDate", {
-                            ns: "constants",
-                          })}
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            type="date"
-                            disabled={isDisabled}
-                            placeholder={t(
-                              "forms.placeholder.endDate",
-                              {
+                              })}
+                            </FormLabel>
+                            <FormControl>
+                              <Input
+                                type="date"
+                                disabled={isDisabled}
+                                className="fill-input"
+                                placeholder={t("forms.placeholder.startDate", {
+                                  ns: "constants",
+                                })}
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="endDate"
+                        render={({ field }) => (
+                          <FormItem className="flex-1">
+                            <FormLabel>
+                              {t("forms.labels.endDate", {
                                 ns: "constants",
-                              }
-                            )}
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
+                              })}
+                            </FormLabel>
+                            <FormControl>
+                              <Input
+                                type="date"
+                                disabled={isDisabled}
+                                placeholder={t("forms.placeholder.endDate", {
+                                  ns: "constants",
+                                })}
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <FormField
+                      control={form.control}
+                      name="isCastMember"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-row items-start gap-x-2 space-x-3 space-y-0 rounded-md border p-4 md:col-span-2">
+                          <FormControl>
+                            <Checkbox
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                          </FormControl>
+                          <div className="space-y-1 leading-none ">
+                            <FormLabel>
+                              {t("forms.labels.isCastMember", {
+                                ns: "constants",
+                              })}
+                            </FormLabel>
+                            <FormDescription>
+                              {t("forms.placeholder.isCastMember", {
+                                ns: "constants",
+                              })}
+                            </FormDescription>
+                          </div>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </>
+                )}
               </div>
-        
             </div>
 
             <Separator />
@@ -355,4 +381,4 @@ const forms: FC<formsProps> = (props) => {
   );
 };
 
-export default forms;
+export default ActorForm;

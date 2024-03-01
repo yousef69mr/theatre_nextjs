@@ -61,6 +61,18 @@ const FestivalPlayCard: FC<FestivalPlayCardProps> = (props) => {
               </span>
             </div>
           )}
+          {festivalPlay.showTimes.length > 0 && (
+            <>
+              {/* <Separator className="bg-red-100 dark:bg-red-700/15 my-1" /> */}
+              <div className="flex gap-2 mt-2 items-center justify-start">
+                {festivalPlay.showTimes.map((showtime, index) => (
+                  <Badge key={index} variant={"outline"}>
+                    {format(showtime, "MMMM do, yyyy")}
+                  </Badge>
+                ))}
+              </div>
+            </>
+          )}
         </div>
         <div className="flex items-center justify-center">
           <TooltipProvider>
@@ -115,7 +127,7 @@ const FestivalPlayCard: FC<FestivalPlayCardProps> = (props) => {
 
   return (
     <div className="border p-5 space-y-2 w-full md:max-w-72">
-      <div className="flex items-center justify-start">
+      <div className="flex items-center justify-end">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>

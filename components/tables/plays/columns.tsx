@@ -90,8 +90,9 @@ export const PlayColumns: PlayColumnDef<PlayType>[] = [
         <div className="flex items-center justify-center">
           <p>
             {director?.executor?.name}{" "}
-            {director?.executor?.nickname &&
-              `(${director?.executor?.nickname})`}
+            {director?.executor?.nickname
+              ? `(${director?.executor?.nickname})`
+              : ""}
           </p>
         </div>
       );

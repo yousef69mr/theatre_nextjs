@@ -3,7 +3,7 @@ import { Locale } from "@/next-i18next.config";
 import React, { FC, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import RotateLoader from "react-spinners/RotateLoader";
+// import RotateLoader from "react-spinners/RotateLoader";
 
 import { useParams, useRouter } from "next/navigation";
 import { PlayType } from "@/types";
@@ -12,8 +12,8 @@ import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import Heading from "@/components/helpers/heading";
 import { useTranslation } from "react-i18next";
-import { DataTable } from "../../ui/data-table";
-import PlayTable from "../../tables/plays/plays-table";
+// import { DataTable } from "../../ui/data-table";
+import PlayTable from "@/components/tables/plays/plays-table";
 import {
   Tooltip,
   TooltipContent,
@@ -37,14 +37,13 @@ const PlayListClient: FC<PlayListClientProps> = (props) => {
   const locale = params.locale as Locale;
 
   const headingTitle = `${t("play.plural", { ns: "constants" })} (${
-    data.length
+    plays?.length || 0
   })`;
 
   useEffect(() => {
     setPlays(data);
   }, [data]);
 
-  
   return (
     <>
       <div className="flex items-center justify-between">

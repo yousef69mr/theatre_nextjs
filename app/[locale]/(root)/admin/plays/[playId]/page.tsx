@@ -43,18 +43,26 @@ Promise<Metadata> {
 
   const play: PlayType | null =
     id !== "new" ? await getPlayByIdRequest(id) : null;
+  // console.log(play);
+
+  if (play) {
+    return {
+      title: `${play.name} | play`,
+      description: play.name,
+      icons: {
+        icon: play.posterImgUrl,
+        apple: [
+          {
+            url: play.posterImgUrl,
+          },
+        ],
+      },
+    };
+  }
 
   return {
-    title: play ? `${play?.name} | play` : "add play",
-    description: play?.name,
-    icons: {
-      icon: play?.posterImgUrl || "",
-      apple: [
-        {
-          url: play?.posterImgUrl || "",
-        },
-      ],
-    },
+    title: "add play",
+    description: "Add a new play to the database.",
   };
 }
 
@@ -73,10 +81,8 @@ const AdminSinglePlayPage: FC<AdminSinglePlayPageProps> = async (props) => {
   // console.log(playId);
   const play: PlayType | null =
     playId !== "new" ? await getPlayByIdRequest(playId) : null;
-  // console.log(play)
-  if (!play && playId !== "new") {
-    // throw new Error("Not found");
-  }
+  // console.log(play);
+
   const formattedPlay = play
     ? {
         ...play,
@@ -85,6 +91,7 @@ const AdminSinglePlayPage: FC<AdminSinglePlayPageProps> = async (props) => {
         )?.executor,
       }
     : null;
+  // console.log(formattedPlay);
   return (
     <main className="w-full main-section general-padding">
       <TranslationsProvider

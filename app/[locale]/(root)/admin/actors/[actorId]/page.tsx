@@ -45,18 +45,25 @@ Promise<Metadata> {
 
   const actor: ActorType | null =
     id !== "new" ? await getActorByIdRequest(id) : null;
-
+  if (actor) {
+    return {
+      title: `${actor?.name}  ${
+        actor.nickname ? `(${actor.nickname})` : ""
+      } | actor`,
+      description: actor.name,
+      icons: {
+        icon: actor.imgUrl || "",
+        apple: [
+          {
+            url: actor.imgUrl || "",
+          },
+        ],
+      },
+    };
+  }
   return {
-    title: actor ? `${actor?.name} | actor` : "add actor",
-    description: actor?.name,
-    icons: {
-      icon: actor?.imgUrl || "",
-      apple: [
-        {
-          url: actor?.imgUrl || "",
-        },
-      ],
-    },
+    title: "add actor",
+    description: "Add a new actor to the database.",
   };
 }
 
@@ -76,9 +83,9 @@ const AdminSingleActorPage: FC<AdminSingleActorPageProps> = async (props) => {
   const actor: ActorType | null =
     actorId !== "new" ? await getActorByIdRequest(actorId) : null;
 
-  if (!actor && actorId !== "new") {
-    throw new Error("Not found");
-  }
+  // if (!actor && actorId !== "new") {
+  //   // throw new Error("Not found");
+  // }
   return (
     <main className="w-full main-section general-padding">
       <TranslationsProvider

@@ -27,6 +27,7 @@
   "previous": "previous",
   "play": { "plural": "plays", "single": "play" },
   "id": { "plural": "ids", "single": "id" },
+  "role": { "plural": "roles", "single": "role" },
   "nickname": { "plural": "nicknames", "single": "nickname" },
   "relation": { "plural": "relations", "single": "relation" },
   "actor": { "plural": "actors", "single": "actor" },
@@ -39,6 +40,7 @@
   "menu": { "plural": "menus", "single": "menu" },
   "notFound": "No {{instance}} found",
   "messages": {
+    "added": "{{instance}} added",
     "updated": "{{instance}} updated",
     "copied": "{{instance}} copied",
     "deleted": "{{instance}} deleted",
@@ -66,6 +68,7 @@
       "playName": "Play Name",
       "director": "Director",
       "crew": "Crew",
+      "role": "Role",
       "poster": "Poster",
       "actorName": "Actor Name",
       "executorName": "Executor Name",
@@ -74,8 +77,9 @@
       "awards": "Awards",
       "profileImg": "Profile Image",
       "image": "Image",
-      "startDate":"Start Date",
-      "endDate":"End Date",
+      "isCastMember": "Is he/she a cast member?",
+      "startDate": "Start Date",
+      "endDate": "End Date",
       "actions": "Actions"
     },
     "placeholder": {
@@ -83,6 +87,7 @@
       "playName": "Play Name",
       "director": "Director",
       "crew": "Crew",
+      "role": "Role",
       "poster": "Poster",
       "actorName": "Actor Name",
       "executorName": "Executor Name",
@@ -91,8 +96,9 @@
       "awards": "Awards",
       "profileImg": "Profile Image",
       "image": "Image",
-      "startDate":"Start Date",
-      "endDate":"End Date",
+      "isCastMember": "If it is checked, your actor will be treated as a cast member",
+      "startDate": "Start Date",
+      "endDate": "End Date",
       "actions": "Actions"
     }
   }

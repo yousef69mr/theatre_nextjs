@@ -1,4 +1,4 @@
-import { ActorInPlayType, ActorType } from "@/types";
+import { ActorInPlayType, ActorType, CastMemberType } from "@/types";
 import { create } from "zustand";
 
 // export type ModalType = "createActor";
@@ -11,6 +11,7 @@ interface ActorStore {
   removeActor: (actorId: string) => void;
   updateActorPlays: (actorInPlay: ActorInPlayType) => void;
   removeActorPlays: (actorInPlayId: string, actorId: string) => void;
+  updateActorCastMembers: (castMember: CastMemberType) => void;
 }
 
 export const useActorStore = create<ActorStore>((set) => ({
@@ -58,6 +59,26 @@ export const useActorStore = create<ActorStore>((set) => ({
       );
 
       const updatedActor = { ...selectedActor, plays: filteredPlay };
+      state.updateActor(updatedActor);
+      return state;
+    }),
+  updateActorCastMembers: (castMember: CastMemberType) =>
+    set((state) => {
+      const selectedActor = state.actors?.find(
+        (actor) => castMember.actor.id === actor.id
+      );
+      if (!selectedActor) return state;
+
+      const filteredCastMembers = selectedActor.castMembers.filter(
+        (temp) => temp.id !== castMember.id
+      );
+
+      const updatedCastMembers = [...filteredCastMembers, castMember];
+
+      const updatedActor = {
+        ...selectedActor,
+        castMembers: updatedCastMembers,
+      };
       state.updateActor(updatedActor);
       return state;
     }),

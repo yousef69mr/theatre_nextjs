@@ -33,13 +33,15 @@ model User {
   isTwoFactorEnabled Boolean @default(false)
 
   twoFactorConfirmation TwoFactorConfirmation?
-  // actor                 Actor?
-  // executor              Executor?
+  actor                 Actor?                 @relation(fields: [actorId], references: [id])
+  executor              Executor?              @relation(fields: [executorId], references: [id])
 
   accounts Account[]
 
-  updatedAt DateTime @updatedAt
-  createdAt DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  createdAt  DateTime @default(now())
+  actorId    String?  @db.ObjectId
+  executorId String?  @db.ObjectId
 }
 
 model Account {
@@ -116,7 +118,7 @@ model CastMember {
   role UserRole @default(ACTOR)
 
   actorId String? @db.ObjectId
-  actor   Actor?  @relation(fields: [actorId], references: [id])
+  actor   Actor?  @relation(fields: [actorId], references: [id], onDelete: Cascade)
   // actor Actor?
 
   startDate DateTime
@@ -125,6 +127,7 @@ model CastMember {
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
 
+  @@unique([role, actorId])
   @@index([actorId])
 }
 
@@ -147,7 +150,8 @@ model Festival {
 }
 
 model PlayFestival {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  position Int?
 
   playId String @db.ObjectId
   play   Play   @relation(fields: [playId], references: [id], onDelete: Cascade)
@@ -216,7 +220,7 @@ model Actor {
   // user   User?   @relation(fields: [userId], references: [id])
 
   executorId String? @db.ObjectId
-  // executor   Executor? @relation(fields: [executorId], references: [id])
+  // executor Executor?
 
   castMembers CastMember[]
   // castMember CastMember?
@@ -233,6 +237,7 @@ model Actor {
   createdAt DateTime @default(now())
 
   // @@index([playId])
+  User User[]
 }
 
 enum ExecutorRole {
@@ -286,7 +291,7 @@ model Executor {
   userId String? @db.ObjectId
   // user   User?   @relation(fields: [userId], references: [id])
 
-  // actorId String? @unique @db.ObjectId
+  actorId String? @db.ObjectId
   // actor   Actor?  @relation(fields: [actorId], references: [id])
   // actor Actor?
 
@@ -297,6 +302,7 @@ model Executor {
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
+  User      User[]
 }
 
 model Award {

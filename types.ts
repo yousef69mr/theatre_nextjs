@@ -1,6 +1,7 @@
-import { ExecutorRole, UserRole } from "@prisma/client";
+import { ExecutorRole, type UserRole } from "@prisma/client";
 import { Locale } from "./next-i18next.config";
 import { ReactElement } from "react";
+import { actorRoles } from "@/lib/auth";
 
 export type DataTransationModeType = "serverAction" | "api";
 
@@ -84,9 +85,10 @@ export type PlayFestivalType = {
 
 export type CastMemberType = {
   id: string;
-  startDate: Date;
-  endDate: Date;
-  role: UserRole;
+  startDate: string;
+  endDate?: string;
+  actor: ActorType;
+  role: (typeof actorRoles)[number];
 };
 
 export type ActorType = {
@@ -94,6 +96,7 @@ export type ActorType = {
   name: string;
   nickname?: string;
   imgUrl: string;
+  executor?: ExecutorType | null;
   castMembers: CastMemberType[];
   userId?: string;
   numOfViews: string;
@@ -109,6 +112,7 @@ export type ExecutorType = {
   imgUrl?: string;
   userId?: string;
   numOfViews: string;
+  actor?: ActorType | null;
   // role: ExecutorRole;
   plays: PlayType[];
   awards: AwardType[];
@@ -142,5 +146,11 @@ export type PlayType = {
 export type adminRouteType = {
   id: number;
   href: string;
+  label: string;
+};
+
+export type SelectType = {
+  id: number;
+  value: string;
   label: string;
 };

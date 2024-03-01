@@ -25,21 +25,37 @@ export type ExecutorColumnDef<TData> = ColumnDef<TData> & {
 
 export const ExecutorColumns: ExecutorColumnDef<ExecutorType>[] = [
   {
-    accessorKey: "id",
+    accessorKey: "profileImg",
     header: ({ column }) => {
       const { t } = useTranslation();
       return (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          // onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          {t("tables.id", { ns: "constants" })}
-          <ArrowUpDown className="ltr:ml-2 rtl:mr-2 h-4 w-4" />
+          {t("tables.profileImg", { ns: "constants" })}
+          {/* <ArrowUpDown className="ml-2 h-4 w-4" /> */}
         </Button>
       );
     },
-    type: "string",
-    // cell: ({ row }) => <div>{row.original.employeeID.toString()}</div>,
+    cell: ({ row }) => {
+      const imgUrl = row.original.imgUrl;
+      return (
+        <div className="relative h-24 w-24">
+          {/* <AspectRatio ratio={2 / 3} className="bg-muted"> */}
+          <Link href={imgUrl ? imgUrl : "/default-profile.png"} target="_blank">
+            <Image
+              src={imgUrl ? imgUrl : "/default-profile.png"}
+              fill
+              alt="Image"
+              className="rounded-md object-contain"
+            />
+          </Link>
+          {/* </AspectRatio> */}
+        </div>
+      );
+    },
+    type: "image",
   },
   {
     accessorKey: "executorName",
@@ -60,7 +76,7 @@ export const ExecutorColumns: ExecutorColumnDef<ExecutorType>[] = [
       return (
         <div className="flex items-center justify-center">
           <p>
-            {executor.name} {executor.nickname && `(${executor.nickname})`}
+            {executor.name} {executor.nickname ? `(${executor.nickname})` : ""}
           </p>
         </div>
       );
@@ -93,38 +109,23 @@ export const ExecutorColumns: ExecutorColumnDef<ExecutorType>[] = [
     },
     type: "number",
   },
+
   {
-    accessorKey: "profileImg",
+    accessorKey: "id",
     header: ({ column }) => {
       const { t } = useTranslation();
       return (
         <Button
           variant="ghost"
-          // onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          {t("tables.profileImg", { ns: "constants" })}
-          {/* <ArrowUpDown className="ml-2 h-4 w-4" /> */}
+          {t("tables.id", { ns: "constants" })}
+          <ArrowUpDown className="ltr:ml-2 rtl:mr-2 h-4 w-4" />
         </Button>
       );
     },
-    cell: ({ row }) => {
-      const imgUrl = row.original.imgUrl;
-      return (
-        <Link href={imgUrl as string} target="_blank">
-          <div className="relative h-24 w-24">
-            {/* <AspectRatio ratio={2 / 3} className="bg-muted"> */}
-            <Image
-              src={imgUrl ? imgUrl : "/default-profile.png"}
-              fill
-              alt="Image"
-              className="rounded-md object-contain"
-            />
-            {/* </AspectRatio> */}
-          </div>
-        </Link>
-      );
-    },
-    type: "image",
+    type: "string",
+    // cell: ({ row }) => <div>{row.original.employeeID.toString()}</div>,
   },
   {
     id: "actions",

@@ -58,6 +58,18 @@ export async function GET(request: NextRequest, props: ActorProps) {
             },
           },
         },
+        castMembers: {
+          include: {
+            actor: {
+              select: {
+                id: true,
+                name: true,
+                nickname: true,
+                imgUrl: true,
+              },
+            },
+          },
+        },
       },
     });
 
@@ -150,13 +162,25 @@ export async function PATCH(request: NextRequest, props: ActorProps) {
       },
       include: {
         awards: true,
-        castMember: true,
+        castMembers: {
+          include: {
+            actor: {
+              select: {
+                id: true,
+                name: true,
+                nickname: true,
+                imgUrl: true,
+              },
+            },
+          },
+        },
         plays: {
           include: {
             actor: {
               select: {
                 id: true,
                 name: true,
+                nickname: true,
                 imgUrl: true,
               },
             },
@@ -192,7 +216,7 @@ export async function PATCH(request: NextRequest, props: ActorProps) {
 
     return NextResponse.json(
       { ...actor, numOfViews: actor.numOfViews.toString() },
-      { status: 201 }
+      { status: 200 }
     );
   } catch (error) {
     console.log(error);

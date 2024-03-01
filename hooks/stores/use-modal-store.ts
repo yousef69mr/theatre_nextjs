@@ -1,6 +1,7 @@
 import {
   ActorInPlayType,
   ActorType,
+  CastMemberType,
   ExecutorType,
   FestivalType,
   PlayFestivalType,
@@ -20,14 +21,17 @@ export type ModalType =
   | "deleteActorPlayLink"
   | "linkFestivalPlay"
   | "deleteFestivalPlayLink"
+  | "linkCastMember"
+  | "deleteCastMember"
   | "linkExecutorPlay";
 
 interface ModalData {
+  castMember?: CastMemberType;
   festival?: FestivalType;
   play?: PlayType;
   executor?: ExecutorType;
   actorInPlay?: ActorInPlayType;
-  festivalPlay?:PlayFestivalType
+  festivalPlay?: PlayFestivalType;
   actor?: ActorType;
   apiUrl?: string;
   query?: Record<string, any>;

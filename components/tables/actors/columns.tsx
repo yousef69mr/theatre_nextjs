@@ -25,22 +25,39 @@ export type ActorColumnDef<TData> = ColumnDef<TData> & {
 
 export const ActorColumns: ActorColumnDef<ActorType>[] = [
   {
-    accessorKey: "id",
-    header: ({ column }) => {
+    accessorKey: "profileImg",
+    header: () => {
       const { t } = useTranslation();
       return (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          // onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          {t("tables.id", { ns: "constants" })}
-          <ArrowUpDown className="ltr:ml-2 rtl:mr-2 h-4 w-4" />
+          {t("tables.profileImg", { ns: "constants" })}
+          {/* <ArrowUpDown className="ml-2 h-4 w-4" /> */}
         </Button>
       );
     },
-    type: "string",
-    // cell: ({ row }) => <div>{row.original.employeeID.toString()}</div>,
+    cell: ({ row }) => {
+      const imgUrl = row.original.imgUrl;
+      return (
+        <div className="relative h-24 w-24">
+          {/* <AspectRatio ratio={2 / 3} className="bg-muted"> */}
+          <Link href={imgUrl} target="_blank">
+            <Image
+              src={imgUrl}
+              fill
+              alt="Image"
+              className="rounded-md object-contain"
+            />
+          </Link>
+          {/* </AspectRatio> */}
+        </div>
+      );
+    },
+    type: "image",
   },
+
   {
     accessorKey: "actorName",
     header: ({ column }) => {
@@ -56,11 +73,11 @@ export const ActorColumns: ActorColumnDef<ActorType>[] = [
       );
     },
     cell: ({ row }) => {
-      const play = row.original as unknown as ActorType;
+      const actor = row.original as unknown as ActorType;
       return (
         <div className="flex items-center justify-center">
           <p>
-            {play.name} {play.nickname && `(${play.nickname})`}
+            {actor.name} {actor.nickname ? `(${actor.nickname})` : ""}
           </p>
         </div>
       );
@@ -94,37 +111,21 @@ export const ActorColumns: ActorColumnDef<ActorType>[] = [
     type: "number",
   },
   {
-    accessorKey: "profileImg",
+    accessorKey: "id",
     header: ({ column }) => {
       const { t } = useTranslation();
       return (
         <Button
           variant="ghost"
-          // onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          {t("tables.profileImg", { ns: "constants" })}
-          {/* <ArrowUpDown className="ml-2 h-4 w-4" /> */}
+          {t("tables.id", { ns: "constants" })}
+          <ArrowUpDown className="ltr:ml-2 rtl:mr-2 h-4 w-4" />
         </Button>
       );
     },
-    cell: ({ row }) => {
-      const imgUrl = row.original.imgUrl;
-      return (
-        <Link href={imgUrl} target="_blank">
-          <div className="relative h-24 w-24">
-            {/* <AspectRatio ratio={2 / 3} className="bg-muted"> */}
-            <Image
-              src={imgUrl}
-              fill
-              alt="Image"
-              className="rounded-md object-contain"
-            />
-            {/* </AspectRatio> */}
-          </div>
-        </Link>
-      );
-    },
-    type: "image",
+    type: "string",
+    // cell: ({ row }) => <div>{row.original.employeeID.toString()}</div>,
   },
   {
     id: "actions",

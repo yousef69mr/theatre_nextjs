@@ -1,8 +1,7 @@
 "use client";
 import { FC } from "react";
-import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import { useParams } from "next/navigation";
+// import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -10,81 +9,60 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { ActorInPlayType } from "@/types";
+import { CastMemberType } from "@/types";
 import { useModal } from "@/hooks/stores/use-modal-store";
-import { Drama, Edit, PartyPopper, Theater, Trash } from "lucide-react";
+import { AlertOctagon, Edit, Trash } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-interface ActorInPlayCardProps {
-  actorInPlay: ActorInPlayType;
+import { Badge } from "@/components/ui/badge";
+import { format } from "date-fns";
+
+interface CastMemberCardProps {
+  castMember: CastMemberType;
   mode?: "search" | "default";
 }
 
-const ActorInPlayCard: FC<ActorInPlayCardProps> = (props) => {
-  const { actorInPlay, mode = "default" } = props;
+const CastMemberCard: FC<CastMemberCardProps> = (props) => {
+  const { castMember, mode = "default" } = props;
   const onOpen = useModal((state) => state.onOpen);
 
-  const params = useParams();
+  // const params = useParams();
   const { t } = useTranslation();
 
-  const locale = params.locale;
-
-  const festivalId = params.festivalId as string;
-  const actorId = params.actorId as string;
-  const playId = params.playId as string;
+  // const locale = params.locale;
 
   const handleDelete = () => {
-    onOpen("deleteActorPlayLink", { actorInPlay: actorInPlay });
+    onOpen("deleteCastMember", { castMember: castMember });
   };
-
-  // console.log(actorInPlay);
 
   if (mode === "search") {
     return (
       <div className="flex justify-between items-center w-full ">
         <div className="flex w-full py-2 gap-y-2 flex-col justify-center">
-          {!playId && (
-            <div className="flex items-center justify-start">
-              <Theater className="w-5 h-5 ltr:mr-2 rtl:ml-2 text-primary" />
-              <Link href={`/${locale}/admin/plays/${actorInPlay.play?.id}`}>
-                <span className="truncate font-medium">
-                  {actorInPlay.play?.name}
-                </span>
-              </Link>
+          <div className="flex items-center justify-start">
+            <AlertOctagon className="w-5 h-5 ltr:mr-2 rtl:ml-2 text-primary" />
+            <div className="flex rtl:flex-row-reverse gap-x-1 truncate font-medium capitalize">
+              <span>{t(`UserRole.${castMember.role}`, { ns: "common" })} </span>
+              <span> {t(`role.single`, { ns: "constants" })}</span>
             </div>
-          )}
-          {!actorId && (
-            <Link
-              href={`/${locale}/admin/actors/${actorInPlay.actor?.id}`}
-              className="hover:text-yellow-400"
-            >
-              <div className="flex items-center justify-start">
-                <Drama className="w-5 h-5 ltr:mr-2 rtl:ml-2 text-primary" />
-                <span className="truncate font-medium ">
-                  {actorInPlay.actor?.name}{" "}
-                  {actorInPlay.actor?.nickname
-                    ? `(${actorInPlay.actor?.nickname})`
-                    : ""}
-                </span>
-              </div>
-            </Link>
-          )}
-          {!festivalId && (
-            <div className="flex items-center justify-start">
-              <PartyPopper className="w-5 h-5 ltr:mr-2 rtl:ml-2 text-primary" />
-              <span className="truncate font-medium">
-                {actorInPlay.festival?.name}
-              </span>
-            </div>
-          )}
+          </div>
+
+          <div className="flex gap-2 mt-2 items-center justify-between">
+            <Badge variant={"outline"}>
+              {format(castMember.startDate, "MMMM do, yyyy")}
+            </Badge>
+            <Badge variant={"outline"}>
+              {castMember.endDate
+                ? format(castMember.endDate, "MMMM do, yyyy")
+                : t("present", { ns: "constants" })}
+            </Badge>
+          </div>
         </div>
         <div className="flex items-center justify-center">
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
-                  onClick={() =>
-                    onOpen("linkActorPlay", { actorInPlay: actorInPlay })
-                  }
+                  onClick={() => onOpen("linkCastMember", { castMember })}
                   size={"icon"}
                   variant="ghost"
                   className="capitalize"
@@ -101,7 +79,6 @@ const ActorInPlayCard: FC<ActorInPlayCardProps> = (props) => {
                 </p>
               </TooltipContent>
             </Tooltip>
-
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
@@ -127,6 +104,7 @@ const ActorInPlayCard: FC<ActorInPlayCardProps> = (props) => {
       </div>
     );
   }
+
   return (
     <div className="border p-5 space-y-2 w-full md:max-w-72">
       <div className="flex items-center justify-end">
@@ -134,9 +112,7 @@ const ActorInPlayCard: FC<ActorInPlayCardProps> = (props) => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
-                onClick={() =>
-                  onOpen("linkActorPlay", { actorInPlay: actorInPlay })
-                }
+                onClick={() => onOpen("linkCastMember", { castMember })}
                 size={"icon"}
                 variant="ghost"
                 className="capitalize"
@@ -153,7 +129,6 @@ const ActorInPlayCard: FC<ActorInPlayCardProps> = (props) => {
               </p>
             </TooltipContent>
           </Tooltip>
-
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -178,43 +153,28 @@ const ActorInPlayCard: FC<ActorInPlayCardProps> = (props) => {
       </div>
       <Separator className="mb-2" />
       <div className="flex w-full gap-y-2 py-2 flex-col justify-center">
-        {!playId && (
-          <div className="flex items-center justify-start">
-            <Theater className="w-5 h-5 ltr:mr-2 rtl:ml-2 text-primary" />
-            <Link href={`/${locale}/admin/plays/${actorInPlay.play?.id}`}>
-              <span className="truncate font-medium">
-                {actorInPlay.play?.name}
-              </span>
-            </Link>
+        <div className="flex items-center justify-start">
+          <AlertOctagon className="w-5 h-5 ltr:mr-2 rtl:ml-2 text-primary" />
+          <div className="flex rtl:flex-row-reverse gap-x-1  truncate font-medium capitalize">
+            <span>{t(`UserRole.${castMember.role}`, { ns: "common" })} </span>
+            <span> {t(`role.single`, { ns: "constants" })}</span>
           </div>
-        )}
-        {!actorId && (
-          <Link
-            href={`/${locale}/admin/actors/${actorInPlay.actor?.id}`}
-            className="hover:text-yellow-400"
-          >
-            <div className="flex items-center justify-start">
-              <Drama className="w-5 h-5 ltr:mr-2 rtl:ml-2 text-primary" />
-              <span className="truncate font-medium ">
-                {actorInPlay.actor?.name}{" "}
-                {actorInPlay.actor?.nickname
-                  ? `(${actorInPlay.actor?.nickname})`
-                  : ""}
-              </span>
-            </div>
-          </Link>
-        )}
-        {!festivalId && (
-          <div className="flex items-center justify-start">
-            <PartyPopper className="w-5 h-5 ltr:mr-2 rtl:ml-2 text-primary" />
-            <span className="truncate font-medium">
-              {actorInPlay.festival?.name}
-            </span>
-          </div>
-        )}
+        </div>
+
+        {/* <Separator className="bg-red-100 dark:bg-red-700/15 my-1" /> */}
+        <div className="flex flex-col gap-2 mt-2 flex-wrap items-start justify-center">
+          <Badge variant={"outline"} className="px-2">
+            {format(castMember.startDate, "MMMM do, yyyy")}
+          </Badge>
+          <Badge variant={"outline"} className="px-2">
+            {castMember.endDate
+              ? format(castMember.endDate, "MMMM do, yyyy")
+              : t("present", { ns: "constants" })}
+          </Badge>
+        </div>
       </div>
     </div>
   );
 };
 
-export default ActorInPlayCard;
+export default CastMemberCard;

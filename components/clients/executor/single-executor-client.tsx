@@ -90,6 +90,10 @@ const ExecutorClient: FC<ExecutorClientProps> = (props) => {
     setFestivals(festivals);
   }, [festivals]);
 
+  useEffect(() => {
+    executor && updateExecutor(executor);
+  }, [executor]);
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
