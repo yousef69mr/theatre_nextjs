@@ -1,4 +1,4 @@
-import ActorListClient from "@/components/clients/actor/actor-client";
+import ActorListClient from "@/components/clients/actor/admin/actor-client";
 import TranslationsProvider from "@/components/providers/translation-provider";
 import { getAllActorsRequest } from "@/lib/api-calls/models/actor";
 

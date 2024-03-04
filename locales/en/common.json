@@ -2,7 +2,6 @@
   "navbar": {
     "localization": {
       "toggleText": "Language Toggle",
-      "teacherMode": { "toggleText": "Teacher Mode" },
       "locales": {
         "en": "English",
         "ar": "العربية"
@@ -13,6 +12,7 @@
       "plays": "Plays",
       "home": "Home",
       "actors": "Actors",
+      "executors": "Executors",
       "bookPlayTicket": "Attend Play"
     }
   },

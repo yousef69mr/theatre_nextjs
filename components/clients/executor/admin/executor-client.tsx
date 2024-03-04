@@ -11,8 +11,8 @@ import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import Heading from "@/components/helpers/heading";
 import { useTranslation } from "react-i18next";
-import { DataTable } from "../../ui/data-table";
-import PlayTable from "../../tables/plays/plays-table";
+import { DataTable } from "../../../ui/data-table";
+import PlayTable from "../../../tables/plays/plays-table";
 import {
   Tooltip,
   TooltipContent,

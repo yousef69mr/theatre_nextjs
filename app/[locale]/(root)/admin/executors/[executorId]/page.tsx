@@ -1,5 +1,5 @@
 // import PlayForm from "@/components/forms/play-form";
-import ExecutorListClient from "@/components/clients/executor/single-executor-client";
+import ExecutorListClient from "@/components/clients/executor/admin/single-executor-client";
 import TranslationsProvider from "@/components/providers/translation-provider";
 import {
   getAllExecutorsRequest,

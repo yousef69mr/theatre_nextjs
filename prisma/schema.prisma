@@ -33,15 +33,15 @@ model User {
   isTwoFactorEnabled Boolean @default(false)
 
   twoFactorConfirmation TwoFactorConfirmation?
-  actor                 Actor?                 @relation(fields: [actorId], references: [id])
-  executor              Executor?              @relation(fields: [executorId], references: [id])
+
+  actorId String? @db.ObjectId
+
+  executorId String? @db.ObjectId
 
   accounts Account[]
 
-  updatedAt  DateTime @updatedAt
-  createdAt  DateTime @default(now())
-  actorId    String?  @db.ObjectId
-  executorId String?  @db.ObjectId
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
 }
 
 model Account {
@@ -237,7 +237,6 @@ model Actor {
   createdAt DateTime @default(now())
 
   // @@index([playId])
-  User User[]
 }
 
 enum ExecutorRole {
@@ -302,7 +301,6 @@ model Executor {
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
-  User      User[]
 }
 
 model Award {

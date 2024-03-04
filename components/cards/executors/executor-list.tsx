@@ -1,6 +1,6 @@
-import { PlayType } from "@/types";
-import { FC, ReactNode, useEffect } from "react";
-import PlayCard from "./play-card";
+import { ExecutorType } from "@/types";
+import { FC, useEffect } from "react";
+import ExecutorCard from "./executor-card";
 import {
   Pagination,
   PaginationContent,
@@ -14,14 +14,14 @@ import { usePagination } from "@/hooks/use-pagination";
 import { useParams, useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 // import { Separator } from "@/components/ui/separator";
-interface PlayListProps {
-  plays: PlayType[];
+interface ExecutorListProps {
+  executors: ExecutorType[];
 }
 
 const CARDS_PER_PAGE = 8;
 
-const PlayList: FC<PlayListProps> = (props) => {
-  const { plays } = props;
+const ExecutorList: FC<ExecutorListProps> = (props) => {
+  const { executors } = props;
   const {
     currentPage,
     totalPages,
@@ -29,7 +29,7 @@ const PlayList: FC<PlayListProps> = (props) => {
     previousPage,
     goToPage,
     getCurrentPageData,
-  } = usePagination(CARDS_PER_PAGE, plays);
+  } = usePagination(CARDS_PER_PAGE, executors);
 
   const params = useParams();
 
@@ -40,15 +40,15 @@ const PlayList: FC<PlayListProps> = (props) => {
   useEffect(() => {
     if (searchParams.has("page")) {
       const currentPageIndex = searchParams.get("page");
-      goToPage(Number(currentPageIndex));
+      goToPage(Number(currentPageIndex) - 1);
     }
   }, [searchParams]);
   return (
     <section className="w-full flex flex-col">
       {/**TODO: filter plays */}
       <div className="w-full flex flex-1 flex-wrap gap-6 mt-2 items-center justify-start">
-        {getCurrentPageData().map((play) => (
-          <PlayCard key={play.id} play={play} />
+        {getCurrentPageData().map((executor) => (
+          <ExecutorCard key={executor.id} executor={executor} />
         ))}
       </div>
       <Pagination className="mt-4">
@@ -62,16 +62,13 @@ const PlayList: FC<PlayListProps> = (props) => {
           {Array.from({ length: totalPages }).map((_, index) => (
             <PaginationItem key={index}>
               <PaginationLink
-                href={`/${locale}/plays?page=${index}`}
+                href={`/${locale}/executors?page=${index + 1}`}
                 className={cn(index === currentPage && "bg-primary text-white")}
               >
                 {index + 1}
               </PaginationLink>
             </PaginationItem>
           ))}
-          {/* <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem> */}
           <PaginationItem>
             <PaginationNext
               onClick={nextPage}
@@ -84,4 +81,4 @@ const PlayList: FC<PlayListProps> = (props) => {
   );
 };
 
-export default PlayList;
+export default ExecutorList;

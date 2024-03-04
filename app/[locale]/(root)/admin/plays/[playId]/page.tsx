@@ -1,4 +1,4 @@
-import PlayClient from "@/components/clients/play/single-play-client";
+import PlayClient from "@/components/clients/play/admin/single-play-client";
 import TranslationsProvider from "@/components/providers/translation-provider";
 import { getAllActorsRequest } from "@/lib/api-calls/models/actor";
 import { getAllExecutorsRequest } from "@/lib/api-calls/models/executor";

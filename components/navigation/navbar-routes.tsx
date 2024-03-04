@@ -50,6 +50,11 @@ export const NavbarRoutes: FC<NavbarRoutesProps> = (props) => {
       active: pathname === `/${locale}/actors`,
     },
     {
+      href: `/${locale}/executors`,
+      label: t("navbar.routes.executors"),
+      active: pathname === `/${locale}/executors`,
+    },
+    {
       href: `/${locale}/attend-play`,
       label: t("navbar.routes.bookPlayTicket"),
       active: pathname === `/${locale}/attend-play`,

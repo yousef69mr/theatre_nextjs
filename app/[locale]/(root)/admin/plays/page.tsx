@@ -1,6 +1,6 @@
 import { FC } from "react";
 import type { Metadata } from "next";
-import PlayListClient from "@/components/clients/play/play-client";
+import PlayListClient from "@/components/clients/play/admin/play-client";
 import TranslationsProvider from "@/components/providers/translation-provider";
 import { getAllPlaysRequest } from "@/lib/api-calls/models/play";
 import initTranslations from "@/lib/i18n";

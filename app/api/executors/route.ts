@@ -11,6 +11,7 @@ export async function GET(request: NextRequest) {
       await db.executor.findMany({
         include: {
           awards: true,
+          
           plays: {
             include: {
               executor: {
@@ -38,9 +39,9 @@ export async function GET(request: NextRequest) {
           },
         },
       })
-    ).map((play) => ({
-      ...play,
-      numOfViews: play.numOfViews.toString(),
+    ).map((executor) => ({
+      ...executor,
+      numOfViews: executor.numOfViews.toString(),
     }));
 
     return NextResponse.json(executors, { status: 200 });
@@ -86,6 +87,7 @@ export async function POST(request: NextRequest) {
               select: {
                 id: true,
                 name: true,
+                nickname: true,
                 imgUrl: true,
               },
             },

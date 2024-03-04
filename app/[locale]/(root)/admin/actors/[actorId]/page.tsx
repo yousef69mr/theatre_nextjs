@@ -1,5 +1,5 @@
 import { FC } from "react";
-import ActorClient from "@/components/clients/actor/single-actor-client";
+import ActorClient from "@/components/clients/actor/admin/single-actor-client";
 
 import TranslationsProvider from "@/components/providers/translation-provider";
 import {

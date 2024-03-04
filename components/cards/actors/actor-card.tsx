@@ -1,27 +1,29 @@
 import { DirectionAwareHover } from "@/components/ui/direction-aware-hover";
-import { PlayType } from "@/types";
+import { ActorType } from "@/types";
 import { Eye, Trophy } from "lucide-react";
 import { FC } from "react";
-interface PlayCardProps {
-  play: PlayType;
+interface ActorCardProps {
+  actor: ActorType;
 }
-const PlayCard: FC<PlayCardProps> = (props) => {
-  const { play } = props;
+const ActorCard: FC<ActorCardProps> = (props) => {
+  const { actor } = props;
   return (
     <DirectionAwareHover
       className="w-44 h-60 md:w-60 md:h-80"
-      imageUrl={play.posterImgUrl}
+      imageUrl={actor.imgUrl ? actor.imgUrl : "/default-profile.png"}
     >
       <div className="flex flex-col items-center justify-center space-y-2 w-full">
-        <h3 className="text-md md:text-xl font-medium truncate">{play.name}</h3>
+        <h3 className="text-md md:text-xl font-medium truncate">
+          {actor.name} {actor.nickname ? `(${actor.nickname})` : ""}
+        </h3>
         <div className="flex flex-wrap gap-1 text-xs font-medium">
           <div className="flex items-center justify-center">
             <Eye className="rtl:ml-2 ltr:mr-2 w-4 h-4" />
-            {play.numOfViews}
+            {actor.numOfViews}
           </div>
           <div className="flex items-center justify-center">
             <Trophy className="rtl:ml-2 ltr:mr-2 w-4 h-4" />
-            {play.awards.length}
+            {actor.awards.length}
           </div>
         </div>
       </div>
@@ -29,4 +31,4 @@ const PlayCard: FC<PlayCardProps> = (props) => {
   );
 };
 
-export default PlayCard;
+export default ActorCard;

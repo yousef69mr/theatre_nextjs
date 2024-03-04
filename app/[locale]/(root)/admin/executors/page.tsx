@@ -1,4 +1,4 @@
-import ExecutorListClient from "@/components/clients/executor/executor-client";
+import ExecutorListClient from "@/components/clients/executor/admin/executor-client";
 import PlayForm from "@/components/forms/models/play-form";
 import TranslationsProvider from "@/components/providers/translation-provider";
 import { getAllExecutorsRequest } from "@/lib/api-calls/models/executor";

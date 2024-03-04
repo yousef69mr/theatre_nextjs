@@ -20,11 +20,11 @@ import {
 } from "@/components/ui/tooltip";
 import ActorForm from "@/components/forms/models/actor-form";
 import { useModal } from "@/hooks/stores/use-modal-store";
-import PermissionBox from "../../helpers/permission-box";
+import PermissionBox from "../../../helpers/permission-box";
 import { updateActorRequest } from "@/lib/api-calls/models/actor";
 import toast from "react-hot-toast";
 import { useActorStore } from "@/hooks/stores/use-actor-store";
-import ActorInPlayControl from "../../controls/actor-in-play-control";
+import ActorInPlayControl from "../../../controls/actor-in-play-control";
 import { useFestivalStore } from "@/hooks/stores/use-festivals-store";
 import { usePlayStore } from "@/hooks/stores/use-play-store";
 // import { useExecutorStore } from "@/hooks/stores/use-executor-store";

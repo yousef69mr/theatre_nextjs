@@ -1,6 +1,6 @@
-const { PrismaClient } = require("@prisma/client");
+// const { PrismaClient } = require("@prisma/client");
 
-const database = new PrismaClient();
+// const database = new PrismaClient();
 
 async function main() {
   try {
@@ -17,8 +17,10 @@ async function main() {
     });
 
     console.log("Success");
+    process.exit(0);
   } catch (error) {
-    console.error("Error seeding the database categories", error);
+    console.error("Error seeding the database festivals", error);
+    process.exit(1);
   } finally {
     await database.$disconnect();
   }
