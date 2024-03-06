@@ -61,9 +61,15 @@ export const DirectionAwareHover = ({
     return d;
   };
 
+  const handleTouchEnter = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (!ref.current) return;
+
+    setDirection("left");
+  };
   return (
     <motion.div
       onMouseEnter={handleMouseEnter}
+      onTouchStart={handleTouchEnter}
       ref={ref}
       className={cn(
         "md:h-96 w-60 h-60 md:w-96 bg-transparent rounded-lg overflow-hidden group/card relative",
