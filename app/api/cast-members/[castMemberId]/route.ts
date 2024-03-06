@@ -67,6 +67,52 @@ export async function DELETE(request: NextRequest, props: CastMemberProps) {
 
   // console.log("herer");
   try {
+    const member = await db.castMember.findUnique({
+      where: {
+        id: castMemberId,
+      },
+    });
+
+    if (!member) {
+      return NextResponse.json({ error: "not found" }, { status: 404 });
+    }
+
+    const actor = await db.actor.findFirst({
+      where: {
+        id: member.actorId as string,
+      },
+      include: {
+        castMembers: {
+          select: {
+            role: true,
+          },
+        },
+      },
+    });
+
+    // update the linked user role
+    if (actor) {
+      const user = await db.user.findUnique({
+        where: { id: actor.userId as string },
+      });
+
+      if (user) {
+        const actorRoles = actor.castMembers.map((role) => role.role);
+        const newRole =
+          isAdmin(member.role) &&
+          actorRoles.includes(UserRole.ACTOR as UserRole)
+            ? UserRole.ACTOR
+            : UserRole.USER;
+
+        await db.user.update({
+          where: { id: actor.userId as string },
+          data: {
+            role: newRole,
+          },
+        });
+      }
+    }
+
     await db.castMember.delete({
       where: {
         id: castMemberId,
@@ -94,7 +140,10 @@ export async function PATCH(request: NextRequest, props: CastMemberProps) {
   }
 
   if (!castMemberId) {
-    return NextResponse.json({ error: "castMemberId is missing!" }, { status: 400 });
+    return NextResponse.json(
+      { error: "castMemberId is missing!" },
+      { status: 400 }
+    );
   }
   const values = await request.json();
 

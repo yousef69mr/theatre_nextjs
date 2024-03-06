@@ -38,7 +38,19 @@
   "category": { "plural": "تصنيفات", "single": "تصنيف" },
   "image": { "plural": "صور", "single": "صورة" },
   "menu": { "plural": "قوائم", "single": "قائمة" },
+  "view": { "plural": "مشاهدات", "single": "مشاهدة" },
   "notFound": "لم يتم العثور على {{instance}}",
+  "units": {
+    "thousand": { "plural": "آلاف", "single": "الف", "symbol": "K" },
+    "million": { "plural": "ملايين", "single": "مليون", "symbol": "M" },
+    "billion": { "plural": "مليارات", "single": "مليار", "symbol": "B" },
+    "trillion": { "plural": "تريليونات", "single": "تريليون", "symbol": "T" },
+    "quadrillion": {
+      "plural": "كوادريليونات",
+      "single": "كوادريليون",
+      "symbol": "Q"
+    }
+  },
   "messages": {
     "added": "تم إضافة {{instance}}",
     "updated": "تم تعديل {{instance}}",

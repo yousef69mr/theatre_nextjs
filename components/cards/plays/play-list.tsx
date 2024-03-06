@@ -46,9 +46,13 @@ const PlayList: FC<PlayListProps> = (props) => {
   return (
     <section className="w-full flex flex-col">
       {/**TODO: filter plays */}
-      <div className="w-full flex flex-1 flex-wrap gap-6 mt-2 items-center justify-start">
+      <div className="w-full gap-6 mt-2  grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
         {getCurrentPageData().map((play) => (
-          <PlayCard key={play.id} play={play} />
+          <PlayCard
+            key={play.id}
+            play={play}
+            className="w-full h-80  md:w-full md:h-80"
+          />
         ))}
       </div>
       <Pagination className="mt-4">

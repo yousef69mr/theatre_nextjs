@@ -1,5 +1,9 @@
 import type { Config } from "tailwindcss";
 import { withUt } from "uploadthing/tw";
+import defaultTheme from "tailwindcss/defaultTheme";
+const {
+  default: flattenColorPalette,
+} = require("tailwindcss/lib/util/flattenColorPalette");
 
 const config = {
   darkMode: ["class"],
@@ -11,6 +15,10 @@ const config = {
   ],
   prefix: "",
   theme: {
+    screens: {
+      xs: "475px",
+      ...defaultTheme.screens,
+    },
     container: {
       center: true,
       padding: "2rem",
@@ -19,6 +27,11 @@ const config = {
       },
     },
     extend: {
+      extend: {
+        boxShadow: {
+          input: `0px 2px 3px -1px rgba(0,0,0,0.1), 0px 1px 0px 0px rgba(25,28,33,0.02), 0px 0px 0px 1px rgba(25,28,33,0.08)`,
+        },
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -75,7 +88,18 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), addVariablesForColors],
 } satisfies Config;
 
 export default withUt(config);
+
+function addVariablesForColors({ addBase, theme }: any) {
+  let allColors = flattenColorPalette(theme("colors"));
+  let newVars = Object.fromEntries(
+    Object.entries(allColors).map(([key, val]) => [`--${key}`, val])
+  );
+
+  addBase({
+    ":root": newVars,
+  });
+}

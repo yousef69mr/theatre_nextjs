@@ -38,7 +38,19 @@
   "file": { "plural": "files", "single": "file" },
   "image": { "plural": "images", "single": "image" },
   "menu": { "plural": "menus", "single": "menu" },
+  "view": { "plural": "views", "single": "view" },
   "notFound": "No {{instance}} found",
+  "units": {
+    "thousand": { "plural": "thousands", "single": "thousand", "symbol": "K" },
+    "million": { "plural": "millions", "single": "million", "symbol": "M" },
+    "billion": { "plural": "billions", "single": "billion", "symbol": "B" },
+    "trillion": { "plural": "trillions", "single": "trillion", "symbol": "T" },
+    "quadrillion": {
+      "plural": "quadrillions",
+      "single": "quadrillion",
+      "symbol": "Q"
+    }
+  },
   "messages": {
     "added": "{{instance}} added",
     "updated": "{{instance}} updated",
