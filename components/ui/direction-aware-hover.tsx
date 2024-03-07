@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useBreakpoint } from "@/hooks/use-break-point";
 
 export const DirectionAwareHover = ({
   imageUrl,
@@ -18,6 +19,7 @@ export const DirectionAwareHover = ({
   imageClassName?: string;
   className?: string;
 }) => {
+  const { isAboveMd } = useBreakpoint("md");
   const ref = useRef<HTMLDivElement>(null);
 
   const [direction, setDirection] = useState<
@@ -29,24 +31,28 @@ export const DirectionAwareHover = ({
   ) => {
     if (!ref.current) return;
 
-    const direction = getDirection(event, ref.current);
-    // console.log("direction", direction);
-    switch (direction) {
-      case 0:
-        setDirection("top");
-        break;
-      case 1:
-        setDirection("right");
-        break;
-      case 2:
-        setDirection("bottom");
-        break;
-      case 3:
-        setDirection("left");
-        break;
-      default:
-        setDirection("left");
-        break;
+    if (isAboveMd) {
+      const direction = getDirection(event, ref.current);
+      // console.log("direction", direction);
+      switch (direction) {
+        case 0:
+          setDirection("top");
+          break;
+        case 1:
+          setDirection("right");
+          break;
+        case 2:
+          setDirection("bottom");
+          break;
+        case 3:
+          setDirection("left");
+          break;
+        default:
+          setDirection("left");
+          break;
+      }
+    } else {
+      setDirection("left");
     }
   };
 
@@ -61,15 +67,15 @@ export const DirectionAwareHover = ({
     return d;
   };
 
-  const handleTouchEnter = (event: React.TouchEvent<HTMLDivElement>) => {
-    if (!ref.current) return;
+  // const handleTouchEnter = (event: React.TouchEvent<HTMLDivElement>) => {
+  //   if (!ref.current) return;
 
-    setDirection("left");
-  };
+  //   setDirection("left");
+  // };
   return (
     <motion.div
       onMouseEnter={handleMouseEnter}
-      onTouchStart={handleTouchEnter}
+      // onTouchStart={handleTouchEnter}
       ref={ref}
       className={cn(
         "md:h-96 w-60 h-60 md:w-96 bg-transparent rounded-lg overflow-hidden group/card relative",
@@ -81,8 +87,8 @@ export const DirectionAwareHover = ({
           className="relative h-full w-full"
           initial="initial"
           whileHover={direction}
-          whileFocus={direction}
-          exit="exit"
+          whileFocus={(!isAboveMd && direction) || ""}
+          exit={"exit"}
         >
           <motion.div className="group-hover/card:block hidden absolute inset-0 w-full h-full bg-black/40 z-10 transition duration-500" />
           <motion.div
