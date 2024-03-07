@@ -82,8 +82,6 @@ export const DirectionAwareHover = ({
           initial="initial"
           whileHover={direction}
           whileFocus={direction}
-          whileInView={direction}
-          whileTap={direction}
           exit="exit"
         >
           <motion.div className="group-hover/card:block hidden absolute inset-0 w-full h-full bg-black/40 z-10 transition duration-500" />
