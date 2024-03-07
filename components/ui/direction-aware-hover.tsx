@@ -87,7 +87,8 @@ export const DirectionAwareHover = ({
           className="relative h-full w-full"
           initial="initial"
           whileHover={direction}
-          whileFocus={(!isAboveMd && direction) || undefined}
+          // make this condition in mobile only
+          whileInView={(!isAboveMd && direction) || undefined}
           exit={"exit"}
         >
           <motion.div className="group-hover/card:block hidden absolute inset-0 w-full h-full bg-black/40 z-10 transition duration-500" />
