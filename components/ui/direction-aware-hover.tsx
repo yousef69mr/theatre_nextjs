@@ -19,7 +19,7 @@ export const DirectionAwareHover = ({
   imageClassName?: string;
   className?: string;
 }) => {
-  const { isAboveMd } = useBreakpoint("md");
+  const { isAboveSm } = useBreakpoint("sm");
   const ref = useRef<HTMLDivElement>(null);
 
   const [direction, setDirection] = useState<
@@ -31,7 +31,7 @@ export const DirectionAwareHover = ({
   ) => {
     if (!ref.current) return;
 
-    if (isAboveMd) {
+    if (isAboveSm) {
       const direction = getDirection(event, ref.current);
       // console.log("direction", direction);
       switch (direction) {
@@ -88,7 +88,7 @@ export const DirectionAwareHover = ({
           initial="initial"
           whileHover={direction}
           // make this condition in mobile only
-          whileInView={(!isAboveMd && direction) || undefined}
+          whileTap={(!isAboveSm && direction) || undefined}
           exit={"exit"}
         >
           <motion.div className="group-hover/card:block hidden absolute inset-0 w-full h-full bg-black/40 z-10 transition duration-500" />
