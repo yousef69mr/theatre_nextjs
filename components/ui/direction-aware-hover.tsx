@@ -4,7 +4,8 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { useBreakpoint } from "@/hooks/use-break-point";
+import { useParams } from "next/navigation";
+import { dir } from "i18next";
 
 export const DirectionAwareHover = ({
   imageUrl,
@@ -19,7 +20,10 @@ export const DirectionAwareHover = ({
   imageClassName?: string;
   className?: string;
 }) => {
-  const { isAboveSm } = useBreakpoint("sm");
+  // const { isAboveSm } = useBreakpoint("sm");
+  const params = useParams();
+  const locale = params.locale as string;
+
   const ref = useRef<HTMLDivElement>(null);
 
   const [direction, setDirection] = useState<
@@ -31,28 +35,24 @@ export const DirectionAwareHover = ({
   ) => {
     if (!ref.current) return;
 
-    if (isAboveSm) {
-      const direction = getDirection(event, ref.current);
-      // console.log("direction", direction);
-      switch (direction) {
-        case 0:
-          setDirection("top");
-          break;
-        case 1:
-          setDirection("right");
-          break;
-        case 2:
-          setDirection("bottom");
-          break;
-        case 3:
-          setDirection("left");
-          break;
-        default:
-          setDirection("left");
-          break;
-      }
-    } else {
-      setDirection("left");
+    const direction = getDirection(event, ref.current);
+    // console.log("direction", direction);
+    switch (direction) {
+      case 0:
+        setDirection("top");
+        break;
+      case 1:
+        setDirection("right");
+        break;
+      case 2:
+        setDirection("bottom");
+        break;
+      case 3:
+        setDirection("left");
+        break;
+      default:
+        setDirection("left");
+        break;
     }
   };
 
@@ -88,7 +88,7 @@ export const DirectionAwareHover = ({
           initial="initial"
           whileHover={direction}
           // make this condition in mobile only
-          whileTap={direction}
+          whileTap={dir(locale) === "ltr" ? "left" : "right"}
           exit={"exit"}
         >
           <motion.div className="group-hover/card:block hidden absolute inset-0 w-full h-full bg-black/40 z-10 transition duration-500" />
