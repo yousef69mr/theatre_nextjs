@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { CastMemberType, SelectType } from "@/types";
+import { CastMemberType } from "@/types";
 import { useForm } from "react-hook-form";
 import { useParams, useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,7 +24,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 
 // import { SingleImageUpload } from "@/components/helpers/single-image-upload";
-import { Loader2, Pencil } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 import toast from "react-hot-toast";
 
@@ -51,6 +51,7 @@ import {
 } from "@/lib/api-calls/models/cast-member";
 // import { UserRole } from "@prisma/client";
 import { actorRoles } from "@/lib/auth";
+import { convertDateFormat } from "@/lib/helpers/time-parser";
 
 interface CastMemberFormProps extends HtmlHTMLAttributes<HTMLElement> {
   initialData: CastMemberType | null;
@@ -87,6 +88,12 @@ const CastMemberForm: FC<CastMemberFormProps> = (props) => {
     resolver: zodResolver(castMemberSchema),
     defaultValues: {
       ...initialData,
+      startDate:
+        (initialData?.startDate && convertDateFormat(initialData.startDate)) ||
+        undefined,
+      endDate:
+        (initialData?.endDate && convertDateFormat(initialData.endDate)) ||
+        undefined,
       actorId: actorId || initialData?.actor.id,
     },
   });

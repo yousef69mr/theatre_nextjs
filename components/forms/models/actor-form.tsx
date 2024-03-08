@@ -38,6 +38,7 @@ import {
 } from "@/lib/api-calls/models/actor";
 import { useActorStore } from "@/hooks/stores/use-actor-store";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "@/components/ui/textarea";
 
 interface ActorFormProps extends HtmlHTMLAttributes<HTMLElement> {
   initialData: ActorType | null;
@@ -276,87 +277,113 @@ const ActorForm: FC<ActorFormProps> = (props) => {
                     </FormItem>
                   )}
                 />
+
                 {!initialData && (
-                  <>
-                    <div className="flex gap-x-2 w-full flex-wrap items-center md:col-span-2">
-                      <FormField
-                        control={form.control}
-                        name="startDate"
-                        render={({ field }) => (
-                          <FormItem className="flex-1">
-                            <FormLabel>
-                              {t("forms.labels.startDate", {
-                                ns: "constants",
-                              })}
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                type="date"
-                                disabled={isDisabled}
-                                className="fill-input"
-                                placeholder={t("forms.placeholder.startDate", {
-                                  ns: "constants",
-                                })}
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="endDate"
-                        render={({ field }) => (
-                          <FormItem className="flex-1">
-                            <FormLabel>
-                              {t("forms.labels.endDate", {
-                                ns: "constants",
-                              })}
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                type="date"
-                                disabled={isDisabled}
-                                placeholder={t("forms.placeholder.endDate", {
-                                  ns: "constants",
-                                })}
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
+                  <div className="flex gap-x-2 w-full flex-wrap items-center md:col-span-2">
                     <FormField
                       control={form.control}
-                      name="isCastMember"
+                      name="startDate"
                       render={({ field }) => (
-                        <FormItem className="flex flex-row items-start gap-x-2 space-x-3 space-y-0 rounded-md border p-4 md:col-span-2">
+                        <FormItem className="flex-1">
+                          <FormLabel>
+                            {t("forms.labels.startDate", {
+                              ns: "constants",
+                            })}
+                          </FormLabel>
                           <FormControl>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
+                            <Input
+                              type="date"
+                              disabled={isDisabled}
+                              className="fill-input"
+                              placeholder={t("forms.placeholder.startDate", {
+                                ns: "constants",
+                              })}
+                              {...field}
                             />
                           </FormControl>
-                          <div className="space-y-1 leading-none ">
-                            <FormLabel>
-                              {t("forms.labels.isCastMember", {
-                                ns: "constants",
-                              })}
-                            </FormLabel>
-                            <FormDescription>
-                              {t("forms.placeholder.isCastMember", {
-                                ns: "constants",
-                              })}
-                            </FormDescription>
-                          </div>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
-                  </>
+                    <FormField
+                      control={form.control}
+                      name="endDate"
+                      render={({ field }) => (
+                        <FormItem className="flex-1">
+                          <FormLabel>
+                            {t("forms.labels.endDate", {
+                              ns: "constants",
+                            })}
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              type="date"
+                              disabled={isDisabled}
+                              placeholder={t("forms.placeholder.endDate", {
+                                ns: "constants",
+                              })}
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                )}
+
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem className="w-full md:col-span-2">
+                      <FormLabel>
+                        {t("forms.labels.description", {
+                          ns: "constants",
+                        })}
+                      </FormLabel>
+                      <FormControl>
+                        <Textarea
+                          disabled={isDisabled}
+                          placeholder={t("forms.placeholder.description", {
+                            ns: "constants",
+                          })}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {!initialData && (
+                  <FormField
+                    control={form.control}
+                    name="isCastMember"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-start gap-x-2 space-x-3 space-y-0 rounded-md border p-4 md:col-span-2">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <div className="space-y-1 leading-none ">
+                          <FormLabel>
+                            {t("forms.labels.isCastMember", {
+                              ns: "constants",
+                            })}
+                          </FormLabel>
+                          <FormDescription>
+                            {t("forms.placeholder.isCastMember", {
+                              ns: "constants",
+                            })}
+                          </FormDescription>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 )}
               </div>
             </div>

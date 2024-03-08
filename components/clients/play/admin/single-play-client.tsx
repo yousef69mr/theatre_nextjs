@@ -70,6 +70,7 @@ const PlayClient: FC<PlayClientProps> = (props) => {
           executorId: play.director?.id as string,
           showTime: new Date(),
           festivalId: "__",
+          description: play.description,
           isPublished,
         },
         play.id

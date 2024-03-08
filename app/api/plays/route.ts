@@ -90,6 +90,7 @@ export async function POST(request: NextRequest) {
     showTime,
     videoUrl,
     executorId,
+    description,
   } = values;
 
   if (!posterImgUrl) {
@@ -151,6 +152,7 @@ export async function POST(request: NextRequest) {
         name,
         images: images || [],
         videoUrl,
+        description,
         executors: {
           create: [
             {

@@ -48,6 +48,7 @@
     "filter": "filter {{instance}}",
     "filterBy": "filter by {{instance}}",
     "cancel": "cancel",
+    "show":"show {{instance}}",
     "link": "link {{instance}}",
     "linkTo": "link {{instance}} to {{to}}",
     "save": "save {{instance}}"

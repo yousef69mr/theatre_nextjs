@@ -151,7 +151,11 @@ export function DataTable<TData, TValue>({
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} align="center" className="text-center">
+                    <TableHead
+                      key={header.id}
+                      align="center"
+                      className="text-center"
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -187,7 +191,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  {t("notFound", {
+                  {t("errors.notFound", {
                     ns: "constants",
                     instance: t(`${type}.plural`, { ns: "constants" }),
                   })}

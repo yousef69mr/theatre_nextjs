@@ -73,6 +73,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Textarea } from "@/components/ui/textarea";
 
 interface PlayFormProps {
   initialData: PlayType | null;
@@ -552,6 +553,29 @@ const PlayForm: FC<PlayFormProps> = (props) => {
                   />
                 </>
               )}
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem className="w-full md:col-span-2">
+                    <FormLabel>
+                      {t("forms.labels.description", {
+                        ns: "constants",
+                      })}
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea
+                        disabled={isDisabled}
+                        placeholder={t("forms.placeholder.description", {
+                          ns: "constants",
+                        })}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
             <Separator />
             <div className="grid md:grid-cols-3 gap-8 w-full">

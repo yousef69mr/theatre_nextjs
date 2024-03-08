@@ -36,7 +36,6 @@ export default auth((req) => {
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
 
-  const isPublicRoute = routeChecker(pathname, publicRoutes);
   const isAuthRoute = authRoutes.includes(pathname);
   // const isAdminRoute = nextUrl.pathname.startsWith(adminRoutesPrefix);
 
@@ -55,6 +54,7 @@ export default auth((req) => {
     return i18nMiddleware(req);
   }
 
+  const isPublicRoute = routeChecker(pathname, publicRoutes);
   // if (isApiAuthRoute) {
   //   return null;
   // }

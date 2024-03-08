@@ -29,17 +29,23 @@
   "id": { "plural": "ids", "single": "id" },
   "role": { "plural": "roles", "single": "role" },
   "nickname": { "plural": "nicknames", "single": "nickname" },
+  "poster": { "plural": "posters", "single": "poster" },
   "relation": { "plural": "relations", "single": "relation" },
   "actor": { "plural": "actors", "single": "actor" },
   "festival": { "plural": "festivals", "single": "festival" },
   "executor": { "plural": "executors", "single": "executor" },
   "option": { "plural": "options", "single": "option" },
   "category": { "plural": "categories", "single": "category" },
+  "story": { "plural": "stories", "single": "story" },
   "file": { "plural": "files", "single": "file" },
   "image": { "plural": "images", "single": "image" },
   "menu": { "plural": "menus", "single": "menu" },
   "view": { "plural": "views", "single": "view" },
-  "notFound": "No {{instance}} found",
+  "errors": {
+    "notFound": "No {{instance}} found",
+    "notProvided": "{{instance}} is not provided"
+  },
+
   "units": {
     "thousand": { "plural": "thousands", "single": "thousand", "symbol": "K" },
     "million": { "plural": "millions", "single": "million", "symbol": "M" },
@@ -72,6 +78,7 @@
     "executorName": "Executor Name",
     "awards": "Awards",
     "profileImg": "Profile Image",
+    "showTime": "Show Time",
     "actions": "Actions"
   },
   "forms": {
@@ -92,6 +99,7 @@
       "isCastMember": "Is he/she a cast member?",
       "startDate": "Start Date",
       "endDate": "End Date",
+      "showTime": "Show Time",
       "actions": "Actions"
     },
     "placeholder": {
@@ -111,6 +119,7 @@
       "isCastMember": "If it is checked, your actor will be treated as a cast member",
       "startDate": "Start Date",
       "endDate": "End Date",
+      "showTime": "Show Time",
       "actions": "Actions"
     }
   }

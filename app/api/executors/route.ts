@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
       await db.executor.findMany({
         include: {
           awards: true,
-          
+
           plays: {
             include: {
               executor: {
@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid fields" }, { status: 400 });
   }
 
-  const { name, imgUrl, nickname } = values;
+  const { name, imgUrl, nickname, description } = validatedFields.data;
 
   if (!name) {
     return NextResponse.json({ error: "name is missing!" }, { status: 400 });
@@ -78,6 +78,7 @@ export async function POST(request: NextRequest) {
         name,
         imgUrl,
         nickname,
+        description,
       },
       include: {
         awards: true,

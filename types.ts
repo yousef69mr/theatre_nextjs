@@ -94,6 +94,7 @@ export type CastMemberType = {
 export type ActorType = {
   id: string;
   name: string;
+  description?: string;
   nickname?: string;
   imgUrl: string;
   executor?: ExecutorType | null;
@@ -108,6 +109,7 @@ export type ActorType = {
 export type ExecutorType = {
   id: string;
   name: string;
+  description?: string;
   nickname?: string;
   imgUrl?: string;
   userId?: string;
@@ -130,6 +132,7 @@ export type ExecutorInPlayType = {
 export type PlayType = {
   id: string;
   name: string;
+  description?: string;
   videoUrl?: string;
   posterImgUrl: string;
   director?: ExecutorType;

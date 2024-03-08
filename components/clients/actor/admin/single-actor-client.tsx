@@ -74,6 +74,7 @@ const ActorClient: FC<ActorClientProps> = (props) => {
           name: actor.name,
           imgUrl: actor.imgUrl,
           startDate: "",
+          description: actor.description,
           isCastMember,
           isPublished,
         },

@@ -24,7 +24,7 @@ const routes = [
 interface AdminRoutesProps extends HtmlHTMLAttributes<HTMLDivElement> {}
 const AdminRoutes: FC<AdminRoutesProps> = (props) => {
   const { className } = props;
-  const { isAdminOpen } = useNavigationStore();
+  const { isAdminOpen, onAdminClose } = useNavigationStore();
 
   const { t, i18n } = useTranslation();
   const adminRoutes: adminRouteType[] =
@@ -57,6 +57,7 @@ const AdminRoutes: FC<AdminRoutesProps> = (props) => {
                 className={cn(
                   "bg-red-100 dark:bg-red-700/15 p-5 rounded-full relative "
                 )}
+                onClick={onAdminClose}
               >
                 <Link
                   href={`/${i18n.language}${adminRoute.href}`}

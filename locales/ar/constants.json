@@ -34,12 +34,17 @@
   "id": { "plural": "أكواد", "single": "كود" },
   "role": { "plural": "مناصب", "single": "منصب" },
   "nickname": { "plural": "أسماء شهرة", "single": "اسم شهرة" },
+  "poster": { "plural": "بوسترات", "single": "بوستر" },
   "relation": { "plural": "علاقات", "single": "علاقة" },
   "category": { "plural": "تصنيفات", "single": "تصنيف" },
+  "story": { "plural": "قصص", "single": "قصة" },
   "image": { "plural": "صور", "single": "صورة" },
   "menu": { "plural": "قوائم", "single": "قائمة" },
   "view": { "plural": "مشاهدات", "single": "مشاهدة" },
-  "notFound": "لم يتم العثور على {{instance}}",
+  "errors": {
+    "notFound": "لم يتم العثور على {{instance}}",
+    "notProvided": "{{instance}} غير متوفر حاليا"
+  },
   "units": {
     "thousand": { "plural": "آلاف", "single": "الف", "symbol": "K" },
     "million": { "plural": "ملايين", "single": "مليون", "symbol": "M" },
@@ -93,6 +98,7 @@
       "isCastMember": "هل هو/هى عضو فى الكاست؟",
       "startDate": "تاريخ البداية",
       "endDate": "تاريخ النهاية",
+      "showTime": "معاد العرض",
       "actions": "الاجراءات"
     },
     "placeholder": {
@@ -111,6 +117,7 @@
       "isCastMember": "إذا تم تحديده ، سيتم التعامل مع الممثل الخاص بك كعضو في فريق التمثيل",
       "startDate": "تاريخ البداية",
       "endDate": "تاريخ النهاية",
+      "showTime": "معاد العرض",
       "actions": "الاجراءات"
     }
   }

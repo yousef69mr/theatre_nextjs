@@ -59,6 +59,7 @@ const ExecutorClient: FC<ExecutorClientProps> = (props) => {
       {
         name: executor?.name as string,
         imgUrl: executor?.imgUrl,
+        description: executor?.description,
         isPublished,
       },
       executor?.id as string

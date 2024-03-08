@@ -152,6 +152,7 @@ export async function PATCH(request: NextRequest, props: PlayProps) {
     images,
     // festivalId,
     // showTime,
+    description,
     videoUrl,
     executorId,
     isPublished,
@@ -211,6 +212,7 @@ export async function PATCH(request: NextRequest, props: PlayProps) {
         posterImgUrl,
         videoUrl,
         images,
+        description,
         isPublished,
       },
       include: {

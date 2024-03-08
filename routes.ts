@@ -6,7 +6,7 @@ import i18nConfig from "./next-i18next.config";
 export const publicRoutes = [
   "/",
   "/plays",
-  "/plays/:playerId",
+  "/plays/:playId",
   "/actors",
   "/actors/:actorId",
   "/executors",
@@ -15,6 +15,7 @@ export const publicRoutes = [
 ];
 
 export const routeChecker = (route: string, routesList: string[]) => {
+  // console.log(route);
   const routeSections = route.split("/");
   // if (routeSections[1] !== "api") {
   // if home with diffrent locale
@@ -31,32 +32,39 @@ export const routeChecker = (route: string, routesList: string[]) => {
 
   // console.log(routeSections);
 
-  let isFound = true;
+  let isFound = false;
 
-  routesList.forEach((route) => {
-    if (!isFound) {
-      return isFound;
-    }
+  for (const route of routesList) {
     const givenRouteSections = route.split("/");
     // console.log(givenRouteSections);
-    // if (routeSections.length - 1 !== givenRouteSections.length) {
+    if (routeSections.length !== givenRouteSections.length) {
+      continue;
+    }
+    const lengthLimit = routeSections.length;
+    // if (routeSections.length > lengthLimit) {
     //   continue;
     // }
 
-    for (let index = 0; index < givenRouteSections.length; index++) {
+    for (let index = 0; index < lengthLimit; index++) {
       if (
         !givenRouteSections[index].startsWith(":") &&
         givenRouteSections[index] !== routeSections[index]
       ) {
-        isFound = false;
+        break;
+      }
+
+      if (index === givenRouteSections.length - 1 && !isFound) {
+        isFound = true;
+        // console.log(route);
       }
     }
 
-    // console.log(isFound);
-  });
+    if (isFound) {
+      break;
+    }
+  }
 
   return isFound;
-  // return routesList.includes(route);
   // }
 };
 

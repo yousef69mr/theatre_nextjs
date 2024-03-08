@@ -37,6 +37,7 @@ import {
   createFestivalRequest,
   updateFestivalRequest,
 } from "@/lib/api-calls/models/festival";
+import { Textarea } from "@/components/ui/textarea";
 
 interface FestivalFormProps extends HtmlHTMLAttributes<HTMLElement> {
   initialData: FestivalType | null;
@@ -239,6 +240,29 @@ const FestivalForm: FC<FestivalFormProps> = (props) => {
                         <Input
                           disabled={isDisabled}
                           placeholder={t("forms.placeholder.festivalName", {
+                            ns: "constants",
+                          })}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>
+                        {t("forms.labels.description", {
+                          ns: "constants",
+                        })}
+                      </FormLabel>
+                      <FormControl>
+                        <Textarea
+                          disabled={isDisabled}
+                          placeholder={t("forms.placeholder.description", {
                             ns: "constants",
                           })}
                           {...field}

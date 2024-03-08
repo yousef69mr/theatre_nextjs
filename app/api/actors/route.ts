@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid fields" }, { status: 400 });
   }
 
-  const { name, imgUrl, nickname, startDate, endDate, isCastMember } =
+  const { name, imgUrl, nickname, startDate, endDate, isCastMember,description } =
     validatedFields.data;
 
   if (!name) {
@@ -90,6 +90,7 @@ export async function POST(request: NextRequest) {
         name,
         imgUrl,
         nickname,
+        description
       },
       include: {
         awards: true,

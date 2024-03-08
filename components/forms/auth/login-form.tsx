@@ -20,6 +20,11 @@ import { useState, useTransition } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { login } from "@/lib/actions/login";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
 
 type loginValues = Zod.infer<typeof loginSchema>;
 
@@ -154,9 +159,17 @@ const LoginForm = () => {
                 <FormItem>
                   <FormLabel>Two Factor Code</FormLabel>
                   <FormControl>
-                    <Input
+                    <InputOTP
+                      maxLength={6}
                       placeholder="123456"
                       disabled={isSubmitting || isPending}
+                      render={({ slots }) => (
+                        <InputOTPGroup>
+                          {slots.map((slot, index) => (
+                            <InputOTPSlot key={index} {...slot} />
+                          ))}
+                        </InputOTPGroup>
+                      )}
                       {...field}
                     />
                   </FormControl>

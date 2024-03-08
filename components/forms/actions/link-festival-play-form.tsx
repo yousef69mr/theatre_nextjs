@@ -55,6 +55,7 @@ import {
   updateFestivalPlayRequest,
 } from "@/lib/api-calls/actions/festival-play";
 import { Input } from "@/components/ui/input";
+import { convertDateTime } from "@/lib/helpers/time-parser";
 
 interface LinkActorPlayFormProps extends HtmlHTMLAttributes<HTMLElement> {
   initialData: PlayFestivalType | null;
@@ -97,7 +98,13 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
     defaultValues: {
       playId: playId || initialData?.play.id,
       festivalId: festivalId || initialData?.festival.id,
-      showTimes: initialData?.showTimes || [],
+      showTimes:
+        (initialData?.showTimes && [
+          ...initialData?.showTimes.map((showTime) =>
+            convertDateTime(showTime)
+          ),
+        ]) ||
+        [],
     },
   });
 
@@ -402,7 +409,7 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
           render={({ field }) => (
             <FormItem className="flex-1">
               <FormLabel>
-                {t("forms.labels.endDate", {
+                {t("forms.labels.showTime", {
                   ns: "constants",
                 })}
               </FormLabel>
@@ -410,7 +417,7 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
                 <Input
                   type="datetime-local"
                   disabled={isDisabled}
-                  placeholder={t("forms.placeholder.endDate", {
+                  placeholder={t("forms.placeholder.showTime", {
                     ns: "constants",
                   })}
                   onChange={(event) => {

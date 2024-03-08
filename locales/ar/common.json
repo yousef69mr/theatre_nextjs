@@ -47,6 +47,7 @@
     "filter": "تنقية {{instance}}",
     "filterBy": "تنقية بواسطة {{instance}}",
     "cancel": "إلغاء",
+    "show": "إظهار {{instance}}",
     "link": "ربط {{instance}}",
     "linkTo": "ربط {{instance}} ل{{to}}",
     "save": "حفظ {{instance}}"

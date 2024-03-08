@@ -6,6 +6,7 @@ export const actorSchema = object({
   imgUrl: string(),
   startDate: string().min(1, { message: "start date is required" }),
   endDate: string().optional(),
+  description: string().optional(),
   isCastMember: boolean().default(true),
   isPublished: boolean().default(true),
 });

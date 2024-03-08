@@ -37,6 +37,7 @@ import { useModal } from "@/hooks/stores/use-modal-store";
 // import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
 import { useExecutorStore } from "@/hooks/stores/use-executor-store";
 import FileUpload from "../../helpers/file-upload";
+import { Textarea } from "@/components/ui/textarea";
 
 interface ExecutorFormProps extends HtmlHTMLAttributes<HTMLElement> {
   initialData: ExecutorType | null;
@@ -280,6 +281,29 @@ const ExecutorForm: FC<ExecutorFormProps> = (props) => {
                               ns: "admin",
                             }
                           )}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem className="w-full md:col-span-2">
+                      <FormLabel>
+                        {t("forms.labels.description", {
+                          ns: "constants",
+                        })}
+                      </FormLabel>
+                      <FormControl>
+                        <Textarea
+                          disabled={isDisabled}
+                          placeholder={t("forms.placeholder.description", {
+                            ns: "constants",
+                          })}
                           {...field}
                         />
                       </FormControl>
