@@ -1,6 +1,6 @@
 "use client";
 import { Locale } from "@/next-i18next.config";
-import React, { FC, useEffect } from "react";
+import { FC, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 
@@ -25,6 +25,7 @@ import toast from "react-hot-toast";
 import { useExecutorStore } from "@/hooks/stores/use-executor-store";
 import { useModal } from "@/hooks/stores/use-modal-store";
 import { useFestivalStore } from "@/hooks/stores/use-festivals-store";
+import Link from "next/link";
 
 interface ExecutorClientProps {
   executor: ExecutorType | null;
@@ -44,7 +45,7 @@ const ExecutorClient: FC<ExecutorClientProps> = (props) => {
 
   const headingTitle = executor
     ? `${t("executor.single", { ns: "constants" })} ${executor.name} ${
-        executor.nickname && `(${executor.nickname})`
+        executor.nickname ? `(${executor.nickname})` : ""
       }`
     : `${t("actions.add", {
         instance: t("executor.single", { ns: "constants" }),
@@ -98,31 +99,35 @@ const ExecutorClient: FC<ExecutorClientProps> = (props) => {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <Heading title={headingTitle} />
         {executor && (
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button onClick={handleDelete}>
-                  <Trash className={cn("md:ltr:mr-2 md:rtl:ml-2 h-4 w-4")} />
-                  <span className="hidden md:block">
+          <>
+            <Link href={`/${locale}/executors/${executor.id}`}>
+              <Heading title={headingTitle} />
+            </Link>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button onClick={handleDelete}>
+                    <Trash className={cn("md:ltr:mr-2 md:rtl:ml-2 h-4 w-4")} />
+                    <span className="hidden md:block">
+                      {t("actions.delete", {
+                        ns: "common",
+                        instance: t("executor.single", { ns: "constants" }),
+                      })}
+                    </span>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent className="md:hidden flex">
+                  <span>
                     {t("actions.delete", {
                       ns: "common",
                       instance: t("executor.single", { ns: "constants" }),
                     })}
                   </span>
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent className="md:hidden flex">
-                <span>
-                  {t("actions.delete", {
-                    ns: "common",
-                    instance: t("executor.single", { ns: "constants" }),
-                  })}
-                </span>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </>
         )}
       </div>
 

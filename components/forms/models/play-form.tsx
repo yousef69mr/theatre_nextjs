@@ -108,7 +108,7 @@ const PlayForm: FC<PlayFormProps> = (props) => {
     resolver: zodResolver(playSchema),
     defaultValues: {
       ...initialData,
-
+      description: initialData?.description || undefined,
       // name: "قصة لا يرويها بطل",
       executorId: initialData?.director?.id || undefined,
       // posterImgUrl:
@@ -559,7 +559,7 @@ const PlayForm: FC<PlayFormProps> = (props) => {
                 render={({ field }) => (
                   <FormItem className="w-full md:col-span-2">
                     <FormLabel>
-                      {t("forms.labels.description", {
+                      {t("forms.labels.story", {
                         ns: "constants",
                       })}
                     </FormLabel>

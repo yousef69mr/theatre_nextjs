@@ -13,7 +13,7 @@ const AdminDashboardPage: FC<AdminDashboardPageProps> = (props) => {
   const {
     params: { locale },
   } = props;
-  return <main className="w-full">AdminDashboardPage</main>;
+  return <main className="w-full general-padding">AdminDashboardPage</main>;
 };
 
 export default AdminDashboardPage;

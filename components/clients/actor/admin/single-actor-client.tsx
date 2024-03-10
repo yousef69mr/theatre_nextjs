@@ -4,7 +4,7 @@ import React, { FC, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { ActorType, ExecutorType, FestivalType, PlayType } from "@/types";
 import { cn } from "@/lib/utils";
 // import linkLocaleWrapper from "@/lib/link-locale-wrapper";
@@ -30,6 +30,8 @@ import { usePlayStore } from "@/hooks/stores/use-play-store";
 // import { useExecutorStore } from "@/hooks/stores/use-executor-store";
 import CastMemberControl from "@/components/controls/cast-member-control";
 import { UserRole } from "@prisma/client";
+import { Locale } from "@/next-i18next.config";
+import Link from "next/link";
 
 interface ActorClientProps {
   actor: ActorType | null;
@@ -41,14 +43,14 @@ const ActorClient: FC<ActorClientProps> = (props) => {
   const { actor, festivals, plays } = props;
   const { t } = useTranslation();
   const router = useRouter();
-  // const params = useParams();
+  const params = useParams();
   const onOpen = useModal((state) => state.onOpen);
   const updateActor = useActorStore((state) => state.updateActor);
   const setFestivals = useFestivalStore((state) => state.setFestivals);
   const setPlays = usePlayStore((state) => state.setPlays);
   // const setExecutors = useExecutorStore((state) => state.setExecutors);
 
-  // const locale = params.locale as Locale;
+  const locale = params.locale as Locale;
 
   const headingTitle = actor
     ? `${t("actor.single", { ns: "constants" })} ${actor.name} ${
@@ -124,29 +126,34 @@ const ActorClient: FC<ActorClientProps> = (props) => {
       <div className="flex items-center justify-between">
         <Heading title={headingTitle} />
         {actor && (
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button onClick={() => onOpen("deleteActor", { actor })}>
-                  <Trash className={cn("md:ltr:mr-2 md:rtl:ml-2 h-4 w-4")} />
-                  <span className="hidden md:block">
+          <>
+            <Link href={`/${locale}/actors/${actor.id}`}>
+              <Heading title={headingTitle} />
+            </Link>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button onClick={() => onOpen("deleteActor", { actor })}>
+                    <Trash className={cn("md:ltr:mr-2 md:rtl:ml-2 h-4 w-4")} />
+                    <span className="hidden md:block">
+                      {t("actions.delete", {
+                        ns: "common",
+                        instance: t("actor.single", { ns: "constants" }),
+                      })}
+                    </span>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent className="md:hidden flex">
+                  <span>
                     {t("actions.delete", {
                       ns: "common",
-                      instance: t("actor.single", { ns: "constants" }),
+                      instance: t("play.single", { ns: "constants" }),
                     })}
                   </span>
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent className="md:hidden flex">
-                <span>
-                  {t("actions.delete", {
-                    ns: "common",
-                    instance: t("play.single", { ns: "constants" }),
-                  })}
-                </span>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </>
         )}
       </div>
       <Separator />

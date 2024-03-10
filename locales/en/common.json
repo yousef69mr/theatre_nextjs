@@ -35,6 +35,23 @@
     "CAST_HEAD": "cast head",
     "CAST_VICE_PRESIDENT": "cast vice president"
   },
+  "ExecutorRole": {
+    "DIRECTOR": "director",
+    "AUTHOR": "author",
+    "CO_DIRECTOR": "co-director",
+    "PRODUCER": "producer",
+    "ACTING_COACH": "acting coach",
+    "ADVERTISING": "Advertising",
+    "MUSIC_EXECUTION": "music execution",
+    "SOUND_DESIGNER": "sound designer",
+    "LIGHTING_DESIGNER": "lighting designer",
+    "ASSISTANT_DIRECTOR": "assistant director",
+    "DECOR_DESIGNER": "decor director",
+    "CAMERA_MAN": "camera man",
+    "COSMATICS_DESIGNER": "cosmatics designer",
+    "COSTUME_DESIGNER": "costume designer",
+    "OTHER": "other"
+  },
 
   "actions": {
     "add": "add {{instance}}",
@@ -48,7 +65,7 @@
     "filter": "filter {{instance}}",
     "filterBy": "filter by {{instance}}",
     "cancel": "cancel",
-    "show":"show {{instance}}",
+    "show": "show {{instance}}",
     "link": "link {{instance}}",
     "linkTo": "link {{instance}} to {{to}}",
     "save": "save {{instance}}"

@@ -35,6 +35,23 @@
     "CAST_HEAD": "رئيس كاست",
     "CAST_VICE_PRESIDENT": "نائب رئيس كاست"
   },
+  "ExecutorRole": {
+    "DIRECTOR": "مخرج",
+    "AUTHOR": "مؤلف",
+    "CO_DIRECTOR": "مخرج مساعد",
+    "PRODUCER": "منتج",
+    "ACTING_COACH": "مدرب تمثيل",
+    "ADVERTISING": "دعاية و إعلان",
+    "MUSIC_EXECUTION": "منفذ صوت",
+    "SOUND_DESIGNER": "مصمم موسيقى",
+    "LIGHTING_DESIGNER": "مصمم إضاءة",
+    "ASSISTANT_DIRECTOR": "مساعد مخرج",
+    "DECOR_DESIGNER": "مصمم ديكور",
+    "CAMERA_MAN": "مصور",
+    "COSMATICS_DESIGNER": "مصمم مكياج",
+    "COSTUME_DESIGNER": "مصمم ملابس",
+    "OTHER": "أخرى"
+  },
   "actions": {
     "add": "إضافة {{instance}}",
     "create": "إنشاء {{instance}}",

@@ -301,7 +301,7 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
             )}
           />
         )}
-        {!festivalId && (
+        {!festivalId && !initialData && (
           <FormField
             control={form.control}
             name="festivalId"

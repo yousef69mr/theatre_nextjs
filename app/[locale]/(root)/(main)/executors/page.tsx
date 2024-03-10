@@ -37,7 +37,7 @@ const PlaysPage: FC<ExecutorsPageProps> = async (props) => {
   const executors: ExecutorType[] = await getAllExecutorsRequest();
   // console.log(plays)
   return (
-    <main className="flex flex-col w-full">
+    <main className="flex flex-col w-full general-padding">
       <TranslationsProvider
         locale={locale}
         namespaces={i18nextNamspaces}

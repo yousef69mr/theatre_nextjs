@@ -35,7 +35,7 @@ const PlaysPage: FC<PlaysPageProps> = async (props) => {
   const plays: PlayType[] = await getAllPlaysRequest();
   // console.log(plays)
   return (
-    <main className="flex flex-col w-full">
+    <main className="flex flex-col w-full general-padding">
     <TranslationsProvider
       locale={locale}
       namespaces={i18nextNamspaces}

@@ -15,18 +15,20 @@ import { Eye, Trophy } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { ExecutorRole } from "@prisma/client";
 
 interface ExecutorCardProps extends HTMLAttributes<HTMLElement> {
   executor: ExecutorType;
+  role?: ExecutorRole;
 }
 const ExecutorCard: FC<ExecutorCardProps> = (props) => {
-  const { executor, className } = props;
+  const { executor, className, role } = props;
   const { t } = useTranslation();
   const params = useParams();
 
   const locale = params.locale as string;
 
-  const { value: numOfViews, unit } = formatBigInt(executor.numOfViews);
+  const { value: numOfViews, unit } = formatBigInt(executor.numOfViews || "0");
   return (
     <DirectionAwareHover
       className={className}
@@ -37,6 +39,11 @@ const ExecutorCard: FC<ExecutorCardProps> = (props) => {
           <h3 className="text-md md:text-xl font-medium truncate">
             {executor.name} {executor.nickname ? `(${executor.nickname})` : ""}
           </h3>
+          {role && (
+            <p className="text-sm text-muted-foreground">
+              {t(`ExecutorRole.${role}`, { ns: "common" })}
+            </p>
+          )}
           <div className="flex flex-wrap gap-3 text-xs font-medium">
             <TooltipProvider>
               <Tooltip>

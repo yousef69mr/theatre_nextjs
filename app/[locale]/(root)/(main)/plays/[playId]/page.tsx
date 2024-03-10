@@ -75,7 +75,7 @@ const SinglePlayPage: FC<SinglePlayPageProps> = async (props) => {
   }
 
   return (
-    <main className="flex flex-col w-full">
+    <main className="flex flex-col w-full general-padding">
       <TranslationsProvider
         locale={locale}
         namespaces={i18nextNamspaces}

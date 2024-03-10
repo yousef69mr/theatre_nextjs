@@ -26,7 +26,7 @@ const PlayCard: FC<PlayCardProps> = (props) => {
 
   const locale = params.locale as string;
 
-  const { value: numOfViews, unit } = formatBigInt(play.numOfViews);
+  const { value: numOfViews, unit } = formatBigInt(play.numOfViews||"0");
   return (
     <DirectionAwareHover className={className} imageUrl={play.posterImgUrl}>
       <Link href={`/${locale}/plays/${play.id}`}>

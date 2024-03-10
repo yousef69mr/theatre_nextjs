@@ -1,9 +1,6 @@
 import { currentRole, isAdmin } from "@/lib/auth";
 import { db } from "@/lib/database";
-import {
-  actorInPlaySchema,
-  festivalPlaySchema,
-} from "@/lib/validations/actions/link-model-actions";
+import { festivalPlaySchema } from "@/lib/validations/actions/link-model-actions";
 import { UserRole } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 

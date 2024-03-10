@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { UserRole } from "@prisma/client";
+import { ExecutorRole, UserRole } from "@prisma/client";
 
 export const currentUser = async () => {
   const session = await auth();
@@ -36,4 +36,19 @@ export const isAdmin = (loggedUserRole: UserRole) => {
   // console.log(isAdmin);
 
   return isAdmin;
+};
+
+export const mainExecutorsRoles = [ExecutorRole.DIRECTOR, ExecutorRole.AUTHOR];
+
+export const isMainPlayExecutors = (executorRole: ExecutorRole) => {
+  let isMainRole = false;
+  mainExecutorsRoles.map((role) => {
+    if (role === executorRole) {
+      isMainRole = true;
+      return;
+    }
+  });
+  // console.log(isAdmin);
+
+  return isMainRole;
 };

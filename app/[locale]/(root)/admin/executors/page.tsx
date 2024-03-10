@@ -27,7 +27,7 @@ const AdminPlaysPage: FC<AdminPlaysPage> = async (props) => {
   const executors: ExecutorType[] = await getAllExecutorsRequest();
 
   return (
-    <main className="flex flex-col w-full">
+    <main className="flex flex-col w-full general-padding">
       <TranslationsProvider
         locale={locale}
         namespaces={i18nextNamspaces}

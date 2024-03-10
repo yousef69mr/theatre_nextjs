@@ -29,6 +29,7 @@ import { useFestivalStore } from "@/hooks/stores/use-festivals-store";
 import ActorInPlayControl from "@/components/controls/actor-in-play-control";
 import FestivalPlayControl from "@/components/controls/festival-play-control";
 import { useActorStore } from "@/hooks/stores/use-actor-store";
+import Link from "next/link";
 
 interface PlayClientProps {
   play: PlayType | null;
@@ -118,31 +119,35 @@ const PlayClient: FC<PlayClientProps> = (props) => {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <Heading title={headingTitle} />
         {play && (
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button onClick={handleDelete}>
-                  <Trash className={cn("md:ltr:mr-2 md:rtl:ml-2 h-4 w-4")} />
-                  <span className="hidden md:block">
+          <>
+            <Link href={`/${locale}/plays/${play.id}`}>
+              <Heading title={headingTitle} />
+            </Link>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button onClick={handleDelete}>
+                    <Trash className={cn("md:ltr:mr-2 md:rtl:ml-2 h-4 w-4")} />
+                    <span className="hidden md:block">
+                      {t("actions.delete", {
+                        ns: "common",
+                        instance: t("play.single", { ns: "constants" }),
+                      })}
+                    </span>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent className="md:hidden flex">
+                  <span>
                     {t("actions.delete", {
                       ns: "common",
                       instance: t("play.single", { ns: "constants" }),
                     })}
                   </span>
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent className="md:hidden flex">
-                <span>
-                  {t("actions.delete", {
-                    ns: "common",
-                    instance: t("play.single", { ns: "constants" }),
-                  })}
-                </span>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </>
         )}
       </div>
       <Separator />

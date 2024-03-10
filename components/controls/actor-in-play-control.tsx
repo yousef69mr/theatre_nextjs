@@ -145,7 +145,7 @@ const ActorInPlayControl: FC<ActorInPlayControlProps> = (props) => {
           ))
         ) : (
           <p className="text-muted-foreground">
-            {t("notFound", {
+            {t("errors.notFound", {
               ns: "constants",
               instance: t(`${type}.plural`, { ns: "constants" }),
             })}

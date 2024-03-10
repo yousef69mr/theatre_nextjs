@@ -26,7 +26,7 @@ const AdminActorsPage: FC<AdminPlaysPageProps> = async (props) => {
   const { resources } = await initTranslations(locale, i18nextNamspaces);
   const actors: ActorType[] = await getAllActorsRequest();
   return (
-    <main className="flex flex-col w-full">
+    <main className="flex flex-col w-full general-padding">
       <TranslationsProvider
         locale={locale}
         namespaces={i18nextNamspaces}

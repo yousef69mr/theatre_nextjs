@@ -43,7 +43,7 @@ export const DeleteExecutorModal = () => {
 
       removeExecutor(executor?.id as string);
       toast.success(
-        t("constants.deleted", {
+        t("messages.deleted", {
           ns: "constants",
           instance: t("executor.single", { ns: "constants" }),
         })

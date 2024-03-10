@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, HtmlHTMLAttributes, useState, useTransition } from "react";
+import { FC, HtmlHTMLAttributes, useEffect, useState, useTransition } from "react";
 import {
   Form,
   FormControl,
@@ -49,6 +49,8 @@ type ExecutorFormValues = Zod.infer<typeof executorSchema>;
 
 const ExecutorForm: FC<ExecutorFormProps> = (props) => {
   const { initialData, className, mode = "page" } = props;
+
+
   const { onClose } = useModal();
   const addExecutor = useExecutorStore((state) => state.addExecutor);
   const updateExecutor = useExecutorStore((state) => state.updateExecutor);
@@ -73,6 +75,7 @@ const ExecutorForm: FC<ExecutorFormProps> = (props) => {
     resolver: zodResolver(executorSchema),
     defaultValues: {
       ...initialData,
+      description: initialData?.description || undefined,
     },
   });
 
@@ -154,6 +157,7 @@ const ExecutorForm: FC<ExecutorFormProps> = (props) => {
   const isDisabled = isUploadingFile || isSubmitting;
   const isValid = form.formState.isValid;
 
+
   return (
     <div className={cn(initialData && "mt-6 border rounded-md p-4")}>
       {initialData && (
@@ -189,7 +193,7 @@ const ExecutorForm: FC<ExecutorFormProps> = (props) => {
         >
           {initialData
             ? `${initialData.name} ${
-                initialData.nickname && `(${initialData.nickname})`
+                initialData.nickname ? `(${initialData.nickname})`:""
               }`
             : t("actorForm.inputs-default.name")}
         </p>
@@ -288,7 +292,7 @@ const ExecutorForm: FC<ExecutorFormProps> = (props) => {
                     </FormItem>
                   )}
                 />
-                <FormField
+                {/* <FormField
                   control={form.control}
                   name="description"
                   render={({ field }) => (
@@ -310,7 +314,7 @@ const ExecutorForm: FC<ExecutorFormProps> = (props) => {
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> */}
               </div>
             </div>
 

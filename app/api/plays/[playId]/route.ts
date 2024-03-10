@@ -30,6 +30,7 @@ export async function GET(request: NextRequest, props: PlayProps) {
                 name: true,
                 nickname: true,
                 imgUrl: true,
+                awards: true,
               },
             },
           },
@@ -43,6 +44,7 @@ export async function GET(request: NextRequest, props: PlayProps) {
                 name: true,
                 nickname: true,
                 imgUrl: true,
+                awards: true,
               },
             },
             play: {
@@ -52,6 +54,7 @@ export async function GET(request: NextRequest, props: PlayProps) {
                 posterImgUrl: true,
               },
             },
+
             festival: {
               select: {
                 id: true,
@@ -89,6 +92,7 @@ export async function GET(request: NextRequest, props: PlayProps) {
       { status: 200 }
     );
   } catch (error) {
+    console.log(error);
     return NextResponse.json({ error: "Internal error" }, { status: 500 });
   }
 }
@@ -174,7 +178,7 @@ export async function PATCH(request: NextRequest, props: PlayProps) {
       { status: 400 }
     );
   }
-  // Get the festival by id and check if it exists
+  // Get the director by id and check if it exists
   const director = await db.executor.findFirst({
     where: {
       id: executorId,
@@ -192,16 +196,42 @@ export async function PATCH(request: NextRequest, props: PlayProps) {
   // )
 
   try {
-    //update director
-    await db.executorInPlay.updateMany({
+    const existingDirector = await db.executorInPlay.findFirst({
       where: {
         playId,
         role: ExecutorRole.DIRECTOR,
       },
-      data: {
-        executorId,
-      },
     });
+
+    if (!existingDirector) {
+      const playFestival = await db.playFestival.findFirst({
+        where: {
+          playId,
+        },
+      });
+
+      if (playFestival) {
+        await db.executorInPlay.create({
+          data: {
+            executorId,
+            playId,
+            festivalId: playFestival.id,
+            role: ExecutorRole.DIRECTOR,
+          },
+        });
+      }
+    } else {
+      //update director
+      await db.executorInPlay.updateMany({
+        where: {
+          playId,
+          role: ExecutorRole.DIRECTOR,
+        },
+        data: {
+          executorId,
+        },
+      });
+    }
 
     const play = await db.play.update({
       where: {
@@ -228,7 +258,7 @@ export async function PATCH(request: NextRequest, props: PlayProps) {
             },
           },
         },
-        // awards: true,
+        awards: true,
         actors: {
           include: {
             actor: {

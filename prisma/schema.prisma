@@ -169,7 +169,7 @@ model PlayFestival {
 model Play {
   id           String  @id @default(auto()) @map("_id") @db.ObjectId
   name         String
-  description String?
+  description  String?
   videoUrl     String?
   posterImgUrl String
   numOfViews   BigInt  @default(0)
@@ -246,14 +246,14 @@ enum ExecutorRole {
   AUTHOR
   CO_DIRECTOR
   ACTING_COACH
-  MARKETER
+  ADVERTISING
   MUSIC_EXECUTION
   SOUND_DESIGNER
   LIGHTING_DESIGNER
   ASSISTANT_DIRECTOR
   DECOR_DESIGNER
   CAMERA_MAN
-  PRODUCTION_MANAGER
+  COSMATICS_DESIGNER
   COSTUME_DESIGNER
   OTHER
 }
@@ -284,11 +284,11 @@ model ExecutorInPlay {
 model Executor {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  name       String
+  name        String
   description String?
-  imgUrl     String?
-  nickname   String?
-  numOfViews BigInt  @default(0)
+  imgUrl      String?
+  nickname    String?
+  numOfViews  BigInt  @default(0)
 
   userId String? @db.ObjectId
   // user   User?   @relation(fields: [userId], references: [id])

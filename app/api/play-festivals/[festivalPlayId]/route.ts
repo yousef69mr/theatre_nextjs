@@ -175,21 +175,11 @@ export async function PATCH(request: NextRequest, props: FestivalPlayProps) {
       return NextResponse.json({ error: "link not found!" }, { status: 404 });
     }
 
-    //update previous links with the old information
-    await db.actorInPlay.deleteMany({
-      where: {
-        playId: oldFestivalPlay.playId,
-        festivalId: oldFestivalPlay.festivalId,
-      },
-    });
-    // await db.actorInPlay.updateMany({
+    // //update previous links with the old information
+    // await db.actorInPlay.deleteMany({
     //   where: {
     //     playId: oldFestivalPlay.playId,
     //     festivalId: oldFestivalPlay.festivalId,
-    //   },
-    //   data: {
-    //     playId,
-    //     festivalId,
     //   },
     // });
 

@@ -74,6 +74,7 @@ const ActorForm: FC<ActorFormProps> = (props) => {
     resolver: zodResolver(actorSchema),
     defaultValues: {
       ...initialData,
+      description: initialData?.description || undefined,
       startDate: new Date().toDateString(),
       nickname: initialData?.nickname || undefined,
     },

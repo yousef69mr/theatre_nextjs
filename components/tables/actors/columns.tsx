@@ -104,7 +104,7 @@ export const ActorColumns: ActorColumnDef<ActorType>[] = [
 
       return (
         <div className="flex items-center justify-center">
-          <p>{awards.length}</p>
+          <p>{awards?.length || 0}</p>
         </div>
       );
     },

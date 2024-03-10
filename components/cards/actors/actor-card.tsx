@@ -24,7 +24,7 @@ const ActorCard: FC<ActorCardProps> = (props) => {
 
   const locale = params.locale as string;
 
-  const { value: numOfViews, unit } = formatBigInt(actor.numOfViews);
+  const { value: numOfViews, unit } = formatBigInt(actor.numOfViews || "0");
   return (
     <DirectionAwareHover
       className={className}
