@@ -11,6 +11,7 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -57,6 +58,7 @@ import {
 import { usePlayStore } from "@/hooks/stores/use-play-store";
 import { useFestivalStore } from "@/hooks/stores/use-festivals-store";
 import { useActorStore } from "@/hooks/stores/use-actor-store";
+import { MultiInput } from "@/components/ui/multi-input";
 
 interface LinkActorPlayFormProps extends HtmlHTMLAttributes<HTMLElement> {
   initialData: ActorInPlayType | null;
@@ -188,11 +190,10 @@ const LinkActorPlayForm: FC<LinkActorPlayFormProps> = (props) => {
     // console.log(selectedPlay);
     if (!selectedPlay) return;
 
-    
     const formattedFestivals: FestivalType[] = selectedPlay.festivals?.map(
       (festival) => ({ ...festival.festival })
     );
-    console.log(formattedFestivals.length);
+    // console.log(formattedFestivals.length);
     if (formattedFestivals.length === 1) {
       form.setValue("festivalId", formattedFestivals[0].id);
       form.trigger("festivalId");
@@ -237,9 +238,21 @@ const LinkActorPlayForm: FC<LinkActorPlayFormProps> = (props) => {
                         )}
                       >
                         {field.value
-                          ? localActors?.find(
-                              (executor) => executor.id === field.value
-                            )?.name
+                          ? `${
+                              localActors?.find(
+                                (actor) => actor.id === field.value
+                              )?.name
+                            } ${
+                              localActors?.find(
+                                (actor) => actor.id === field.value
+                              )?.nickname
+                                ? `(${
+                                    localActors?.find(
+                                      (actor) => actor.id === field.value
+                                    )?.nickname
+                                  })`
+                                : ""
+                            }`
                           : t("actions.select", {
                               ns: "common",
                               instance: t("actor.single", {
@@ -286,7 +299,7 @@ const LinkActorPlayForm: FC<LinkActorPlayFormProps> = (props) => {
                               )}
                             />
                             {actor.name}{" "}
-                            {actor.nickname && `(${actor.nickname})`}
+                            {actor.nickname ? `(${actor.nickname})` : ""}
                           </CommandItem>
                         ))}
                       </CommandGroup>
@@ -484,6 +497,31 @@ const LinkActorPlayForm: FC<LinkActorPlayFormProps> = (props) => {
             )}
           />
         )}
+
+        <FormField
+          control={form.control}
+          name="characterNames"
+          render={({ field }) => (
+            <FormItem className="flex flex-col justify-end">
+              <FormLabel>
+                {t("forms.labels.characterNames", { ns: "constants" })}
+              </FormLabel>
+              <MultiInput
+                values={initialData?.characterNames || []}
+                placeholder={t("forms.placeholder.characterNames", {
+                  ns: "constants",
+                })}
+                onChange={(values) => {
+                  form.setValue("characterNames", values);
+                  form.trigger("characterNames");
+                }}
+                disabled={isDisabled}
+              />
+              <FormDescription>// description</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <Separator />
         <div className="flex w-full justify-end items-center">

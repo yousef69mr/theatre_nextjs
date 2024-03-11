@@ -213,9 +213,9 @@ export async function PATCH(request: NextRequest, props: PlayProps) {
       if (playFestival) {
         await db.executorInPlay.create({
           data: {
-            executorId,
-            playId,
-            festivalId: playFestival.id,
+            festival: { connect: { id: playFestival.id } },
+            executor: { connect: { id: executorId } },
+            play: { connect: { id: playId } },
             role: ExecutorRole.DIRECTOR,
           },
         });

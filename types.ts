@@ -51,6 +51,7 @@ export type TwoFactorConfirmationType = {
 //models
 export type ActorInPlayType = {
   id: string;
+  characterNames: string[];
   actor: ActorType;
   play: PlayType;
   festival: FestivalType;
@@ -153,7 +154,7 @@ export type adminRouteType = {
 };
 
 export type SelectType = {
-  id: number;
+  id?: number;
   value: string;
   label: string;
 };

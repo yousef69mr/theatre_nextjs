@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid fields" }, { status: 400 });
   }
 
-  const { actorId, playId, festivalId } = validatedFields.data;
+  const { actorId, playId, festivalId, characterNames } = validatedFields.data;
 
   if (!festivalId) {
     return NextResponse.json(
@@ -74,6 +74,7 @@ export async function POST(request: NextRequest) {
         playId,
         actorId,
         festivalId,
+        characterNames: characterNames || [],
       },
       include: {
         actor: {
@@ -101,8 +102,6 @@ export async function POST(request: NextRequest) {
     });
 
     // console.log(play);
-
-  
 
     return NextResponse.json(actorInPlay, { status: 201 });
   } catch (error) {

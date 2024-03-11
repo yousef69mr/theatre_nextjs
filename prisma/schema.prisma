@@ -189,7 +189,8 @@ model Play {
 }
 
 model ActorInPlay {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  characterNames String[]
 
   playId String @db.ObjectId
   play   Play   @relation(fields: [playId], references: [id], onDelete: Cascade)
