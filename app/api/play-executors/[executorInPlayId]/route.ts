@@ -1,35 +1,36 @@
 import { currentRole, isAdmin } from "@/lib/auth";
 import { db } from "@/lib/database";
-import { actorInPlaySchema } from "@/lib/validations/actions/link-model-actions";
-import { playSchema } from "@/lib/validations/models/play";
-import { ExecutorRole, UserRole } from "@prisma/client";
+import { executorInPlaySchema } from "@/lib/validations/actions/link-model-actions";
+
+import { UserRole } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 interface actorInPlayProps {
   params: {
-    actorInPlayId: string;
+    executorInPlayId: string;
   };
 }
 export async function GET(request: NextRequest, props: actorInPlayProps) {
   const {
-    params: { actorInPlayId },
+    params: { executorInPlayId },
   } = props;
 
-  if (!actorInPlayId) {
+  if (!executorInPlayId) {
     return NextResponse.json(
-      { error: "actorInPlayId is required" },
+      { error: "executorInPlayId is required" },
       { status: 400 }
     );
   }
   try {
-    const actorInPlay = await db.actorInPlay.findFirst({
+    const executorInPlay = await db.executorInPlay.findFirst({
       where: {
-        id: actorInPlayId,
+        id: executorInPlayId,
       },
       include: {
-        actor: {
+        executor: {
           select: {
             id: true,
             name: true,
+            nickname: true,
             imgUrl: true,
           },
         },
@@ -50,11 +51,11 @@ export async function GET(request: NextRequest, props: actorInPlayProps) {
       },
     });
 
-    if (!actorInPlay) {
+    if (!executorInPlay) {
       return NextResponse.json({ error: "not found" }, { status: 404 });
     }
 
-    return NextResponse.json(actorInPlay, { status: 200 });
+    return NextResponse.json(executorInPlay, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: "Internal error" }, { status: 500 });
   }
@@ -62,7 +63,7 @@ export async function GET(request: NextRequest, props: actorInPlayProps) {
 
 export async function DELETE(request: NextRequest, props: actorInPlayProps) {
   const {
-    params: { actorInPlayId },
+    params: { executorInPlayId },
   } = props;
 
   const currentUserRole = await currentRole();
@@ -71,21 +72,21 @@ export async function DELETE(request: NextRequest, props: actorInPlayProps) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  if (!actorInPlayId) {
+  if (!executorInPlayId) {
     return NextResponse.json(
-      { error: "actorInPlayId is required" },
+      { error: "executorInPlayId is required" },
       { status: 400 }
     );
   }
   try {
-    await db.actorInPlay.delete({
+    await db.executorInPlay.delete({
       where: {
-        id: actorInPlayId,
+        id: executorInPlayId,
       },
     });
 
     return NextResponse.json(
-      { success: "actor play link is deleted" },
+      { success: "executor play link is deleted" },
       { status: 204 }
     );
   } catch (error) {
@@ -95,7 +96,7 @@ export async function DELETE(request: NextRequest, props: actorInPlayProps) {
 
 export async function PATCH(request: NextRequest, props: actorInPlayProps) {
   const {
-    params: { actorInPlayId },
+    params: { executorInPlayId },
   } = props;
 
   const currentUserRole = await currentRole();
@@ -104,25 +105,28 @@ export async function PATCH(request: NextRequest, props: actorInPlayProps) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  if (!actorInPlayId) {
+  if (!executorInPlayId) {
     return NextResponse.json(
-      { error: "actorInPlayId is required" },
+      { error: "executorInPlayId is required" },
       { status: 400 }
     );
   }
 
   const values = await request.json();
 
-  const validatedFields = actorInPlaySchema.safeParse(values);
+  const validatedFields = executorInPlaySchema.safeParse(values);
   // console.log(validatedFields);
   if (!validatedFields.success) {
     return NextResponse.json({ error: "Invalid fields" }, { status: 400 });
   }
 
-  const { actorId, festivalId, playId, characterNames } = validatedFields.data;
+  const { executorId, festivalId, playId } = validatedFields.data;
 
-  if (!actorId) {
-    return NextResponse.json({ error: "actorId is missing!" }, { status: 400 });
+  if (!executorId) {
+    return NextResponse.json(
+      { error: "executorId is missing!" },
+      { status: 400 }
+    );
   }
   if (!festivalId) {
     return NextResponse.json(
@@ -134,14 +138,14 @@ export async function PATCH(request: NextRequest, props: actorInPlayProps) {
     return NextResponse.json({ error: "actorId is missing!" }, { status: 400 });
   }
   // Get the festival by id and check if it exists
-  const actor = await db.actor.findFirst({
+  const executor = await db.executor.findFirst({
     where: {
-      id: actorId,
+      id: executorId,
     },
   });
 
-  if (!actor) {
-    return NextResponse.json({ error: "actor not found!" }, { status: 404 });
+  if (!executor) {
+    return NextResponse.json({ error: "executor not found!" }, { status: 404 });
   }
 
   const play = await db.play.findFirst({
@@ -166,18 +170,17 @@ export async function PATCH(request: NextRequest, props: actorInPlayProps) {
 
   try {
     //update director
-    const actorInPlay = await db.actorInPlay.update({
+    const executorInPlay = await db.executorInPlay.update({
       where: {
-        id: actorInPlayId,
+        id: executorInPlayId,
       },
       data: {
-        actorId,
         playId,
         festivalId,
-        characterNames: characterNames || [],
+        executorId,
       },
       include: {
-        actor: {
+        executor: {
           select: {
             id: true,
             name: true,
@@ -201,7 +204,7 @@ export async function PATCH(request: NextRequest, props: actorInPlayProps) {
       },
     });
 
-    return NextResponse.json(actorInPlay, { status: 200 });
+    return NextResponse.json(executorInPlay, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: "Internal error" }, { status: 500 });
   }
