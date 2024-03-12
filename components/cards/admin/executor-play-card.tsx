@@ -10,17 +10,24 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { ActorInPlayType } from "@/types";
+import { ExecutorInPlayType } from "@/types";
 import { useModal } from "@/hooks/stores/use-modal-store";
-import { Drama, Edit, PartyPopper, Theater, Trash } from "lucide-react";
+import {
+  AlertOctagon,
+  Edit,
+  PartyPopper,
+  Speech,
+  Theater,
+  Trash,
+} from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-interface ActorInPlayCardProps {
-  actorInPlay: ActorInPlayType;
+interface ExecutorInPlayCardProps {
+  executorInPlay: ExecutorInPlayType;
   mode?: "search" | "default";
 }
 
-const ActorInPlayCard: FC<ActorInPlayCardProps> = (props) => {
-  const { actorInPlay, mode = "default" } = props;
+const ExecutorInPlayCard: FC<ExecutorInPlayCardProps> = (props) => {
+  const { executorInPlay, mode = "default" } = props;
   const onOpen = useModal((state) => state.onOpen);
 
   const params = useParams();
@@ -29,14 +36,14 @@ const ActorInPlayCard: FC<ActorInPlayCardProps> = (props) => {
   const locale = params.locale;
 
   const festivalId = params.festivalId as string;
-  const actorId = params.actorId as string;
+  const executorId = params.executorId as string;
   const playId = params.playId as string;
 
   const handleDelete = () => {
-    onOpen("deleteActorPlayLink", { actorInPlay: actorInPlay });
+    onOpen("deleteExecutorPlayLink", { executorInPlay: executorInPlay });
   };
 
-  // console.log(actorInPlay);
+  // console.log(executorInPlay);
 
   if (mode === "search") {
     return (
@@ -44,38 +51,45 @@ const ActorInPlayCard: FC<ActorInPlayCardProps> = (props) => {
         <div className="flex w-full py-2 gap-y-2 flex-col justify-center">
           {!playId && (
             <Link
-              href={`/${locale}/admin/plays/${actorInPlay.play?.id}`}
+              href={`/${locale}/admin/plays/${executorInPlay.play?.id}`}
               className="hover:text-yellow-400"
             >
               <div className="flex items-center justify-start">
                 <Theater className="w-5 h-5 ltr:mr-2 rtl:ml-2 text-primary" />
+
                 <span className="truncate font-medium">
-                  {actorInPlay.play?.name}
+                  {executorInPlay.play?.name}
                 </span>
               </div>
             </Link>
           )}
-          {!actorId && (
+          {!executorId && (
             <Link
-              href={`/${locale}/admin/actors/${actorInPlay.actor?.id}`}
+              href={`/${locale}/admin/executors/${executorInPlay.executor?.id}`}
               className="hover:text-yellow-400"
             >
               <div className="flex items-center justify-start">
-                <Drama className="w-5 h-5 ltr:mr-2 rtl:ml-2 text-primary" />
+                <Speech className="w-5 h-5 ltr:mr-2 rtl:ml-2 text-primary" />
                 <span className="truncate font-medium ">
-                  {actorInPlay.actor?.name}{" "}
-                  {actorInPlay.actor?.nickname
-                    ? `(${actorInPlay.actor?.nickname})`
+                  {executorInPlay.executor?.name}{" "}
+                  {executorInPlay.executor?.nickname
+                    ? `(${executorInPlay.executor?.nickname})`
                     : ""}
+                </span>{" "}
+                <span className="mx-1">
+                  {`(${t(`ExecutorRole.${executorInPlay.role}`, {
+                    ns: "common",
+                  })})`}
                 </span>
               </div>
             </Link>
           )}
+
           {!festivalId && (
             <div className="flex items-center justify-start">
               <PartyPopper className="w-5 h-5 ltr:mr-2 rtl:ml-2 text-primary" />
               <span className="truncate font-medium">
-                {actorInPlay.festival?.name}
+                {executorInPlay.festival?.name}
               </span>
             </div>
           )}
@@ -86,7 +100,9 @@ const ActorInPlayCard: FC<ActorInPlayCardProps> = (props) => {
               <TooltipTrigger asChild>
                 <Button
                   onClick={() =>
-                    onOpen("linkActorPlay", { actorInPlay: actorInPlay })
+                    onOpen("linkExecutorPlay", {
+                      executorInPlay: executorInPlay,
+                    })
                   }
                   size={"icon"}
                   variant="ghost"
@@ -138,7 +154,7 @@ const ActorInPlayCard: FC<ActorInPlayCardProps> = (props) => {
             <TooltipTrigger asChild>
               <Button
                 onClick={() =>
-                  onOpen("linkActorPlay", { actorInPlay: actorInPlay })
+                  onOpen("linkExecutorPlay", { executorInPlay: executorInPlay })
                 }
                 size={"icon"}
                 variant="ghost"
@@ -182,40 +198,45 @@ const ActorInPlayCard: FC<ActorInPlayCardProps> = (props) => {
       <Separator className="mb-2" />
       <div className="flex w-full gap-y-2 py-2 flex-col justify-center">
         {!playId && (
-          <Link
-            href={`/${locale}/admin/plays/${actorInPlay.play?.id}`}
-            className="hover:text-yellow-400"
-          >
-            <div className="flex items-center justify-start">
-              <Theater className="w-5 h-5 ltr:mr-2 rtl:ml-2 text-primary" />
-
+          <div className="flex items-center justify-start">
+            <Theater className="w-5 h-5 ltr:mr-2 rtl:ml-2 text-primary" />
+            <Link href={`/${locale}/admin/plays/${executorInPlay.play?.id}`}>
               <span className="truncate font-medium">
-                {actorInPlay.play?.name}
+                {executorInPlay.play?.name}
               </span>
-            </div>
-          </Link>
+            </Link>
+          </div>
         )}
-        {!actorId && (
+        {!executorId && (
           <Link
-            href={`/${locale}/admin/actors/${actorInPlay.actor?.id}`}
+            href={`/${locale}/admin/executors/${executorInPlay.executor?.id}`}
             className="hover:text-yellow-400"
           >
             <div className="flex items-center justify-start">
-              <Drama className="w-5 h-5 ltr:mr-2 rtl:ml-2 text-primary" />
+              <Speech className="w-5 h-5 ltr:mr-2 rtl:ml-2 text-primary" />
               <span className="truncate font-medium ">
-                {actorInPlay.actor?.name}{" "}
-                {actorInPlay.actor?.nickname
-                  ? `(${actorInPlay.actor?.nickname})`
+                {executorInPlay.executor?.name}{" "}
+                {executorInPlay.executor?.nickname
+                  ? `(${executorInPlay.executor?.nickname})`
                   : ""}
               </span>
             </div>
           </Link>
         )}
+        <div className="flex items-center justify-start">
+          <AlertOctagon className="w-5 h-5 ltr:mr-2 rtl:ml-2 text-primary" />
+          <div className="flex rtl:flex-row-reverse gap-x-1  truncate font-medium capitalize">
+            <span>
+              {t(`ExecutorRole.${executorInPlay.role}`, { ns: "common" })}{" "}
+            </span>
+            <span> {t(`role.single`, { ns: "constants" })}</span>
+          </div>
+        </div>
         {!festivalId && (
           <div className="flex items-center justify-start">
             <PartyPopper className="w-5 h-5 ltr:mr-2 rtl:ml-2 text-primary" />
             <span className="truncate font-medium">
-              {actorInPlay.festival?.name}
+              {executorInPlay.festival?.name}
             </span>
           </div>
         )}
@@ -224,4 +245,4 @@ const ActorInPlayCard: FC<ActorInPlayCardProps> = (props) => {
   );
 };
 
-export default ActorInPlayCard;
+export default ExecutorInPlayCard;

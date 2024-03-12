@@ -30,6 +30,7 @@ import ActorInPlayControl from "@/components/controls/actor-in-play-control";
 import FestivalPlayControl from "@/components/controls/festival-play-control";
 import { useActorStore } from "@/hooks/stores/use-actor-store";
 import Link from "next/link";
+import ExecutorInPlayControl from "@/components/controls/executor-in-play-control";
 
 interface PlayClientProps {
   play: PlayType | null;
@@ -161,6 +162,11 @@ const PlayClient: FC<PlayClientProps> = (props) => {
           />
           <Separator className="bg-red-100 dark:bg-red-700/15" />
           <ActorInPlayControl actorInPlayList={play.actors} type="actor" />
+          <Separator className="bg-red-100 dark:bg-red-700/15" />
+          <ExecutorInPlayControl
+            executorInPlayList={play.executors}
+            type="executor"
+          />
           <Separator className="bg-red-100 dark:bg-red-700/15" />
           <PermissionBox
             handleDelete={handleDelete}

@@ -1,6 +1,10 @@
-import { ActorInPlayType, FestivalType, PlayFestivalType } from "@/types";
+import {
+  ActorInPlayType,
+  ExecutorInPlayType,
+  FestivalType,
+  PlayFestivalType,
+} from "@/types";
 import { create } from "zustand";
-
 
 interface FestivalStore {
   festivals: null | FestivalType[];
@@ -12,6 +16,11 @@ interface FestivalStore {
   removeFestivalActors: (actorInPlayId: string, festivalId: string) => void;
   updateFestivalPlays: (festivalPlay: PlayFestivalType) => void;
   removeFestivalPlays: (festivalPlayId: string, festivalId: string) => void;
+  updateFestivalExecutors: (executorInPlay: ExecutorInPlayType) => void;
+  removeFestivalExecutors: (
+    executorInPlayId: string,
+    festivalId: string
+  ) => void;
 }
 
 export const useFestivalStore = create<FestivalStore>((set) => ({
@@ -73,6 +82,43 @@ export const useFestivalStore = create<FestivalStore>((set) => ({
         (actor) => actor.id !== actorInPlayId
       );
       const updatedFestival = { ...selectedFestival, actors: filteredActors };
+      state.updateFestival(updatedFestival);
+      return state;
+    }),
+  updateFestivalExecutors: (executorInPlay: ExecutorInPlayType) =>
+    set((state) => {
+      const selectedFestival = state.festivals?.find(
+        (festival) => executorInPlay.festival.id === festival.id
+      );
+      if (!selectedFestival) return state;
+
+      const filteredExecutors = selectedFestival.executors.filter(
+        (executor) => executor.id !== executorInPlay.id
+      );
+
+      const updatedExecutors = [...filteredExecutors, executorInPlay];
+
+      const updatedFestival = {
+        ...selectedFestival,
+        executors: updatedExecutors,
+      };
+      state.updateFestival(updatedFestival);
+      return state;
+    }),
+  removeFestivalExecutors: (executorInPlayId: string, festivalId: string) =>
+    set((state) => {
+      const selectedFestival = state.festivals?.find(
+        (festival) => festivalId === festival.id
+      );
+      if (!selectedFestival) return state;
+
+      const filteredExecutors = selectedFestival.executors.filter(
+        (executor) => executor.id !== executorInPlayId
+      );
+      const updatedFestival = {
+        ...selectedFestival,
+        executors: filteredExecutors,
+      };
       state.updateFestival(updatedFestival);
       return state;
     }),

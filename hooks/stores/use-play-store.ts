@@ -1,4 +1,9 @@
-import { ActorInPlayType, PlayFestivalType, PlayType } from "@/types";
+import {
+  ActorInPlayType,
+  ExecutorInPlayType,
+  PlayFestivalType,
+  PlayType,
+} from "@/types";
 import { create } from "zustand";
 
 // export type ModalType = "createActor";
@@ -11,6 +16,8 @@ interface PlayStore {
   removePlay: (actorId: string) => void;
   updatePlayActors: (actorInPlay: ActorInPlayType) => void;
   removePlayActors: (actorInPlayId: string, playId: string) => void;
+  updatePlayExecutors: (executorInPlay: ExecutorInPlayType) => void;
+  removePlayExecutors: (executorInPlayId: string, playId: string) => void;
   updatePlayFestivals: (festivalPlay: PlayFestivalType) => void;
   removePlayFestivals: (festivalPlayId: string, playId: string) => void;
 }
@@ -64,6 +71,35 @@ export const usePlayStore = create<PlayStore>((set) => ({
         (actor) => actor.id !== actorInPlayId
       );
       const updatedPlay = { ...selectedPlay, actors: filteredActors };
+      state.updatePlay(updatedPlay);
+      return state;
+    }),
+  updatePlayExecutors: (executorInPlay: ExecutorInPlayType) =>
+    set((state) => {
+      const selectedPlay = state.plays?.find(
+        (play) => executorInPlay.play.id === play.id
+      );
+      if (!selectedPlay) return state;
+
+      const filteredExecutors = selectedPlay.executors.filter(
+        (executor) => executor.id !== executorInPlay.id
+      );
+
+      const updatedActors = [...filteredExecutors, executorInPlay];
+
+      const updatedPlay = { ...selectedPlay, executors: updatedActors };
+      state.updatePlay(updatedPlay);
+      return state;
+    }),
+  removePlayExecutors: (executorInPlayId: string, playId: string) =>
+    set((state) => {
+      const selectedPlay = state.plays?.find((play) => playId === play.id);
+      if (!selectedPlay) return state;
+
+      const filteredExecutors = selectedPlay.executors.filter(
+        (executor) => executor.id !== executorInPlayId
+      );
+      const updatedPlay = { ...selectedPlay, executors: filteredExecutors };
       state.updatePlay(updatedPlay);
       return state;
     }),

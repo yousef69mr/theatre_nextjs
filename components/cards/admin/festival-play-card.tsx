@@ -43,14 +43,17 @@ const FestivalPlayCard: FC<FestivalPlayCardProps> = (props) => {
       <div className="flex justify-between items-center w-full ">
         <div className="flex w-full py-2 gap-y-2 flex-col justify-center">
           {!playId && (
-            <div className="flex items-center justify-start">
-              <Theater className="w-5 h-5 ltr:mr-2 rtl:ml-2 text-primary" />
-              <Link href={`/${locale}/admin/plays/${festivalPlay.play?.id}`}>
+            <Link
+              href={`/${locale}/admin/plays/${festivalPlay.play?.id}`}
+              className="hover:text-yellow-400"
+            >
+              <div className="flex items-center justify-start">
+                <Theater className="w-5 h-5 ltr:mr-2 rtl:ml-2 text-primary" />
                 <span className="truncate font-medium">
                   {festivalPlay.play?.name}
                 </span>
-              </Link>
-            </div>
+              </div>
+            </Link>
           )}
 
           {!festivalId && (

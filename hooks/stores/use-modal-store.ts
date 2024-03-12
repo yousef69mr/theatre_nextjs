@@ -2,6 +2,7 @@ import {
   ActorInPlayType,
   ActorType,
   CastMemberType,
+  ExecutorInPlayType,
   ExecutorType,
   FestivalType,
   PlayFestivalType,
@@ -19,6 +20,8 @@ export type ModalType =
   | "createFestival"
   | "linkActorPlay"
   | "deleteActorPlayLink"
+  | "linkExecutorPlay"
+  | "deleteExecutorPlayLink"
   | "linkFestivalPlay"
   | "deleteFestivalPlayLink"
   | "linkCastMember"
@@ -30,6 +33,7 @@ interface ModalData {
   festival?: FestivalType;
   play?: PlayType;
   executor?: ExecutorType;
+  executorInPlay?: ExecutorInPlayType;
   actorInPlay?: ActorInPlayType;
   festivalPlay?: PlayFestivalType;
   actor?: ActorType;

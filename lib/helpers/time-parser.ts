@@ -29,3 +29,20 @@ export function convertDateFormat(inputDateTime: string): string {
 
   return formattedDateTime;
 }
+
+
+export const isDate = (value: string): boolean => {
+  // Define a regular expression to match the date format YYYY-MM-DD
+  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+
+  // Test the value against the regex and return true if it matches
+  return dateRegex.test(value);
+};
+
+export const isDateTime = (value: string): boolean => {
+  // Define a regular expression to match common date-time formats
+  const dateTimeRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/;
+
+  // Test the value against the regex and return true if it matches
+  return dateTimeRegex.test(value);
+};

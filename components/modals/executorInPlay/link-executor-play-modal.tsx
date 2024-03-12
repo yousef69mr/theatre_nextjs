@@ -10,30 +10,36 @@ import {
 import { useModal } from "@/hooks/stores/use-modal-store";
 // import ExecutorForm from "@/components/forms/executor-form";
 import { useTranslation } from "react-i18next";
-import LinkFestivalPlayForm from "@/components/forms/actions/link-festival-play-form";
+import LinkExecutorPlayForm from "@/components/forms/actions/link-executor-play-form";
 
-const LinkFestivalPlayModal = () => {
+const LinkExecutorPlayModal = () => {
   const { isOpen, onClose, type, data } = useModal();
   const { t } = useTranslation();
 
-  const isModalOpen = isOpen && type === "linkFestivalPlay";
-  const { festivalPlay = null } = data;
+  const isModalOpen = isOpen && type === "linkExecutorPlay";
+  const { executorInPlay = null } = data;
 
   return (
     <Dialog open={isModalOpen} onOpenChange={onClose}>
       <DialogContent className=" p-0">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center">
-            {t("actions.linkTo", {
-              ns: "common",
-              instance: t("festival.single", { ns: "constants" }),
-              to: t("play.single", { ns: "constants" }),
-            })}
+            {executorInPlay
+              ? t("actions.edit", {
+                  ns: "common",
+                  instance: t(`ExecutorRole.${executorInPlay.role}`, {
+                    ns: "common",
+                  }),
+                })
+              : t("actions.add", {
+                  ns: "common",
+                  instance: t("executor.single", { ns: "constants" }),
+                })}
           </DialogTitle>
         </DialogHeader>
         <div className="p-4">
-          <LinkFestivalPlayForm
-            initialData={festivalPlay}
+          <LinkExecutorPlayForm
+            initialData={executorInPlay}
             className="flex flex-col justify-center w-full"
             mode="modal"
           />
@@ -43,4 +49,4 @@ const LinkFestivalPlayModal = () => {
   );
 };
 
-export default LinkFestivalPlayModal;
+export default LinkExecutorPlayModal;

@@ -25,6 +25,24 @@ export const actorRoles = [
   UserRole.CAST_VICE_PRESIDENT,
 ];
 
+export const executorRoles = [
+  ExecutorRole.DIRECTOR,
+  ExecutorRole.AUTHOR,
+  ExecutorRole.EXECUTIVE_DIRECTOR,
+  ExecutorRole.CO_DIRECTOR,
+  ExecutorRole.ACTING_COACH,
+  ExecutorRole.ADVERTISING,
+  ExecutorRole.MUSIC_EXECUTION,
+  ExecutorRole.SOUND_DESIGNER,
+  ExecutorRole.LIGHTING_DESIGNER,
+  ExecutorRole.ASSISTANT_DIRECTOR,
+  ExecutorRole.DECOR_DESIGNER,
+  ExecutorRole.CAMERA_MAN,
+  ExecutorRole.COSMATICS_DESIGNER,
+  ExecutorRole.COSTUME_DESIGNER,
+  ExecutorRole.OTHER,
+];
+
 export const isAdmin = (loggedUserRole: UserRole) => {
   let isAdmin = false;
   adminRoles.map((role) => {

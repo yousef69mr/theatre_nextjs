@@ -21,7 +21,7 @@ const CreateActorModal = () => {
 
   return (
     <Dialog open={isModalOpen} onOpenChange={onClose}>
-      <DialogContent className=" p-0 overflow-hidden">
+      <DialogContent className=" p-0">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center">
             {t("actions.create", {

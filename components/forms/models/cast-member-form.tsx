@@ -169,7 +169,7 @@ const CastMemberForm: FC<CastMemberFormProps> = (props) => {
 
   const isSubmitting = isPending || form.formState.isSubmitting || isLoading;
   const isDisabled = isUploadingFile || isSubmitting;
-  const isValid = form.formState.isValid;
+  // const isValid = form.formState.isValid;
 
   const handleRoleOptions = () => {
     // console.log();

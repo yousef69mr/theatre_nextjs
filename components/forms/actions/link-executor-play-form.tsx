@@ -4,6 +4,7 @@ import {
   FC,
   HtmlHTMLAttributes,
   useEffect,
+  useReducer,
   useState,
   useTransition,
 } from "react";
@@ -29,7 +30,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-import { FestivalType, PlayFestivalType } from "@/types";
+import { ExecutorInPlayType, FestivalType } from "@/types";
 import { useForm } from "react-hook-form";
 import { useParams, useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -45,43 +46,59 @@ import { Separator } from "@/components/ui/separator";
 
 import { useTranslation } from "react-i18next";
 
-import { festivalPlaySchema } from "@/lib/validations/actions/link-model-actions";
+import { executorInPlaySchema } from "@/lib/validations/actions/link-model-actions";
 import { cn } from "@/lib/utils";
 import { useModal } from "@/hooks/stores/use-modal-store";
 
 import { usePlayStore } from "@/hooks/stores/use-play-store";
 import { useFestivalStore } from "@/hooks/stores/use-festivals-store";
-import {
-  createFestivalPlayRequest,
-  updateFestivalPlayRequest,
-} from "@/lib/api-calls/actions/festival-play";
-import { Input } from "@/components/ui/input";
-import { convertDateTime } from "@/lib/helpers/time-parser";
-import { MultiInput } from "@/components/ui/multi-input";
+import { useActorStore } from "@/hooks/stores/use-actor-store";
 
-interface LinkActorPlayFormProps extends HtmlHTMLAttributes<HTMLElement> {
-  initialData: PlayFestivalType | null;
+import { useExecutorStore } from "@/hooks/stores/use-executor-store";
+import {
+  createExecutorInPlayRequest,
+  updateExecutorInPlayRequest,
+} from "@/lib/api-calls/actions/executor-in-play";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { executorRoles } from "@/lib/auth";
+import { ExecutorRole } from "@prisma/client";
+
+interface LinkExecutorPlayFormProps extends HtmlHTMLAttributes<HTMLElement> {
+  initialData: ExecutorInPlayType | null;
   mode?: "modal" | "page";
 }
 
-type LinkFestivalPlayFormValues = Zod.infer<typeof festivalPlaySchema>;
+type LinkExecutorPlayFormValues = Zod.infer<typeof executorInPlaySchema>;
 
-const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
+const LinkExecutorPlayForm: FC<LinkExecutorPlayFormProps> = (props) => {
   const { initialData, className, mode = "page" } = props;
-
-  const updatePlayFestivals = usePlayStore(
-    (state) => state.updatePlayFestivals
+  const { onClose } = useModal();
+  // console.log(initialData);
+  const [festivals, setFestivals] = useState<FestivalType[] | undefined>();
+  const updateFestivalExecutors = useFestivalStore(
+    (state) => state.updateFestivalExecutors
   );
-  const updateFestivalPlays = useFestivalStore(
-    (state) => state.updateFestivalPlays
+  const updatePlayExecutors = usePlayStore(
+    (state) => state.updatePlayExecutors
+  );
+  const updateExecutorPlays = useExecutorStore(
+    (state) => state.updateExecutorPlays
   );
 
-  const onClose = useModal((state) => state.onClose);
   const onOpen = useModal((state) => state.onOpen);
+  const localExecutors = useExecutorStore((state) => state.executors);
   const localPlays = usePlayStore((state) => state.plays);
   const localFestivals = useFestivalStore((state) => state.festivals);
-
-  const [festivals, setfestivals] = useState<FestivalType[] | null>([]);
+  // console.log(localPlays, localPlays?.length);
+  const [availableRoles, setAvailableRoles] = useState<typeof executorRoles>(
+    []
+  );
   const [isPending, startTransition] = useTransition();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isUploadingFile, setIsUploadingFile] = useState(false);
@@ -93,29 +110,24 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
   //   const locale = params.locale;
 
   const festivalId = params.festivalId as string;
+  const executorId = params.executorId as string;
   const playId = params.playId as string;
 
-  const form = useForm<LinkFestivalPlayFormValues>({
-    resolver: zodResolver(festivalPlaySchema),
+  const form = useForm<LinkExecutorPlayFormValues>({
+    resolver: zodResolver(executorInPlaySchema),
     defaultValues: {
+      executorId: executorId || initialData?.executor.id,
       playId: playId || initialData?.play.id,
       festivalId: festivalId || initialData?.festival.id,
-      showTimes:
-        (initialData?.showTimes && [
-          ...initialData?.showTimes.map((showTime) =>
-            convertDateTime(showTime)
-          ),
-        ]) ||
-        [],
     },
   });
 
-  const onSubmit = async (values: LinkFestivalPlayFormValues) => {
+  const onSubmit = async (values: LinkExecutorPlayFormValues) => {
     setIsLoading(true);
 
     startTransition(() => {
       if (initialData) {
-        updateFestivalPlayRequest(values, initialData.id)
+        updateExecutorInPlayRequest(values, initialData.id)
           .then((response) => response.json())
           .then(async (data) => {
             toast.success(
@@ -123,16 +135,16 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
                 ns: "constants",
                 instance: t("actions.linkTo", {
                   ns: "common",
-                  instance: t("festival.single", { ns: "constants" }),
+                  instance: t("executor.single", { ns: "constants" }),
                   to: t("play.single", { ns: "constants" }),
                 }),
               })
             );
 
             // addActor(data);
-
-            updatePlayFestivals(data);
-            updateFestivalPlays(data);
+            updateExecutorPlays(data);
+            updatePlayExecutors(data);
+            updateFestivalExecutors(data);
 
             router.refresh();
 
@@ -146,7 +158,7 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
           .catch((error) => toast.error("something went wrong"))
           .finally(() => setIsLoading(false));
       } else {
-        createFestivalPlayRequest(values)
+        createExecutorInPlayRequest(values)
           .then((response) => response.json())
           .then(async (data) => {
             toast.success(
@@ -154,16 +166,17 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
                 ns: "constants",
                 instance: t("actions.linkTo", {
                   ns: "common",
-                  instance: t("festival.single", { ns: "constants" }),
+                  instance: t("executor.single", { ns: "constants" }),
                   to: t("play.single", { ns: "constants" }),
                 }),
               })
             );
 
             // addActor(data);
-            updatePlayFestivals(data);
-            updateFestivalPlays(data);
-            // console.log(localPlays);
+            updateExecutorPlays(data);
+            updatePlayExecutors(data);
+            updateFestivalExecutors(data);
+
             router.refresh();
 
             if (mode === "page") {
@@ -173,10 +186,7 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
               form.reset();
             }
           })
-          .catch((error) => {
-            toast.error("something went wrong");
-            console.error(error);
-          })
+          .catch((error) => toast.error("something went wrong"))
           .finally(() => setIsLoading(false));
       }
     });
@@ -192,34 +202,168 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
   const isSubmitting = isPending || form.formState.isSubmitting || isLoading;
   const isDisabled = isUploadingFile || isSubmitting;
 
-  const handleFestivalsOptions = () => {
+  const handleRoleOptions = (executors: ExecutorInPlayType[]) => {
+    const takenPlayRoles: string[] = executors.map((executor) => executor.role);
     // console.log();
+    if (takenPlayRoles.includes(ExecutorRole.DIRECTOR)) {
+      const remainingRoleOptions: typeof executorRoles = executorRoles.filter(
+        (role) => role !==ExecutorRole.DIRECTOR
+      );
+      setAvailableRoles(remainingRoleOptions);
+    } else {
+      setAvailableRoles(executorRoles);
+    }
+  };
+
+  const onPlayChange = (playId: string) => {
     const selectedPlay = localPlays?.find((play) => play.id === playId);
     // console.log(selectedPlay);
     if (!selectedPlay) return;
 
-    const takenFestivalIDs: string[] = selectedPlay.festivals?.map(
-      (festival) => festival.festival.id
+    handleRoleOptions(selectedPlay.executors);
+
+    const formattedFestivals: FestivalType[] = selectedPlay.festivals?.map(
+      (festival) => ({ ...festival.festival })
     );
-    // console.log();
-    if (localFestivals) {
-      const remainingFestivalOptions: FestivalType[] = localFestivals.filter(
-        (festival) => !takenFestivalIDs.includes(festival.id)
-      );
-      setfestivals(remainingFestivalOptions);
-    } else {
-      setfestivals(localFestivals);
+    // console.log(formattedFestivals.length);
+    if (formattedFestivals.length === 1) {
+      form.setValue("festivalId", formattedFestivals[0].id);
+      form.trigger("festivalId");
     }
+    setFestivals(formattedFestivals);
   };
+
   useEffect(() => {
-    handleFestivalsOptions();
-  }, [localFestivals, localPlays]);
+    const playId = form.getValues("playId");
+    // console.log(playId);
+    if (playId) {
+      onPlayChange(playId);
+    } else {
+      setFestivals(localFestivals || undefined);
+    }
+  }, [form.getValues("playId"), localPlays]);
+
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className={cn("flex flex-col w-full space-y-4", className)}
       >
+        {!executorId && (
+          <FormField
+            control={form.control}
+            name="executorId"
+            render={({ field }) => (
+              <FormItem className="flex flex-col justify-end">
+                <FormLabel>
+                  {t("forms.labels.executorName", { ns: "constants" })}
+                </FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        className={cn(
+                          "justify-between",
+                          !field.value && "text-muted-foreground"
+                        )}
+                      >
+                        {field.value
+                          ? `${
+                              localExecutors?.find(
+                                (executor) => executor.id === field.value
+                              )?.name
+                            } ${
+                              localExecutors?.find(
+                                (executor) => executor.id === field.value
+                              )?.nickname
+                                ? `(${
+                                    localExecutors?.find(
+                                      (executor) => executor.id === field.value
+                                    )?.nickname
+                                  })`
+                                : ""
+                            }`
+                          : t("actions.select", {
+                              ns: "common",
+                              instance: t("executor.single", {
+                                ns: "constants",
+                              }),
+                            })}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className=" p-0">
+                    <Command>
+                      <CommandInput
+                        placeholder={t("actions.select", {
+                          ns: "common",
+                          instance: t("executor.single", {
+                            ns: "constants",
+                          }),
+                        })}
+                      />
+                      <CommandEmpty>
+                        {t("notFound", {
+                          ns: "constants",
+                          instance: t("executor.single", {
+                            ns: "constants",
+                          }),
+                        })}
+                      </CommandEmpty>
+                      <CommandGroup>
+                        {localExecutors?.map((executor) => (
+                          <CommandItem
+                            value={executor.id}
+                            key={executor.id}
+                            onSelect={() => {
+                              form.setValue("executorId", executor.id);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                executor.id === field.value
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                            {executor.name}{" "}
+                            {executor.nickname ? `(${executor.nickname})` : ""}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                      <Separator />
+                      <CommandGroup>
+                        <CommandItem
+                          onSelect={() => {
+                            onOpen("createExecutor");
+                          }}
+                        >
+                          <PlusCircle
+                            className={cn(
+                              "ltr:mr-2 rtl:ml-2 h-4 w-4 text-emerald-600"
+                            )}
+                          />
+                          {t("actions.create", {
+                            ns: "common",
+                            instance: t("executor.single", {
+                              ns: "constants",
+                            }),
+                          })}
+                        </CommandItem>
+                      </CommandGroup>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
         {!playId && (
           <FormField
             control={form.control}
@@ -303,7 +447,7 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
             )}
           />
         )}
-        {!festivalId && !initialData && (
+        {!festivalId && festivals && festivals.length > 1 && (
           <FormField
             control={form.control}
             name="festivalId"
@@ -376,26 +520,6 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
                           </CommandItem>
                         ))}
                       </CommandGroup>
-                      <Separator />
-                      <CommandGroup>
-                        <CommandItem
-                          onSelect={() => {
-                            onOpen("createFestival");
-                          }}
-                        >
-                          <PlusCircle
-                            className={cn(
-                              "ltr:mr-2 rtl:ml-2 h-4 w-4 text-emerald-600"
-                            )}
-                          />
-                          {t("actions.create", {
-                            ns: "common",
-                            instance: t("festival.single", {
-                              ns: "constants",
-                            }),
-                          })}
-                        </CommandItem>
-                      </CommandGroup>
                     </Command>
                   </PopoverContent>
                 </Popover>
@@ -405,52 +529,50 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
             )}
           />
         )}
-        <FormField
-          control={form.control}
-          name="showTimes"
-          render={({ field }) => (
-            <FormItem className="flex-1">
-              <FormLabel>
-                {t("forms.labels.showTimes", {
-                  ns: "constants",
-                })}
-              </FormLabel>
-              <FormControl>
-                <MultiInput
-                  values={field.value || []}
-                  onChange={(values) => {
-                    form.setValue("showTimes", values);
-                    form.trigger("showTimes");
-                  }}
-                  placeholder={t("forms.placeholder.showTimes", {
+        {!initialData && (
+          <FormField
+            control={form.control}
+            name="role"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel>
+                  {t("forms.labels.role", {
                     ns: "constants",
                   })}
-                  name={field.name}
-                  disabled={isDisabled}
-                  type="datetime-local"
-                />
-                {/* <Input
-                  type="datetime-local"
-                  disabled={isDisabled}
-                  placeholder={t("forms.placeholder.showTime", {
-                    ns: "constants",
-                  })}
-                  onChange={(event) => {
-                    form.setValue("showTimes", [event.target.value]);
-                  }}
-                  value={field.value[0] || " "}
-
-                  // {...field}
-                /> */}
-              </FormControl>
-              <FormDescription>
-                <span>**</span>{" "}
-                {t("forms.description.showTimes", { ns: "constants" })}
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                </FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue
+                        placeholder={t("actions.select", {
+                          ns: "common",
+                          instance:t("forms.labels.role", {
+                            ns: "constants",
+                          })
+                        })}
+                      />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {availableRoles.map((role) => (
+                      <SelectItem
+                        key={role}
+                        value={role}
+                        className="capitalize"
+                      >
+                        {t(`ExecutorRole.${role}`, { ns: "common" })}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
 
         <Separator />
         <div className="flex w-full justify-end items-center">
@@ -470,4 +592,4 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
   );
 };
 
-export default LinkFestivalPlayForm;
+export default LinkExecutorPlayForm;

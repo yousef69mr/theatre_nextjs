@@ -38,6 +38,7 @@
   "ExecutorRole": {
     "DIRECTOR": "مخرج",
     "AUTHOR": "مؤلف",
+    "EXECUTIVE_DIRECTOR": "مخرج منفذ",
     "CO_DIRECTOR": "مخرج مساعد",
     "PRODUCER": "منتج",
     "ACTING_COACH": "مدرب تمثيل",

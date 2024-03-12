@@ -19,6 +19,12 @@ export async function GET(request: NextRequest) {
                   imgUrl: true,
                 },
               },
+              festival: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
             },
           },
           actors: {
@@ -197,6 +203,12 @@ export async function POST(request: NextRequest) {
                 name: true,
                 nickname: true,
                 imgUrl: true,
+              },
+            },
+            festival: {
+              select: {
+                id: true,
+                name: true,
               },
             },
           },

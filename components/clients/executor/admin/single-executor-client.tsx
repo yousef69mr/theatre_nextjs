@@ -26,6 +26,7 @@ import { useExecutorStore } from "@/hooks/stores/use-executor-store";
 import { useModal } from "@/hooks/stores/use-modal-store";
 import { useFestivalStore } from "@/hooks/stores/use-festivals-store";
 import Link from "next/link";
+import ExecutorInPlayControl from "@/components/controls/executor-in-play-control";
 
 interface ExecutorClientProps {
   executor: ExecutorType | null;
@@ -135,6 +136,11 @@ const ExecutorClient: FC<ExecutorClientProps> = (props) => {
       <ExecutorForm initialData={executor} />
       {executor && (
         <>
+          <Separator className="bg-red-100 dark:bg-red-700/15" />
+          <ExecutorInPlayControl
+            executorInPlayList={executor.plays}
+            type="play"
+          />
           <Separator className="bg-red-100 dark:bg-red-700/15" />
           <PermissionBox
             handleDelete={handleDelete}

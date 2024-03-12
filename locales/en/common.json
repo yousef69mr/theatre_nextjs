@@ -38,6 +38,7 @@
   "ExecutorRole": {
     "DIRECTOR": "director",
     "AUTHOR": "author",
+    "EXECUTIVE_DIRECTOR":"executive director",
     "CO_DIRECTOR": "co-director",
     "PRODUCER": "producer",
     "ACTING_COACH": "acting coach",

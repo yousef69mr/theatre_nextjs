@@ -13,6 +13,8 @@ import { DeleteFestivalPlayLinkModal } from "@/components/modals/festivalPlay/de
 import LinkFestivalPlayModal from "@/components/modals/festivalPlay/link-festival-play-modal";
 import { DeleteCastMemberModal } from "@/components/modals/castMember/delete-cast-member-modal";
 import LinkCastMemberModal from "@/components/modals/castMember/link-cast-member-modal";
+import LinkExecutorPlayModal from "@/components/modals/executorInPlay/link-executor-play-modal";
+import { DeleteExecutorPlayLinkModal } from "@/components/modals/executorInPlay/delete-executor-play-link-modal";
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -34,6 +36,8 @@ export const ModalProvider = () => {
       <CreateFestivalModal />
       <LinkActorPlayModal />
       <DeleteActorPlayLinkModal />
+      <LinkExecutorPlayModal />
+      <DeleteExecutorPlayLinkModal />
       <LinkFestivalPlayModal />
       <DeleteFestivalPlayLinkModal />
       <LinkCastMemberModal />

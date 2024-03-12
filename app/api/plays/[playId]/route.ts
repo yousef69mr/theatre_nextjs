@@ -33,6 +33,18 @@ export async function GET(request: NextRequest, props: PlayProps) {
                 awards: true,
               },
             },
+            play: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+            festival: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
           },
         },
         awards: true,
@@ -64,6 +76,7 @@ export async function GET(request: NextRequest, props: PlayProps) {
             },
           },
         },
+
         festivals: {
           include: {
             festival: {
@@ -254,6 +267,12 @@ export async function PATCH(request: NextRequest, props: PlayProps) {
                 name: true,
                 nickname: true,
                 imgUrl: true,
+              },
+            },
+            festival: {
+              select: {
+                id: true,
+                name: true,
               },
             },
           },

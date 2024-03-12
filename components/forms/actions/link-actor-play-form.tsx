@@ -507,7 +507,7 @@ const LinkActorPlayForm: FC<LinkActorPlayFormProps> = (props) => {
                 {t("forms.labels.characterNames", { ns: "constants" })}
               </FormLabel>
               <MultiInput
-                values={initialData?.characterNames || []}
+                values={field.value || []}
                 placeholder={t("forms.placeholder.characterNames", {
                   ns: "constants",
                 })}
@@ -515,9 +515,13 @@ const LinkActorPlayForm: FC<LinkActorPlayFormProps> = (props) => {
                   form.setValue("characterNames", values);
                   form.trigger("characterNames");
                 }}
+                name={field.name}
                 disabled={isDisabled}
               />
-              <FormDescription>// description</FormDescription>
+              <FormDescription>
+                <span>**</span>{" "}
+                {t("forms.description.characterNames", { ns: "constants" })}
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}

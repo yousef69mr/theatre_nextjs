@@ -95,7 +95,7 @@
       "festivalName": "Festival Name",
       "characterName": "Character Name",
       "nickname": "Nickname",
-      "characterNames":"Character Name",
+      "characterNames": "Character Name",
       "awards": "Awards",
       "profileImg": "Profile Image",
       "image": "Image",
@@ -104,7 +104,7 @@
       "isCastMember": "Is he/she a cast member?",
       "startDate": "Start Date",
       "endDate": "End Date",
-      "showTime": "Show Time",
+      "showTimes": "Show Time",
       "actions": "Actions"
     },
     "placeholder": {
@@ -127,8 +127,12 @@
       "isCastMember": "If it is checked, your actor will be treated as a cast member",
       "startDate": "Start Date",
       "endDate": "End Date",
-      "showTime": "Show Time",
+      "showTimes": "Show Time",
       "actions": "Actions"
+    },
+    "description": {
+      "characterNames": "Please enter the character names separated by commas. then click on add button",
+      "showTimes": "Please click on add button to add a new show time value"
     }
   }
 }

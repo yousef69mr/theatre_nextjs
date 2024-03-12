@@ -11,6 +11,8 @@ import {
   TooltipTrigger,
 } from "./tooltip";
 import { useTranslation } from "react-i18next";
+import { isDate, isDateTime } from "@/lib/helpers/time-parser";
+import { format } from "date-fns/format";
 
 export interface MultiInputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange"> {
@@ -19,7 +21,7 @@ export interface MultiInputProps
 }
 
 const MultiInput = React.forwardRef<HTMLInputElement, MultiInputProps>(
-  ({ className, type, onChange, values, ...props }, ref) => {
+  ({ className, type, onChange, values, name, ...props }, ref) => {
     const radius = 100; // change this to increase the rdaius of the hover effect
     const [visible, setVisible] = React.useState(false);
     const { t } = useTranslation();
@@ -75,6 +77,7 @@ const MultiInput = React.forwardRef<HTMLInputElement, MultiInputProps>(
               "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:shadow-[0px_0px_1px_1px_var(--neutral-700)] group-hover/input:shadow-none transition duration-300",
               className
             )}
+            name={name}
             value={inputValue}
             onChange={handleChange}
             ref={ref}
@@ -86,7 +89,12 @@ const MultiInput = React.forwardRef<HTMLInputElement, MultiInputProps>(
               <TooltipTrigger
                 type="button"
                 onClick={handleAdd}
-                className="rtl:left-0 ltr:right-3 absolute top-3 z-10"
+                className={cn(
+                  "right-3 absolute top-3 z-10",
+                  !["datetime-local"].includes(type || "") &&
+                    "rtl:left-3 ltr:right-3",
+                  ["datetime-local"].includes(type || "") && "right-3"
+                )}
               >
                 <PlusCircle className="w-5 h-5 text-emerald-500 hover:bg-transparent" />
               </TooltipTrigger>
@@ -94,7 +102,7 @@ const MultiInput = React.forwardRef<HTMLInputElement, MultiInputProps>(
                 <span>
                   {t("actions.add", {
                     ns: "common",
-                    instance: t("forms.labels.characterNames", {
+                    instance: t(`forms.labels.${name}`, {
                       ns: "constants",
                     }),
                   })}
@@ -106,7 +114,11 @@ const MultiInput = React.forwardRef<HTMLInputElement, MultiInputProps>(
         <div className="w-full flex gap-1 flex-wrap items-center justify-start">
           {valueArray.map((option, index) => (
             <Badge key={index} variant={"secondary"} className="px-4 py-2">
-              {option}{" "}
+              {isDate(option)
+                ? format(option, "MMMM do, yyyy")
+                : isDateTime(option)
+                ? format(option, "MMMM do, yyyy")
+                : option}{" "}
               <X
                 onClick={() =>
                   setValueArray((prev) => [

@@ -162,6 +162,7 @@ const ActorClient: FC<ActorClientProps> = (props) => {
         <>
           <Separator className="bg-red-100 dark:bg-red-700/15" />
           <ActorInPlayControl actorInPlayList={actor.plays} type="play" />
+          
           <Separator className="bg-red-100 dark:bg-red-700/15" />
           <CastMemberControl castMembers={actor.castMembers} />
           <Separator className="bg-red-100 dark:bg-red-700/15" />
