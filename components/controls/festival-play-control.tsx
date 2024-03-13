@@ -25,10 +25,24 @@ import { PlusCircle, Search } from "lucide-react";
 import { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import FestivalPlayCard from "@/components/cards/admin/festival-play-card";
+import {
+  Pagination,
+  PaginationButton,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  // PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import { usePagination } from "@/hooks/use-pagination";
 interface FestivalPlayControlProps {
   festivalPlayList: PlayFestivalType[];
   type: "festival" | "play";
 }
+
+const CARDS_PER_PAGE = 4;
+
 const FestivalPlayControl: FC<FestivalPlayControlProps> = (props) => {
   const { festivalPlayList, type } = props;
   const { t } = useTranslation();
@@ -36,6 +50,17 @@ const FestivalPlayControl: FC<FestivalPlayControlProps> = (props) => {
   
   const [isMounted, setIsMounted] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
+
+  const searchKey = `${type}Page`;
+
+  const {
+    currentPage,
+    totalPages,
+    nextPage,
+    previousPage,
+    goToPage,
+    getCurrentPageData,
+  } = usePagination(CARDS_PER_PAGE, searchKey, festivalPlayList);
 
   useEffect(() => {
     setIsMounted(true);
@@ -140,7 +165,7 @@ const FestivalPlayControl: FC<FestivalPlayControlProps> = (props) => {
         )}
       >
         {festivalPlayList.length > 0 ? (
-          festivalPlayList.map((festivalPlay) => (
+          getCurrentPageData().map((festivalPlay) => (
             <FestivalPlayCard
               key={festivalPlay.id}
               festivalPlay={festivalPlay}
@@ -155,6 +180,45 @@ const FestivalPlayControl: FC<FestivalPlayControlProps> = (props) => {
           </p>
         )}
       </div>
+      {totalPages > 1 && (
+        <Pagination className="mt-4">
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={() => previousPage()}
+                disabled={currentPage === 0}
+              />
+            </PaginationItem>
+            {Array.from({ length: totalPages }).map((_, index) => (
+              <PaginationItem key={index}>
+                {/* <PaginationLink
+                href={`${pathname}?${searchKey}=${index + 1}`}
+                className={cn(index === currentPage && "bg-primary text-white")}
+              >
+                {index + 1}
+              </PaginationLink> */}
+
+                <PaginationButton
+                  onClick={() => goToPage(index)}
+                  // className={cn(index === currentPage && "bg-primary text-white")}
+                  isActive={index === currentPage}
+                >
+                  {index + 1}
+                </PaginationButton>
+              </PaginationItem>
+            ))}
+            {/* <PaginationItem>
+            <PaginationEllipsis />
+          </PaginationItem> */}
+            <PaginationItem>
+              <PaginationNext
+                onClick={() => nextPage()}
+                disabled={currentPage === totalPages - 1}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
     </div>
   );
 };

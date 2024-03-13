@@ -1,9 +1,9 @@
-import CardWrapper from "@/components/cards/card-wrapper";
+import AuthCardWrapper from "@/components/cards/auth-card-wrapper";
 import { AlertTriangle } from "lucide-react";
 
 const ErrorCard = () => {
   return (
-    <CardWrapper
+    <AuthCardWrapper
       headerLabel="Oops! Something went wrong!"
       headerMainLabel="🔐 Auth"
       backButtonHref="/auth/login"
@@ -12,7 +12,7 @@ const ErrorCard = () => {
       <div className="flex w-full justify-center items-center">
         <AlertTriangle className="text-destructive h-5 w-5" />
       </div>
-    </CardWrapper>
+    </AuthCardWrapper>
   );
 };
 

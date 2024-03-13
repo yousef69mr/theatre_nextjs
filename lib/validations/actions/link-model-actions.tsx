@@ -1,6 +1,5 @@
-import { executorRoles } from "@/lib/auth";
 import { ExecutorRole } from "@prisma/client";
-import { array, object, string, enum as enum_ } from "zod";
+import { array, object, string, enum as enum_, number } from "zod";
 
 export const actorInPlaySchema = object({
   characterNames: array(
@@ -37,5 +36,10 @@ export const executorInPlaySchema = object({
 export const festivalPlaySchema = object({
   playId: string().min(1, { message: "playId is required" }),
   festivalId: string().min(1, { message: "festivalId is required" }),
+  position: number()
+    .min(1, { message: "1 minimum" })
+    .max(25, { message: "25 maximum" }),
   showTimes: array(string()),
 });
+
+

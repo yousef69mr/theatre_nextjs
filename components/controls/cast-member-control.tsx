@@ -1,6 +1,6 @@
 "use client";
 
-import ActorInPlayCard from "@/components/cards/admin/actor-play-card";
+
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useModal } from "@/hooks/stores/use-modal-store";
 import { cn } from "@/lib/utils";
-import { ActorInPlayType, CastMemberType } from "@/types";
+import {  CastMemberType } from "@/types";
 import { PlusCircle, Search } from "lucide-react";
 import { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -24,12 +24,25 @@ import {
   CommandList,
   // CommandSeparator,
 } from "@/components/ui/command";
-import CastMemberCard from "../cards/admin/cast-member-card";
+import CastMemberCard from "@/components/cards/admin/cast-member-card";
 import { actorRoles } from "@/lib/auth";
+import {
+  Pagination,
+  PaginationButton,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  // PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import { usePagination } from "@/hooks/use-pagination";
 interface CastMemberControlProps {
   castMembers: CastMemberType[];
   type?: "role";
 }
+const CARDS_PER_PAGE = 4;
+
 const CastMemberControl: FC<CastMemberControlProps> = (props) => {
   const { castMembers, type = "role" } = props;
 
@@ -39,6 +52,16 @@ const CastMemberControl: FC<CastMemberControlProps> = (props) => {
   const [isMounted, setIsMounted] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   // const [availableRoles, setAvailableRoles] = useState(true);
+  const searchKey = `${type}Page`;
+
+  const {
+    currentPage,
+    totalPages,
+    nextPage,
+    previousPage,
+    goToPage,
+    getCurrentPageData,
+  } = usePagination(CARDS_PER_PAGE, searchKey, castMembers);
 
   useEffect(() => {
     setIsMounted(true);
@@ -153,7 +176,7 @@ const CastMemberControl: FC<CastMemberControlProps> = (props) => {
         )}
       >
         {castMembers.length > 0 ? (
-          castMembers.map((castMember) => (
+          getCurrentPageData().map((castMember) => (
             <CastMemberCard key={castMember.id} castMember={castMember} />
           ))
         ) : (
@@ -165,6 +188,45 @@ const CastMemberControl: FC<CastMemberControlProps> = (props) => {
           </p>
         )}
       </div>
+      {totalPages > 1 && (
+        <Pagination className="mt-4">
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={() => previousPage()}
+                disabled={currentPage === 0}
+              />
+            </PaginationItem>
+            {Array.from({ length: totalPages }).map((_, index) => (
+              <PaginationItem key={index}>
+                {/* <PaginationLink
+                href={`${pathname}?${searchKey}=${index + 1}`}
+                className={cn(index === currentPage && "bg-primary text-white")}
+              >
+                {index + 1}
+              </PaginationLink> */}
+
+                <PaginationButton
+                  onClick={() => goToPage(index)}
+                  // className={cn(index === currentPage && "bg-primary text-white")}
+                  isActive={index === currentPage}
+                >
+                  {index + 1}
+                </PaginationButton>
+              </PaginationItem>
+            ))}
+            {/* <PaginationItem>
+            <PaginationEllipsis />
+          </PaginationItem> */}
+            <PaginationItem>
+              <PaginationNext
+                onClick={() => nextPage()}
+                disabled={currentPage === totalPages - 1}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
     </div>
   );
 };

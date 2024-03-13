@@ -13,11 +13,5 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   // console.log(params.locale);
-  return (
-    <>
-     
-        {children}
-     
-    </>
-  );
+  return <>{children}</>;
 }

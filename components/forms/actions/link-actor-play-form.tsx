@@ -515,7 +515,10 @@ const LinkActorPlayForm: FC<LinkActorPlayFormProps> = (props) => {
                   form.setValue("characterNames", values);
                   form.trigger("characterNames");
                 }}
+              
                 name={field.name}
+                onBlur={field.onBlur}
+                ref={field.ref}
                 disabled={isDisabled}
               />
               <FormDescription>

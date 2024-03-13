@@ -1,5 +1,5 @@
 import ResetForm from "@/components/forms/auth/reset-form";
-import CardWrapper from "@/components/helpers/card-wrapper";
+import AuthCardWrapper from "@/components/cards/auth-card-wrapper";
 import { Locale } from "@/next-i18next.config";
 import { FC } from "react";
 interface ResetPageProps {
@@ -13,13 +13,13 @@ const ResetPage: FC<ResetPageProps> = (props) => {
     params: { locale },
   } = props;
   return (
-    <CardWrapper
+    <AuthCardWrapper
       backButtonLabel="Back to login"
       backButtonHref={`/${locale}/auth/login`}
       headerLabel="Forgot your password?"
     >
       <ResetForm />
-    </CardWrapper>
+    </AuthCardWrapper>
   );
 };
 

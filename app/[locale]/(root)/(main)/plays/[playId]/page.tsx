@@ -19,6 +19,7 @@ export async function generateMetadata({
   params,
 }: SinglePlayPageProps): // parent: ResolvingMetadata
 Promise<Metadata> {
+  const { t } = await initTranslations(params.locale, i18nextNamspaces);
   // fetch data
   const id = params.playId;
 
@@ -26,9 +27,10 @@ Promise<Metadata> {
   // console.log(play);
 
   if (play) {
+    const title = `${play.name} | ${t("play.single", { ns: "constants" })}`;
     return {
-      title: `${play.name} | play`,
-      description: play.name,
+      title,
+      description: play.description || title,
       icons: {
         icon: play.posterImgUrl,
         apple: [

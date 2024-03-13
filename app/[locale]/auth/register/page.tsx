@@ -1,5 +1,5 @@
 import RegisterForm from "@/components/forms/auth/register-form";
-import CardWrapper from "@/components/helpers/card-wrapper";
+import AuthCardWrapper from "@/components/cards/auth-card-wrapper";
 import { Locale } from "@/next-i18next.config";
 
 interface RegisterPageProps {
@@ -13,7 +13,7 @@ const RegisterPage = (props: RegisterPageProps) => {
     params: { locale },
   } = props;
   return (
-    <CardWrapper
+    <AuthCardWrapper
       headerMainLabel="🔐 Auth"
       headerLabel="Create an account"
       backButtonLabel="Already have an account?"
@@ -21,7 +21,7 @@ const RegisterPage = (props: RegisterPageProps) => {
       showSocial
     >
       <RegisterForm />
-    </CardWrapper>
+    </AuthCardWrapper>
   );
 };
 

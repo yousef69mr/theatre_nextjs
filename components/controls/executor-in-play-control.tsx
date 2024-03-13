@@ -24,10 +24,25 @@ import {
   CommandList,
   // CommandSeparator,
 } from "@/components/ui/command";
+import {
+  Pagination,
+  PaginationButton,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  // PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import { usePagination } from "@/hooks/use-pagination";
+
 interface ExecutorInPlayControlProps {
   executorInPlayList: ExecutorInPlayType[];
   type: "executor" | "play";
 }
+
+const CARDS_PER_PAGE = 4;
+
 const ExecutorInPlayControl: FC<ExecutorInPlayControlProps> = (props) => {
   const { executorInPlayList, type } = props;
 
@@ -36,6 +51,17 @@ const ExecutorInPlayControl: FC<ExecutorInPlayControlProps> = (props) => {
 
   const [isMounted, setIsMounted] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
+
+  const searchKey = `${type}Page`;
+
+  const {
+    currentPage,
+    totalPages,
+    nextPage,
+    previousPage,
+    goToPage,
+    getCurrentPageData,
+  } = usePagination(CARDS_PER_PAGE, searchKey, executorInPlayList);
 
   useEffect(() => {
     setIsMounted(true);
@@ -140,8 +166,11 @@ const ExecutorInPlayControl: FC<ExecutorInPlayControlProps> = (props) => {
         )}
       >
         {executorInPlayList.length > 0 ? (
-          executorInPlayList.map((executorInPlay) => (
-            <ExecutorInPlayCard key={executorInPlay.id} executorInPlay={executorInPlay} />
+          getCurrentPageData().map((executorInPlay) => (
+            <ExecutorInPlayCard
+              key={executorInPlay.id}
+              executorInPlay={executorInPlay}
+            />
           ))
         ) : (
           <p className="text-muted-foreground">
@@ -152,6 +181,45 @@ const ExecutorInPlayControl: FC<ExecutorInPlayControlProps> = (props) => {
           </p>
         )}
       </div>
+      {totalPages > 1 && (
+        <Pagination className="mt-4">
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={() => previousPage()}
+                disabled={currentPage === 0}
+              />
+            </PaginationItem>
+            {Array.from({ length: totalPages }).map((_, index) => (
+              <PaginationItem key={index}>
+                {/* <PaginationLink
+                href={`${pathname}?${searchKey}=${index + 1}`}
+                className={cn(index === currentPage && "bg-primary text-white")}
+              >
+                {index + 1}
+              </PaginationLink> */}
+
+                <PaginationButton
+                  onClick={() => goToPage(index)}
+                  // className={cn(index === currentPage && "bg-primary text-white")}
+                  isActive={index === currentPage}
+                >
+                  {index + 1}
+                </PaginationButton>
+              </PaginationItem>
+            ))}
+            {/* <PaginationItem>
+            <PaginationEllipsis />
+          </PaginationItem> */}
+            <PaginationItem>
+              <PaginationNext
+                onClick={() => nextPage()}
+                disabled={currentPage === totalPages - 1}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
     </div>
   );
 };

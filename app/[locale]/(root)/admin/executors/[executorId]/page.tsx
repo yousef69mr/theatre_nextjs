@@ -37,17 +37,19 @@ export async function generateMetadata({
   params,
 }: AdminSingleExecutorPageProps): // parent: ResolvingMetadata
 Promise<Metadata> {
+  const { t } = await initTranslations(params.locale, i18nextNamspaces);
   // fetch data
   const id = params.executorId;
   const executor: ExecutorType | null =
     id !== "new" ? await getExecutorByIdRequest(id) : null;
 
   if (executor) {
+    const title = `${executor.name} ${
+      executor.nickname ? `(${executor.nickname})` : ""
+    } | ${t("executor.single", { ns: "constants" })}`;
     return {
-      title: `${executor.name} ${
-        executor.nickname ? `(${executor.nickname})` : ""
-      } | executor`,
-      description: executor.name,
+      title,
+      description: executor.description || title,
       icons: {
         icon: executor.imgUrl || "",
         apple: [
@@ -59,7 +61,10 @@ Promise<Metadata> {
     };
   }
   return {
-    title: "add executor",
+    title: t("actions.add", {
+      ns: "common",
+      instance: t("executor.single", { ns: "constants" }),
+    }),
     description: "Add a new executor to the database.",
   };
 }

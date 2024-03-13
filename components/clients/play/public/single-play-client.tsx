@@ -5,7 +5,7 @@ import { FC, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { AudioLines, CalendarDays, Pencil, Trash } from "lucide-react";
+import { AudioLines, Award, CalendarDays, Pencil, Ticket, Trash } from "lucide-react";
 
 import { useParams, useRouter } from "next/navigation";
 import { PlayType } from "@/types";
@@ -80,10 +80,14 @@ const PlayClient: FC<PlayClientProps> = (props) => {
 
   const festivals = play.festivals.map((festivalLink) => ({
     showTimes: festivalLink.showTimes,
+    position: festivalLink.position,
     ...festivalLink.festival,
   }));
 
-  const actors = play.actors.map((actorLink) => ({ ...actorLink.actor }));
+  const actors = play.actors.map((actorLink) => ({
+    ...actorLink.actor,
+    characterNames: actorLink.characterNames,
+  }));
 
   const isLive = (): boolean => {
     for (let festival of festivals) {
@@ -121,7 +125,7 @@ const PlayClient: FC<PlayClientProps> = (props) => {
           {/* </AspectRatio> */}
         </div>
         <TooltipProvider>
-          <div className="w-full space-y-4 sm:flex-1 sm:h-full flex flex-col items-start justify-center">
+          <div className="w-full relative space-y-4 sm:flex-1 sm:h-full flex flex-col items-start justify-center">
             <div className="w-full flex flex-wrap items-center justify-between">
               <div className="flex gap-x-2 items-center">
                 <h1 className="text-2xl font-semibold capitalize">
@@ -149,12 +153,6 @@ const PlayClient: FC<PlayClientProps> = (props) => {
                     <TooltipTrigger asChild>
                       <Button variant={"outline"} onClick={handleEdit}>
                         <Pencil className={"h-4 w-4"} />
-                        {/* <span className="hidden md:block">
-                          {t("actions.edit", {
-                            ns: "common",
-                            instance: t("play.single", { ns: "constants" }),
-                          })}
-                        </span> */}
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -170,12 +168,6 @@ const PlayClient: FC<PlayClientProps> = (props) => {
                     <TooltipTrigger asChild>
                       <Button onClick={handleDelete}>
                         <Trash className={"h-4 w-4"} />
-                        {/* <span className="hidden md:block">
-                          {t("actions.delete", {
-                            ns: "common",
-                            instance: t("play.single", { ns: "constants" }),
-                          })}
-                        </span> */}
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -245,6 +237,48 @@ const PlayClient: FC<PlayClientProps> = (props) => {
                   )}
                 </>
               ))}
+            </div>
+            {festivals.filter((festivalLink) => festivalLink.position).length >
+              0 && (
+              <div className="flex flex-wrap items-center justify-start gap-2">
+                {festivals.map((festival) => (
+                  <>
+                    {festival.position && (
+                      <div
+                        key={festival.id}
+                        className="flex items-center flex-nowrap gap-x-2 text-wrap"
+                      >
+                        <Award className="w-5 h-5 text-orange-300 ltr:mr-2 rtl:ml-2" />
+                        <span>
+                          {t(`compition-place.single`, {
+                            ns: "constants",
+                          })}
+                        </span>
+                        <span className="text-primary font-semibold">
+                          {t(`places.${festival.position}.single`, {
+                            ns: "constants",
+                          })}
+                        </span>
+                        <span>{festival.name}</span>
+                      </div>
+                    )}
+                  </>
+                ))}
+              </div>
+            )}
+            <div className="flex gap-4 items-center">
+              <Button
+                onClick={() => router.push(`${play.id}/book-tickets`)}
+                size={"lg"}
+                variant="outline"
+                className="hover:text-orange-300 hover:border-orange-300"
+              >
+                <Ticket className="w-5 h-5 rtl:ml-2 ltr:mr-2 text-orange-300 transition-all animate-pulse"/>
+                {t("actions.book", {
+                  ns: "common",
+                  instance: t("ticket.single", { ns: "constants" }),
+                })}
+              </Button>
             </div>
             <Accordion type="multiple" className="w-full">
               <AccordionItem value="item-1">

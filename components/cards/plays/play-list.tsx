@@ -11,7 +11,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { usePagination } from "@/hooks/use-pagination";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 // import { Separator } from "@/components/ui/separator";
 interface PlayListProps {
@@ -22,6 +22,7 @@ const CARDS_PER_PAGE = 8;
 
 const PlayList: FC<PlayListProps> = (props) => {
   const { plays } = props;
+  const searchKey = "playPage";
   const {
     currentPage,
     totalPages,
@@ -29,18 +30,19 @@ const PlayList: FC<PlayListProps> = (props) => {
     previousPage,
     goToPage,
     getCurrentPageData,
-  } = usePagination(CARDS_PER_PAGE, plays);
+  } = usePagination(CARDS_PER_PAGE, searchKey, plays);
 
   const params = useParams();
+  const pathname = usePathname();
 
   const locale = params.locale;
 
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    if (searchParams.has("page")) {
-      const currentPageIndex = searchParams.get("page");
-      goToPage(Number(currentPageIndex));
+    if (searchParams.has(searchKey)) {
+      const currentPageIndex = searchParams.get(searchKey);
+      goToPage(Number(currentPageIndex) - 1);
     }
   }, [searchParams]);
   return (
@@ -59,14 +61,14 @@ const PlayList: FC<PlayListProps> = (props) => {
         <PaginationContent>
           <PaginationItem>
             <PaginationPrevious
-              onClick={previousPage}
+              onClick={() => previousPage(pathname)}
               disabled={currentPage === 0}
             />
           </PaginationItem>
           {Array.from({ length: totalPages }).map((_, index) => (
             <PaginationItem key={index}>
               <PaginationLink
-                href={`/${locale}/plays?page=${index}`}
+                href={`/${locale}/plays?${searchKey}=${index + 1}`}
                 className={cn(index === currentPage && "bg-primary text-white")}
               >
                 {index + 1}
@@ -78,7 +80,7 @@ const PlayList: FC<PlayListProps> = (props) => {
           </PaginationItem> */}
           <PaginationItem>
             <PaginationNext
-              onClick={nextPage}
+              onClick={() => nextPage(pathname)}
               disabled={currentPage === totalPages - 1}
             />
           </PaginationItem>

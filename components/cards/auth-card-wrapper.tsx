@@ -4,20 +4,20 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import Header from "../helpers/header";
+import Header from "@/components/helpers/header";
 import Social from "@/components/auth/social";
 import BackButton from "@/components/auth/back-button";
 
 interface CardWrapperProps {
   children: React.ReactNode;
-  headerMainLabel?: string;
-  headerLabel: string;
+  headerMainLabel?: string | React.ReactNode;
+  headerLabel: string | React.ReactNode;
   backButtonLabel: string;
   backButtonHref: string;
   showSocial?: boolean;
 }
 
-const CardWrapper = (props: CardWrapperProps) => {
+const AuthCardWrapper: React.FC<CardWrapperProps> = (props) => {
   const {
     children,
     headerLabel,
@@ -46,4 +46,4 @@ const CardWrapper = (props: CardWrapperProps) => {
   );
 };
 
-export default CardWrapper;
+export default AuthCardWrapper;

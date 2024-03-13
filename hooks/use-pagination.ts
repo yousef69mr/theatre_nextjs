@@ -1,15 +1,19 @@
-import { ActorType, ExecutorType, PlayType } from "@/types";
-import { useParams, useRouter } from "next/navigation";
+// import { ActorType, ExecutorType, PlayType } from "@/types";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-type DateType = PlayType[] | ExecutorType[] | ActorType[] | any[];
+type DateType = any[];
 
-export const usePagination = (itemsPerPage: number, data: DateType) => {
+export const usePagination = (
+  itemsPerPage: number,
+  searchKey: string = "page",
+  data: DateType
+) => {
   const [currentPage, setCurrentPage] = useState(0);
   const router = useRouter();
-  const params = useParams();
+  // const params = useParams();
 
-  const locale = params.locale;
+  // const locale = params.locale;
 
   const totalPages = Math.ceil(data.length / itemsPerPage);
 
@@ -19,17 +23,18 @@ export const usePagination = (itemsPerPage: number, data: DateType) => {
     return data.slice(startIndex, endIndex);
   };
 
-  const nextPage = () => {
+  const nextPage = (url?: string) => {
     if (currentPage < totalPages - 1) {
       setCurrentPage(currentPage + 1);
-      router.push(`/${locale}/plays?page=${currentPage + 1}`);
+
+      url && router.push(`${url}?${searchKey}=${currentPage + 1}`);
     }
   };
 
-  const previousPage = () => {
+  const previousPage = (url?: string) => {
     if (currentPage > 0) {
       setCurrentPage(currentPage - 1);
-      router.push(`/${locale}/plays?page=${currentPage - 1}`);
+      url && router.push(`${url}?${searchKey}=${currentPage - 1}`);
     }
   };
 

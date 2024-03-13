@@ -11,7 +11,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { usePagination } from "@/hooks/use-pagination";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 // import { Separator } from "@/components/ui/separator";
 interface ExecutorListProps {
@@ -22,6 +22,7 @@ const CARDS_PER_PAGE = 8;
 
 const ExecutorList: FC<ExecutorListProps> = (props) => {
   const { executors } = props;
+  const searchKey = "executorPage";
   const {
     currentPage,
     totalPages,
@@ -29,17 +30,18 @@ const ExecutorList: FC<ExecutorListProps> = (props) => {
     previousPage,
     goToPage,
     getCurrentPageData,
-  } = usePagination(CARDS_PER_PAGE, executors);
+  } = usePagination(CARDS_PER_PAGE, searchKey, executors);
 
   const params = useParams();
+  const pathname = usePathname();
 
   const locale = params.locale;
 
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    if (searchParams.has("page")) {
-      const currentPageIndex = searchParams.get("page");
+    if (searchParams.has(searchKey)) {
+      const currentPageIndex = searchParams.get(searchKey);
       goToPage(Number(currentPageIndex) - 1);
     }
   }, [searchParams]);
@@ -48,21 +50,25 @@ const ExecutorList: FC<ExecutorListProps> = (props) => {
       {/**TODO: filter plays */}
       <div className="w-full gap-6 mt-2  grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
         {getCurrentPageData().map((executor) => (
-          <ExecutorCard key={executor.id} executor={executor}  className="w-full h-80 md:w-full md:h-80"/>
+          <ExecutorCard
+            key={executor.id}
+            executor={executor}
+            className="w-full h-80 md:w-full md:h-80"
+          />
         ))}
       </div>
       <Pagination className="mt-4">
         <PaginationContent>
           <PaginationItem>
             <PaginationPrevious
-              onClick={previousPage}
+              onClick={() => previousPage(pathname)}
               disabled={currentPage === 0}
             />
           </PaginationItem>
           {Array.from({ length: totalPages }).map((_, index) => (
             <PaginationItem key={index}>
               <PaginationLink
-                href={`/${locale}/executors?page=${index + 1}`}
+                href={`/${locale}/executors?${searchKey}=${index + 1}`}
                 className={cn(index === currentPage && "bg-primary text-white")}
               >
                 {index + 1}
@@ -71,7 +77,7 @@ const ExecutorList: FC<ExecutorListProps> = (props) => {
           ))}
           <PaginationItem>
             <PaginationNext
-              onClick={nextPage}
+              onClick={() => nextPage(pathname)}
               disabled={currentPage === totalPages - 1}
             />
           </PaginationItem>

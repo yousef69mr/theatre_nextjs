@@ -1,6 +1,6 @@
 import NewPasswordForm from "@/components/forms/auth/new-password-form";
 import NewVerificationForm from "@/components/forms/auth/new-verification-form";
-import CardWrapper from "@/components/helpers/card-wrapper";
+import AuthCardWrapper from "@/components/cards/auth-card-wrapper";
 import { Locale } from "@/next-i18next.config";
 import { FC } from "react";
 interface NewPasswordPageProps {
@@ -13,13 +13,13 @@ const NewPasswordPage: FC<NewPasswordPageProps> = (props) => {
     params: { locale },
   } = props;
   return (
-    <CardWrapper
+    <AuthCardWrapper
       headerLabel="confirming your verification"
       backButtonLabel="Back to login"
       backButtonHref={`${locale}/auth/login`}
     >
       <NewPasswordForm />
-    </CardWrapper>
+    </AuthCardWrapper>
   );
 };
 

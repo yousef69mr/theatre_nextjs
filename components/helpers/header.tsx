@@ -1,9 +1,8 @@
 import { cn } from "@/lib/utils";
-import React from "react";
 
 interface HeaderProps {
-  title: string;
-  subtitle: string;
+  title: string | React.ReactNode;
+  subtitle?: string | React.ReactNode;
 }
 
 const Header = (props: HeaderProps) => {
@@ -12,7 +11,7 @@ const Header = (props: HeaderProps) => {
     <div className="w-full flex flex-col gap-y-4 items-center justify-center">
       {title && <h1 className={cn("text-3xl font-semibold")}>{title}</h1>}
       {subtitle && (
-        <p className=" dark:text-red-100 text-red-700  text-sm font-medium">
+        <p className=" dark:text-red-100 text-red-700  text-lg font-medium">
           {subtitle}
         </p>
       )}

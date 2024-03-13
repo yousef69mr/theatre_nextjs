@@ -39,18 +39,20 @@ export async function generateMetadata({
   params,
 }: AdminSingleActorPageProps): // parent: ResolvingMetadata
 Promise<Metadata> {
-  // fetch data
+  const { t } = await initTranslations(params.locale, i18nextNamspaces);
 
+  // fetch data
   const id = params.actorId;
 
   const actor: ActorType | null =
     id !== "new" ? await getActorByIdRequest(id) : null;
   if (actor) {
+    const title = `${actor?.name}  ${
+      actor.nickname ? `(${actor.nickname})` : ""
+    } | ${t("actor.single", { ns: "constants" })}`;
     return {
-      title: `${actor?.name}  ${
-        actor.nickname ? `(${actor.nickname})` : ""
-      } | actor`,
-      description: actor.name,
+      title,
+      description: actor.description || title,
       icons: {
         icon: actor.imgUrl || "",
         apple: [
@@ -62,7 +64,10 @@ Promise<Metadata> {
     };
   }
   return {
-    title: "add actor",
+    title: t("actions.add", {
+      ns: "common",
+      instance: t("actor.single", { ns: "constants" }),
+    }),
     description: "Add a new actor to the database.",
   };
 }

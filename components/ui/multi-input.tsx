@@ -12,7 +12,7 @@ import {
 } from "./tooltip";
 import { useTranslation } from "react-i18next";
 import { isDate, isDateTime } from "@/lib/helpers/time-parser";
-import { format } from "date-fns/format";
+import { format } from "date-fns";
 
 export interface MultiInputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange"> {
@@ -90,7 +90,7 @@ const MultiInput = React.forwardRef<HTMLInputElement, MultiInputProps>(
                 type="button"
                 onClick={handleAdd}
                 className={cn(
-                  "right-3 absolute top-3 z-10",
+                  "absolute top-3 z-10",
                   !["datetime-local"].includes(type || "") &&
                     "rtl:left-3 ltr:right-3",
                   ["datetime-local"].includes(type || "") && "right-3"
@@ -115,9 +115,9 @@ const MultiInput = React.forwardRef<HTMLInputElement, MultiInputProps>(
           {valueArray.map((option, index) => (
             <Badge key={index} variant={"secondary"} className="px-4 py-2">
               {isDate(option)
-                ? format(option, "MMMM do, yyyy")
+                ? format(new Date(option), "MMMM do, yyyy")
                 : isDateTime(option)
-                ? format(option, "MMMM do, yyyy")
+                ? format(new Date(option), "MMMM do, yyyy HH:mm")
                 : option}{" "}
               <X
                 onClick={() =>

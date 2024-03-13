@@ -79,6 +79,7 @@ export type FestivalType = {
 
 export type PlayFestivalType = {
   id: string;
+  position?: number;
   showTimes: string[];
   play: PlayType;
   festival: FestivalType;

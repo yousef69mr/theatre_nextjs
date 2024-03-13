@@ -98,6 +98,7 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
   const form = useForm<LinkFestivalPlayFormValues>({
     resolver: zodResolver(festivalPlaySchema),
     defaultValues: {
+      position: initialData?.position || undefined,
       playId: playId || initialData?.play.id,
       festivalId: festivalId || initialData?.festival.id,
       showTimes:
@@ -297,7 +298,6 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
                     </Command>
                   </PopoverContent>
                 </Popover>
-
                 <FormMessage />
               </FormItem>
             )}
@@ -426,27 +426,46 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
                     ns: "constants",
                   })}
                   name={field.name}
+                  onBlur={field.onBlur}
+                  ref={field.ref}
                   disabled={isDisabled}
                   type="datetime-local"
                 />
-                {/* <Input
-                  type="datetime-local"
-                  disabled={isDisabled}
-                  placeholder={t("forms.placeholder.showTime", {
-                    ns: "constants",
-                  })}
-                  onChange={(event) => {
-                    form.setValue("showTimes", [event.target.value]);
-                  }}
-                  value={field.value[0] || " "}
-
-                  // {...field}
-                /> */}
               </FormControl>
               <FormDescription>
                 <span>**</span>{" "}
                 {t("forms.description.showTimes", { ns: "constants" })}
               </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="position"
+          render={({ field }) => (
+            <FormItem className="flex-1">
+              <FormLabel>
+                {t("forms.labels.playPlace", {
+                  ns: "constants",
+                })}
+              </FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  disabled={isDisabled}
+                  placeholder={t("forms.placeholder.playPlace", {
+                    ns: "constants",
+                  })}
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  onChange={(event) =>
+                    field.onChange(Number(event.target.value))
+                  }
+                  value={String(field.value)||undefined}
+                  // {...field}
+                />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}

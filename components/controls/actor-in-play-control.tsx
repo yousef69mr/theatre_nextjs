@@ -24,10 +24,25 @@ import {
   CommandList,
   // CommandSeparator,
 } from "@/components/ui/command";
+import {
+  Pagination,
+  PaginationButton,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  // PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import { usePagination } from "@/hooks/use-pagination";
+// import { useParams } from "next/navigation";
 interface ActorInPlayControlProps {
   actorInPlayList: ActorInPlayType[];
   type: "actor" | "play";
 }
+
+const CARDS_PER_PAGE = 4;
+
 const ActorInPlayControl: FC<ActorInPlayControlProps> = (props) => {
   const { actorInPlayList, type } = props;
 
@@ -37,9 +52,32 @@ const ActorInPlayControl: FC<ActorInPlayControlProps> = (props) => {
   const [isMounted, setIsMounted] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
 
+  const searchKey = `${type}Page`;
+
+  const {
+    currentPage,
+    totalPages,
+    nextPage,
+    previousPage,
+    goToPage,
+    getCurrentPageData,
+  } = usePagination(CARDS_PER_PAGE, searchKey, actorInPlayList);
+
+  // const params = useParams();
+  // const searchParams = useSearchParams();
+  // const pathname = usePathname();
+
+  // const locale = params.locale as string;
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  // useEffect(() => {
+  //   if (searchParams.has(searchKey)) {
+  //     const currentPageIndex = searchParams.get(searchKey);
+  //     goToPage(Number(currentPageIndex) - 1);
+  //   }
+  // }, [searchParams]);
 
   if (!isMounted) {
     return null;
@@ -48,7 +86,7 @@ const ActorInPlayControl: FC<ActorInPlayControlProps> = (props) => {
   const handleSearching = () => {
     setIsSearching((prev) => !prev);
   };
-  //   console.log(actorInPlayList);
+
   return (
     <div className="mt-6 border rounded-md p-4 space-y-2">
       <div className="font-medium flex items-center justify-between">
@@ -140,7 +178,7 @@ const ActorInPlayControl: FC<ActorInPlayControlProps> = (props) => {
         )}
       >
         {actorInPlayList.length > 0 ? (
-          actorInPlayList.map((actorInPlay) => (
+          getCurrentPageData().map((actorInPlay) => (
             <ActorInPlayCard key={actorInPlay.id} actorInPlay={actorInPlay} />
           ))
         ) : (
@@ -152,6 +190,45 @@ const ActorInPlayControl: FC<ActorInPlayControlProps> = (props) => {
           </p>
         )}
       </div>
+      {totalPages > 1 && (
+        <Pagination className="mt-4">
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={() => previousPage()}
+                disabled={currentPage === 0}
+              />
+            </PaginationItem>
+            {Array.from({ length: totalPages }).map((_, index) => (
+              <PaginationItem key={index}>
+                {/* <PaginationLink
+                href={`${pathname}?${searchKey}=${index + 1}`}
+                className={cn(index === currentPage && "bg-primary text-white")}
+              >
+                {index + 1}
+              </PaginationLink> */}
+
+                <PaginationButton
+                  onClick={() => goToPage(index)}
+                  // className={cn(index === currentPage && "bg-primary text-white")}
+                  isActive={index === currentPage}
+                >
+                  {index + 1}
+                </PaginationButton>
+              </PaginationItem>
+            ))}
+            {/* <PaginationItem>
+            <PaginationEllipsis />
+          </PaginationItem> */}
+            <PaginationItem>
+              <PaginationNext
+                onClick={() => nextPage()}
+                disabled={currentPage === totalPages - 1}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
     </div>
   );
 };

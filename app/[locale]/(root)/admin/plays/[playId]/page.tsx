@@ -12,7 +12,7 @@ import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
 import i18nConfig, { Locale } from "@/next-i18next.config";
 import { ActorType, ExecutorType, FestivalType, PlayType } from "@/types";
 import { ExecutorRole } from "@prisma/client";
-import { Metadata, ResolvingMetadata } from "next";
+import { Metadata } from "next";
 import { FC } from "react";
 
 // export async function generateStaticParams() {
@@ -38,6 +38,7 @@ export async function generateMetadata({
   params,
 }: AdminSinglePlayPageProps): // parent: ResolvingMetadata
 Promise<Metadata> {
+  const { t } = await initTranslations(params.locale, i18nextNamspaces);
   // fetch data
   const id = params.playId;
 
@@ -46,9 +47,10 @@ Promise<Metadata> {
   // console.log(play);
 
   if (play) {
+    const title = `${play.name} | ${t("play.single", { ns: "constants" })}`;
     return {
-      title: `${play.name} | play`,
-      description: play.name,
+      title,
+      description: play.description || title,
       icons: {
         icon: play.posterImgUrl,
         apple: [
@@ -61,7 +63,10 @@ Promise<Metadata> {
   }
 
   return {
-    title: "add play",
+    title: t("actions.add", {
+      ns: "common",
+      instance: t("play.single", { ns: "constants" }),
+    }),
     description: "Add a new play to the database.",
   };
 }

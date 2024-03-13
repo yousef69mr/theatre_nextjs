@@ -131,7 +131,7 @@ export async function PATCH(request: NextRequest, props: FestivalPlayProps) {
     return NextResponse.json({ error: "Invalid fields" }, { status: 400 });
   }
 
-  const { showTimes, festivalId, playId } = validatedFields.data;
+  const { showTimes, festivalId, playId, position } = validatedFields.data;
 
   if (!festivalId) {
     return NextResponse.json(
@@ -193,6 +193,7 @@ export async function PATCH(request: NextRequest, props: FestivalPlayProps) {
         showTimes: formatedShowtimes,
         playId,
         festivalId,
+        position,
       },
       include: {
         play: {

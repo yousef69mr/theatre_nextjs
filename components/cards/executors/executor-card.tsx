@@ -35,12 +35,12 @@ const ExecutorCard: FC<ExecutorCardProps> = (props) => {
       imageUrl={executor.imgUrl ? executor.imgUrl : "/default-profile.png"}
     >
       <Link href={`/${locale}/executors/${executor.id}`}>
-        <div className="flex flex-col items-start justify-center px-2 space-y-2 w-full">
+        <div className="flex flex-col items-start justify-center px-2 space-y-1 w-full">
           <h3 className="text-md md:text-xl font-medium truncate">
             {executor.name} {executor.nickname ? `(${executor.nickname})` : ""}
           </h3>
           {role && (
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm capitalize font-bold text-muted-foreground">
               {t(`ExecutorRole.${role}`, { ns: "common" })}
             </p>
           )}

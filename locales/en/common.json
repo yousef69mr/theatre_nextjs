@@ -1,4 +1,6 @@
 {
+  "app_title": "FCAI Theatre Cast",
+  "app_description":"The FCAI (Faculty of Computer and Artificial Intelligence) Cast Theatre is an innovative platform that seamlessly integrates cutting-edge technologies with the performing arts. With its state-of-the-art facilities and dedicated team of professionals, the Cast Theatre offers a dynamic and immersive experience for both performers and audiences alike. At the heart of the FCAI Cast Theatre is a commitment to pushing the boundaries of traditional theatre through the use of artificial intelligence, computer graphics, and interactive media. From captivating virtual sets to real-time visual effects, every aspect of a performance is elevated to new heights, creating a truly unforgettable experience.Designed to inspire creativity and foster collaboration, the Cast Theatre serves as a hub for artists, technologists, and audiences to explore new possibilities in storytelling and expression. Whether it's a live stage production, a virtual reality experience, or a hybrid performance blending the physical and digital realms, the Cast Theatre is at the forefront of innovation in the arts. Join us at the FCAI Cast Theatre and immerse yourself in a world where imagination knows no bounds, and where the future of theatre is being redefined, one performance at a time.",
   "navbar": {
     "localization": {
       "toggleText": "Language Toggle",
@@ -38,7 +40,7 @@
   "ExecutorRole": {
     "DIRECTOR": "director",
     "AUTHOR": "author",
-    "EXECUTIVE_DIRECTOR":"executive director",
+    "EXECUTIVE_DIRECTOR": "executive director",
     "CO_DIRECTOR": "co-director",
     "PRODUCER": "producer",
     "ACTING_COACH": "acting coach",
@@ -66,6 +68,8 @@
     "filter": "filter {{instance}}",
     "filterBy": "filter by {{instance}}",
     "cancel": "cancel",
+    "book": "book {{instance}}",
+    "watch": "watch {{instance}}",
     "show": "show {{instance}}",
     "link": "link {{instance}}",
     "linkTo": "link {{instance}} to {{to}}",

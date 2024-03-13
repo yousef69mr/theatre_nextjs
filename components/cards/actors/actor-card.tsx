@@ -15,7 +15,9 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 interface ActorCardProps extends HTMLAttributes<HTMLElement> {
-  actor: ActorType;
+  actor: ActorType & {
+    characterNames?: string[];
+  };
 }
 const ActorCard: FC<ActorCardProps> = (props) => {
   const { actor, className } = props;
@@ -35,6 +37,11 @@ const ActorCard: FC<ActorCardProps> = (props) => {
           <h3 className="text-md md:text-xl font-medium truncate">
             {actor.name} {actor.nickname ? `(${actor.nickname})` : ""}
           </h3>
+          {actor.characterNames && (
+            <p className="text-sm capitalize font-bold text-muted-foreground">
+              {actor.characterNames.join(", ")}
+            </p>
+          )}
           <div className="flex flex-wrap gap-3 text-xs font-medium">
             <TooltipProvider>
               <Tooltip>

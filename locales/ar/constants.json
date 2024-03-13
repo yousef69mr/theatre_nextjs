@@ -9,7 +9,7 @@
   "add": { "default": "إضافة", "loading": "جارى الإضافة" },
   "close": { "default": "غلق", "loading": "جارى الغلق" },
   "link": { "default": "ربط", "loading": "جارى الربط" },
-
+  "book": { "default": "حجز", "loading": "جارى الحجز" },
   "cancel": { "default": "إلغاء", "loading": "جارى الإلغاء" },
 
   "yes": "نعم",
@@ -30,6 +30,8 @@
   "festival": { "plural": "مهرجانات", "single": "مهرجان" },
   "executor": { "plural": "منفذون", "single": "منفذ" },
   "option": { "plural": "إختيارات", "single": "إختيار" },
+  "ticket": { "plural": "تذاكر", "single": "تذكرة" },
+  "compition-place": { "plural": "مراكز", "single": "مركز" },
   "file": { "plural": "ملفات", "single": "ملف" },
   "id": { "plural": "أكواد", "single": "كود" },
   "role": { "plural": "مناصب", "single": "منصب" },
@@ -44,6 +46,34 @@
   "errors": {
     "notFound": "لم يتم العثور على {{instance}}",
     "notProvided": "{{instance}} غير متوفر حاليا"
+  },
+  "places": {
+    "1": { "single": "أول", "plural": "أوائل" },
+    "2": { "single": "ثانى" },
+    "3": { "single": "ثالث" },
+    "4": { "single": "رابع" },
+    "5": { "single": "خامس" },
+    "6": { "single": "سادس" },
+    "7": { "single": "سابع" },
+    "8": { "single": "ثامن" },
+    "9": { "single": "تاسع" },
+    "10": { "single": "عاشر" },
+    "11": { "single": "حادى عشر" },
+    "12": { "single": "اثنا عشر" },
+    "13": { "single": "ثالث عشر" },
+    "14": { "single": "رابع عشر" },
+    "15": { "single": "خامس عشر" },
+    "16": { "single": "سادس عشر" },
+    "17": { "single": "سابع عشر" },
+    "18": { "single": "تامن عشر" },
+    "19": { "single": "تاسع عشر" },
+    "20": { "single": "عشرون" },
+    "21": { "single": "واحد و عشرون" },
+    "22": { "single": "اثنان و عشرون" },
+    "23": { "single": "ثلاثة و عشرون" },
+    "24": { "single": "أربعة و عشرون" },
+    "25": { "single": "خمسة و عشرون" },
+    "last": { "single": "أخير" }
   },
   "units": {
     "thousand": { "plural": "آلاف", "single": "الف", "symbol": "K" },
@@ -92,8 +122,10 @@
       "actorName": "اسم الممثل",
       "executorName": "اسم المنفذ",
       "festivalName": "اسم المهرجان",
+      "playPlace": "مركز العرض",
       "nickname": "اسم الشهرة",
       "characterNames": "اسم شخصية العرض",
+      "guestNames": "أسماء الزوار",
       "awards": "الجوائز",
       "profileImg": "صورة شخصية",
       "image": "صورة",
@@ -114,7 +146,9 @@
       "actorName": "اسم الممثل",
       "executorName": "اسم المنفذ",
       "festivalName": "اسم المهرجان",
+      "playPlace": "[ 1 --> 25 ]",
       "characterNames": "اسم شخصية العرض",
+      "guestNames": "أحمد, محمد , علاءالدين",
       "nickname": "اسم الشهرة",
       "awards": "الجوائز",
       "profileImg": "صورة شخصية",
@@ -129,7 +163,8 @@
     },
     "description": {
       "characterNames": "الرجاء إدخال أسماء الشخصيات مفصولة بفواصل  مثل هذه [ , ]. ثم انقر الزر الاخضر للإضافة",
-      "showTimes": "الرجاء الضغط على زر الإضافة لإضافة ميعاد وقت عرض جديدة"
+      "showTimes": "الرجاء الضغط على زر الإضافة لإضافة ميعاد وقت عرض جديدة",
+      "guestNames": "الرجاء إدخال أسماء الشخصيات مفصولة بفواصل  مثل هذه [ , ]. ثم انقر الزر الاخضر للإضافة"
     }
   }
 }

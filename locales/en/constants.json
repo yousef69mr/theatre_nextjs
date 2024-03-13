@@ -12,6 +12,7 @@
   "add": { "default": "create", "loading": "adding" },
   "close": { "default": "close", "loading": "closing" },
   "link": { "default": "link", "loading": "linking" },
+  "book": { "default": "book", "loading": "booking" },
 
   "yes": "yes",
   "no": "no",
@@ -35,6 +36,8 @@
   "festival": { "plural": "festivals", "single": "festival" },
   "executor": { "plural": "executors", "single": "executor" },
   "option": { "plural": "options", "single": "option" },
+  "ticket": { "plural": "tickets", "single": "ticket" },
+  "compition-place": { "plural": "places", "single": "place" },
   "category": { "plural": "categories", "single": "category" },
   "story": { "plural": "stories", "single": "story" },
   "file": { "plural": "files", "single": "file" },
@@ -45,7 +48,34 @@
     "notFound": "No {{instance}} found",
     "notProvided": "{{instance}} is not provided"
   },
-
+  "places": {
+    "1": { "single": "first", "plural": "firsts" },
+    "2": { "single": "second" },
+    "3": { "single": "third" },
+    "4": { "single": "fourth" },
+    "5": { "single": "fifth" },
+    "6": { "single": "sixth" },
+    "7": { "single": "seventh" },
+    "8": { "single": "eighth" },
+    "9": { "single": "ninth" },
+    "10": { "single": "tenth" },
+    "11": { "single": "eleventh" },
+    "12": { "single": "twelfth" },
+    "13": { "single": "thirteenth" },
+    "14": { "single": "fourteenth" },
+    "15": { "single": "fifteenth" },
+    "16": { "single": "sixteenth" },
+    "17": { "single": "seventeenth" },
+    "18": { "single": "eighteenth" },
+    "19": { "single": "nineteenth" },
+    "20": { "single": "twentieth" },
+    "21": { "single": "twenty-first" },
+    "22": { "single": "twenty-second" },
+    "23": { "single": "twenty-third" },
+    "24": { "single": "twenty-fourth" },
+    "25": { "single": "twenty-fifth" },
+    "last": { "single": "last" }
+  },
   "units": {
     "thousand": { "plural": "thousands", "single": "thousand", "symbol": "K" },
     "million": { "plural": "millions", "single": "million", "symbol": "M" },
@@ -93,9 +123,10 @@
       "actorName": "Actor Name",
       "executorName": "Executor Name",
       "festivalName": "Festival Name",
-      "characterName": "Character Name",
+      "playPlace": "Play Place",
       "nickname": "Nickname",
       "characterNames": "Character Name",
+      "guestNames": "Guests Names",
       "awards": "Awards",
       "profileImg": "Profile Image",
       "image": "Image",
@@ -117,7 +148,9 @@
       "actorName": "Actor Name",
       "executorName": "Executor Name",
       "festivalName": "Festival Name",
+      "playPlace": "[ 1 --> 25 ]",
       "characterNames": "Character Name",
+      "guestNames": "ahmed, mohamed, ...etc",
       "nickname": "Nickname",
       "awards": "Awards",
       "profileImg": "Profile Image",
@@ -132,7 +165,8 @@
     },
     "description": {
       "characterNames": "Please enter the character names separated by commas. then click on add button",
-      "showTimes": "Please click on add button to add a new show time value"
+      "showTimes": "Please click on add button to add a new show time value",
+      "guestNames": "Please enter the character names separated by commas. then click on add button"
     }
   }
 }
