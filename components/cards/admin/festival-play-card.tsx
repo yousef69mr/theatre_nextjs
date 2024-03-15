@@ -199,14 +199,14 @@ const FestivalPlayCard: FC<FestivalPlayCardProps> = (props) => {
           )}
           {festivalPlay.position && (
             <Tooltip>
-              <TooltipTrigger>
-                <div className="flex items-center justify-start">
-                  <Award className="w-5 h-5 ltr:mr-2 rtl:ml-2 text-orange-300" />
+              <div className="flex items-center justify-start">
+                <Award className="w-5 h-5 ltr:mr-2 rtl:ml-2 text-orange-300" />
+                <TooltipTrigger>
                   <span className="truncate font-medium">
                     {festivalPlay.position}
                   </span>
-                </div>
-              </TooltipTrigger>
+                </TooltipTrigger>
+              </div>
               <TooltipContent>
                 <p className="text-sm">
                   {t(`places.${festivalPlay.position}.single`, {

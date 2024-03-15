@@ -98,6 +98,7 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
   const form = useForm<LinkFestivalPlayFormValues>({
     resolver: zodResolver(festivalPlaySchema),
     defaultValues: {
+      ...initialData,
       position: initialData?.position || undefined,
       playId: playId || initialData?.play.id,
       festivalId: festivalId || initialData?.festival.id,
@@ -462,7 +463,7 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
                   onChange={(event) =>
                     field.onChange(Number(event.target.value))
                   }
-                  value={String(field.value)||undefined}
+                  value={field.value ? String(field.value) : undefined}
                   // {...field}
                 />
               </FormControl>
@@ -470,6 +471,98 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
             </FormItem>
           )}
         />
+        <div className="flex w-full flex-wrap gap-x-2 items-center">
+          <FormField
+            control={form.control}
+            name="seatsLimit"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel>
+                  {t("forms.labels.seatsLimit", {
+                    ns: "constants",
+                  })}
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    disabled={isDisabled}
+                    placeholder={t("forms.placeholder.seatsLimit", {
+                      ns: "constants",
+                      maxValue: initialData?.seatsLimit || 0,
+                    })}
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    onChange={(event) =>
+                      field.onChange(Number(event.target.value))
+                    }
+                    value={field.value ? String(field.value) : undefined}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="actorTicketLimit"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel>
+                  {t("forms.labels.actorTicketLimit", {
+                    ns: "constants",
+                  })}
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    disabled={isDisabled}
+                    placeholder={t("forms.placeholder.actorTicketLimit", {
+                      ns: "constants",
+                      maxValue: initialData?.actorTicketLimit || 0,
+                    })}
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    onChange={(event) =>
+                      field.onChange(Number(event.target.value))
+                    }
+                    value={field.value ? String(field.value) : undefined}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="guestTicketLimit"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel>
+                  {t("forms.labels.guestTicketLimit", {
+                    ns: "constants",
+                  })}
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    disabled={isDisabled}
+                    placeholder={t("forms.placeholder.guestTicketLimit", {
+                      ns: "constants",
+                      maxValue: initialData?.guestTicketLimit || 0,
+                    })}
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    onChange={(event) =>
+                      field.onChange(Number(event.target.value))
+                    }
+                    value={field.value ? String(field.value) : undefined}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <Separator />
         <div className="flex w-full justify-end items-center">

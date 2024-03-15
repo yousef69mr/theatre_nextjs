@@ -44,9 +44,12 @@
   "image": { "plural": "images", "single": "image" },
   "menu": { "plural": "menus", "single": "menu" },
   "view": { "plural": "views", "single": "view" },
+  "cast": { "plural": "casts", "single": "cast" },
+  "description": { "plural": "descriptions", "single": "description" },
   "errors": {
     "notFound": "No {{instance}} found",
-    "notProvided": "{{instance}} is not provided"
+    "notProvided": "{{instance}} is not provided",
+    "notLive": "{{instance}} is not live"
   },
   "places": {
     "1": { "single": "first", "plural": "firsts" },
@@ -128,10 +131,14 @@
       "characterNames": "Character Name",
       "guestNames": "Guests Names",
       "awards": "Awards",
+      "facultyCast": "Faculty Cast",
       "profileImg": "Profile Image",
       "image": "Image",
       "description": "Description",
       "story": "Story",
+      "guestTicketLimit": "Guest Ticket Limit",
+      "actorTicketLimit": "Actor Ticket Limit",
+      "seatsLimit": "Seats Limit",
       "isCastMember": "Is he/she a cast member?",
       "startDate": "Start Date",
       "endDate": "End Date",
@@ -149,6 +156,9 @@
       "executorName": "Executor Name",
       "festivalName": "Festival Name",
       "playPlace": "[ 1 --> 25 ]",
+      "guestTicketLimit": "min: 0 - max: {{maxValue}} ",
+      "actorTicketLimit": "min: 0 - max: {{maxValue}} ",
+      "seatsLimit": "min: 0 - max: ∞ ",
       "characterNames": "Character Name",
       "guestNames": "ahmed, mohamed, ...etc",
       "nickname": "Nickname",

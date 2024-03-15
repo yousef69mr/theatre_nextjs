@@ -55,6 +55,28 @@
     "COSTUME_DESIGNER": "مصمم ملابس",
     "OTHER": "أخرى"
   },
+  "FacultyCast": {
+    "LAW": "حقوق",
+    "ENGINEERING": "هندسة",
+    "MEDICINE": "طب بشرى",
+    "SCIENCE": "علوم",
+    "PHARMACY": "صيدلة",
+    "COMMERCE": "تجارة",
+    "ARTS": "آداب",
+    "AGRICULTURE": "زراعة",
+    "DENTISTRY": "أسنان",
+    "COMPUTERS": "حاسبات",
+    "EDUCATION": "تربية",
+    "ECONOMICS": "ٌإقصاد",
+    "ARCHAEOLOGY": "أثار",
+    "NURSING": "تمريض",
+    "SPECIFIC_EDUCATION": "نوعية",
+    "VETERINARY": "بيطرى",
+    "MASS": "إعلام",
+    "CHILDHOOD": "طفولة",
+    "DAR_ULOOM": "دار علوم",
+    "OTHER": "أخرى"
+  },
   "actions": {
     "add": "إضافة {{instance}}",
     "create": "إنشاء {{instance}}",

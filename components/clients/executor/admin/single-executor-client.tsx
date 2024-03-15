@@ -100,7 +100,7 @@ const ExecutorClient: FC<ExecutorClientProps> = (props) => {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        {executor && (
+        {executor ? (
           <>
             <Link href={`/${locale}/executors/${executor.id}`}>
               <Heading title={headingTitle} />
@@ -129,6 +129,8 @@ const ExecutorClient: FC<ExecutorClientProps> = (props) => {
               </Tooltip>
             </TooltipProvider>
           </>
+        ) : (
+          <Heading title={headingTitle} />
         )}
       </div>
 

@@ -19,7 +19,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid fields" }, { status: 400 });
   }
 
-  const { playId, festivalId, showTimes } = validatedFields.data;
+  const {
+    playId,
+    festivalId,
+    showTimes,
+    seatsLimit,
+    actorTicketLimit,
+    guestTicketLimit,
+  } = validatedFields.data;
 
   if (!festivalId) {
     return NextResponse.json(
@@ -35,6 +42,13 @@ export async function POST(request: NextRequest) {
   if (!showTimes) {
     return NextResponse.json(
       { error: "showTimes is missing!" },
+      { status: 400 }
+    );
+  }
+
+  if (!seatsLimit) {
+    return NextResponse.json(
+      { error: "seats limit is missing!" },
       { status: 400 }
     );
   }
@@ -60,7 +74,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "play not found!" }, { status: 404 });
   }
 
+  const tickets = await db.ticket.findMany({
+    where: {
+      playId,
+      festivalId,
+    },
+  });
   // console.log("herer");
+  const availableSeats = seatsLimit - tickets.length;
   const formatedShowtimes = showTimes.map((showTime) => new Date(showTime));
   try {
     const festivalPlay = await db.playFestival.create({
@@ -68,6 +89,10 @@ export async function POST(request: NextRequest) {
         playId,
         showTimes: formatedShowtimes,
         festivalId,
+        seatsLimit,
+        availableSeats: availableSeats > 0 ? availableSeats : 0,
+        actorTicketLimit,
+        guestTicketLimit,
       },
       include: {
         play: {

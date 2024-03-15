@@ -131,8 +131,22 @@ export async function PATCH(request: NextRequest, props: FestivalPlayProps) {
     return NextResponse.json({ error: "Invalid fields" }, { status: 400 });
   }
 
-  const { showTimes, festivalId, playId, position } = validatedFields.data;
+  const {
+    showTimes,
+    festivalId,
+    playId,
+    position,
+    seatsLimit,
+    actorTicketLimit,
+    guestTicketLimit,
+  } = validatedFields.data;
 
+  if (!seatsLimit) {
+    return NextResponse.json(
+      { error: "seats limit is missing!" },
+      { status: 400 }
+    );
+  }
   if (!festivalId) {
     return NextResponse.json(
       { error: "festivalId is missing!" },
@@ -183,6 +197,15 @@ export async function PATCH(request: NextRequest, props: FestivalPlayProps) {
     //   },
     // });
 
+    const tickets = await db.ticket.findMany({
+      where: {
+        playId,
+        festivalId,
+      },
+    });
+    // console.log("herer");
+    const availableSeats = seatsLimit - tickets.length;
+
     const formatedShowtimes = showTimes.map((showTime) => new Date(showTime));
 
     const festivalPlay = await db.playFestival.update({
@@ -194,6 +217,10 @@ export async function PATCH(request: NextRequest, props: FestivalPlayProps) {
         playId,
         festivalId,
         position,
+        seatsLimit,
+        availableSeats: availableSeats > 0 ? availableSeats : 0,
+        actorTicketLimit,
+        guestTicketLimit,
       },
       include: {
         play: {
@@ -215,6 +242,7 @@ export async function PATCH(request: NextRequest, props: FestivalPlayProps) {
 
     return NextResponse.json(festivalPlay, { status: 200 });
   } catch (error) {
+    console.log(error);
     return NextResponse.json({ error: "Internal error" }, { status: 500 });
   }
 }

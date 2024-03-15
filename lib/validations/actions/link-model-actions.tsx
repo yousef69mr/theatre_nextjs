@@ -38,8 +38,10 @@ export const festivalPlaySchema = object({
   festivalId: string().min(1, { message: "festivalId is required" }),
   position: number()
     .min(1, { message: "1 minimum" })
-    .max(25, { message: "25 maximum" }),
+    .max(25, { message: "25 maximum" })
+    .optional(),
+  seatsLimit: number().min(0, { message: "0 minimum" }),
+  guestTicketLimit: number().min(0, { message: "0 minimum" }).optional(),
+  actorTicketLimit: number().min(0, { message: "0 minimum" }).optional(),
   showTimes: array(string()),
 });
-
-

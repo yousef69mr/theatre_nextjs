@@ -40,9 +40,11 @@ export async function GET(request: NextRequest, props: ExecutorProps) {
                 id: true,
                 name: true,
                 posterImgUrl: true,
+                awards:true,
                 festivals: {
                   select: {
                     id: true,
+                    showTimes: true,
                     festival: {
                       select: {
                         id: true,

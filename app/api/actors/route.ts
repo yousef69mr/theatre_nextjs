@@ -65,8 +65,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid fields" }, { status: 400 });
   }
 
-  const { name, imgUrl, nickname, startDate, endDate, isCastMember,description } =
-    validatedFields.data;
+  const {
+    name,
+    imgUrl,
+    nickname,
+    startDate,
+    endDate,
+    isCastMember,
+    description,
+    facultyCast,
+  } = validatedFields.data;
 
   if (!name) {
     return NextResponse.json({ error: "name is missing!" }, { status: 400 });
@@ -90,7 +98,8 @@ export async function POST(request: NextRequest) {
         name,
         imgUrl,
         nickname,
-        description
+        description,
+        facultyCast
       },
       include: {
         awards: true,

@@ -4,11 +4,15 @@ import TranslationsProvider from "@/components/providers/translation-provider";
 import { getPlayByIdRequest } from "@/lib/api-calls/models/play";
 import initTranslations from "@/lib/i18n";
 import { Locale } from "@/next-i18next.config";
-import { FestivalType, PlayType } from "@/types";
+import { FestivalType, PlayType, TicketType } from "@/types";
 import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
 import CardWrapper from "@/components/helpers/card-wrapper";
 import BookPlayTicketsForm from "@/components/forms/actions/book-play-tickets";
 import { getAllFestivalsRequest } from "@/lib/api-calls/models/festival";
+import { isPlayLive } from "@/lib/helpers/play-validations";
+import { AudioLines } from "lucide-react";
+import FormError from "@/components/forms/form-error";
+import { getUserTicketsRequest } from "@/lib/api-calls/models/tickets";
 // import { redirect } from "next/navigation";
 
 interface BookPlayTicketPageProps {
@@ -38,14 +42,6 @@ Promise<Metadata> {
     return {
       title,
       description: play.description || title,
-      icons: {
-        icon: play.posterImgUrl,
-        apple: [
-          {
-            url: play.posterImgUrl,
-          },
-        ],
-      },
     };
   }
 
@@ -65,6 +61,7 @@ const BookPlayTicketPage: React.FC<BookPlayTicketPageProps> = async (props) => {
   const { t, resources } = await initTranslations(locale, i18nextNamspaces);
 
   const play: PlayType | null = await getPlayByIdRequest(playId);
+  const tickets: TicketType[]  = await getUserTicketsRequest();
 
   if (!play) {
     return <>not found</>;
@@ -74,21 +71,28 @@ const BookPlayTicketPage: React.FC<BookPlayTicketPageProps> = async (props) => {
   const title = t("app_title", { ns: "common" }).split("|");
   const pageTitle = (
     <>
-      <span>{title[0]}</span>
-      <br />{" "}
+      <span className="font-semibold text-2xl">{title[0]}</span>
+      {/* <br /> */}
       <span className="font-semibold text-sm md:text-xl">{title[1]}</span>
     </>
   );
 
+  const isLive = isPlayLive(play.festivals);
+
   const subTitle = (
     <>
-      <span>
-        {t("actions.book", {
-          ns: "constants",
-          instance: t("ticket.single", { ns: "constants" }),
-        })}
-      </span>{" "}
-      <br />{" "}
+      <div className="flex items-center justify-start gap-x-2">
+        <span>
+          {t("actions.book", {
+            ns: "constants",
+            instance: t("ticket.single", { ns: "constants" }),
+          })}
+        </span>
+        {isLive && (
+          <AudioLines className="w-5 h-5 transition-all text-emerald-500 animate-pulse" />
+        )}
+      </div>
+      {/* <br />{" "} */}
       <span className="font-bold text-lg md:text-2xl text-primary dark:text-red-200">
         {play.name}
       </span>
@@ -102,7 +106,7 @@ const BookPlayTicketPage: React.FC<BookPlayTicketPageProps> = async (props) => {
         resources={resources}
       >
         <div className="w-full h-full bg-neutral-800/40 backdrop-saturate-50 top-0 left-0 -z-10 absolute" />
-        <div className="flex-1 space-y-4 p-8 pt-6">
+        <div className="flex-1 space-y-4 p-8 pt-6 flex items-center">
           <Image
             fill
             priority
@@ -112,7 +116,16 @@ const BookPlayTicketPage: React.FC<BookPlayTicketPageProps> = async (props) => {
           />
 
           <CardWrapper headerTitle={pageTitle} headerSubTitle={subTitle}>
-            <BookPlayTicketsForm play={play} />
+            {isLive ? (
+              <BookPlayTicketsForm play={play} userTickets={tickets}/>
+            ) : (
+              <FormError
+                message={t("errors.notLive", {
+                  ns: "constants",
+                  instance: t("play.single", { ns: "constants" }),
+                })}
+              />
+            )}
           </CardWrapper>
         </div>
       </TranslationsProvider>

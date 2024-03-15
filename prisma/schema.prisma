@@ -39,6 +39,7 @@ model User {
   executorId String? @db.ObjectId
 
   accounts Account[]
+  tickets  Ticket[]
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
@@ -142,6 +143,7 @@ model Festival {
   Award     Award[]
   actors    ActorInPlay[]
   executors ExecutorInPlay[]
+  tickets   Ticket[]
 
   isPublished Boolean @default(true)
 
@@ -150,16 +152,20 @@ model Festival {
 }
 
 model PlayFestival {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  position Int?
+  id               String @id @default(auto()) @map("_id") @db.ObjectId
+  position         Int?
+  seatsLimit       Int    @default(0)
+  availableSeats   Int    @default(0)
+  actorTicketLimit Int    @default(8)
+  guestTicketLimit Int    @default(1)
+
+  showTimes DateTime[]
 
   playId String @db.ObjectId
   play   Play   @relation(fields: [playId], references: [id], onDelete: Cascade)
 
   festivalId String   @db.ObjectId
   festival   Festival @relation(fields: [festivalId], references: [id], onDelete: Cascade)
-
-  showTimes DateTime[]
 
   @@unique([festivalId, playId])
   @@index([festivalId])
@@ -171,7 +177,7 @@ model Play {
   name         String
   description  String?
   videoUrl     String?
-  posterImgUrl String
+  posterImgUrl String?
   numOfViews   BigInt  @default(0)
 
   images String[]
@@ -181,6 +187,7 @@ model Play {
   actors    ActorInPlay[]
   awards    Award[]
   executors ExecutorInPlay[]
+  tickets   Ticket[]
 
   isPublished Boolean @default(true)
 
@@ -210,6 +217,31 @@ model ActorInPlay {
   @@index([festivalId])
 }
 
+enum FacultyCast {
+  LAW
+  ENGINEERING
+  MEDICINE
+  SCIENCE
+  PHARMACY
+  COMMERCE
+  ARTS
+  AGRICULTURE
+  DENTISTRY
+  COMPUTERS
+  EDUCATION
+  ECONOMICS
+  ARCHAEOLOGY
+  NURSING
+  SPECIFIC_EDUCATION
+  VETERINARY
+  PHYSICAL
+  MASS
+  // FINE_ARTS
+  CHILDHOOD
+  DAR_ULOOM
+  OTHER
+}
+
 model Actor {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
@@ -217,7 +249,8 @@ model Actor {
   imgUrl      String
   nickname    String?
   description String?
-  numOfViews  BigInt  @default(0)
+  facultyCast        FacultyCast @default(OTHER)
+  numOfViews  BigInt   @default(0)
 
   userId String? @db.ObjectId
   // user   User?   @relation(fields: [userId], references: [id])
@@ -333,4 +366,32 @@ model Award {
   @@index([executorId])
   @@index([festivalId])
   @@index([actorId])
+}
+
+model Ticket {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  guestName  String
+  seatNumber Int
+  price      Int    @default(0)
+
+  showTime DateTime
+
+  // create by user
+  userId    String? @db.ObjectId
+  createdBy User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  playId String @db.ObjectId
+  play   Play   @relation(fields: [playId], references: [id], onDelete: Cascade)
+
+  festivalId String   @db.ObjectId
+  festival   Festival @relation(fields: [festivalId], references: [id], onDelete: Cascade)
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  @@unique([seatNumber, playId, festivalId])
+  @@index([playId])
+  @@index([festivalId])
+  @@index([userId])
 }

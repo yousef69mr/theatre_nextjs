@@ -5,10 +5,17 @@ import { FC, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { AudioLines, Award, CalendarDays, Pencil, Ticket, Trash } from "lucide-react";
+import {
+  AudioLines,
+  Award,
+  // CalendarDays,
+  Pencil,
+  Ticket,
+  Trash,
+} from "lucide-react";
 
 import { useParams, useRouter } from "next/navigation";
-import { PlayType } from "@/types";
+import { PlayFestivalType, PlayType } from "@/types";
 import { cn } from "@/lib/utils";
 
 import {
@@ -42,6 +49,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import ActorCarousel from "@/components/carousels/actor-carousel";
 import ExecutorCarousel from "@/components/carousels/executor-carousel";
+import { isPlayLive } from "@/lib/helpers/play-validations";
+import {
+  removeArrayDuplicates,
+  removePlayActorDuplicates,
+  removePlayExecutorDuplicates,
+} from "@/lib/helpers/list-fomratters";
 
 interface PlayClientProps {
   play: PlayType;
@@ -62,7 +75,7 @@ const PlayClient: FC<PlayClientProps> = (props) => {
   const updatePlay = usePlayStore((state) => state.updatePlay);
 
   const handleDelete = () => {
-    onOpen("deletePlay", { play: play || undefined });
+    onOpen("deletePlay", { play });
   };
 
   const handleEdit = () => {
@@ -73,34 +86,18 @@ const PlayClient: FC<PlayClientProps> = (props) => {
     updatePlay(play);
   }, [play]);
 
-  const executors = play.executors.map((executorLink) => ({
-    role: executorLink.role,
-    ...executorLink.executor,
-  }));
+  const executors = removePlayExecutorDuplicates(play);
 
   const festivals = play.festivals.map((festivalLink) => ({
-    showTimes: festivalLink.showTimes,
+    // showTimes: festivalLink.showTimes,
     position: festivalLink.position,
     ...festivalLink.festival,
+    ...festivalLink,
   }));
 
-  const actors = play.actors.map((actorLink) => ({
-    ...actorLink.actor,
-    characterNames: actorLink.characterNames,
-  }));
+  const actors = removePlayActorDuplicates(play);
 
-  const isLive = (): boolean => {
-    for (let festival of festivals) {
-      for (let show of festival.showTimes) {
-        // console.log(show, new Date().getTime() < new Date(show).getTime());
-        if (new Date() <= new Date(show)) {
-          return true;
-        }
-      }
-    }
-
-    return false;
-  };
+  const isLive = isPlayLive(festivals);
 
   return (
     <div className="px-10">
@@ -117,7 +114,11 @@ const PlayClient: FC<PlayClientProps> = (props) => {
         >
           {/* <AspectRatio ratio={9 / 16}> */}
           <Image
-            src={play.posterImgUrl}
+            src={
+              play.posterImgUrl
+                ? play.posterImgUrl
+                : "/play-poster-template.png"
+            }
             fill
             className="object-contain rounded-lg !relative"
             alt={`${play.name} ${t("poster.single", { ns: "constants" })}`}
@@ -131,7 +132,7 @@ const PlayClient: FC<PlayClientProps> = (props) => {
                 <h1 className="text-2xl font-semibold capitalize">
                   {play.name}
                 </h1>
-                {isLive() && (
+                {isLive && (
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <AudioLines className="w-5 h-5 text-emerald-500 animate-pulse" />
@@ -183,60 +184,74 @@ const PlayClient: FC<PlayClientProps> = (props) => {
               )}
             </div>
             <div className="flex gap-2 flex-wrap">
-              {executors.map((executor) => (
-                <>
-                  {isMainPlayExecutors(executor.role as ExecutorRole) && (
-                    <HoverCard key={executor.id}>
-                      <HoverCardTrigger asChild>
-                        <Link href={`/${locale}/executors/${executor.id}`}>
-                          <Badge
-                            variant={"secondary"}
-                            className="flex items-center justify-between gap-x-2 px-3 py-2"
-                          >
-                            <span className="capitalize">
-                              {t(`ExecutorRole.${executor.role}`, {
-                                ns: "common",
-                              })}{" "}
-                              :
-                            </span>{" "}
-                            <span className="text-medium font-semibold ">
-                              {executor.name}
-                            </span>
-                          </Badge>
-                        </Link>
-                      </HoverCardTrigger>
-                      <HoverCardContent className="w-80" align="start">
-                        <div className="flex justify-start gap-x-4 items-center space-x-4">
-                          <Avatar>
-                            <AvatarImage src={executor.imgUrl} />
-                            <AvatarFallback className="bg-primary text-xl">
-                              {executor.name.charAt(0).toUpperCase()}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div className="space-y-1">
-                            <h4 className="text-sm font-semibold">
-                              {executor.name}{" "}
-                              {executor.nickname
-                                ? `(${executor.nickname})`
-                                : ""}
-                            </h4>
-                            {/* <p className="text-sm">
-                              The React Framework – created and maintained by
-                              @vercel.
-                            </p> */}
-                            <div className="flex items-center pt-2">
-                              <CalendarDays className="ltr:mr-2 rtl:ml-2 h-4 w-4 opacity-70" />{" "}
-                              <span className="text-xs text-muted-foreground">
-                                Joined December 2021
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </HoverCardContent>
-                    </HoverCard>
-                  )}
-                </>
-              ))}
+              {executors.map((executor) => {
+                const roles = removeArrayDuplicates(executor.roles);
+                // console.log(executor.roles)
+                // console.log(roles)
+                return (
+                  <>
+                    {roles.map((role) => (
+                      <>
+                        {isMainPlayExecutors(role as ExecutorRole) && (
+                          <HoverCard key={executor.id}>
+                            <HoverCardTrigger asChild>
+                              <Link
+                                href={`/${locale}/executors/${executor.id}`}
+                              >
+                                <Badge
+                                  variant={"secondary"}
+                                  className="flex items-center justify-between gap-x-2 px-3 py-2"
+                                >
+                                  <span className="capitalize">
+                                    {t(`ExecutorRole.${role}`, {
+                                      ns: "common",
+                                    })}{" "}
+                                    :
+                                  </span>{" "}
+                                  <span className="text-medium font-semibold ">
+                                    {executor.name}
+                                  </span>
+                                </Badge>
+                              </Link>
+                            </HoverCardTrigger>
+                            <HoverCardContent className="w-80" align="start">
+                              <div className="flex justify-start gap-x-4 items-center space-x-4">
+                                <Avatar>
+                                  <AvatarImage
+                                    src={executor.imgUrl}
+                                    className="w-11 h-11 object-cover"
+                                  />
+                                  <AvatarFallback className="bg-primary text-xl">
+                                    {executor.name.charAt(0).toUpperCase()}
+                                  </AvatarFallback>
+                                </Avatar>
+                                <div className="space-y-1">
+                                  <h4 className="text-sm font-semibold">
+                                    {executor.name}{" "}
+                                    {executor.nickname
+                                      ? `(${executor.nickname})`
+                                      : ""}
+                                  </h4>
+                                  {/* <p className="text-sm">
+                                The React Framework – created and maintained by
+                                @vercel.
+                              </p> */}
+                                  {/* <div className="flex items-center pt-2">
+                                <CalendarDays className="ltr:mr-2 rtl:ml-2 h-4 w-4 opacity-70" />{" "}
+                                <span className="text-xs text-muted-foreground">
+                                  Joined December 2021
+                                </span>
+                              </div> */}
+                                </div>
+                              </div>
+                            </HoverCardContent>
+                          </HoverCard>
+                        )}
+                      </>
+                    ))}
+                  </>
+                );
+              })}
             </div>
             {festivals.filter((festivalLink) => festivalLink.position).length >
               0 && (
@@ -249,16 +264,19 @@ const PlayClient: FC<PlayClientProps> = (props) => {
                         className="flex items-center flex-nowrap gap-x-2 text-wrap"
                       >
                         <Award className="w-5 h-5 text-orange-300 ltr:mr-2 rtl:ml-2" />
-                        <span>
-                          {t(`compition-place.single`, {
-                            ns: "constants",
-                          })}
-                        </span>
-                        <span className="text-primary font-semibold">
-                          {t(`places.${festival.position}.single`, {
-                            ns: "constants",
-                          })}
-                        </span>
+                        <div className="flex gap-x-2 items-center justify-center rtl:flex-row ltr:flex-row-reverse">
+                          <span>
+                            {t(`compition-place.single`, {
+                              ns: "constants",
+                            })}
+                          </span>
+                          <span className="text-primary font-semibold">
+                            {t(`places.${festival.position}.single`, {
+                              ns: "constants",
+                            })}
+                          </span>
+                        </div>{" "}
+                        <hr className="w-2 h-1 rounded-md dark:bg-red-100 bg-red-700/15" />
                         <span>{festival.name}</span>
                       </div>
                     )}
@@ -266,20 +284,24 @@ const PlayClient: FC<PlayClientProps> = (props) => {
                 ))}
               </div>
             )}
-            <div className="flex gap-4 items-center">
-              <Button
-                onClick={() => router.push(`${play.id}/book-tickets`)}
-                size={"lg"}
-                variant="outline"
-                className="hover:text-orange-300 hover:border-orange-300"
-              >
-                <Ticket className="w-5 h-5 rtl:ml-2 ltr:mr-2 text-orange-300 transition-all animate-pulse"/>
-                {t("actions.book", {
-                  ns: "common",
-                  instance: t("ticket.single", { ns: "constants" }),
-                })}
-              </Button>
-            </div>
+            {isLive && (
+              <div className="flex gap-4 items-center justify-start my-1">
+                {isLive && (
+                  <Button
+                    onClick={() => router.push(`${play.id}/book-tickets`)}
+                    size={"lg"}
+                    variant="outline"
+                    className="hover:text-orange-300 hover:border-orange-300"
+                  >
+                    <Ticket className="w-5 h-5 rtl:ml-2 ltr:mr-2 text-orange-300 transition-all animate-pulse" />
+                    {t("actions.book", {
+                      ns: "common",
+                      instance: t("ticket.single", { ns: "constants" }),
+                    })}
+                  </Button>
+                )}
+              </div>
+            )}
             <Accordion type="multiple" className="w-full">
               <AccordionItem value="item-1">
                 <AccordionTrigger>

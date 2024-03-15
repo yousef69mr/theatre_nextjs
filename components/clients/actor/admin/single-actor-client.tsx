@@ -77,6 +77,7 @@ const ActorClient: FC<ActorClientProps> = (props) => {
           imgUrl: actor.imgUrl,
           startDate: "",
           description: actor.description,
+          facultyCast: actor.facultyCast,
           isCastMember,
           isPublished,
         },
@@ -124,8 +125,7 @@ const ActorClient: FC<ActorClientProps> = (props) => {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <Heading title={headingTitle} />
-        {actor && (
+        {actor ? (
           <>
             <Link href={`/${locale}/actors/${actor.id}`}>
               <Heading title={headingTitle} />
@@ -154,6 +154,8 @@ const ActorClient: FC<ActorClientProps> = (props) => {
               </Tooltip>
             </TooltipProvider>
           </>
+        ) : (
+          <Heading title={headingTitle} />
         )}
       </div>
       <Separator />
@@ -162,7 +164,7 @@ const ActorClient: FC<ActorClientProps> = (props) => {
         <>
           <Separator className="bg-red-100 dark:bg-red-700/15" />
           <ActorInPlayControl actorInPlayList={actor.plays} type="play" />
-          
+
           <Separator className="bg-red-100 dark:bg-red-700/15" />
           <CastMemberControl castMembers={actor.castMembers} />
           <Separator className="bg-red-100 dark:bg-red-700/15" />

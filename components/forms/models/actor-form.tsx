@@ -27,7 +27,7 @@ import { Separator } from "@/components/ui/separator";
 
 import { useTranslation } from "react-i18next";
 
-import { actorSchema } from "@/lib/validations/models/actor";
+import { actorSchema, facultyCasts } from "@/lib/validations/models/actor";
 import { cn } from "@/lib/utils";
 import { useModal } from "@/hooks/stores/use-modal-store";
 // import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
@@ -39,6 +39,14 @@ import {
 import { useActorStore } from "@/hooks/stores/use-actor-store";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { FacultyCast } from "@prisma/client";
 
 interface ActorFormProps extends HtmlHTMLAttributes<HTMLElement> {
   initialData: ActorType | null;
@@ -74,6 +82,7 @@ const ActorForm: FC<ActorFormProps> = (props) => {
     resolver: zodResolver(actorSchema),
     defaultValues: {
       ...initialData,
+      // facultyCast: initialData?.facultyCast || undefined,
       description: initialData?.description || undefined,
       startDate: new Date().toDateString(),
       nickname: initialData?.nickname || undefined,
@@ -236,48 +245,92 @@ const ActorForm: FC<ActorFormProps> = (props) => {
                   mode === "modal" && "w-full"
                 )}
               >
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        {t("forms.labels.actorName", { ns: "constants" })}
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          disabled={isDisabled}
-                          placeholder={t("forms.placeholder.actorName", {
-                            ns: "constants",
-                          })}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                <div
+                  className={cn(
+                    "w-full flex items-center justify-center flex-wrap gap-x-1",
+                    mode === "page" && "md:col-span-2"
                   )}
-                />
-                <FormField
-                  control={form.control}
-                  name="nickname"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        {t("forms.labels.nickname", { ns: "constants" })}
-                      </FormLabel>
-                      <FormControl>
-                        <Input
+                >
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem className="flex-1">
+                        <FormLabel>
+                          {t("forms.labels.actorName", { ns: "constants" })}
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            disabled={isDisabled}
+                            placeholder={t("forms.placeholder.actorName", {
+                              ns: "constants",
+                            })}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="nickname"
+                    render={({ field }) => (
+                      <FormItem className="flex-1">
+                        <FormLabel>
+                          {t("forms.labels.nickname", { ns: "constants" })}
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            disabled={isDisabled}
+                            placeholder={t("forms.placeholder.nickname", {
+                              ns: "constants",
+                            })}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="facultyCast"
+                    render={({ field }) => (
+                      <FormItem className="self-end flex-1 shrink md:min-w-[50px]">
+                        <FormLabel>
+                          {t("forms.labels.facultyCast", { ns: "constants" })}
+                        </FormLabel>
+                        <Select
                           disabled={isDisabled}
-                          placeholder={t("forms.placeholder.nickname", {
-                            ns: "constants",
-                          })}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue
+                                placeholder={t("actions.select", {
+                                  ns: "common",
+                                  instance: t("forms.labels.facultyCast", {
+                                    ns: "constants",
+                                  }),
+                                })}
+                              />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {facultyCasts.map((faculty) => (
+                              <SelectItem key={faculty} value={faculty}>
+                                {t(`FacultyCast.${faculty}`, { ns: "common" })}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
 
                 {!initialData && (
                   <div className="flex gap-x-2 w-full flex-wrap items-center md:col-span-2">
@@ -333,29 +386,31 @@ const ActorForm: FC<ActorFormProps> = (props) => {
                   </div>
                 )}
 
-                <FormField
-                  control={form.control}
-                  name="description"
-                  render={({ field }) => (
-                    <FormItem className="w-full md:col-span-2">
-                      <FormLabel>
-                        {t("forms.labels.description", {
-                          ns: "constants",
-                        })}
-                      </FormLabel>
-                      <FormControl>
-                        <Textarea
-                          disabled={isDisabled}
-                          placeholder={t("forms.placeholder.description", {
+                {mode === "page" && (
+                  <FormField
+                    control={form.control}
+                    name="description"
+                    render={({ field }) => (
+                      <FormItem className="w-full md:col-span-2">
+                        <FormLabel>
+                          {t("forms.labels.description", {
                             ns: "constants",
                           })}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                        </FormLabel>
+                        <FormControl>
+                          <Textarea
+                            disabled={isDisabled}
+                            placeholder={t("forms.placeholder.description", {
+                              ns: "constants",
+                            })}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
 
                 {!initialData && (
                   <FormField

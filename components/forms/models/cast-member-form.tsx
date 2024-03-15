@@ -217,6 +217,7 @@ const CastMemberForm: FC<CastMemberFormProps> = (props) => {
                     })}
                   </FormLabel>
                   <Select
+                    disabled={isDisabled}
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >

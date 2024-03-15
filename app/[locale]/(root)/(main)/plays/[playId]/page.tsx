@@ -31,14 +31,6 @@ Promise<Metadata> {
     return {
       title,
       description: play.description || title,
-      icons: {
-        icon: play.posterImgUrl,
-        apple: [
-          {
-            url: play.posterImgUrl,
-          },
-        ],
-      },
     };
   }
 

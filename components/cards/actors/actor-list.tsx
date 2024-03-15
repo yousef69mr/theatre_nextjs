@@ -57,32 +57,36 @@ const ActorList: FC<ActorListProps> = (props) => {
           />
         ))}
       </div>
-      <Pagination className="mt-4">
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
-              onClick={() => previousPage(pathname)}
-              disabled={currentPage === 0}
-            />
-          </PaginationItem>
-          {Array.from({ length: totalPages }).map((_, index) => (
-            <PaginationItem key={index}>
-              <PaginationLink
-                href={`/${locale}/actors?${searchKey}=${index + 1}`}
-                className={cn(index === currentPage && "bg-primary text-white")}
-              >
-                {index + 1}
-              </PaginationLink>
+      {totalPages > 1 && (
+        <Pagination className="mt-4">
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={() => previousPage(pathname)}
+                disabled={currentPage === 0}
+              />
             </PaginationItem>
-          ))}
-          <PaginationItem>
-            <PaginationNext
-              onClick={() => nextPage(pathname)}
-              disabled={currentPage === totalPages - 1}
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+            {Array.from({ length: totalPages }).map((_, index) => (
+              <PaginationItem key={index}>
+                <PaginationLink
+                  href={`/${locale}/actors?${searchKey}=${index + 1}`}
+                  className={cn(
+                    index === currentPage && "bg-primary text-white"
+                  )}
+                >
+                  {index + 1}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+            <PaginationItem>
+              <PaginationNext
+                onClick={() => nextPage(pathname)}
+                disabled={currentPage === totalPages - 1}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
     </section>
   );
 };

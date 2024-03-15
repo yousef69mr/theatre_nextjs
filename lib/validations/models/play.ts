@@ -7,7 +7,7 @@ export const playSchema = object({
   showTime: date(),
   videoUrl: string().nullable().optional(),
   description: string().optional(),
-  posterImgUrl: string().min(1, { message: "posterImgUrl is required" }),
+  posterImgUrl: string().optional(),
   images: array(
     string().min(1, { message: "image url is required" })
   ).optional(),

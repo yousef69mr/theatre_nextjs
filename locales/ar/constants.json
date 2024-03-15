@@ -43,9 +43,12 @@
   "image": { "plural": "صور", "single": "صورة" },
   "menu": { "plural": "قوائم", "single": "قائمة" },
   "view": { "plural": "مشاهدات", "single": "مشاهدة" },
+  "cast": { "plural": "كاستات", "single": "كاست" },
+  "description": { "plural": "شرح", "single": "شرح" },
   "errors": {
     "notFound": "لم يتم العثور على {{instance}}",
-    "notProvided": "{{instance}} غير متوفر حاليا"
+    "notProvided": "{{instance}} غير متوفر حاليا",
+    "notLive": "{{instance}} ليس مباشرا و لا يستقبل طلبات الحجز حاليا"
   },
   "places": {
     "1": { "single": "أول", "plural": "أوائل" },
@@ -127,10 +130,13 @@
       "characterNames": "اسم شخصية العرض",
       "guestNames": "أسماء الزوار",
       "awards": "الجوائز",
-      "profileImg": "صورة شخصية",
+      "facultyCast": "كاست",
       "image": "صورة",
       "description": "شرح",
       "story": "قصة",
+      "guestTicketLimit": "حد التذاكر للضيف",
+      "actorTicketLimit": "حد التذاكر للممثل",
+      "seatsLimit": "عدد المقاعد المسموح بها",
       "isCastMember": "هل هو/هى عضو فى الكاست؟",
       "startDate": "تاريخ البداية",
       "endDate": "تاريخ النهاية",
@@ -147,6 +153,9 @@
       "executorName": "اسم المنفذ",
       "festivalName": "اسم المهرجان",
       "playPlace": "[ 1 --> 25 ]",
+      "guestTicketLimit": "من: 0 - إلى: {{maxValue}} ",
+      "actorTicketLimit": "من: 0 - إلى: {{maxValue}} ",
+      "seatsLimit": "من: 0 - إلى: ∞ ",
       "characterNames": "اسم شخصية العرض",
       "guestNames": "أحمد, محمد , علاءالدين",
       "nickname": "اسم الشهرة",

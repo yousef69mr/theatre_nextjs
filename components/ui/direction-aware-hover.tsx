@@ -83,6 +83,7 @@ export const DirectionAwareHover = ({
       )}
     >
       <AnimatePresence mode="wait">
+        
         <motion.div
           className="relative h-full w-full"
           initial="initial"
@@ -91,6 +92,7 @@ export const DirectionAwareHover = ({
           whileTap={dir(locale) === "ltr" ? "left" : "right"}
           exit={"exit"}
         >
+          
           <motion.div className="group-hover/card:block hidden absolute inset-0 w-full h-full bg-black/40 z-10 transition duration-500" />
           <motion.div
             variants={variants}

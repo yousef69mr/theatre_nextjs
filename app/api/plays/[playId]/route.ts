@@ -55,6 +55,7 @@ export async function GET(request: NextRequest, props: PlayProps) {
                 id: true,
                 name: true,
                 nickname: true,
+                facultyCast:true,
                 imgUrl: true,
                 awards: true,
               },
@@ -76,7 +77,7 @@ export async function GET(request: NextRequest, props: PlayProps) {
             },
           },
         },
-
+        tickets: true,
         festivals: {
           include: {
             festival: {
@@ -175,12 +176,12 @@ export async function PATCH(request: NextRequest, props: PlayProps) {
     isPublished,
   } = values;
 
-  if (!posterImgUrl) {
-    return NextResponse.json(
-      { error: "posterImgUrl is missing!" },
-      { status: 400 }
-    );
-  }
+  // if (!posterImgUrl) {
+  //   return NextResponse.json(
+  //     { error: "posterImgUrl is missing!" },
+  //     { status: 400 }
+  //   );
+  // }
   if (!name) {
     return NextResponse.json({ error: "name is missing!" }, { status: 400 });
   }
@@ -277,6 +278,7 @@ export async function PATCH(request: NextRequest, props: PlayProps) {
             },
           },
         },
+        tickets: true,
         awards: true,
         actors: {
           include: {
@@ -286,6 +288,7 @@ export async function PATCH(request: NextRequest, props: PlayProps) {
                 name: true,
                 nickname: true,
                 imgUrl: true,
+                facultyCast:true,
               },
             },
           },

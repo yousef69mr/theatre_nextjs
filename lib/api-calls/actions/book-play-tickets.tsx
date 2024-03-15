@@ -4,7 +4,7 @@ import { PUBLIC_DOMAIN } from "@/routes";
 export const createPlayTicketsRequest = async (
   values: Zod.infer<typeof bookPlayTicketsSchema>
 ) => {
-  const promise = await fetch(PUBLIC_DOMAIN.concat(`/api/play-actors`), {
+  const promise = await fetch(PUBLIC_DOMAIN.concat(`/api/play-tickets`), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

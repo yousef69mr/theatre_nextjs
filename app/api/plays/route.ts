@@ -27,6 +27,7 @@ export async function GET(request: NextRequest) {
               },
             },
           },
+          tickets: true,
           actors: {
             include: {
               actor: {
@@ -99,12 +100,12 @@ export async function POST(request: NextRequest) {
     description,
   } = values;
 
-  if (!posterImgUrl) {
-    return NextResponse.json(
-      { error: "posterImgUrl is missing!" },
-      { status: 400 }
-    );
-  }
+  // if (!posterImgUrl) {
+  //   return NextResponse.json(
+  //     { error: "posterImgUrl is missing!" },
+  //     { status: 400 }
+  //   );
+  // }
   if (!name) {
     return NextResponse.json({ error: "name is missing!" }, { status: 400 });
   }
@@ -209,11 +210,11 @@ export async function POST(request: NextRequest) {
               select: {
                 id: true,
                 name: true,
-                
               },
             },
           },
         },
+        tickets: true,
         awards: true,
         festivals: {
           include: {

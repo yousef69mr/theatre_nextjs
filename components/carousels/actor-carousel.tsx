@@ -1,4 +1,4 @@
-import { ActorType } from "@/types";
+import { ActorCardType } from "@/types";
 import { FC } from "react";
 import ActorCard from "@/components/cards/actors/actor-card";
 import {
@@ -9,10 +9,8 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 interface ActorCarouselProps {
-  actors: ActorType[];
+  actors: ActorCardType[];
 }
-
-
 
 const ActorCarousel: FC<ActorCarouselProps> = (props) => {
   const { actors } = props;
@@ -25,7 +23,7 @@ const ActorCarousel: FC<ActorCarouselProps> = (props) => {
       }}
       className="w-full"
     >
-      <CarouselContent>
+      <CarouselContent className="flex rtl:flex-row-reverse">
         {actors.map((actor) => (
           <CarouselItem
             key={actor.id}

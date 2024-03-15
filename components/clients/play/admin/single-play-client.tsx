@@ -2,7 +2,7 @@
 import { Locale } from "@/next-i18next.config";
 import React, { FC, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Trash } from "lucide-react";
+import { Ticket, Trash } from "lucide-react";
 
 import { useParams, useRouter } from "next/navigation";
 import { ActorType, ExecutorType, FestivalType, PlayType } from "@/types";
@@ -61,6 +61,9 @@ const PlayClient: FC<PlayClientProps> = (props) => {
 
   const handleDelete = () => {
     onOpen("deletePlay", { play: play || undefined });
+  };
+  const handleBookTicket = () => {
+    router.push(`/${locale}/plays/${play?.id}/book-tickets`);
   };
   const handlePublished = (isPublished: boolean) => {
     // onOpen("deleteActor", { actor: actor });
@@ -125,29 +128,62 @@ const PlayClient: FC<PlayClientProps> = (props) => {
             <Link href={`/${locale}/plays/${play.id}`}>
               <Heading title={headingTitle} />
             </Link>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button onClick={handleDelete}>
-                    <Trash className={cn("md:ltr:mr-2 md:rtl:ml-2 h-4 w-4")} />
-                    <span className="hidden md:block">
+            <div className="flex items-center gap-2">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      onClick={handleBookTicket}
+                      variant={"outline"}
+                      className="hover:text-orange-300 hover:border-orange-300"
+                    >
+                      <Ticket
+                        className={cn(
+                          "md:ltr:mr-2 md:rtl:ml-2 h-4 w-4 text-orange-300"
+                        )}
+                      />
+                      <span className="hidden md:block">
+                        {t("actions.book", {
+                          ns: "common",
+                          instance: t("ticket.single", { ns: "constants" }),
+                        })}
+                      </span>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent className="md:hidden flex">
+                    <span>
+                      {t("actions.book", {
+                        ns: "common",
+                        instance: t("ticket.single", { ns: "constants" }),
+                      })}
+                    </span>
+                  </TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button onClick={handleDelete} variant={"destructive"}>
+                      <Trash
+                        className={cn("md:ltr:mr-2 md:rtl:ml-2 h-4 w-4")}
+                      />
+                      <span className="hidden md:block">
+                        {t("actions.delete", {
+                          ns: "common",
+                          instance: t("play.single", { ns: "constants" }),
+                        })}
+                      </span>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent className="md:hidden flex">
+                    <span>
                       {t("actions.delete", {
                         ns: "common",
                         instance: t("play.single", { ns: "constants" }),
                       })}
                     </span>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent className="md:hidden flex">
-                  <span>
-                    {t("actions.delete", {
-                      ns: "common",
-                      instance: t("play.single", { ns: "constants" }),
-                    })}
-                  </span>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
           </>
         )}
       </div>

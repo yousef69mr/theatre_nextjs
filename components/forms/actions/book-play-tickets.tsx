@@ -30,7 +30,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-import { FestivalType, PlayType } from "@/types";
+import { FestivalType, PlayType, TicketType } from "@/types";
 import { useForm } from "react-hook-form";
 import { useParams, useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -73,25 +73,33 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { format } from "date-fns";
+import { useTicketStore } from "@/hooks/stores/use-ticket-store";
 
 interface BookPlayTicketsFormProps extends HtmlHTMLAttributes<HTMLElement> {
   play: PlayType | null;
+  userTickets: TicketType[];
   mode?: "modal" | "page";
 }
 
 type BookPlayTicketsFormValues = Zod.infer<typeof bookPlayTicketsSchema>;
 
 const BookPlayTicketsForm: FC<BookPlayTicketsFormProps> = (props) => {
-  const { play, className, mode = "page" } = props;
+  const { play, userTickets, className, mode = "page" } = props;
 
   const role = useCurrentRole();
 
   const onClose = useModal((state) => state.onClose);
   const onOpen = useModal((state) => state.onOpen);
+  const addTickets = useTicketStore((state) => state.addTickets);
 
   const [festivals, setFestivals] = useState<
-    (FestivalType & { showTimes: string[] })[] | undefined
+    (FestivalType & {
+      showTimes: string[];
+      guestTicketLimit: number;
+      actorTicketLimit: number;
+    })[]
   >();
+  const [numberOfGuest, setNumberOfGuest] = useState<number>(0);
   const [availableShowTimes, setAvailableShowTimes] = useState<string[]>();
   const [isPending, startTransition] = useTransition();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -125,19 +133,14 @@ const BookPlayTicketsForm: FC<BookPlayTicketsFormProps> = (props) => {
 
     startTransition(() => {
       createPlayTicketsRequest(values)
-        .then((response) => response.json())
+        .then((response) => {
+          if (!response.ok) {
+            throw Error(response.statusText);
+          }
+          return response.json();
+        })
         .then(async (data) => {
-          toast.success(
-            t("messages.created", {
-              ns: "constants",
-              instance: t("actions.linkTo", {
-                ns: "common",
-                instance: t("festival.single", { ns: "constants" }),
-                to: t("play.single", { ns: "constants" }),
-              }),
-            })
-          );
-
+          addTickets(data);
           // console.log(localPlays);
           router.refresh();
           if (mode === "page") {
@@ -148,7 +151,7 @@ const BookPlayTicketsForm: FC<BookPlayTicketsFormProps> = (props) => {
           }
         })
         .catch((error) => {
-          toast.error("something went wrong");
+          toast.error(error.message);
           console.error(error);
         })
         .finally(() => setIsLoading(false));
@@ -165,11 +168,26 @@ const BookPlayTicketsForm: FC<BookPlayTicketsFormProps> = (props) => {
     // console.log(selectedPlay);
     if (!selectedPlay) return;
 
-    const formattedFestivals: (FestivalType & { showTimes: string[] })[] =
-      selectedPlay.festivals?.map((festival) => ({
+    const formattedFestivals: (FestivalType & {
+      showTimes: string[];
+      guestTicketLimit: number;
+      actorTicketLimit: number;
+    })[] = selectedPlay.festivals
+      ?.map((festival) => ({
         ...festival.festival,
         showTimes: festival.showTimes,
-      }));
+        actorTicketLimit: festival.actorTicketLimit,
+        guestTicketLimit: festival.guestTicketLimit,
+      }))
+      .filter((festival) => {
+        const festivalShowTimes = festival.showTimes.filter(
+          (show) => new Date(show) > new Date()
+        );
+        if (festivalShowTimes.length > 0) {
+          return true;
+        }
+        return false;
+      });
     // console.log(formattedFestivals.length);
     if (formattedFestivals.length === 1) {
       form.setValue("festivalId", formattedFestivals[0].id);
@@ -185,12 +203,23 @@ const BookPlayTicketsForm: FC<BookPlayTicketsFormProps> = (props) => {
     // console.log(selectedPlay);
     if (!selectedFestival) return;
 
-    const festivalShowTimes = selectedFestival.showTimes;
-    // console.log(formattedFestivals.length);
+    const festivalShowTimes = selectedFestival.showTimes.filter(
+      (show) => new Date(show) > new Date()
+    );
+
+    // console.log(festivalShowTimes);
     if (festivalShowTimes.length === 1) {
-      form.setValue("showTimes", festivalShowTimes[0]);
-      //   form.trigger("showTimes");
+      form.setValue("showTime", festivalShowTimes[0]);
+      form.trigger("showTime");
     }
+    if (role === UserRole.USER) {
+      setNumberOfGuest(selectedFestival.guestTicketLimit);
+    } else if (role === UserRole.ACTOR) {
+      setNumberOfGuest(selectedFestival.actorTicketLimit);
+    }else{
+      setNumberOfGuest(2)
+    }
+
     setAvailableShowTimes(festivalShowTimes);
   };
 
@@ -204,156 +233,197 @@ const BookPlayTicketsForm: FC<BookPlayTicketsFormProps> = (props) => {
     if (festivalId) {
       onFestivalChange(festivalId);
     }
-  }, [form.getValues("festivalId"), festivals]);
+  }, [form.getValues("festivalId"), festivals, role]);
+
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className={cn("flex flex-col w-full space-y-4", className)}
+        className={cn(
+          "flex flex-col w-full space-y-4",
+          numberOfGuest === 1 && "min-w-[250px] md:min-w-[400px]",
+          className
+        )}
       >
-        <FormField
-          control={form.control}
-          name="festivalId"
-          render={({ field }) => (
-            <FormItem className="flex flex-col justify-end">
-              <FormLabel>
-                {t("forms.labels.festivalName", { ns: "constants" })}
-              </FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      className={cn(
-                        "justify-between",
-                        !field.value && "text-muted-foreground"
-                      )}
-                    >
-                      {field.value
-                        ? festivals?.find(
-                            (festival) => festival.id === field.value
-                          )?.name
-                        : t("actions.select", {
-                            ns: "common",
-                            instance: t("festival.single", {
-                              ns: "constants",
-                            }),
-                          })}
-                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="p-0">
-                  <Command>
-                    <CommandInput
-                      placeholder={t("actions.select", {
-                        ns: "common",
-                        instance: t("festival.single", {
-                          ns: "constants",
-                        }),
-                      })}
-                    />
-                    <CommandEmpty>
-                      {t("notFound", {
-                        ns: "constants",
-                        instance: t("festival.single", {
-                          ns: "constants",
-                        }),
-                      })}
-                    </CommandEmpty>
-                    <CommandGroup>
-                      {festivals?.map((festival) => (
-                        <CommandItem
-                          value={festival.id}
-                          key={festival.id}
-                          onSelect={() => {
-                            form.setValue("festivalId", festival.id);
-                          }}
-                        >
-                          <Check
-                            className={cn(
-                              "mr-2 h-4 w-4",
-                              festival.id === field.value
-                                ? "opacity-100"
-                                : "opacity-0"
-                            )}
-                          />
-                          {festival.name}
-                        </CommandItem>
-                      ))}
-                    </CommandGroup>
-                    {isAdmin(role as UserRole) && (
-                      <>
-                        <Separator />
-                        <CommandGroup>
-                          <CommandItem
-                            onSelect={() => {
-                              onOpen("createFestival");
-                            }}
-                          >
-                            <PlusCircle
-                              className={cn(
-                                "ltr:mr-2 rtl:ml-2 h-4 w-4 text-emerald-600"
-                              )}
-                            />
-                            {t("actions.create", {
+        {festivals && festivals.length > 1 && (
+          <FormField
+            control={form.control}
+            name="festivalId"
+            render={({ field }) => (
+              <FormItem className="flex flex-col justify-end">
+                <FormLabel>
+                  {t("forms.labels.festivalName", { ns: "constants" })}
+                </FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        className={cn(
+                          "justify-between",
+                          !field.value && "text-muted-foreground"
+                        )}
+                      >
+                        {field.value
+                          ? festivals?.find(
+                              (festival) => festival.id === field.value
+                            )?.name
+                          : t("actions.select", {
                               ns: "common",
                               instance: t("festival.single", {
                                 ns: "constants",
                               }),
                             })}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="p-0">
+                    <Command>
+                      <CommandInput
+                        placeholder={t("actions.select", {
+                          ns: "common",
+                          instance: t("festival.single", {
+                            ns: "constants",
+                          }),
+                        })}
+                      />
+                      <CommandEmpty>
+                        {t("notFound", {
+                          ns: "constants",
+                          instance: t("festival.single", {
+                            ns: "constants",
+                          }),
+                        })}
+                      </CommandEmpty>
+                      <CommandGroup>
+                        {festivals?.map((festival) => (
+                          <CommandItem
+                            value={festival.id}
+                            key={festival.id}
+                            onSelect={() => {
+                              form.setValue("festivalId", festival.id);
+                              form.trigger("festivalId");
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                festival.id === field.value
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                            {festival.name}
                           </CommandItem>
-                        </CommandGroup>
-                      </>
-                    )}
-                  </Command>
-                </PopoverContent>
-              </Popover>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="guestNames"
-          render={({ field }) => (
-            <FormItem className="flex-1">
-              <FormLabel>
-                {t("forms.labels.guestNames", {
-                  ns: "constants",
-                })}
-              </FormLabel>
-              <FormControl>
-                <MultiInput
-                  values={field.value || []}
-                  onChange={(values) => {
-                    form.setValue("guestNames", values);
-                    form.trigger("guestNames");
-                  }}
-                  placeholder={t("forms.placeholder.guestNames", {
+                        ))}
+                      </CommandGroup>
+                      {isAdmin(role as UserRole) && (
+                        <>
+                          <Separator />
+                          <CommandGroup>
+                            <CommandItem
+                              onSelect={() => {
+                                onOpen("createFestival");
+                              }}
+                            >
+                              <PlusCircle
+                                className={cn(
+                                  "ltr:mr-2 rtl:ml-2 h-4 w-4 text-emerald-600"
+                                )}
+                              />
+                              {t("actions.create", {
+                                ns: "common",
+                                instance: t("festival.single", {
+                                  ns: "constants",
+                                }),
+                              })}
+                            </CommandItem>
+                          </CommandGroup>
+                        </>
+                      )}
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
+        {numberOfGuest > 1 ? (
+          <FormField
+            control={form.control}
+            name="guestNames"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel>
+                  {t("forms.labels.guestNames", {
                     ns: "constants",
                   })}
-                  name={field.name}
-                  onBlur={field.onBlur}
-                  ref={field.ref}
-                  disabled={isDisabled}
-                  //   type="text"
-                />
-              </FormControl>
-              <FormDescription>
-                <span>**</span>{" "}
-                {t("forms.description.guestNames", { ns: "constants" })}
-              </FormDescription>
-              {form.getFieldState("guestNames").isTouched && <FormMessage />}
-            </FormItem>
-          )}
-        />
+                </FormLabel>
+                <FormControl>
+                  <MultiInput
+                    values={field.value || []}
+                    onChange={(values) => {
+                      form.setValue("guestNames", values);
+                      form.trigger("guestNames");
+                    }}
+                    placeholder={t("forms.placeholder.guestName", {
+                      ns: "constants",
+                    })}
+                    name={field.name}
+                    onBlur={field.onBlur}
+                    ref={field.ref}
+                    disabled={isDisabled}
+                    //   type="text"
+                  />
+                </FormControl>
+
+                <FormDescription>
+                  <span>**</span>{" "}
+                  {t("forms.description.guestNames", { ns: "constants" })}
+                </FormDescription>
+
+                {form.getFieldState("guestNames").isTouched && <FormMessage />}
+              </FormItem>
+            )}
+          />
+        ) : (
+          <FormField
+            control={form.control}
+            name="guestNames"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel>
+                  {t("forms.labels.guestName", {
+                    ns: "constants",
+                  })}
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder={t("forms.placeholder.guestName", {
+                      ns: "constants",
+                    })}
+                    name={field.name}
+                    onBlur={field.onBlur}
+                    ref={field.ref}
+                    disabled={isDisabled}
+                    onChange={(event) => {
+                      form.setValue("guestNames", [event.target.value]);
+                      form.trigger("guestNames");
+                    }}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
 
         <FormField
           control={form.control}
-          name="showTimes"
+          name="showTime"
           render={({ field }) => (
             <FormItem className="flex-1">
               <FormLabel>
@@ -387,11 +457,6 @@ const BookPlayTicketsForm: FC<BookPlayTicketsFormProps> = (props) => {
                   ))}
                 </SelectContent>
               </Select>
-              <FormControl></FormControl>
-              <FormDescription>
-                <span>**</span>{" "}
-                {t("forms.description.showTimes", { ns: "constants" })}
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}

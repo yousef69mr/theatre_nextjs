@@ -23,13 +23,7 @@ const LoginPage = async (props: LoginPageProps) => {
   const { t, resources } = await initTranslations(locale, i18nextNamspaces);
 
   const title = t("app_title", { ns: "common" }).split("|");
-  const pageTitle = (
-    <>
-      <span>{title[0]}</span>
-      <br />{" "}
-      <span className="font-semibold text-sm md:text-xl">{title[1]}</span>
-    </>
-  );
+
   return (
     <TranslationsProvider
       resources={resources}
@@ -45,8 +39,8 @@ const LoginPage = async (props: LoginPageProps) => {
           className="-z-10"
         />
         <AuthCardWrapper
-          headerMainLabel={pageTitle}
-          headerLabel="Welcome back"
+          headerMainLabel={title[0]}
+          headerLabel={title[1]}
           backButtonLabel="Don't have an account?"
           backButtonHref={`/${locale}/auth/register`}
           showSocial

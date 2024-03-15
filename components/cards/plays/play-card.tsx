@@ -10,11 +10,12 @@ import {
 } from "@/components/ui/tooltip";
 import { formatBigInt } from "@/lib/helpers/bigInt-converter";
 import { PlayType } from "@/types";
-import { Eye, Trophy } from "lucide-react";
+import { AudioLines, Eye, PartyPopper, Trophy } from "lucide-react";
 
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { isPlayLive } from "@/lib/helpers/play-validations";
 
 interface PlayCardProps extends HTMLAttributes<HTMLElement> {
   play: PlayType;
@@ -26,16 +27,46 @@ const PlayCard: FC<PlayCardProps> = (props) => {
 
   const locale = params.locale as string;
 
-  const { value: numOfViews, unit } = formatBigInt(play.numOfViews||"0");
+  const festivals = play.festivals.map((festivalLink) => ({
+    // showTimes: festivalLink.showTimes,
+    position: festivalLink.position,
+    ...festivalLink.festival,
+    ...festivalLink,
+  }));
+  const isLive = isPlayLive(festivals);
+
+  const { value: numOfViews, unit } = formatBigInt(play.numOfViews || "0");
   return (
-    <DirectionAwareHover className={className} imageUrl={play.posterImgUrl}>
-      <Link href={`/${locale}/plays/${play.id}`}>
-        <div className="flex flex-col items-start justify-center px-2 space-y-2 w-full">
-          <h3 className="text-md md:text-xl font-medium truncate">
-            {play.name}
-          </h3>
-          <div className="flex flex-wrap gap-3 text-xs font-medium">
-            <TooltipProvider>
+    <DirectionAwareHover
+      className={className}
+      imageUrl={
+        play.posterImgUrl ? play.posterImgUrl : "/play-poster-template.png"
+      }
+    >
+      <TooltipProvider>
+        <Link href={`/${locale}/plays/${play.id}`}>
+          <div className="flex flex-col items-start justify-center px-2 space-y-2 w-full">
+            <div className="flex items-center justify-start gap-x-2">
+              <h3 className="text-sm md:text-md font-medium truncate">
+                {play.name}
+              </h3>
+              {isLive && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <AudioLines className="w-5 h-5 text-emerald-500 animate-pulse" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <span>
+                      {t("messages.live", {
+                        ns: "constants",
+                        instance: t("play.single", { ns: "constants" }),
+                      })}
+                    </span>
+                  </TooltipContent>
+                </Tooltip>
+              )}
+            </div>
+            <div className="flex flex-wrap gap-3 text-xs font-medium">
               <Tooltip>
                 <TooltipTrigger>
                   <div className="flex items-center justify-center">
@@ -64,14 +95,32 @@ const PlayCard: FC<PlayCardProps> = (props) => {
                   )}
                 </TooltipContent>
               </Tooltip>
-            </TooltipProvider>
-            <div className="flex items-center justify-center">
-              <Trophy className="rtl:ml-2 ltr:mr-2 w-4 h-4" />
-              {play.awards.length}
+
+              <div className="flex items-center justify-center">
+                <Trophy className="rtl:ml-2 ltr:mr-2 w-4 h-4" />
+                {play.awards.length}
+              </div>
+              {festivals && (
+                <Tooltip>
+                  <TooltipTrigger>
+                    <div className="flex items-center justify-center">
+                      <PartyPopper className="rtl:ml-2 ltr:mr-2 w-4 h-4" />{" "}
+                      {festivals?.length}
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <div className="flex flex-col items-center justify-center gap-2">
+                      {festivals?.map((festival) => (
+                        <div key={festival.id}>{festival.festival.name}</div>
+                      ))}
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              )}
             </div>
           </div>
-        </div>
-      </Link>
+        </Link>
+      </TooltipProvider>
     </DirectionAwareHover>
   );
 };

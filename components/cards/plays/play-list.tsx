@@ -48,7 +48,7 @@ const PlayList: FC<PlayListProps> = (props) => {
   return (
     <section className="w-full flex flex-col">
       {/**TODO: filter plays */}
-      <div className="w-full gap-6 mt-2  grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
+      <div className="w-full gap-6 mt-2  grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 lg:grid-cols-4">
         {getCurrentPageData().map((play) => (
           <PlayCard
             key={play.id}
@@ -57,35 +57,39 @@ const PlayList: FC<PlayListProps> = (props) => {
           />
         ))}
       </div>
-      <Pagination className="mt-4">
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
-              onClick={() => previousPage(pathname)}
-              disabled={currentPage === 0}
-            />
-          </PaginationItem>
-          {Array.from({ length: totalPages }).map((_, index) => (
-            <PaginationItem key={index}>
-              <PaginationLink
-                href={`/${locale}/plays?${searchKey}=${index + 1}`}
-                className={cn(index === currentPage && "bg-primary text-white")}
-              >
-                {index + 1}
-              </PaginationLink>
+      {totalPages > 1 && (
+        <Pagination className="mt-4">
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={() => previousPage(pathname)}
+                disabled={currentPage === 0}
+              />
             </PaginationItem>
-          ))}
-          {/* <PaginationItem>
+            {Array.from({ length: totalPages }).map((_, index) => (
+              <PaginationItem key={index}>
+                <PaginationLink
+                  href={`/${locale}/plays?${searchKey}=${index + 1}`}
+                  className={cn(
+                    index === currentPage && "bg-primary text-white"
+                  )}
+                >
+                  {index + 1}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+            {/* <PaginationItem>
             <PaginationEllipsis />
           </PaginationItem> */}
-          <PaginationItem>
-            <PaginationNext
-              onClick={() => nextPage(pathname)}
-              disabled={currentPage === totalPages - 1}
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+            <PaginationItem>
+              <PaginationNext
+                onClick={() => nextPage(pathname)}
+                disabled={currentPage === totalPages - 1}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
     </section>
   );
 };

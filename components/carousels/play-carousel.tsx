@@ -21,7 +21,7 @@ const PlayCarousel: FC<PlayCarouselProps> = (props) => {
     //   className="w-full max-w-xs sm:max-w-lg md:max-w-xl lg:max-w-4xl xl:max-w-6xl"
     className="w-full"
     >
-      <CarouselContent>
+      <CarouselContent className="flex rtl:flex-row-reverse">
         {plays.map((play) => (
           <CarouselItem
             key={play.id}

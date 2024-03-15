@@ -187,7 +187,9 @@ export const PlayColumns: PlayColumnDef<PlayType>[] = [
       );
     },
     cell: ({ row }) => {
-      const posterImgUrl = row.original.posterImgUrl;
+      const posterImgUrl = row.original.posterImgUrl
+        ? row.original.posterImgUrl
+        : "/play-poster-template.png";
       return (
         <Link href={posterImgUrl} target="_blank">
           <div className="relative h-24 w-24">

@@ -102,6 +102,7 @@ const LinkActorPlayForm: FC<LinkActorPlayFormProps> = (props) => {
       actorId: actorId || initialData?.actor.id,
       playId: playId || initialData?.play.id,
       festivalId: festivalId || initialData?.festival.id,
+      characterNames: initialData?.characterNames || [],
     },
   });
 
@@ -515,7 +516,6 @@ const LinkActorPlayForm: FC<LinkActorPlayFormProps> = (props) => {
                   form.setValue("characterNames", values);
                   form.trigger("characterNames");
                 }}
-              
                 name={field.name}
                 onBlur={field.onBlur}
                 ref={field.ref}

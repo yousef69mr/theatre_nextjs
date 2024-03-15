@@ -1,7 +1,8 @@
-import { ExecutorRole, type UserRole } from "@prisma/client";
+import { ExecutorRole, FacultyCast, type UserRole } from "@prisma/client";
 import { Locale } from "./next-i18next.config";
 import { ReactElement } from "react";
 import { actorRoles } from "@/lib/auth";
+import { facultyCasts } from "./lib/validations/models/actor";
 
 export type DataTransationModeType = "serverAction" | "api";
 
@@ -75,11 +76,15 @@ export type FestivalType = {
   plays: PlayFestivalType[];
   actors: ActorInPlayType[];
   executors: ExecutorInPlayType[];
+  tickets: TicketType[];
 };
 
 export type PlayFestivalType = {
   id: string;
   position?: number;
+  seatsLimit: number;
+  guestTicketLimit: number;
+  actorTicketLimit: number;
   showTimes: string[];
   play: PlayType;
   festival: FestivalType;
@@ -98,6 +103,7 @@ export type ActorType = {
   name: string;
   description?: string;
   nickname?: string;
+  facultyCast:  (typeof facultyCasts)[number];
   imgUrl: string;
   executor?: ExecutorType | null;
   castMembers: CastMemberType[];
@@ -136,7 +142,7 @@ export type PlayType = {
   name: string;
   description?: string;
   videoUrl?: string;
-  posterImgUrl: string;
+  posterImgUrl?: string;
   director?: ExecutorType;
   images: string[];
   numOfViews: string;
@@ -144,10 +150,35 @@ export type PlayType = {
   actors: ActorInPlayType[];
   awards: AwardType[];
   executors: ExecutorInPlayType[];
+  tickets: TicketType[];
   isPublished: boolean;
 };
 
+export type TicketType = {
+  id: string;
+  guestName: string;
+  showTime: string;
+  seatNumber: number;
+  price: number;
+  userId?: string | null;
+  play: PlayType;
+  festival: FestivalType;
+};
 ////////////////////////////////////////
+
+export type ActorCardType = ActorType & {
+  characterNames: string[];
+  festivals: ActorInPlayType[];
+};
+
+export type PlayCardType = PlayType ;
+
+export type ExecutorCardType = ExecutorType & {
+  roles: string[];
+  festivals: ExecutorInPlayType[];
+};
+
+////////////////////////////////////////.
 export type adminRouteType = {
   id: number;
   href: string;

@@ -605,7 +605,7 @@ const PlayForm: FC<PlayFormProps> = (props) => {
                   /> */}
                       <FileUpload
                         endpoint="playImage"
-                        value={field.value}
+                        value={field.value||""}
                         onChange={field.onChange}
                         className="w-40 h-72"
                       />

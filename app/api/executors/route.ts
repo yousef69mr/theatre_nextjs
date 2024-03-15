@@ -26,6 +26,7 @@ export async function GET(request: NextRequest) {
                   id: true,
                   name: true,
                   posterImgUrl: true,
+                  
                 },
               },
               festival: {
@@ -98,9 +99,11 @@ export async function POST(request: NextRequest) {
                 id: true,
                 name: true,
                 posterImgUrl: true,
+                awards:true,
                 festivals: {
                   select: {
                     id: true,
+                    showTimes:true,
                     festival: {
                       select: {
                         id: true,
