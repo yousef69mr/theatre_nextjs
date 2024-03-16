@@ -7,6 +7,7 @@ export const publicRoutes = [
   "/",
   "/plays",
   "/plays/:playId",
+  "/plays/:playId/watch",
   "/actors",
   "/actors/:actorId",
   "/executors",

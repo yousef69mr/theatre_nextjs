@@ -44,6 +44,7 @@
   "menu": { "plural": "قوائم", "single": "قائمة" },
   "view": { "plural": "مشاهدات", "single": "مشاهدة" },
   "cast": { "plural": "كاستات", "single": "كاست" },
+  "other": { "plural": "أخرون", "single": "أخرى" },
   "description": { "plural": "شرح", "single": "شرح" },
   "errors": {
     "notFound": "لم يتم العثور على {{instance}}",

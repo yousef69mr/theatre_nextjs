@@ -114,14 +114,18 @@ const WatchPlayPage: React.FC<BookPlayTicketPageProps> = async (props) => {
       >
         <div className="flex-1 flex-col space-y-4 p-8 mb-6 flex items-center w-full">
           <div className="flex size-full p-4 items-center justify-center relative">
-            <div className="w-full h-full bg-neutral-800/40 backdrop-saturate-50 top-0 left-0 -z-10 absolute" />
-            <Image
-              fill
-              priority
-              src="/bg-play-watch.jpg"
-              alt="theatre background"
-              className="-z-20"
-            />
+            {play.videoUrl && (
+              <>
+                <div className="w-full h-full bg-neutral-800/40 backdrop-saturate-50 top-0 left-0 -z-10 absolute" />
+                <Image
+                  fill
+                  priority
+                  src="/bg-play-watch.jpg"
+                  alt="theatre background"
+                  className="-z-20"
+                />
+              </>
+            )}
 
             {play.videoUrl ? (
               <EmbedPlayer
@@ -141,12 +145,16 @@ const WatchPlayPage: React.FC<BookPlayTicketPageProps> = async (props) => {
             )}
           </div>
           {otherPlays && (
-            <div className="px-10 space-y-4">
+            <div className="px-10 space-y-4 w-full">
               <Separator className="bg-red-100 dark:bg-red-700/15  my-16" />
               <section className="space-y-3 w-full">
-                <h3 className="font-bold text-2xl capitalize">
-                  {t("play.plural", { ns: "constants" })} ({otherPlays.length})
-                </h3>
+                <div className="flex items-center gap-2 justify-start">
+                  <h3 className="flex items-center gap-x-2 font-bold text-2xl capitalize rtl:flex-row-reverse">
+                    <span> {t("other.single", { ns: "constants" })}</span>
+                    <span>{t("play.plural", { ns: "constants" })}</span>{" "}
+                  </h3>
+                  <span className="font-bold text-2xl">({otherPlays.length})</span>
+                </div>
 
                 <PlayCarousel plays={otherPlays} />
               </section>
