@@ -97,6 +97,10 @@
   .main-section {
     @apply min-h-[calc(100vh_-_var(--header-height))];
   }
+
+  .play-video-section {
+    @apply min-h-[calc(100vh_-_var(--header-height)_-_2rem)];
+  }
 }
 
 @layer utilities {

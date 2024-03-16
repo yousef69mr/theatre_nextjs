@@ -12,6 +12,7 @@ import {
   Pencil,
   Ticket,
   Trash,
+  Watch,
 } from "lucide-react";
 
 import { useParams, useRouter } from "next/navigation";
@@ -284,8 +285,22 @@ const PlayClient: FC<PlayClientProps> = (props) => {
                 ))}
               </div>
             )}
-            {isLive && (
+            {(isLive || play.videoUrl) && (
               <div className="flex gap-4 items-center justify-start my-1">
+                {play.videoUrl && (
+                  <Button
+                    onClick={() => router.push(`${play.id}/watch`)}
+                    size={"lg"}
+                    variant="outline"
+                    className="text-emerald-300 hover:text-emerald-300 hover:border-emerald-300"
+                  >
+                    <Watch className="w-5 h-5 rtl:ml-2 ltr:mr-2 text-emerald-300 transition-all animate-pulse" />
+                    {t("actions.watch", {
+                      ns: "common",
+                      instance: t("play.single", { ns: "constants" }),
+                    })}
+                  </Button>
+                )}
                 {isLive && (
                   <Button
                     onClick={() => router.push(`${play.id}/book-tickets`)}

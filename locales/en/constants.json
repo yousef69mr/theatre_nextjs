@@ -49,7 +49,8 @@
   "errors": {
     "notFound": "No {{instance}} found",
     "notProvided": "{{instance}} is not provided",
-    "notLive": "{{instance}} is not live"
+    "notLive": "{{instance}} is not live",
+    "noPlayVideo": "{{instance}} doesn't have a playable video source .... it may be added in the future."
   },
   "places": {
     "1": { "single": "first", "plural": "firsts" },

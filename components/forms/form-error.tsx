@@ -8,9 +8,9 @@ const FormError = ({ message }: FormErrorProps) => {
     return null;
   }
   return (
-    <div className="rounded-md p-3 bg-destructive/15 dark:bg-destructive/60 dark:border-red-500 flex items-center gap-x-2 text-sm text-destructive dark:text-red-500">
-      <AlertTriangle className="h-4 w-4" />
-      <p>{message}</p>
+    <div className="justify-between rounded-md p-3 bg-destructive/15 dark:bg-destructive/60 dark:border-red-500 flex items-center gap-x-2 text-sm text-destructive dark:text-red-500">
+      <AlertTriangle className="xs:h-7 xs:w-7 h-5 w-5 self-start" />
+      <p className="text-wrap">{message}</p>
     </div>
   );
 };

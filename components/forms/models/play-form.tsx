@@ -651,6 +651,7 @@ const PlayForm: FC<PlayFormProps> = (props) => {
                   <div className="max-w-full">
                     <iframe
                       title="video"
+                      
                       src={form.getValues().videoUrl || ""}
                     ></iframe>
                   </div>
