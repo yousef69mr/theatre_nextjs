@@ -86,6 +86,7 @@ export type PlayFestivalType = {
   guestTicketLimit: number;
   actorTicketLimit: number;
   showTimes: string[];
+  images: string[];
   play: PlayType;
   festival: FestivalType;
 };
@@ -103,7 +104,7 @@ export type ActorType = {
   name: string;
   description?: string;
   nickname?: string;
-  facultyCast:  (typeof facultyCasts)[number];
+  facultyCast: (typeof facultyCasts)[number];
   imgUrl: string;
   executor?: ExecutorType | null;
   castMembers: CastMemberType[];
@@ -144,7 +145,6 @@ export type PlayType = {
   videoUrl?: string;
   posterImgUrl?: string;
   director?: ExecutorType;
-  images: string[];
   numOfViews: string;
   festivals: PlayFestivalType[];
   actors: ActorInPlayType[];
@@ -171,7 +171,7 @@ export type ActorCardType = ActorType & {
   festivals: ActorInPlayType[];
 };
 
-export type PlayCardType = PlayType ;
+export type PlayCardType = PlayType;
 
 export type ExecutorCardType = ExecutorType & {
   roles: string[];

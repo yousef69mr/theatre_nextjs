@@ -1,10 +1,12 @@
+"use client";
+
 import { PlayType } from "@/types";
-import { FC, ReactNode, useEffect } from "react";
+import { FC, useEffect } from "react";
 import PlayCard from "./play-card";
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
+  // PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -16,12 +18,13 @@ import { cn } from "@/lib/utils";
 // import { Separator } from "@/components/ui/separator";
 interface PlayListProps {
   plays: PlayType[];
+  redirect?: "attend" | "default";
 }
 
 const CARDS_PER_PAGE = 8;
 
 const PlayList: FC<PlayListProps> = (props) => {
-  const { plays } = props;
+  const { plays, redirect = "default" } = props;
   const searchKey = "playPage";
   const {
     currentPage,
@@ -53,6 +56,7 @@ const PlayList: FC<PlayListProps> = (props) => {
           <PlayCard
             key={play.id}
             play={play}
+            redirect={redirect}
             className="w-full h-80  md:w-full md:h-80"
           />
         ))}

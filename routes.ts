@@ -12,6 +12,7 @@ export const publicRoutes = [
   "/actors/:actorId",
   "/executors",
   "/executors/:executorId",
+  "/attend-play",
   "/auth/new-verification",
 ];
 

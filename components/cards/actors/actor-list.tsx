@@ -1,10 +1,12 @@
+"use client";
+
 import { ActorType } from "@/types";
 import { FC, useEffect } from "react";
 import ActorCard from "./actor-card";
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
+  // PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,

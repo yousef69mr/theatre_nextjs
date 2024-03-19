@@ -50,6 +50,8 @@
     "notFound": "لم يتم العثور على {{instance}}",
     "notProvided": "{{instance}} غير متوفر حاليا",
     "notLive": "{{instance}} ليس مباشرا و لا يستقبل طلبات الحجز حاليا",
+    "noLive": "{{instance}} ليس مباشرا",
+    "noPlaysToAttend": "عذرا، ولكن لا توجد حاليا مسرحيات قادمة مجدولة لحضورها. يرجى التحقق مرة أخرى لاحقا.",
     "noPlayVideo": "هذا {{instance}} لا يحتوي على مصدر فيديو قابل للتشغيل حاليا ... قد تتم إضافته في المستقبل."
   },
   "places": {
@@ -131,6 +133,7 @@
       "nickname": "اسم الشهرة",
       "characterNames": "اسم شخصية العرض",
       "guestNames": "أسماء الزوار",
+      "guestName": "اسم الزائر",
       "awards": "الجوائز",
       "facultyCast": "كاست",
       "image": "صورة",
@@ -159,6 +162,7 @@
       "actorTicketLimit": "من: 0 - إلى: {{maxValue}} ",
       "seatsLimit": "من: 0 - إلى: ∞ ",
       "characterNames": "اسم شخصية العرض",
+      "guestName": "أحمد محسن",
       "guestNames": "أحمد, محمد , علاءالدين",
       "nickname": "اسم الشهرة",
       "awards": "الجوائز",

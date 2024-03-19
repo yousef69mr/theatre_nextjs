@@ -369,7 +369,7 @@ const BookPlayTicketsForm: FC<BookPlayTicketsFormProps> = (props) => {
                       form.setValue("guestNames", values);
                       form.trigger("guestNames");
                     }}
-                    placeholder={t("forms.placeholder.guestName", {
+                    placeholder={t("forms.placeholder.guestNames", {
                       ns: "constants",
                     })}
                     name={field.name}

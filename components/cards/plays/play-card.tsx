@@ -19,9 +19,10 @@ import { isPlayLive } from "@/lib/helpers/play-validations";
 
 interface PlayCardProps extends HTMLAttributes<HTMLElement> {
   play: PlayType;
+  redirect: "attend" | "default";
 }
 const PlayCard: FC<PlayCardProps> = (props) => {
-  const { play, className } = props;
+  const { play, redirect = "default", className } = props;
   const { t } = useTranslation();
   const params = useParams();
 
@@ -36,6 +37,11 @@ const PlayCard: FC<PlayCardProps> = (props) => {
   const isLive = isPlayLive(festivals);
 
   const { value: numOfViews, unit } = formatBigInt(play.numOfViews || "0");
+
+  const redirectUrl =
+    redirect === "default"
+      ? `/${locale}/plays/${play.id}`
+      : `/${locale}/plays/${play.id}/book-tickets`;
   return (
     <DirectionAwareHover
       className={className}
@@ -44,7 +50,7 @@ const PlayCard: FC<PlayCardProps> = (props) => {
       }
     >
       <TooltipProvider>
-        <Link href={`/${locale}/plays/${play.id}`}>
+        <Link href={redirectUrl}>
           <div className="flex flex-col items-start justify-center px-2 space-y-2 w-full">
             <div className="flex items-center justify-start gap-x-2">
               <h3 className="text-sm md:text-md font-medium truncate">

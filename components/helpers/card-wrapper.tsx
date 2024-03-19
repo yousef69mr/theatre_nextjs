@@ -3,8 +3,8 @@ import Header from "./header";
 
 interface CardWrapperProps {
   children: React.ReactNode;
-  headerTitle: string | React.ReactNode;
-  headerSubTitle: string | React.ReactNode;
+  headerTitle?: string | React.ReactNode;
+  headerSubTitle?: string | React.ReactNode;
 }
 
 const CardWrapper: React.FC<CardWrapperProps> = (props) => {

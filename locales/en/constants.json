@@ -51,6 +51,8 @@
     "notFound": "No {{instance}} found",
     "notProvided": "{{instance}} is not provided",
     "notLive": "{{instance}} is not live",
+    "noLive": "No live {{instance}}",
+    "noPlaysToAttend": "We're sorry, but there are currently no upcoming plays scheduled for you to attend. Please check back later for updates or explore other events in the meantime.",
     "noPlayVideo": "{{instance}} doesn't have a playable video source .... it may be added in the future."
   },
   "places": {
@@ -132,6 +134,7 @@
       "nickname": "Nickname",
       "characterNames": "Character Name",
       "guestNames": "Guests Names",
+      "guestName": "Guest Name",
       "awards": "Awards",
       "facultyCast": "Faculty Cast",
       "profileImg": "Profile Image",
@@ -162,6 +165,7 @@
       "actorTicketLimit": "min: 0 - max: {{maxValue}} ",
       "seatsLimit": "min: 0 - max: ∞ ",
       "characterNames": "Character Name",
+      "guestName": "john doe",
       "guestNames": "ahmed, mohamed, ...etc",
       "nickname": "Nickname",
       "awards": "Awards",

@@ -151,6 +151,37 @@ model Festival {
   createdAt DateTime @default(now())
 }
 
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+
+// model ActorMedia {
+//   id        String   @id @default(auto()) @map("_id") @db.ObjectId
+
+  
+//   actorId String @db.ObjectId
+//   actor   Actor  @relation(fields: [actorId], references: [id], onDelete: Cascade)
+
+
+//   updatedAt DateTime @updatedAt
+//   createdAt DateTime @default(now())
+//   @@index([actorId])
+// }
+
+// model Media {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+
+//   mediaUrl String
+//   type     MediaType
+
+//   // actors ActorMedia[]
+//   isPublished Boolean @default(true)
+
+//   updatedAt DateTime @updatedAt
+//   createdAt DateTime @default(now())
+// }
+
 model PlayFestival {
   id               String @id @default(auto()) @map("_id") @db.ObjectId
   position         Int?
@@ -160,6 +191,7 @@ model PlayFestival {
   guestTicketLimit Int    @default(1)
 
   showTimes DateTime[]
+  images    String[]
 
   playId String @db.ObjectId
   play   Play   @relation(fields: [playId], references: [id], onDelete: Cascade)
@@ -179,8 +211,6 @@ model Play {
   videoUrl     String?
   posterImgUrl String?
   numOfViews   BigInt  @default(0)
-
-  images String[]
 
   // showtimes               PlayShowtime[]
   festivals PlayFestival[]
@@ -249,8 +279,8 @@ model Actor {
   imgUrl      String
   nickname    String?
   description String?
-  facultyCast        FacultyCast @default(OTHER)
-  numOfViews  BigInt   @default(0)
+  facultyCast FacultyCast @default(OTHER)
+  numOfViews  BigInt      @default(0)
 
   userId String? @db.ObjectId
   // user   User?   @relation(fields: [userId], references: [id])

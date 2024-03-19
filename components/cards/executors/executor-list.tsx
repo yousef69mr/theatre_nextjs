@@ -1,3 +1,4 @@
+"use client"
 import { ExecutorType } from "@/types";
 import { FC, useEffect } from "react";
 import ExecutorCard from "./executor-card";
