@@ -167,7 +167,7 @@ export async function PATCH(request: NextRequest, props: PlayProps) {
   const {
     posterImgUrl,
     name,
-    images,
+    // images,
     // festivalId,
     // showTime,
     description,
@@ -255,7 +255,7 @@ export async function PATCH(request: NextRequest, props: PlayProps) {
         name,
         posterImgUrl,
         videoUrl,
-        images,
+        // images,
         description,
         isPublished,
       },
