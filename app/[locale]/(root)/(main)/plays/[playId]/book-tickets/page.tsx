@@ -13,6 +13,7 @@ import { isPlayLive } from "@/lib/helpers/play-validations";
 import { AudioLines } from "lucide-react";
 import FormError from "@/components/forms/form-error";
 import { getUserTicketsRequest } from "@/lib/api-calls/models/tickets";
+import { currentUser } from "@/lib/auth";
 // import { redirect } from "next/navigation";
 
 interface BookPlayTicketPageProps {
@@ -59,9 +60,9 @@ const BookPlayTicketPage: React.FC<BookPlayTicketPageProps> = async (props) => {
     params: { locale, playId },
   } = props;
   const { t, resources } = await initTranslations(locale, i18nextNamspaces);
-
+  const user = await currentUser();
   const play: PlayType | null = await getPlayByIdRequest(playId);
-  const tickets: TicketType[]  = await getUserTicketsRequest();
+  const tickets: TicketType[] = await getUserTicketsRequest(user?.id as string);
 
   if (!play) {
     return <>not found</>;
@@ -117,7 +118,7 @@ const BookPlayTicketPage: React.FC<BookPlayTicketPageProps> = async (props) => {
 
           <CardWrapper headerTitle={pageTitle} headerSubTitle={subTitle}>
             {isLive ? (
-              <BookPlayTicketsForm play={play} userTickets={tickets}/>
+              <BookPlayTicketsForm play={play} userTickets={tickets} />
             ) : (
               <FormError
                 message={t("errors.notLive", {
