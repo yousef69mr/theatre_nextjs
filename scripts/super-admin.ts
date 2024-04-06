@@ -12,8 +12,9 @@ async function adminMain() {
         role: UserRole.ADMIN,
       },
     });
-    
+
     const hashedPassword = await bcrypt.hash(`admin${admins.length + 1}`, 10);
+
     // await database.$queryRaw`ALTER TABLE Festival A`
     const admin = await database.user.create({
       data: {

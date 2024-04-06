@@ -26,7 +26,7 @@ const nextConfig = {
     //         return config
     //     }
     images: {
-        domains: ["flagcdn.com","utfs.io", "files.edgestore.dev"]
+        domains: ["flagcdn.com", "utfs.io", "files.edgestore.dev", "avatars.githubusercontent.com","lh3.googleusercontent.com"]
     }
 }
 

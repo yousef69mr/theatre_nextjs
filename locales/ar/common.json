@@ -18,13 +18,20 @@
       "bookPlayTicket": "حضور مسرحية"
     }
   },
+  "userMenu": {
+    "profile": "صفحتى الشخصية"
+  },
   "status": {
     "draft": "مسودة",
     "published": "منشور",
     "archived": "محفوظ",
     "unpublished": "غير منشور",
     "free": "مجانى",
-    "paid": "مدفوع"
+    "paid": "مدفوع",
+    "scanned": "تم مسحها ضوئيا",
+    "notScanned": "لم يتم مسحها ضوئيا",
+    "enabled": "مفعل",
+    "disabled": "غير مفعل"
   },
   "paginations": {
     "previous": "السابق",
@@ -94,7 +101,8 @@
     "show": "إظهار {{instance}}",
     "link": "ربط {{instance}}",
     "linkTo": "ربط {{instance}} ل{{to}}",
-    "save": "حفظ {{instance}}"
+    "save": "حفظ {{instance}}",
+    "scan": "مسح ضوئى ل{{instance}}"
   },
   "menus": {
     "admin": "قائمة الأدمن"

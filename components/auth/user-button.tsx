@@ -11,7 +11,7 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { AvatarFallback } from "@radix-ui/react-avatar";
 import { FaUser } from "react-icons/fa";
 
-import { LogOutIcon } from "lucide-react";
+import { LogOutIcon, PersonStandingIcon } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -24,6 +24,8 @@ import { useParams } from "next/navigation";
 import { dir } from "i18next";
 import { Locale } from "@/next-i18next.config";
 import { cn } from "@/lib/utils";
+import { Separator } from "../ui/separator";
+import Link from "next/link";
 
 const UserButton = () => {
   const user = useCurrentUser();
@@ -55,16 +57,23 @@ const UserButton = () => {
         </TooltipProvider>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className="w-40 hidden md:flex"
+        className="w-40 hidden md:flex md:flex-col"
         align={dir(locale as Locale) === "ltr" ? "end" : "start"}
       >
+        <Link href={`/${locale}/users/${user?.id}`}>
+          <DropdownMenuItem className="flex cursor-pointer justify-between ">
+            <PersonStandingIcon
+              className={cn(
+                "h-4 w-4",
+                dir(locale as Locale) === "rtl" ? "ml-2" : " mr-2"
+              )}
+            />
+            {t("userMenu.profile", { ns: "common" })}
+          </DropdownMenuItem>
+        </Link>
+        <Separator className="my-1" />
         <LogoutButton className="w-full" asChild>
-          <DropdownMenuItem
-            className={cn(
-              "flex cursor-pointer",
-              dir(locale as Locale) === "rtl" && "flex-row-reverse"
-            )}
-          >
+          <DropdownMenuItem className="flex cursor-pointer justify-between">
             <LogOutIcon
               className={cn(
                 "h-4 w-4",

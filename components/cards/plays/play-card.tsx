@@ -19,7 +19,7 @@ import { isPlayLive } from "@/lib/helpers/play-validations";
 
 interface PlayCardProps extends HTMLAttributes<HTMLElement> {
   play: PlayType;
-  redirect: "attend" | "default";
+  redirect?: "attend" | "default";
 }
 const PlayCard: FC<PlayCardProps> = (props) => {
   const { play, redirect = "default", className } = props;

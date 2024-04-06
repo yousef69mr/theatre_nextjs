@@ -18,13 +18,20 @@
       "bookPlayTicket": "Attend Play"
     }
   },
+  "userMenu": {
+    "profile": "my profile"
+  },
   "status": {
     "draft": "draft",
     "published": "published",
     "archived": "archived",
     "unpublished": "unpublished",
     "free": "free",
-    "paid": "paid"
+    "paid": "paid",
+    "scanned": "scanned",
+    "notScanned": "not scanned",
+    "enabled": "enabled",
+    "disabled": "disabled"
   },
   "paginations": {
     "previous": "previous",
@@ -94,7 +101,8 @@
     "show": "show {{instance}}",
     "link": "link {{instance}}",
     "linkTo": "link {{instance}} to {{to}}",
-    "save": "save {{instance}}"
+    "save": "save {{instance}}",
+    "scan": "scan {{instance}}"
   },
   "menus": {
     "admin": "admin menu"

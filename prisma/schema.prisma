@@ -159,10 +159,8 @@ enum MediaType {
 // model ActorMedia {
 //   id        String   @id @default(auto()) @map("_id") @db.ObjectId
 
-  
 //   actorId String @db.ObjectId
 //   actor   Actor  @relation(fields: [actorId], references: [id], onDelete: Cascade)
-
 
 //   updatedAt DateTime @updatedAt
 //   createdAt DateTime @default(now())
@@ -403,7 +401,8 @@ model Ticket {
 
   guestName  String
   seatNumber Int
-  price      Int    @default(0)
+  price      Int     @default(0)
+  isScanned  Boolean @default(false)
 
   showTime DateTime
 

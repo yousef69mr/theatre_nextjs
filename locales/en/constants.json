@@ -2,7 +2,6 @@
   "login": "login",
   "logout": "logout",
   "exit": "exit",
-
   "cancel": { "default": "cancel", "loading": "cancelling" },
 
   "create": { "default": "create", "loading": "creating" },
@@ -13,6 +12,7 @@
   "close": { "default": "close", "loading": "closing" },
   "link": { "default": "link", "loading": "linking" },
   "book": { "default": "book", "loading": "booking" },
+  "scan": { "default": "scan", "loading": "scanning" },
 
   "yes": "yes",
   "no": "no",
@@ -27,8 +27,10 @@
   "next": "next",
   "previous": "previous",
   "play": { "plural": "plays", "single": "play" },
+  "user": { "plural": "users", "single": "user" },
   "id": { "plural": "ids", "single": "id" },
   "role": { "plural": "roles", "single": "role" },
+  "showTime": { "plural": "showtimes", "single": "showtime" },
   "nickname": { "plural": "nicknames", "single": "nickname" },
   "poster": { "plural": "posters", "single": "poster" },
   "relation": { "plural": "relations", "single": "relation" },
@@ -104,7 +106,9 @@
     "unpublished": "{{instance}} unpublished",
     "live": "{{instance}} is live",
     "confirm-message": "Are you sure you want to do this?",
-    "irreversible": "This operation is irreversible"
+    "irreversible": "This operation is irreversible",
+    "ticket-scanned-once": "This ticket is valid for one-time scanning",
+    "no-previous-tickets": "It seems you haven't submitted any tickets yet. Once you submit a ticket, it will appear here."
   },
   "tables": {
     "id": "ID",

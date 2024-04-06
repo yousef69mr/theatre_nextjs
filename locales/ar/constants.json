@@ -2,6 +2,7 @@
   "login": "تسجيل دخول",
   "logout": "تسجيل خروج",
   "exit": "الخروج",
+
   "create": { "default": "إنشاء", "loading": "جارى الإنشاء" },
   "save": { "default": "حفظ", "loading": "جارى الحفظ" },
   "delete": { "default": "حذف", "loading": "جارى الحذف" },
@@ -10,6 +11,7 @@
   "close": { "default": "غلق", "loading": "جارى الغلق" },
   "link": { "default": "ربط", "loading": "جارى الربط" },
   "book": { "default": "حجز", "loading": "جارى الحجز" },
+  "scan": { "default": "مسح ضوئى", "loading": "جارى المسح الضوئى" },
   "cancel": { "default": "إلغاء", "loading": "جارى الإلغاء" },
 
   "yes": "نعم",
@@ -26,6 +28,7 @@
   "previous": "السابق",
   "course": { "plural": "كورسات", "single": "كورس" },
   "play": { "plural": "عروض مسرحية", "single": "عرض مسرحى" },
+  "user": { "plural": "مستخدمين", "single": "مستخدم" },
   "actor": { "plural": "ممثلون", "single": "ممثل" },
   "festival": { "plural": "مهرجانات", "single": "مهرجان" },
   "executor": { "plural": "منفذون", "single": "منفذ" },
@@ -35,6 +38,7 @@
   "file": { "plural": "ملفات", "single": "ملف" },
   "id": { "plural": "أكواد", "single": "كود" },
   "role": { "plural": "مناصب", "single": "منصب" },
+  "showTime": { "plural": "مواعيد العرض", "single": "معاد العرض" },
   "nickname": { "plural": "أسماء شهرة", "single": "اسم شهرة" },
   "poster": { "plural": "بوسترات", "single": "بوستر" },
   "relation": { "plural": "علاقات", "single": "علاقة" },
@@ -103,7 +107,9 @@
     "unpublished": "تم إلغاء نشر {{instance}}",
     "live": "{{instance}} مباشر",
     "confirm-message": "هل انت متأكد من أنك تريد أن تفعل هذا؟",
-    "irreversible": "هذه العملية لا رجعة فيها"
+    "irreversible": "هذه العملية لا رجعة فيها",
+    "ticket-scanned-once": "هذه التذكرة صالحة للمسح الضوئى لمرة واحدة",
+    "no-previous-tickets": "يبدو أنك لم تحجز أي تذاكر بعد. بمجرد حجز أى تذكرة ، ستظهر هنا."
   },
   "tables": {
     "id": "كود",

@@ -7,12 +7,18 @@ import {
   FestivalType,
   PlayFestivalType,
   PlayType,
+  TicketType,
+  UserType,
 } from "@/types";
 import { create } from "zustand";
 
 export type ModalType =
   // | "createPlay"
+
   | "deletePlay"
+  | "scanTicket"
+  | "deleteTicket"
+  | "deleteUser"
   | "createExecutor"
   | "deleteExecutor"
   | "createActor"
@@ -29,6 +35,8 @@ export type ModalType =
   | "linkExecutorPlay";
 
 interface ModalData {
+  ticket?: TicketType;
+  user?: UserType;
   castMember?: CastMemberType;
   festival?: FestivalType;
   play?: PlayType;

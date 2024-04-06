@@ -1,7 +1,7 @@
-import { currentRole, currentUser, isAdmin } from "@/lib/auth";
+import { currentRole, isAdmin } from "@/lib/auth";
 import { db } from "@/lib/database";
 import { actorSchema } from "@/lib/validations/models/actor";
-import { CastMemberType } from "@/types";
+// import { CastMemberType } from "@/types";
 import { UserRole } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
         imgUrl,
         nickname,
         description,
-        facultyCast
+        facultyCast,
       },
       include: {
         awards: true,

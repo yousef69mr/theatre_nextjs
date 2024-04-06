@@ -1,12 +1,15 @@
 import { ticketSchema } from "@/lib/validations/models/ticket";
 import { PUBLIC_DOMAIN } from "@/routes";
 
-export const getUserTicketsRequest = async () => {
+export const getUserTicketsRequest = async (userId: String) => {
   try {
-    const promise = await fetch(PUBLIC_DOMAIN.concat("/api/user-tickets"), {
-      method: "GET",
-      cache: "no-store",
-    });
+    const promise = await fetch(
+      PUBLIC_DOMAIN.concat(`/api/users/${userId}/tickets`),
+      {
+        method: "GET",
+        cache: "no-store",
+      }
+    );
     // console.log(promise);
     return promise.json();
   } catch (error) {

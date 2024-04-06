@@ -47,6 +47,20 @@ export type TwoFactorConfirmationType = {
   userId: string;
 };
 
+export type UserType = {
+  id: string;
+  name: string;
+  email: string;
+  password: String;
+  emailVerified?: Date;
+  image: string;
+  isTwoFactorEnabled: boolean;
+  actorId?: string;
+  executorId?: string;
+  tickets: TicketType[];
+  updatedAt: Date;
+  createdAt: Date;
+};
 //////////////////////////////////////////////////
 
 //models
@@ -163,6 +177,7 @@ export type TicketType = {
   userId?: string | null;
   play: PlayType;
   festival: FestivalType;
+  isScanned: Boolean;
 };
 ////////////////////////////////////////
 
@@ -177,6 +192,8 @@ export type ExecutorCardType = ExecutorType & {
   roles: string[];
   festivals: ExecutorInPlayType[];
 };
+
+export type TicketCardType = TicketType;
 
 ////////////////////////////////////////.
 export type adminRouteType = {

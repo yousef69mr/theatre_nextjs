@@ -20,19 +20,18 @@ export async function GET(request: NextRequest, props: UserProps) {
       where: {
         id: userId,
       },
+      include: {
+        tickets: true,
+      },
     });
+
+    if (!user) {
+      return NextResponse.json({ error: "not found" }, { status: 404 });
+    }
 
     return NextResponse.json(user, { status: 200 });
   } catch (error) {
-    const user = await db.user.findUnique({
-      where: {
-        email: userId,
-      },
-    });
-    if (user) {
-      return NextResponse.json(user, { status: 200 });
-    }
-    return NextResponse.json({ error: "not found" }, { status: 404 });
+    return NextResponse.json({ error: "internal error" }, { status: 500 });
   }
 }
 
