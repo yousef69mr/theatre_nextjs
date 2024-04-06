@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
   const {
     posterImgUrl,
     name,
-    images,
+    // images,
     festivalId,
     showTime,
     videoUrl,
@@ -157,7 +157,7 @@ export async function POST(request: NextRequest) {
       data: {
         posterImgUrl,
         name,
-        images: images || [],
+        // images: images || [],
         videoUrl,
         description,
         executors: {
