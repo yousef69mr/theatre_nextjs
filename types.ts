@@ -1,4 +1,4 @@
-import { ExecutorRole, FacultyCast, type UserRole } from "@prisma/client";
+import { ExecutorRole, type MediaEnum } from "@prisma/client";
 import { Locale } from "./next-i18next.config";
 import { ReactElement } from "react";
 import { actorRoles } from "@/lib/auth";
@@ -91,6 +91,7 @@ export type FestivalType = {
   actors: ActorInPlayType[];
   executors: ExecutorInPlayType[];
   tickets: TicketType[];
+  mediae?: MediaType[];
 };
 
 export type PlayFestivalType = {
@@ -164,6 +165,7 @@ export type PlayType = {
   actors: ActorInPlayType[];
   awards: AwardType[];
   executors: ExecutorInPlayType[];
+  mediae?: MediaType[];
   tickets: TicketType[];
   isPublished: boolean;
 };
@@ -195,6 +197,24 @@ export type ExecutorCardType = ExecutorType & {
 
 export type TicketCardType = TicketType;
 
+////////////////////////////////////////
+
+export type MediaType = {
+  id: string;
+  mediaUrl: string;
+  type: MediaEnum;
+  play?: PlayType;
+  festival?: FestivalType;
+  actors: ActorMediaType[];
+  isPublished: boolean;
+};
+
+export type ActorMediaType = {
+  id: string;
+  actor: ActorType;
+  media: MediaType;
+
+};
 ////////////////////////////////////////.
 export type adminRouteType = {
   id: number;

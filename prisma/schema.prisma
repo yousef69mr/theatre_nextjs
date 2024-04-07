@@ -144,6 +144,7 @@ model Festival {
   actors    ActorInPlay[]
   executors ExecutorInPlay[]
   tickets   Ticket[]
+  mediae    Media[]
 
   isPublished Boolean @default(true)
 
@@ -151,34 +152,50 @@ model Festival {
   createdAt DateTime @default(now())
 }
 
-enum MediaType {
+enum MediaEnum {
   IMAGE
   VIDEO
 }
 
-// model ActorMedia {
-//   id        String   @id @default(auto()) @map("_id") @db.ObjectId
+model ActorMedia {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
 
-//   actorId String @db.ObjectId
-//   actor   Actor  @relation(fields: [actorId], references: [id], onDelete: Cascade)
+  actorId String @db.ObjectId
+  actor   Actor  @relation(fields: [actorId], references: [id])
 
-//   updatedAt DateTime @updatedAt
-//   createdAt DateTime @default(now())
-//   @@index([actorId])
-// }
+  mediaId String @db.ObjectId
+  media   Media  @relation(fields: [actorId], references: [id], onDelete: Cascade)
 
-// model Media {
-//   id String @id @default(auto()) @map("_id") @db.ObjectId
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
 
-//   mediaUrl String
-//   type     MediaType
+  @@unique([actorId, mediaId])
+  @@index([actorId])
+  @@index([mediaId])
+}
 
-//   // actors ActorMedia[]
-//   isPublished Boolean @default(true)
+model Media {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
 
-//   updatedAt DateTime @updatedAt
-//   createdAt DateTime @default(now())
-// }
+  mediaUrl String
+  type     MediaEnum
+
+  playId String? @db.ObjectId
+  play   Play?   @relation(fields: [playId], references: [id], onDelete: Cascade)
+
+  festivalId String?   @db.ObjectId
+  festival   Festival? @relation(fields: [festivalId], references: [id])
+
+  actors ActorMedia[]
+
+  isPublished Boolean @default(true)
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  @@index([playId])
+  @@index([festivalId])
+}
 
 model PlayFestival {
   id               String @id @default(auto()) @map("_id") @db.ObjectId
@@ -189,7 +206,7 @@ model PlayFestival {
   guestTicketLimit Int    @default(1)
 
   showTimes DateTime[]
-  images    String[]
+  // images    String[]
 
   playId String @db.ObjectId
   play   Play   @relation(fields: [playId], references: [id], onDelete: Cascade)
@@ -216,6 +233,7 @@ model Play {
   awards    Award[]
   executors ExecutorInPlay[]
   tickets   Ticket[]
+  mediae    Media[]
 
   isPublished Boolean @default(true)
 
@@ -293,6 +311,7 @@ model Actor {
 
   plays  ActorInPlay[]
   awards Award[]
+  mediae ActorMedia[]
   // Executor Executor[]
 
   isPublished Boolean @default(true)
@@ -409,6 +428,10 @@ model Ticket {
   // create by user
   userId    String? @db.ObjectId
   createdBy User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  // update by admin
+  // adminId    String? @db.ObjectId
+  // createdFor User?   @relation(name: "createdFor", fields: [adminId], references: [id], onDelete: SetNull)
 
   playId String @db.ObjectId
   play   Play   @relation(fields: [playId], references: [id], onDelete: Cascade)
