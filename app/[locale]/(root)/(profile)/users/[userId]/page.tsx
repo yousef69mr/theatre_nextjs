@@ -6,7 +6,7 @@ import { Locale } from "@/next-i18next.config";
 import { TicketType, UserType } from "@/types";
 import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
 import { FC } from "react";
-import { getUserTicketsRequest } from "@/lib/api-calls/models/tickets";
+import { getUserTicketsRequest } from "@/lib/api-calls/models/ticket";
 
 interface UserPageProps {
   params: {

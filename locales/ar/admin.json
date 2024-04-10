@@ -3,7 +3,8 @@
     { "id": 1, "href": "/admin/dashboard", "label": "لوحة التحكم" },
     { "id": 2, "href": "/admin/plays", "label": "عروض مسرحية" },
     { "id": 3, "href": "/admin/actors", "label": "ممثلون" },
-    { "id": 4, "href": "/admin/executors", "label": "منفذون" }
+    { "id": 4, "href": "/admin/executors", "label": "منفذون" },
+    { "id": 5, "href": "/admin/tickets", "label": "تذاكر" }
   ],
   "permissions": {
     "publish": {

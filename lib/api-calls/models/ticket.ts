@@ -25,6 +25,10 @@ export const getAllTicketsRequest = async () => {
       cache: "no-store",
     });
     // console.log(promise);
+    if (!promise.ok) {
+      // This will activate the closest `error.js` Error Boundary
+      throw new Error("Failed to fetch data");
+    }
     return promise.json();
   } catch (error) {
     console.log(error);

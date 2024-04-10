@@ -113,6 +113,10 @@
   "tables": {
     "id": "ID",
     "playName": "Play Name",
+    "guestName": "Guest Name",
+    "festivalName": "Festival Name",
+    "QRCode": "QR Code",
+    "status": "status",
     "director": "Director",
     "crew": "Crew",
     "poster": "Poster",

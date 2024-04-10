@@ -36,7 +36,7 @@ interface DataTableProps<TData, TValue> {
   columns: (ColumnDef<TData, TValue> & { type?: string })[];
   data: TData[];
   initialSearchKey?: string;
-  type: "play" | "actor" | "executor";
+  type: "play" | "actor" | "executor" | "ticket" | "festival";
 }
 
 export function DataTable<TData, TValue>({

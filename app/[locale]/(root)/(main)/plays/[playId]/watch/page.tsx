@@ -14,7 +14,7 @@ import BookPlayTicketsForm from "@/components/forms/actions/book-play-tickets";
 import { isPlayLive } from "@/lib/helpers/play-validations";
 import { AudioLines } from "lucide-react";
 import FormError from "@/components/forms/form-error";
-import { getUserTicketsRequest } from "@/lib/api-calls/models/tickets";
+import { getUserTicketsRequest } from "@/lib/api-calls/models/ticket";
 import EmbedPlayer from "@/components/helpers/emded-player";
 import { Separator } from "@/components/ui/separator";
 import PlayCarousel from "@/components/carousels/play-carousel";
@@ -153,7 +153,9 @@ const WatchPlayPage: React.FC<BookPlayTicketPageProps> = async (props) => {
                     <span> {t("other.single", { ns: "constants" })}</span>
                     <span>{t("play.plural", { ns: "constants" })}</span>{" "}
                   </h3>
-                  <span className="font-bold text-2xl">({otherPlays.length})</span>
+                  <span className="font-bold text-2xl">
+                    ({otherPlays.length})
+                  </span>
                 </div>
 
                 <PlayCarousel plays={otherPlays} />

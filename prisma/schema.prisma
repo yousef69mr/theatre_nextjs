@@ -43,6 +43,7 @@ model User {
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
+  
 }
 
 model Account {
@@ -419,7 +420,7 @@ model Ticket {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
   guestName  String
-  seatNumber Int
+  seatNumber Int?
   price      Int     @default(0)
   isScanned  Boolean @default(false)
 
@@ -442,7 +443,7 @@ model Ticket {
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
 
-  @@unique([seatNumber, playId, festivalId])
+  // @@unique([seatNumber, playId, festivalId])
   @@index([playId])
   @@index([festivalId])
   @@index([userId])

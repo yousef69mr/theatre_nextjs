@@ -8,9 +8,9 @@ import { useTranslation } from "react-i18next";
 
 interface PermissionBoxProps {
   handleDelete: () => void;
-  type: "actor" | "play" | "executor";
-  isPublished: boolean;
-  handleIsPublished: (isPublished: boolean) => void;
+  type: "actor" | "play" | "executor" | "ticket";
+  isPublished?: boolean;
+  handleIsPublished?: (isPublished: boolean) => void;
 }
 const PermissionBox: FC<PermissionBoxProps> = (props) => {
   const { handleDelete, type, handleIsPublished, isPublished } = props;
@@ -39,7 +39,7 @@ const PermissionBox: FC<PermissionBoxProps> = (props) => {
           checked={isPublished}
           onCheckedChange={(event) => {
             // console.log(event);
-            handleIsPublished(event);
+            handleIsPublished && handleIsPublished(event);
           }}
         />
       </div>

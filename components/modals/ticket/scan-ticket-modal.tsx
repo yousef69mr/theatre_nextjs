@@ -42,7 +42,7 @@ export const ScanTicketModal = () => {
           </DialogTitle>
           <span className="text-primary font-semibold">#{ticket?.id}</span>
         </DialogHeader>
-        <div className="w-full p-10 bg-zinc-800 rounded-lg">
+        <div className="w-full p-10 dark:bg-zinc-800 rounded-lg">
           <QRCode
             size={256}
             className="w-full mx-auto max-w-full h-auto"

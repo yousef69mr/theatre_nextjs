@@ -12,7 +12,7 @@ import { getAllFestivalsRequest } from "@/lib/api-calls/models/festival";
 import { isPlayLive } from "@/lib/helpers/play-validations";
 import { AudioLines } from "lucide-react";
 import FormError from "@/components/forms/form-error";
-import { getUserTicketsRequest } from "@/lib/api-calls/models/tickets";
+import { getUserTicketsRequest } from "@/lib/api-calls/models/ticket";
 import { currentUser } from "@/lib/auth";
 // import { redirect } from "next/navigation";
 

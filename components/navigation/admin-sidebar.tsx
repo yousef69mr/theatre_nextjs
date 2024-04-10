@@ -37,15 +37,15 @@ const AdminSidebar: FC<AdminSidebarProps> = (props) => {
         <AdminRoutes />
       </section>
       <Tooltip>
-        <TooltipTrigger>
-          <div
-            className={cn(
-              "bg-red-100 dark:bg-red-700/15 p-5 rounded-full cursor-pointer transition-all fixed z-50",
-              className,
-              !isAdminOpen && "animate-bounce repeat-infinite"
-            )}
-            onClick={onChange}
-          >
+        <TooltipTrigger
+          className={cn(
+            "bg-red-100 dark:bg-red-700/15 p-5 rounded-full cursor-pointer transition-all fixed z-50",
+            className,
+            !isAdminOpen && "animate-bounce repeat-infinite"
+          )}
+          onClick={onChange}
+        >
+          <div>
             <Menu className="w-5 h-5" />
             <span className="sr-only">
               {t("menu.single", { ns: "constants" })}
