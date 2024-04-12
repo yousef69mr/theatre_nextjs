@@ -78,12 +78,12 @@ export async function POST(request: NextRequest) {
     });
 
     //update linked user role
-    await db.user.updateMany({
-      where: { actorId: actorId },
-      data: {
-        role,
-      },
-    });
+    // await db.user.updateMany({
+    //   where: { actorId: actorId },
+    //   data: {
+    //     role,
+    //   },
+    // });
 
     return NextResponse.json(castMember, { status: 201 });
   } catch (error) {

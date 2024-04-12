@@ -92,25 +92,23 @@ export async function DELETE(request: NextRequest, props: CastMemberProps) {
 
     // update the linked user role
     if (actor) {
-      const user = await db.user.findUnique({
-        where: { id: actor.userId as string },
-      });
-
-      if (user) {
-        const actorRoles = actor.castMembers.map((role) => role.role);
-        const newRole =
-          isAdmin(member.role) &&
-          actorRoles.includes(UserRole.ACTOR as UserRole)
-            ? UserRole.ACTOR
-            : UserRole.USER;
-
-        await db.user.update({
-          where: { id: actor.userId as string },
-          data: {
-            role: newRole,
-          },
-        });
-      }
+      // const user = await db.user.findUnique({
+      //   where: { id: actor.userId as string },
+      // });
+      // if (user) {
+      //   const actorRoles = actor.castMembers.map((role) => role.role);
+      //   const newRole =
+      //     isAdmin(member.role) &&
+      //     actorRoles.includes(UserRole.ACTOR as UserRole)
+      //       ? UserRole.ACTOR
+      //       : UserRole.USER;
+      // await db.user.update({
+      //   where: { id: actor.userId as string },
+      //   data: {
+      //     role: newRole,
+      //   },
+      // });
+      // }
     }
 
     await db.castMember.delete({
