@@ -1,25 +1,36 @@
 import ExecutorListClient from "@/components/clients/executor/admin/executor-client";
-import PlayForm from "@/components/forms/models/play-form";
 import TranslationsProvider from "@/components/providers/translation-provider";
 import { getAllExecutorsRequest } from "@/lib/api-calls/models/executor";
-import { getAllPlaysRequest } from "@/lib/api-calls/models/play";
 import initTranslations from "@/lib/i18n";
 import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
 import { Locale } from "@/next-i18next.config";
 import { ExecutorType } from "@/types";
 import type { Metadata } from "next";
 import { FC } from "react";
-interface AdminPlaysPage {
+
+interface AdminExecutorsPageProps {
   params: { locale: Locale };
 }
-export const metadata: Metadata = {
-  title: "Executors | admin",
-  description: "all executors",
-};
+export async function generateMetadata({
+  params,
+}: AdminExecutorsPageProps): // parent: ResolvingMetadata
+Promise<Metadata> {
+  const { t } = await initTranslations(params.locale, i18nextNamspaces);
 
+  const title = `${t("executor.plural")} | ${t("UserRole.ADMIN", {
+    ns: "common",
+  })}`;
+
+  //TODO: make proper
+  const description = "all theatre executors";
+  return {
+    title,
+    description,
+  };
+}
 const i18nextNamspaces = [...globalNamespaces, ...adminNamespaces];
 
-const AdminPlaysPage: FC<AdminPlaysPage> = async (props) => {
+const AdminExecutorsPage: FC<AdminExecutorsPageProps> = async (props) => {
   const {
     params: { locale },
   } = props;
@@ -41,4 +52,4 @@ const AdminPlaysPage: FC<AdminPlaysPage> = async (props) => {
   );
 };
 
-export default AdminPlaysPage;
+export default AdminExecutorsPage;

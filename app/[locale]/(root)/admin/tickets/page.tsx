@@ -12,10 +12,23 @@ interface AdminTicketsPage {
   params: { locale: Locale };
 }
 
-export const metadata: Metadata = {
-  title: "Tickets | admin",
-  description: "all theatre tickets",
-};
+export async function generateMetadata({
+  params,
+}: AdminTicketsPage): // parent: ResolvingMetadata
+Promise<Metadata> {
+  const { t } = await initTranslations(params.locale, i18nextNamspaces);
+
+  const title = `${t("ticket.plural")} | ${t("UserRole.ADMIN", {
+    ns: "common",
+  })}`;
+
+  //TODO: make proper
+  const description = "all theatre tickets";
+  return {
+    title,
+    description,
+  };
+}
 
 const i18nextNamspaces = [...globalNamespaces, ...adminNamespaces];
 

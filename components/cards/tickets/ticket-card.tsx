@@ -66,7 +66,7 @@ const TicketCard: FC<TicketCardProps> = (props) => {
         <Tooltip>
           <TooltipTrigger
             className={cn(
-              "z-10 w-5 h-5 rounded-full absolute right-2 top-2",
+              "z-10 w-5 h-5 rounded-full absolute ltr:right-2 rtl:left-2 top-2",
               ticket.isScanned && "bg-emerald-500",
               !ticket.isScanned && "bg-gray-300"
             )}
@@ -85,11 +85,12 @@ const TicketCard: FC<TicketCardProps> = (props) => {
           </CardTitle>
           {!ticket.isScanned && (
             <div className="flex items-center justify-between">
-              <Button onClick={handleScan} size={'sm'}>
-                <Scan className="rtl:ml-2 ltr:mr-2 w-5 h-5"/>
+              <Button onClick={handleScan} size={"sm"}>
+                <Scan className="rtl:ml-2 ltr:mr-2 w-5 h-5" />
                 {`${t("scan.default", {
-                ns: "constants",
-              })} ${t("ticket.single", { ns: "constants" })}`}</Button>
+                  ns: "constants",
+                })} ${t("ticket.single", { ns: "constants" })}`}
+              </Button>
             </div>
           )}
         </CardHeader>

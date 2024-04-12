@@ -16,10 +16,20 @@ interface ActorsPageProps {
   };
 }
 
-export const metadata: Metadata = {
-  title: "Actors | user",
-  description: "all theatre actors",
-};
+export async function generateMetadata({
+  params,
+}: ActorsPageProps): // parent: ResolvingMetadata
+Promise<Metadata> {
+  const { t } = await initTranslations(params.locale, i18nextNamspaces);
+
+  const title = `${t("actor.plural")} | ${t("UserRole.USER", {
+    ns: "common",
+  })}`;
+  return {
+    title,
+    description: title,
+  };
+}
 
 const i18nextNamspaces = [...globalNamespaces, ...adminNamespaces];
 

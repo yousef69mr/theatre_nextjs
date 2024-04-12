@@ -18,13 +18,22 @@ export async function generateStaticParams() {
   return i18nConfig.locales.map((locale) => ({ locale: locale }));
 }
 
-export const metadata: Metadata = {
-  title: "Plays | user",
-  description: "all theatre plays",
-};
+export async function generateMetadata({
+  params,
+}: PlaysPageProps): // parent: ResolvingMetadata
+Promise<Metadata> {
+  const { t } = await initTranslations(params.locale, i18nextNamspaces);
+
+  const title = `${t("play.plural")} | ${t("UserRole.USER", {
+    ns: "common",
+  })}`;
+  return {
+    title,
+    description: title,
+  };
+}
 
 const i18nextNamspaces = [...globalNamespaces, ...adminNamespaces];
-
 
 const PlaysPage: FC<PlaysPageProps> = async (props) => {
   const {
@@ -36,16 +45,16 @@ const PlaysPage: FC<PlaysPageProps> = async (props) => {
   // console.log(plays)
   return (
     <main className="flex flex-col w-full general-padding">
-    <TranslationsProvider
-      locale={locale}
-      namespaces={i18nextNamspaces}
-      resources={resources}
-    >
-      <div className="flex-1 space-y-4 p-8 pt-6">
-        <PlayListClient data={plays} />
-      </div>
-    </TranslationsProvider>
-  </main>
+      <TranslationsProvider
+        locale={locale}
+        namespaces={i18nextNamspaces}
+        resources={resources}
+      >
+        <div className="flex-1 space-y-4 p-8 pt-6">
+          <PlayListClient data={plays} />
+        </div>
+      </TranslationsProvider>
+    </main>
   );
 };
 

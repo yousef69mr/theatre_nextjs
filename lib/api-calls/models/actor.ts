@@ -64,7 +64,7 @@ export const updateActorRequest = async (
     body: JSON.stringify(values),
     cache: "no-store",
   });
-  console.log(promise);
+  // console.log(promise);
   if (!promise.ok) {
     throw Error(promise.statusText);
   }

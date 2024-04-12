@@ -43,6 +43,9 @@ export const executorRoles = [
   ExecutorRole.OTHER,
 ];
 
+
+export const publicRoles=[UserRole.USER,UserRole.ACTOR]
+
 export const isAdmin = (loggedUserRole: UserRole) => {
   let isAdmin = false;
   adminRoles.map((role) => {
@@ -54,6 +57,19 @@ export const isAdmin = (loggedUserRole: UserRole) => {
   // console.log(isAdmin);
 
   return isAdmin;
+};
+
+export const isPublic = (loggedUserRole: UserRole) => {
+  let isPublic = false;
+  publicRoles.map((role) => {
+    if (role === loggedUserRole) {
+      isPublic = true;
+      return;
+    }
+  });
+  // console.log(isAdmin);
+
+  return isPublic;
 };
 
 export const mainExecutorsRoles = [ExecutorRole.DIRECTOR, ExecutorRole.AUTHOR];

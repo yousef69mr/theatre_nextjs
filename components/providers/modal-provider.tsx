@@ -18,6 +18,10 @@ import { DeleteExecutorPlayLinkModal } from "@/components/modals/executorInPlay/
 import { DeleteUserModal } from "@/components/modals/user/delete-user-modal";
 import { DeleteTicketModal } from "@/components/modals/ticket/delete-ticket-modal";
 import { ScanTicketModal } from "@/components/modals/ticket/scan-ticket-modal";
+import { DeleteUserActorLinkModal } from "@/components/modals/userActorLink/delete-user-actor-link-modal";
+import LinkUserActorModal from "@/components/modals/userActorLink/user-actor-link-modal";
+import { DeleteUserExecutorLinkModal } from "@/components/modals/userExecutorLink/delete-user-executor-link-modal";
+import LinkUserExecutorModal from "@/components/modals/userExecutorLink/user-executor-link-modal";
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -48,6 +52,10 @@ export const ModalProvider = () => {
       <DeleteUserModal />
       <DeleteTicketModal />
       <ScanTicketModal />
+      <LinkUserActorModal />
+      <DeleteUserActorLinkModal />
+      <LinkUserExecutorModal />
+      <DeleteUserExecutorLinkModal />
     </>
   );
 };

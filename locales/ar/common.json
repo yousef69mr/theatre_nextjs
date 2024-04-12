@@ -100,6 +100,7 @@
     "watch": "مشاهدة {{instance}}",
     "show": "إظهار {{instance}}",
     "link": "ربط {{instance}}",
+    "unlink": "إلغاء ربط {{instance}}",
     "linkTo": "ربط {{instance}} ل{{to}}",
     "save": "حفظ {{instance}}",
     "scan": "مسح ضوئى ل{{instance}}"

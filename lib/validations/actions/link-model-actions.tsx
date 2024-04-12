@@ -45,3 +45,14 @@ export const festivalPlaySchema = object({
   actorTicketLimit: number().min(0, { message: "0 minimum" }).optional(),
   showTimes: array(string()),
 });
+
+export const userActorLinkSchema = object({
+  actorId: string().min(1, { message: "actorId is required" }),
+  userId: string().min(1, { message: "userId is required" }),
+});
+
+
+export const userExecutorLinkSchema = object({
+  executorId: string().min(1, { message: "executorId is required" }),
+  userId: string().min(1, { message: "userId is required" }),
+});

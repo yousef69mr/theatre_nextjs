@@ -1,4 +1,4 @@
-import { ExecutorRole, type MediaEnum } from "@prisma/client";
+import { ExecutorRole, type MediaEnum, UserRole } from "@prisma/client";
 import { Locale } from "./next-i18next.config";
 import { ReactElement } from "react";
 import { actorRoles } from "@/lib/auth";
@@ -53,10 +53,11 @@ export type UserType = {
   email: string;
   password: String;
   emailVerified?: Date;
+  role: typeof UserRole;
   image: string;
   isTwoFactorEnabled: boolean;
-  actorId?: string;
-  executorId?: string;
+  actor?: UserActorLinkType | null;
+  executor?: UserExecutorLinkType | null;
   tickets: TicketType[];
   updatedAt: Date;
   createdAt: Date;
@@ -181,6 +182,20 @@ export type TicketType = {
   festival: FestivalType;
   isScanned: Boolean;
 };
+
+//////////////////////////////////////
+
+export type UserActorLinkType = {
+  id: string;
+  actor: ActorType;
+  user: UserType;
+};
+
+export type UserExecutorLinkType = {
+  id: string;
+  executor: ExecutorType;
+  user: UserType;
+};
 ////////////////////////////////////////
 
 export type ActorCardType = ActorType & {
@@ -213,7 +228,6 @@ export type ActorMediaType = {
   id: string;
   actor: ActorType;
   media: MediaType;
-
 };
 ////////////////////////////////////////.
 export type adminRouteType = {

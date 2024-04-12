@@ -1,4 +1,5 @@
 import { registerSchema } from "@/lib/validations/auth";
+import { userSchema } from "@/lib/validations/models/user";
 import { PUBLIC_DOMAIN } from "@/routes";
 
 export const getUserByIdRequest = async (userId: string) => {
@@ -36,7 +37,7 @@ export const deleteUserByIdRequest = async (userId: string) => {
 };
 
 export const createUserRequest = async (
-  values: Zod.infer<typeof registerSchema>
+  values: Zod.infer<typeof userSchema>
 ) => {
   const promise = await fetch(PUBLIC_DOMAIN.concat("/api/users"), {
     method: "POST",
@@ -53,7 +54,7 @@ export const createUserRequest = async (
 };
 
 export const updateUserRequest = async (
-  values: Zod.infer<typeof registerSchema>,
+  values: Zod.infer<typeof userSchema>,
   userId: string
 ) => {
   // try {

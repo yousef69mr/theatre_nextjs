@@ -290,7 +290,7 @@ const BookPlayTicketsForm: FC<BookPlayTicketsFormProps> = (props) => {
                         })}
                       />
                       <CommandEmpty>
-                        {t("notFound", {
+                        {t("errors.notFound", {
                           ns: "constants",
                           instance: t("festival.single", {
                             ns: "constants",

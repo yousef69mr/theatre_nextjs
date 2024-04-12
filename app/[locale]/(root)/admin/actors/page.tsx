@@ -8,18 +8,31 @@ import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
 import { Locale } from "@/next-i18next.config";
 import { ActorType } from "@/types";
 import { FC } from "react";
-interface AdminPlaysPageProps {
+interface AdminActorsPageProps {
   params: { locale: Locale };
 }
 
-export const metadata: Metadata = {
-  title: "Actors | admin",
-  description: "all actors",
-};
+export async function generateMetadata({
+  params,
+}: AdminActorsPageProps): // parent: ResolvingMetadata
+Promise<Metadata> {
+  const { t } = await initTranslations(params.locale, i18nextNamspaces);
+
+  const title = `${t("actor.plural")} | ${t("UserRole.ADMIN", {
+    ns: "common",
+  })}`;
+
+  //TODO: make proper
+  const description = "all theatre actors";
+  return {
+    title,
+    description,
+  };
+}
 
 const i18nextNamspaces = [...globalNamespaces, ...adminNamespaces];
 
-const AdminActorsPage: FC<AdminPlaysPageProps> = async (props) => {
+const AdminActorsPage: FC<AdminActorsPageProps> = async (props) => {
   const {
     params: { locale },
   } = props;

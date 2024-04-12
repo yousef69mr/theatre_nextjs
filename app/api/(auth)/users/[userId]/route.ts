@@ -22,6 +22,44 @@ export async function GET(request: NextRequest, props: UserProps) {
       },
       include: {
         tickets: true,
+        actor: {
+          include: {
+            actor: {
+              select: {
+                id: true,
+                nickname: true,
+                name: true,
+                imgUrl: true,
+              },
+            },
+            user: {
+              select: {
+                id: true,
+                name: true,
+                image: true,
+              },
+            },
+          },
+        },
+        executor: {
+          include: {
+            executor: {
+              select: {
+                id: true,
+                nickname: true,
+                name: true,
+                imgUrl: true,
+              },
+            },
+            user: {
+              select: {
+                id: true,
+                name: true,
+                image: true,
+              },
+            },
+          },
+        },
       },
     });
 
@@ -29,7 +67,11 @@ export async function GET(request: NextRequest, props: UserProps) {
       return NextResponse.json({ error: "not found" }, { status: 404 });
     }
 
-    return NextResponse.json(user, { status: 200 });
+    const formattedUser = {
+      ...user,
+    };
+
+    return NextResponse.json(formattedUser, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: "internal error" }, { status: 500 });
   }

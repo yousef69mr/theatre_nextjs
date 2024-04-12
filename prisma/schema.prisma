@@ -34,16 +34,14 @@ model User {
 
   twoFactorConfirmation TwoFactorConfirmation?
 
-  actorId String? @db.ObjectId
-
-  executorId String? @db.ObjectId
+  actor    UserActorLink?
+  executor UserExecutorLink?
 
   accounts Account[]
   tickets  Ticket[]
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
-  
 }
 
 model Account {
@@ -299,11 +297,9 @@ model Actor {
   facultyCast FacultyCast @default(OTHER)
   numOfViews  BigInt      @default(0)
 
-  userId String? @db.ObjectId
-  // user   User?   @relation(fields: [userId], references: [id])
+  user UserActorLink?
 
-  executorId String? @db.ObjectId
-  // executor Executor?
+  executor ActorExecutorLink?
 
   castMembers CastMember[]
   // castMember CastMember?
@@ -373,12 +369,8 @@ model Executor {
   nickname    String?
   numOfViews  BigInt  @default(0)
 
-  userId String? @db.ObjectId
-  // user   User?   @relation(fields: [userId], references: [id])
-
-  actorId String? @db.ObjectId
-  // actor   Actor?  @relation(fields: [actorId], references: [id])
-  // actor Actor?
+  user  UserExecutorLink?
+  actor ActorExecutorLink?
 
   awards Award[]
   plays  ExecutorInPlay[]
@@ -447,4 +439,51 @@ model Ticket {
   @@index([playId])
   @@index([festivalId])
   @@index([userId])
+}
+
+////////////////////////////////
+
+model UserActorLink {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  userId String @unique @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  actorId String @unique @db.ObjectId
+  actor   Actor  @relation(fields: [actorId], references: [id], onDelete: Cascade)
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  @@unique([actorId, userId])
+}
+
+model UserExecutorLink {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  userId String @unique @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  executorId String   @unique @db.ObjectId
+  executor   Executor @relation(fields: [executorId], references: [id], onDelete: Cascade)
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  @@unique([executorId, userId])
+}
+
+model ActorExecutorLink {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  actorId String @unique @db.ObjectId
+  actor   Actor  @relation(fields: [actorId], references: [id], onDelete: Cascade)
+
+  executorId String   @unique @db.ObjectId
+  executor   Executor @relation(fields: [executorId], references: [id], onDelete: Cascade)
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  @@unique([executorId, actorId])
 }

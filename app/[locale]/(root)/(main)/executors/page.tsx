@@ -21,10 +21,20 @@ export async function generateStaticParams() {
   return i18nConfig.locales.map((locale) => ({ locale: locale }));
 }
 
-export const metadata: Metadata = {
-  title: "Executors | user",
-  description: "all theatre executors",
-};
+export async function generateMetadata({
+  params,
+}: ExecutorsPageProps): // parent: ResolvingMetadata
+Promise<Metadata> {
+  const { t } = await initTranslations(params.locale, i18nextNamspaces);
+
+  const title = `${t("executor.plural")} | ${t("UserRole.USER", {
+    ns: "common",
+  })}`;
+  return {
+    title,
+    description: title,
+  };
+}
 
 const i18nextNamspaces = [...globalNamespaces, ...adminNamespaces];
 

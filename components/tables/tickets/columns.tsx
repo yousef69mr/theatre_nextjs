@@ -19,7 +19,7 @@ export type TicketColumnDef<TData> = ColumnDef<TData> & {
 export const TicketColumns: TicketColumnDef<TicketType>[] = [
   {
     accessorKey: "QRCode",
-    header: ({ column }) => {
+    header: () => {
       const { t } = useTranslation();
       return (
         <Button
@@ -98,7 +98,7 @@ export const TicketColumns: TicketColumnDef<TicketType>[] = [
     type: "string",
   },
   {
-    accessorKey: "play",
+    accessorKey: "playName",
     header: ({ column }) => {
       const { t } = useTranslation();
       return (
@@ -127,7 +127,7 @@ export const TicketColumns: TicketColumnDef<TicketType>[] = [
     type: "string",
   },
   {
-    accessorKey: "festival",
+    accessorKey: "festivalName",
     header: ({ column }) => {
       const { t } = useTranslation();
       return (
@@ -153,16 +153,16 @@ export const TicketColumns: TicketColumnDef<TicketType>[] = [
     type: "string",
   },
   {
-    accessorKey: "isScanned",
+    accessorKey: "status",
     header: ({ column }) => {
       const { t } = useTranslation();
       return (
         <Button
           variant="ghost"
-          // onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           {t("tables.status", { ns: "constants" })}
-          {/* <ArrowUpDown className="ml-2 h-4 w-4" /> */}
+          <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },

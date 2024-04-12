@@ -266,7 +266,7 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
                         })}
                       />
                       <CommandEmpty>
-                        {t("notFound", {
+                        {t("errors.notFound", {
                           ns: "constants",
                           instance: t("play.single", {
                             ns: "constants",
@@ -349,7 +349,7 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
                         })}
                       />
                       <CommandEmpty>
-                        {t("notFound", {
+                        {t("errors.notFound", {
                           ns: "constants",
                           instance: t("festival.single", {
                             ns: "constants",

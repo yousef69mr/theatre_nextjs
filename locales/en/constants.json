@@ -46,6 +46,8 @@
   "image": { "plural": "images", "single": "image" },
   "menu": { "plural": "menus", "single": "menu" },
   "view": { "plural": "views", "single": "view" },
+  "route": { "plural": "routes", "single": "route" },
+  "action": { "plural": "actions", "single": "action" },
   "cast": { "plural": "casts", "single": "cast" },
   "other": { "plural": "others", "single": "other" },
   "description": { "plural": "descriptions", "single": "description" },

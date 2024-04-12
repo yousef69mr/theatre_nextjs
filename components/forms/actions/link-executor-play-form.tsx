@@ -306,7 +306,7 @@ const LinkExecutorPlayForm: FC<LinkExecutorPlayFormProps> = (props) => {
                         })}
                       />
                       <CommandEmpty>
-                        {t("notFound", {
+                        {t("errors.notFound", {
                           ns: "constants",
                           instance: t("executor.single", {
                             ns: "constants",
@@ -408,7 +408,7 @@ const LinkExecutorPlayForm: FC<LinkExecutorPlayFormProps> = (props) => {
                         })}
                       />
                       <CommandEmpty>
-                        {t("notFound", {
+                        {t("errors.notFound", {
                           ns: "constants",
                           instance: t("play.single", {
                             ns: "constants",
@@ -492,7 +492,7 @@ const LinkExecutorPlayForm: FC<LinkExecutorPlayFormProps> = (props) => {
                         })}
                       />
                       <CommandEmpty>
-                        {t("notFound", {
+                        {t("errors.notFound", {
                           ns: "constants",
                           instance: t("festival.single", {
                             ns: "constants",

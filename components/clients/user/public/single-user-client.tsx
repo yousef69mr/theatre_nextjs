@@ -8,13 +8,20 @@ import { Button } from "@/components/ui/button";
 import {
   AudioLines,
   Award,
+  BadgeAlert,
   Check,
   CheckSquare,
   Copy,
+  Drama,
+  Edit,
+  Link2,
   LucideTicket,
   MailIcon,
+  MoreHorizontal,
   // CalendarDays,
   Pencil,
+  PrinterIcon,
+  Speech,
   Ticket,
   Trash,
   XSquare,
@@ -29,6 +36,15 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
 import { useTranslation } from "react-i18next";
 
 import {
@@ -79,15 +95,15 @@ const UserClient: FC<UserClientProps> = (props) => {
   // const router = useRouter();
   const params = useParams();
 
-  // const locale = params.locale as Locale;
+  const locale = params.locale as Locale;
 
   const onOpen = useModal((state) => state.onOpen);
   // const updateUser = useUserStore((state) => state.updateUser);
-  const handleDelete = () => {
+  const handleUserDelete = () => {
     onOpen("deleteUser", { user });
   };
 
-  const handleEdit = () => {
+  const handleUserEdit = () => {
     // router.push(`/${locale}/admin/users/${user.id}`);
     toast.custom("soon not supported");
   };
@@ -119,6 +135,35 @@ const UserClient: FC<UserClientProps> = (props) => {
   };
 
   const isMyProfile = user.id === activeUser?.id;
+
+  const executorProfile = user.executor?.executor;
+  const actorProfile = user.actor?.actor;
+
+  const handleUserExecutorLink = () => {
+    onOpen("linkUserExecutor", {
+      user,
+    });
+  };
+
+  const handleUserActorLink = () => {
+    onOpen("linkUserActor", {
+      user,
+    });
+  };
+
+  const handleExecutorLinkDelete = () => {
+    onOpen("deleteUserExecutorLink", {
+      userExecutorLink: user.executor ?? undefined,
+    });
+  };
+
+  const handleActorLinkDelete = () => {
+    onOpen("deleteUserActorLink", {
+      userActorLink: user.actor ?? undefined,
+    });
+  };
+
+  const isEditable = isAdmin(activeUser?.role as UserRole) || isMyProfile;
 
   return (
     <div className="px-10">
@@ -171,6 +216,18 @@ const UserClient: FC<UserClientProps> = (props) => {
                   </div>
                 </Link>
 
+                <div className="flex items-center text-lg">
+                  <Badge variant={"secondary"}>
+                    <BadgeAlert className="h-5 w-5 ltr:mr-2 text-primary rtl:ml-2" />
+                    {t(`UserRole.${user.role}`, { ns: "common" })}
+                  </Badge>
+                </div>
+                <div className="flex items-center">
+                  <Badge variant={"secondary"}>
+                    <LucideTicket className="h-5 w-5 ltr:mr-2 text-orange-300 rtl:ml-2" />
+                    {user.tickets?.length}
+                  </Badge>
+                </div>
                 {isMyProfile && (
                   <Tooltip>
                     <TooltipTrigger>
@@ -191,109 +248,175 @@ const UserClient: FC<UserClientProps> = (props) => {
                     </TooltipContent>
                   </Tooltip>
                 )}
-                <div className="flex items-center">
-                  <Badge variant={"secondary"}>
-                    <LucideTicket className="h-5 w-5 ltr:mr-2 text-orange-300 rtl:ml-2" />
-                    {user.tickets?.length}
-                  </Badge>
-                </div>
-              </div>
-              {isAdmin(activeUser?.role as UserRole) && (
-                <div className="flex items-center gap-x-2">
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant={"outline"} onClick={handleEdit}>
-                        <Pencil className={"h-4 w-4"} />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <span>
-                        {t("actions.edit", {
-                          ns: "common",
-                          instance: t("user.single", { ns: "constants" }),
-                        })}
-                      </span>
-                    </TooltipContent>
-                  </Tooltip>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button onClick={handleDelete}>
-                        <Trash className={"h-4 w-4"} />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <span>
-                        {t("actions.delete", {
-                          ns: "common",
-                          instance: t("user.single", { ns: "constants" }),
-                        })}
-                      </span>
-                    </TooltipContent>
-                  </Tooltip>
-                </div>
-              )}
-            </div>
 
-            {/* <div className="flex item-center justify-start gap-2">
-              <Badge
-                variant={"secondary"}
-                className="flex items-center justify-center rtl:flex-row-reverse gap-x-1 px-3 py-2"
-              >
-                <span>
-                  {t(`FacultyCast.${user.}`, { ns: "common" })}
-                </span>
-                <span>{t(`cast.single`, { ns: "constants" })}</span>
-              </Badge>
-            </div> */}
-            {/* {festivals.filter((festivalLink) => festivalLink.position).length >
-              0 && (
-              <div className="flex flex-wrap items-center justify-start gap-2">
-                {festivals.map((festival) => (
-                  <>
-                    {festival.position && (
-                      <div
-                        key={festival.id}
-                        className="flex items-center flex-nowrap gap-x-2 text-wrap"
+                {executorProfile && (
+                  <HoverCard>
+                    <HoverCardTrigger asChild>
+                      <Link
+                        href={`/${locale}/executors/${executorProfile?.id}`}
                       >
-                        <Award className="w-5 h-5 text-orange-300 ltr:mr-2 rtl:ml-2" />
-                        <div className="flex gap-x-2 items-center justify-center rtl:flex-row ltr:flex-row-reverse">
-                          <span>
-                            {t(`compition-place.single`, {
-                              ns: "constants",
-                            })}
-                          </span>
-                          <span className="text-primary font-semibold">
-                            {t(`places.${festival.position}.single`, {
-                              ns: "constants",
-                            })}
-                          </span>
-                        </div>{" "}
-                        <hr className="w-2 h-1 rounded-md dark:bg-red-100 bg-red-700/15" />
-                        <span>{festival.name}</span>
+                        <div className="flex items-center justify-start gap-x-2">
+                          <Speech className="w-4 h-4 text-primary" />
+                          <p className="text-medium font-semibold ">
+                            {executorProfile?.name}{" "}
+                            {executorProfile?.nickname
+                              ? `(${executorProfile?.nickname})`
+                              : ""}
+                          </p>
+                        </div>
+                      </Link>
+                    </HoverCardTrigger>
+                    <HoverCardContent className="w-80" align="start">
+                      <div className="flex justify-start gap-x-4 items-center space-x-4">
+                        <Avatar>
+                          <AvatarImage
+                            src={executorProfile?.imgUrl}
+                            className="w-11 h-11 object-cover"
+                          />
+                          <AvatarFallback className="bg-primary text-xl">
+                            {executorProfile?.name.charAt(0).toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="space-y-1">
+                          <h4 className="text-sm font-semibold">
+                            {executorProfile.name}{" "}
+                            {executorProfile.nickname
+                              ? `(${executorProfile.nickname})`
+                              : ""}
+                          </h4>
+                        </div>
                       </div>
-                    )}
-                  </>
-                ))}
-              </div>
-            )} */}
-            {/* {isLive && (
-              <div className="flex gap-4 items-center justify-start my-1">
-                {isLive && (
-                  <Button
-                    onClick={() => router.push(`${user.id}/book-tickets`)}
-                    size={"lg"}
-                    variant="outline"
-                    className="hover:text-orange-300 hover:border-orange-300"
-                  >
-                    <Ticket className="w-5 h-5 rtl:ml-2 ltr:mr-2 text-orange-300 transition-all animate-pulse" />
-                    {t("actions.book", {
-                      ns: "common",
-                      instance: t("ticket.single", { ns: "constants" }),
-                    })}
-                  </Button>
+                    </HoverCardContent>
+                  </HoverCard>
+                )}
+                {actorProfile && (
+                  <HoverCard>
+                    <HoverCardTrigger asChild>
+                      <Link href={`/${locale}/actors/${actorProfile.id}`}>
+                        <div className="flex items-center justify-start gap-x-2">
+                          <Drama className="w-4 h-4 text-primary" />
+                          <p className="text-medium font-semibold ">
+                            {actorProfile.name}{" "}
+                            {actorProfile.nickname
+                              ? `(${actorProfile?.nickname})`
+                              : ""}
+                          </p>
+                        </div>
+                      </Link>
+                    </HoverCardTrigger>
+                    <HoverCardContent className="w-80" align="start">
+                      <div className="flex justify-start gap-x-4 items-center space-x-4">
+                        <Avatar>
+                          <AvatarImage
+                            src={actorProfile.imgUrl}
+                            className="w-11 h-11 object-cover"
+                          />
+                          <AvatarFallback className="bg-primary text-xl">
+                            {actorProfile.name.charAt(0).toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="space-y-1">
+                          <h4 className="text-sm font-semibold">
+                            {actorProfile.name}{" "}
+                            {actorProfile.nickname
+                              ? `(${actorProfile.nickname})`
+                              : ""}
+                          </h4>
+                        </div>
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
                 )}
               </div>
-            )} */}
+
+              {isEditable && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant={"outline"}
+                      size={"icon"}
+                      className="self-start"
+                    >
+                      <MoreHorizontal className="w-5 h-5 text-primary" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuLabel className="flex rtl:flex-row-reverse">
+                      {t("action.plural", { ns: "constants" })}
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+
+                    {actorProfile ? (
+                      <DropdownMenuItem
+                        className="flex justify-start rtl:flex-row-reverse px-0"
+                        onClick={handleActorLinkDelete}
+                      >
+                        <Trash className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
+                        {t("actions.unlink", {
+                          ns: "common",
+                          instance: t("actor.single", { ns: "constants" }),
+                        })}
+                      </DropdownMenuItem>
+                    ) : (
+                      <DropdownMenuItem
+                        className="flex justify-start rtl:flex-row-reverse px-0"
+                        onClick={handleUserActorLink}
+                      >
+                        <Link2 className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
+                        {t("actions.link", {
+                          ns: "common",
+                          instance: t("actor.single", { ns: "constants" }),
+                        })}
+                      </DropdownMenuItem>
+                    )}
+                    {executorProfile ? (
+                      <DropdownMenuItem
+                        className="flex justify-start rtl:flex-row-reverse px-0"
+                        onClick={handleExecutorLinkDelete}
+                      >
+                        <Trash className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
+                        {t("actions.unlink", {
+                          ns: "common",
+                          instance: t("executor.single", { ns: "constants" }),
+                        })}
+                      </DropdownMenuItem>
+                    ) : (
+                      <DropdownMenuItem
+                        className="flex justify-start rtl:flex-row-reverse px-0"
+                        onClick={handleUserExecutorLink}
+                      >
+                        <Link2 className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
+                        {t("actions.link", {
+                          ns: "common",
+                          instance: t("executor.single", { ns: "constants" }),
+                        })}
+                      </DropdownMenuItem>
+                    )}
+                    <DropdownMenuItem
+                      className="flex justify-start rtl:flex-row-reverse px-0"
+                      onClick={handleUserEdit}
+                    >
+                      <Pencil className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
+                      {t("actions.edit", {
+                        ns: "common",
+                        instance: t("user.single", { ns: "constants" }),
+                      })}
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      className="flex justify-start rtl:flex-row-reverse px-0 text-primary"
+                      onClick={handleUserDelete}
+                    >
+                      <Trash className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
+                      {t("actions.delete", {
+                        ns: "common",
+                        instance: t("user.single", { ns: "constants" }),
+                      })}
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
+            </div>
           </div>
         </TooltipProvider>
       </div>

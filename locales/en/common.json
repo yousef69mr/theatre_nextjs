@@ -100,6 +100,7 @@
     "watch": "watch {{instance}}",
     "show": "show {{instance}}",
     "link": "link {{instance}}",
+    "unlink": "unlink {{instance}}",
     "linkTo": "link {{instance}} to {{to}}",
     "save": "save {{instance}}",
     "scan": "scan {{instance}}"
