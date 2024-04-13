@@ -18,6 +18,7 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import initTranslations from "@/lib/i18n";
 import { ToastProvider } from "@/components/providers/toaster-provider";
 import { ModalProvider } from "@/components/providers/modal-provider";
+import { ConfettiProvider } from "@/components/providers/confetti-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -61,6 +62,7 @@ export default async function MainLayout({
       suppressHydrationWarning
     >
       <body className={cn("min-h-screen w-full", inter.className)}>
+        <ConfettiProvider />
         <NextSSRPlugin
           /**
            * The `extractRouterConfig` will extract **only** the route configs

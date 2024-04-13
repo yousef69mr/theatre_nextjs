@@ -7,7 +7,7 @@ import { UserRole } from "@prisma/client";
 import {
   deleteTwoFactorConfirmationById,
   getTwoFactorConfirmationByUserId,
-} from "./lib/actions/models/two-factor-confirmation";
+} from "@/lib/actions/models/two-factor-confirmation";
 import { getAccountsByUserId } from "./lib/actions/models/account";
 
 export const {
@@ -78,7 +78,7 @@ export const {
       token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
 
       return token;
-    },
+    }, 
     async session({ session, token }) {
       if (session.user && token.sub) {
         session.user.id = token.sub;

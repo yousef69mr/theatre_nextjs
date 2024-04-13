@@ -96,6 +96,7 @@
     "filter": "تنقية {{instance}}",
     "filterBy": "تنقية بواسطة {{instance}}",
     "cancel": "إلغاء",
+    "navigateTo": "الذهاب إالى {{instance}}",
     "book": "حجز {{instance}}",
     "watch": "مشاهدة {{instance}}",
     "show": "إظهار {{instance}}",

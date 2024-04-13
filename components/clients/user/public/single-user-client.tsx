@@ -256,7 +256,7 @@ const UserClient: FC<UserClientProps> = (props) => {
                         href={`/${locale}/executors/${executorProfile?.id}`}
                       >
                         <div className="flex items-center justify-start gap-x-2">
-                          <Speech className="w-4 h-4 text-primary" />
+                          <Speech className="w-5 h-5 text-primary" />
                           <p className="text-medium font-semibold ">
                             {executorProfile?.name}{" "}
                             {executorProfile?.nickname
@@ -268,23 +268,27 @@ const UserClient: FC<UserClientProps> = (props) => {
                     </HoverCardTrigger>
                     <HoverCardContent className="w-80" align="start">
                       <div className="flex justify-start gap-x-4 items-center space-x-4">
-                        <Avatar>
+                        <Avatar className="w-20 h-20">
                           <AvatarImage
                             src={executorProfile?.imgUrl}
-                            className="w-11 h-11 object-cover"
+                            className="object-cover"
                           />
                           <AvatarFallback className="bg-primary text-xl">
                             {executorProfile?.name.charAt(0).toUpperCase()}
                           </AvatarFallback>
                         </Avatar>
-                        <div className="space-y-1">
-                          <h4 className="text-sm font-semibold">
-                            {executorProfile.name}{" "}
-                            {executorProfile.nickname
-                              ? `(${executorProfile.nickname})`
-                              : ""}
-                          </h4>
-                        </div>
+                        <Link
+                          href={`/${locale}/executors/${executorProfile.id}`}
+                        >
+                          <div className="space-y-1">
+                            <h4 className="text-sm font-semibold">
+                              {executorProfile.name}{" "}
+                              {executorProfile.nickname
+                                ? `(${executorProfile.nickname})`
+                                : ""}
+                            </h4>
+                          </div>
+                        </Link>
                       </div>
                     </HoverCardContent>
                   </HoverCard>
@@ -294,7 +298,7 @@ const UserClient: FC<UserClientProps> = (props) => {
                     <HoverCardTrigger asChild>
                       <Link href={`/${locale}/actors/${actorProfile.id}`}>
                         <div className="flex items-center justify-start gap-x-2">
-                          <Drama className="w-4 h-4 text-primary" />
+                          <Drama className="w-5 h-5 text-primary" />
                           <p className="text-medium font-semibold ">
                             {actorProfile.name}{" "}
                             {actorProfile.nickname
@@ -306,23 +310,25 @@ const UserClient: FC<UserClientProps> = (props) => {
                     </HoverCardTrigger>
                     <HoverCardContent className="w-80" align="start">
                       <div className="flex justify-start gap-x-4 items-center space-x-4">
-                        <Avatar>
+                        <Avatar className="w-20 h-20">
                           <AvatarImage
                             src={actorProfile.imgUrl}
-                            className="w-11 h-11 object-cover"
+                            className="object-cover"
                           />
                           <AvatarFallback className="bg-primary text-xl">
                             {actorProfile.name.charAt(0).toUpperCase()}
                           </AvatarFallback>
                         </Avatar>
-                        <div className="space-y-1">
-                          <h4 className="text-sm font-semibold">
-                            {actorProfile.name}{" "}
-                            {actorProfile.nickname
-                              ? `(${actorProfile.nickname})`
-                              : ""}
-                          </h4>
-                        </div>
+                        <Link href={`/${locale}/actors/${actorProfile.id}`}>
+                          <div className="space-y-1">
+                            <h4 className="text-sm font-semibold">
+                              {actorProfile.name}{" "}
+                              {actorProfile.nickname
+                                ? `(${actorProfile.nickname})`
+                                : ""}
+                            </h4>
+                          </div>
+                        </Link>
                       </div>
                     </HoverCardContent>
                   </HoverCard>

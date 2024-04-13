@@ -42,6 +42,7 @@ import {
   Calendar,
   Check,
   ChevronsUpDown,
+  Clock,
   Loader2,
   PlusCircle,
 } from "lucide-react";
@@ -72,8 +73,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { format } from "date-fns";
+import { formatDate } from "date-fns";
 import { useTicketStore } from "@/hooks/stores/use-ticket-store";
+import { useConfettiStore } from "@/hooks/use-confetti-store";
 
 interface BookPlayTicketsFormProps extends HtmlHTMLAttributes<HTMLElement> {
   play: PlayType | null;
@@ -90,6 +92,7 @@ const BookPlayTicketsForm: FC<BookPlayTicketsFormProps> = (props) => {
 
   const onClose = useModal((state) => state.onClose);
   const onOpen = useModal((state) => state.onOpen);
+  const confetti = useConfettiStore();
   const addTickets = useTicketStore((state) => state.addTickets);
 
   const [festivals, setFestivals] = useState<
@@ -123,7 +126,7 @@ const BookPlayTicketsForm: FC<BookPlayTicketsFormProps> = (props) => {
   });
 
   const onSubmit = async (values: BookPlayTicketsFormValues) => {
-    if (values.guestNames.length === 0) {
+    if (values.guestNames.length === 0 && role === UserRole.ACTOR) {
       form.setError("guestNames", {
         message: "quest names should be at least one",
       });
@@ -140,15 +143,18 @@ const BookPlayTicketsForm: FC<BookPlayTicketsFormProps> = (props) => {
           return response.json();
         })
         .then(async (data) => {
+          confetti.onOpen();
           addTickets(data);
           // console.log(localPlays);
           router.refresh();
+
           if (mode === "page") {
             //   router.push(`/${locale}/admin/actors`);
+            onOpen("showBookedTickets", { tickets: data });
           } else {
             onClose();
-            form.reset();
           }
+          form.reset();
         })
         .catch((error) => {
           toast.error(error.message);
@@ -216,8 +222,8 @@ const BookPlayTicketsForm: FC<BookPlayTicketsFormProps> = (props) => {
       setNumberOfGuest(selectedFestival.guestTicketLimit);
     } else if (role === UserRole.ACTOR) {
       setNumberOfGuest(selectedFestival.actorTicketLimit);
-    }else{
-      setNumberOfGuest(2)
+    } else {
+      setNumberOfGuest(2);
     }
 
     setAvailableShowTimes(festivalShowTimes);
@@ -446,12 +452,20 @@ const BookPlayTicketsForm: FC<BookPlayTicketsFormProps> = (props) => {
                 </FormControl>
                 <SelectContent>
                   {availableShowTimes?.map((showTime) => (
-                    <SelectItem value={showTime} key={showTime}>
-                      <div className="flex items-center justify-start gap-2">
-                        <Calendar className="w-5 h-5 rtl:ml-2 ltr:mr-2" />
-                        <span>
-                          {format(new Date(showTime), "yyyy-MM-do HH:mm:ss")}
-                        </span>
+                    <SelectItem
+                      value={showTime}
+                      key={showTime}
+                      // className="w-full"
+                    >
+                      <div className="flex w-full items-center justify-between gap-2">
+                        <div className="flex flex-1 items-center justify-start gap-x-2">
+                          <Calendar className="w-5 h-5" />
+                          <span>{formatDate(showTime, "dd-MMM-yyyy")}</span>
+                        </div>
+                        <div className="flex items-center justify-end gap-x-2">
+                          <Clock className="w-5 h-5 " />
+                          <span>{formatDate(showTime, "HH:mm")}</span>
+                        </div>
                       </div>
                     </SelectItem>
                   ))}

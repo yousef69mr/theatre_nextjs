@@ -96,6 +96,7 @@
     "filter": "filter {{instance}}",
     "filterBy": "filter by {{instance}}",
     "cancel": "cancel",
+    "navigateTo": "navigate to {{instance}}",
     "book": "book {{instance}}",
     "watch": "watch {{instance}}",
     "show": "show {{instance}}",

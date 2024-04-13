@@ -19,6 +19,7 @@ export type ModalType =
 
   | "deletePlay"
   | "scanTicket"
+  | "showBookedTickets"
   | "deleteTicket"
   | "deleteUser"
   | "createExecutor"
@@ -41,6 +42,7 @@ export type ModalType =
   | "deleteUserExecutorLink";
 
 interface ModalData {
+  tickets?: TicketType[];
   ticket?: TicketType;
   user?: UserType;
   userActorLink?: UserActorLinkType;

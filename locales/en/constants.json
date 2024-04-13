@@ -2,6 +2,7 @@
   "login": "login",
   "logout": "logout",
   "exit": "exit",
+
   "cancel": { "default": "cancel", "loading": "cancelling" },
 
   "create": { "default": "create", "loading": "creating" },
@@ -103,6 +104,7 @@
     "updated": "{{instance}} updated",
     "copied": "{{instance}} copied",
     "deleted": "{{instance}} deleted",
+    "booked": "{{instance}} booked successfully",
     "created": "{{instance}} created",
     "published": "{{instance}} published",
     "unpublished": "{{instance}} unpublished",
@@ -111,6 +113,9 @@
     "irreversible": "This operation is irreversible",
     "ticket-scanned-once": "This ticket is valid for one-time scanning",
     "no-previous-tickets": "It seems you haven't submitted any tickets yet. Once you submit a ticket, it will appear here."
+  },
+  "greetings": {
+    "congratulations": "congratulations"
   },
   "tables": {
     "id": "ID",

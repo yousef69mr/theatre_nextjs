@@ -104,6 +104,7 @@
     "updated": "تم تعديل {{instance}}",
     "copied": "تم نسخ {{instance}}",
     "deleted": "تم حذف {{instance}}",
+    "booked": "تم حذف {{instance}} بنجاح",
     "created": "تم إنشاء {{instance}}",
     "published": "تم نشر {{instance}}",
     "unpublished": "تم إلغاء نشر {{instance}}",
@@ -112,6 +113,9 @@
     "irreversible": "هذه العملية لا رجعة فيها",
     "ticket-scanned-once": "هذه التذكرة صالحة للمسح الضوئى لمرة واحدة",
     "no-previous-tickets": "يبدو أنك لم تحجز أي تذاكر بعد. بمجرد حجز أى تذكرة ، ستظهر هنا."
+  },
+  "greetings": {
+    "congratulations": "مبروك"
   },
   "tables": {
     "id": "كود",

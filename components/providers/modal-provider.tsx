@@ -22,6 +22,7 @@ import { DeleteUserActorLinkModal } from "@/components/modals/userActorLink/dele
 import LinkUserActorModal from "@/components/modals/userActorLink/user-actor-link-modal";
 import { DeleteUserExecutorLinkModal } from "@/components/modals/userExecutorLink/delete-user-executor-link-modal";
 import LinkUserExecutorModal from "@/components/modals/userExecutorLink/user-executor-link-modal";
+import { ShowBookedTicketsModal } from "@/components/modals/ticket/show-booked-tickets-modal";
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -56,6 +57,7 @@ export const ModalProvider = () => {
       <DeleteUserActorLinkModal />
       <LinkUserExecutorModal />
       <DeleteUserExecutorLinkModal />
+      <ShowBookedTicketsModal/>
     </>
   );
 };
