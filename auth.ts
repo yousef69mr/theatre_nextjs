@@ -78,7 +78,7 @@ export const {
       token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
 
       return token;
-    }, 
+    },
     async session({ session, token }) {
       if (session.user && token.sub) {
         session.user.id = token.sub;

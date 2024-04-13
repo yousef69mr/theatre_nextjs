@@ -63,7 +63,6 @@ export const ShowBookedTicketsModal = () => {
           <span className="text-red-500">**</span>{" "}
           {t("messages.ticket-scanned-once", { ns: "constants" })}
         </DialogDescription> */}
-        {/* <DialogPortal>kkkkkk</DialogPortal> */}
         <Separator className="bg-red-100 dark:bg-red-700/15" />
         <DialogFooter>
           <Link href={`/${locale}/users/${loggedUser?.id}`}>
