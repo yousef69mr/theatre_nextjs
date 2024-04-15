@@ -97,7 +97,7 @@ export const ShareTicketModal = () => {
           </DialogTitle>
         </DialogHeader>
         <div className="p-6">
-          <Label className="uppercase text-lg font-bol">
+          <Label className="uppercase text-sm font-bold">
             {t("forms.labels.ticketLink", {
               ns: "constants",
             })}
@@ -117,7 +117,7 @@ export const ShareTicketModal = () => {
               )}
             </Button>
           </div>
-          <Separator />
+          <Separator className="my-3" />
           <div className="flex items-center justify-center mt-2 gap-6">
             {/* social buttons */}
             <WhatsappShareButton
