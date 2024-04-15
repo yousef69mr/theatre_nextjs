@@ -31,6 +31,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import {
+  EmailIcon,
+  EmailShareButton,
   TelegramIcon,
   // FacebookShareButton,
   TelegramShareButton,
@@ -38,6 +40,7 @@ import {
   WhatsappIcon,
   WhatsappShareButton,
 } from "react-share";
+import { dir } from "i18next";
 // import { useBreakpoint } from "@/hooks/use-break-point";
 // import { useTicketStore } from "@/hooks/stores/use-ticket-store";
 
@@ -117,12 +120,27 @@ export const ShareTicketModal = () => {
           <Separator />
           <div className="flex items-center justify-center mt-2 gap-6">
             {/* social buttons */}
-            <WhatsappShareButton url={shareTicketUrl} title={title}>
+            <WhatsappShareButton
+              url={shareTicketUrl}
+              title={title}
+              dir={dir(locale)}
+            >
               <WhatsappIcon round size={46} />
             </WhatsappShareButton>
-            <TelegramShareButton url={shareTicketUrl} title={title}>
+            <TelegramShareButton
+              url={shareTicketUrl}
+              title={title}
+              dir={dir(locale)}
+            >
               <TelegramIcon size={46} round />
             </TelegramShareButton>
+            <EmailShareButton
+              url={shareTicketUrl}
+              title={title}
+              dir={dir(locale)}
+            >
+              <EmailIcon size={46} round />
+            </EmailShareButton>
           </div>
         </div>
       </DialogContent>
