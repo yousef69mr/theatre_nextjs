@@ -14,6 +14,7 @@ import {
   Copy,
   Drama,
   Edit,
+  HelpCircle,
   Link2,
   LucideTicket,
   MailIcon,
@@ -163,13 +164,27 @@ const UserClient: FC<UserClientProps> = (props) => {
     });
   };
 
-  const isEditable = isAdmin(activeUser?.role as UserRole) || isMyProfile;
+  const handleUserRoleEdit = () => {
+    // onOpen("editUserRole", {
+    //   user,
+    // });
+    toast.custom(
+      <div className="bg-blue-500 rounded-full flex items-center gap-x-2 py-2 px-3">
+        <HelpCircle className="w-5 h-5" />
+        {t("messages.soon", { ns: "constants" })}
+      </div>
+    );
+
+  };
+
+  const isAdminUser = isAdmin(activeUser?.role as UserRole);
+  const isEditable = isAdminUser || isMyProfile;
 
   return (
     <div className="px-10">
       <div
         className={cn(
-          "w-full flex flex-row flex-wrap items-start justify-between gap-6 relative"
+          "w-full flex flex-wrap items-start justify-between gap-6 relative"
           // isBelowMd && "!flex-col"
         )}
       >
@@ -408,6 +423,18 @@ const UserClient: FC<UserClientProps> = (props) => {
                         instance: t("user.single", { ns: "constants" }),
                       })}
                     </DropdownMenuItem>
+                    {isAdminUser && (
+                      <DropdownMenuItem
+                        className="flex justify-start rtl:flex-row-reverse px-0"
+                        onClick={handleUserRoleEdit}
+                      >
+                        <Pencil className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
+                        {t("actions.edit", {
+                          ns: "common",
+                          instance: t("role.single", { ns: "constants" }),
+                        })}
+                      </DropdownMenuItem>
+                    )}
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       className="flex justify-start rtl:flex-row-reverse px-0 text-primary"
@@ -435,7 +462,7 @@ const UserClient: FC<UserClientProps> = (props) => {
           </h3>
 
           {user.tickets?.length > 0 ? (
-            <TicketList tickets={user.tickets} />
+            <TicketList tickets={user?.tickets} />
           ) : (
             <div className="flex items-center justify-center">
               <p className="text-muted-foreground text-lg">

@@ -22,9 +22,12 @@ export async function generateMetadata({
 Promise<Metadata> {
   const { t } = await initTranslations(params.locale, i18nextNamspaces);
 
-  const title = `${t("actor.plural")} | ${t("UserRole.USER", {
-    ns: "common",
-  })}`;
+  const title = `${t("actor.plural", { ns: "constants" })} | ${t(
+    "UserRole.USER",
+    {
+      ns: "common",
+    }
+  )}`;
   return {
     title,
     description: title,

@@ -23,6 +23,7 @@ async function adminMain() {
         password: hashedPassword,
         role: UserRole.ADMIN,
         emailVerified: new Date(),
+        isEditable: false,
       },
     });
 

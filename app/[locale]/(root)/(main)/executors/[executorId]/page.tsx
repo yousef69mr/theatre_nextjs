@@ -8,6 +8,7 @@ import TranslationsProvider from "@/components/providers/translation-provider";
 import ExecutorClient from "@/components/clients/executor/public/single-executor-client";
 import { globalNamespaces } from "@/lib/namespaces";
 import { type Metadata } from "next";
+import { notFound } from "next/navigation";
 
 interface SingleExecutorPageProps {
   params: {
@@ -70,7 +71,7 @@ const SingleExecutorPage: FC<SingleExecutorPageProps> = async (props) => {
   );
 
   if (!executor) {
-    return <>not found</>;
+    notFound();
   }
 
   return (

@@ -7,6 +7,7 @@ import { globalNamespaces } from "@/lib/namespaces";
 import { Locale } from "@/next-i18next.config";
 import { ActorType } from "@/types";
 import { type Metadata } from "next";
+import { notFound } from "next/navigation";
 import { FC } from "react";
 
 interface SingleActorPageProps {
@@ -66,7 +67,7 @@ const SingleActorPage: FC<SingleActorPageProps> = async (props) => {
   const actor: ActorType | null = await getActorByIdRequest(actorId);
 
   if (!actor) {
-    return <>not found</>;
+    notFound();
   }
 
   return (

@@ -8,6 +8,7 @@ import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
 import { FC } from "react";
 import { getUserTicketsRequest } from "@/lib/api-calls/models/ticket";
 import UserForm from "@/components/forms/models/user-form";
+import { notFound } from "next/navigation";
 
 interface UserPageProps {
   params: {
@@ -25,7 +26,7 @@ const UserPage: FC<UserPageProps> = async (props) => {
   const user: UserType | null = await getUserByIdRequest(userId);
 
   if (!user) {
-    return <>not found</>;
+    notFound();
   }
 
   return (

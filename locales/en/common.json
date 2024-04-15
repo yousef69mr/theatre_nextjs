@@ -104,7 +104,8 @@
     "unlink": "unlink {{instance}}",
     "linkTo": "link {{instance}} to {{to}}",
     "save": "save {{instance}}",
-    "scan": "scan {{instance}}"
+    "scan": "scan {{instance}}",
+    "share": "share {{instance}}"
   },
   "menus": {
     "admin": "admin menu"

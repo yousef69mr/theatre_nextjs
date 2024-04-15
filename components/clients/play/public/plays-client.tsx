@@ -49,6 +49,10 @@ const PlayListClient: FC<PlayListClientProps> = (props) => {
     setLocalPlays(data);
   }, [data]);
 
+  useEffect(() => {
+    router.prefetch(`/${locale}/admin/plays/new`);
+  }, [router]);
+
   return (
     <>
       <div className="flex items-center justify-between">
@@ -82,7 +86,7 @@ const PlayListClient: FC<PlayListClientProps> = (props) => {
         )}
       </div>
       <Separator />
-     
+
       {filteredPlays ? (
         <>{Array.isArray(data) && <PlayList plays={data} />}</>
       ) : (

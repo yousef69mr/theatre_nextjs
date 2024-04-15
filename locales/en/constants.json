@@ -109,6 +109,7 @@
     "published": "{{instance}} published",
     "unpublished": "{{instance}} unpublished",
     "live": "{{instance}} is live",
+    "soon": "coming soon!!",
     "confirm-message": "Are you sure you want to do this?",
     "irreversible": "This operation is irreversible",
     "ticket-scanned-once": "This ticket is valid for one-time scanning",
@@ -163,6 +164,7 @@
       "startDate": "Start Date",
       "endDate": "End Date",
       "showTimes": "Show Time",
+      "ticketLink": "Ticket Link",
       "actions": "Actions"
     },
     "placeholder": {

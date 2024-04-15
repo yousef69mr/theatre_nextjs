@@ -7,6 +7,7 @@ import TranslationsProvider from "@/components/providers/translation-provider";
 import initTranslations from "@/lib/i18n";
 import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
 import PlayClient from "@/components/clients/play/public/single-play-client";
+import { notFound } from "next/navigation";
 
 interface SinglePlayPageProps {
   params: {
@@ -65,7 +66,7 @@ const SinglePlayPage: FC<SinglePlayPageProps> = async (props) => {
   const play: PlayType | null = await getPlayByIdRequest(playId);
 
   if (!play) {
-    return <>not found</>;
+    notFound();
   }
 
   return (

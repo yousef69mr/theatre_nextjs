@@ -14,6 +14,7 @@ import { AudioLines } from "lucide-react";
 import FormError from "@/components/forms/form-error";
 import { getUserTicketsRequest } from "@/lib/api-calls/models/ticket";
 import { currentUser } from "@/lib/auth";
+import { notFound } from "next/navigation";
 // import { redirect } from "next/navigation";
 
 interface BookPlayTicketPageProps {
@@ -65,7 +66,7 @@ const BookPlayTicketPage: React.FC<BookPlayTicketPageProps> = async (props) => {
   const tickets: TicketType[] = await getUserTicketsRequest(user?.id as string);
 
   if (!play) {
-    return <>not found</>;
+    notFound();
     // return redirect(`/${locale}/plays/${playId}`);
   }
 

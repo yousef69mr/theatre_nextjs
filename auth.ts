@@ -9,6 +9,8 @@ import {
   getTwoFactorConfirmationByUserId,
 } from "@/lib/actions/models/two-factor-confirmation";
 import { getAccountsByUserId } from "./lib/actions/models/account";
+import { UserType } from "./types";
+import { ExtendedUser } from "./next-auth";
 
 export const {
   handlers: { GET, POST },
@@ -76,6 +78,7 @@ export const {
       token.email = existingUser.email;
       token.role = existingUser.role;
       token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
+      token.isEditable = existingUser.isEditable;
 
       return token;
     },
@@ -93,6 +96,7 @@ export const {
         session.user.name = token.name;
         session.user.email = token.email;
         session.user.isOAuth = token.isOAuth as boolean;
+        session.user.isEditable = token.isEditable as boolean;
       }
 
       return session;

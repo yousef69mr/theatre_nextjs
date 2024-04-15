@@ -7,6 +7,7 @@ import { TicketType, UserType } from "@/types";
 import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
 import { FC } from "react";
 import { getUserTicketsRequest } from "@/lib/api-calls/models/ticket";
+import { notFound } from "next/navigation";
 
 interface UserPageProps {
   params: {
@@ -25,7 +26,7 @@ const UserPage: FC<UserPageProps> = async (props) => {
   const userTickets: TicketType[] = await getUserTicketsRequest(userId);
 
   if (!user) {
-    return <>not found</>;
+    notFound();
   }
 
   const formattedUser = { ...user, tickets: userTickets };

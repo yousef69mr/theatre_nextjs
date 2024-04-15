@@ -104,7 +104,8 @@
     "unlink": "إلغاء ربط {{instance}}",
     "linkTo": "ربط {{instance}} ل{{to}}",
     "save": "حفظ {{instance}}",
-    "scan": "مسح ضوئى ل{{instance}}"
+    "scan": "مسح ضوئى ل{{instance}}",
+    "share": "مشاركة {{instance}}"
   },
   "menus": {
     "admin": "قائمة الأدمن"

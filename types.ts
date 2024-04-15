@@ -52,10 +52,11 @@ export type UserType = {
   name: string;
   email: string;
   password: String;
-  emailVerified?: Date;
-  role: typeof UserRole;
-  image: string;
+  emailVerified?: Date | null;
+  role: UserRole;
+  image: string | null;
   isTwoFactorEnabled: boolean;
+  isEditable: boolean;
   actor?: UserActorLinkType | null;
   executor?: UserExecutorLinkType | null;
   tickets: TicketType[];

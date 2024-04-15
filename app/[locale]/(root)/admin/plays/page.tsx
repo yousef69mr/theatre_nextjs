@@ -19,7 +19,7 @@ export async function generateMetadata({
 Promise<Metadata> {
   const { t } = await initTranslations(params.locale, i18nextNamspaces);
 
-  const title = `${t("play.plural")} | ${t("UserRole.ADMIN", {
+  const title = `${t("play.plural",{ns:"constants"})} | ${t("UserRole.ADMIN", {
     ns: "common",
   })}`;
 

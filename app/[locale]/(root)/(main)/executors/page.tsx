@@ -27,7 +27,7 @@ export async function generateMetadata({
 Promise<Metadata> {
   const { t } = await initTranslations(params.locale, i18nextNamspaces);
 
-  const title = `${t("executor.plural")} | ${t("UserRole.USER", {
+  const title = `${t("executor.plural",{ns:"constants"})} | ${t("UserRole.USER", {
     ns: "common",
   })}`;
   return {

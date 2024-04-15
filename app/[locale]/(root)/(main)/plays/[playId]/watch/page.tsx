@@ -18,6 +18,7 @@ import { getUserTicketsRequest } from "@/lib/api-calls/models/ticket";
 import EmbedPlayer from "@/components/helpers/emded-player";
 import { Separator } from "@/components/ui/separator";
 import PlayCarousel from "@/components/carousels/play-carousel";
+import { notFound } from "next/navigation";
 // import { redirect } from "next/navigation";
 
 interface BookPlayTicketPageProps {
@@ -68,7 +69,7 @@ const WatchPlayPage: React.FC<BookPlayTicketPageProps> = async (props) => {
   const play: PlayType | null = await getPlayByIdRequest(playId);
 
   if (!play) {
-    return <>not found</>;
+    notFound();
     // return redirect(`/${locale}/plays/${playId}`);
   }
   const plays: PlayType[] | null = await getAllPlaysRequest();

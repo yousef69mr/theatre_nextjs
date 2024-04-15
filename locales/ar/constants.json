@@ -109,6 +109,7 @@
     "published": "تم نشر {{instance}}",
     "unpublished": "تم إلغاء نشر {{instance}}",
     "live": "{{instance}} مباشر",
+    "soon": "متاح قريباً!!",
     "confirm-message": "هل انت متأكد من أنك تريد أن تفعل هذا؟",
     "irreversible": "هذه العملية لا رجعة فيها",
     "ticket-scanned-once": "هذه التذكرة صالحة للمسح الضوئى لمرة واحدة",
@@ -162,7 +163,8 @@
       "startDate": "تاريخ البداية",
       "endDate": "تاريخ النهاية",
       "showTimes": "معاد العرض",
-      "actions": "الاجراءات"
+      "actions": "الاجراءات",
+      "ticketLink": "لينك التذكرة"
     },
     "placeholder": {
       "id": "كود",
