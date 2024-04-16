@@ -9,7 +9,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 
 import { useForm } from "react-hook-form";
 import { useParams, useRouter } from "next/navigation";
@@ -27,13 +26,9 @@ import { Separator } from "@/components/ui/separator";
 import { useTranslation } from "react-i18next";
 
 import { cn } from "@/lib/utils";
-import { useModal } from "@/hooks/stores/use-modal-store";
+
 // import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
-import FileUpload from "../../helpers/file-upload";
-import {
-  createActorRequest,
-  updateActorRequest,
-} from "@/lib/api-calls/models/actor";
+
 import { useActorStore } from "@/hooks/stores/use-actor-store";
 import { permisionsSchema } from "@/lib/validations";
 import { Switch } from "../../ui/switch";

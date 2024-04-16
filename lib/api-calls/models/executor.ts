@@ -47,10 +47,14 @@ export const createExecutorRequest = async (
     body: JSON.stringify({ ...values, pathname }),
   });
   // console.log(promise);
+
+  const reponse = await promise.json();
+  // console.log(promise);
   if (!promise.ok) {
-    throw Error(promise.statusText);
+    // console.error();
+    throw Error(reponse["error"]);
   }
-  return promise;
+  return reponse;
 };
 
 export const updateExecutorRequest = async (
@@ -70,13 +74,10 @@ export const updateExecutorRequest = async (
       // cache: "no-store",
     }
   );
+  const reponse = await promise.json();
   // console.log(promise);
   if (!promise.ok) {
-    throw Error(promise.statusText);
+    throw Error(reponse["error"]);
   }
-  return promise;
-  // } catch (error) {
-  //   toast.error(error as string);
-  //   return error;
-  // }
+  return reponse;
 };

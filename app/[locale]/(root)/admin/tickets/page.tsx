@@ -18,9 +18,12 @@ export async function generateMetadata({
 Promise<Metadata> {
   const { t } = await initTranslations(params.locale, i18nextNamspaces);
 
-  const title = `${t("ticket.plural")} | ${t("UserRole.ADMIN", {
-    ns: "common",
-  })}`;
+  const title = `${t("ticket.plural", { ns: "constants" })} | ${t(
+    "UserRole.ADMIN",
+    {
+      ns: "common",
+    }
+  )}`;
 
   //TODO: make proper
   const description = "all theatre tickets";

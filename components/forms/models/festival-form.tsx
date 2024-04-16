@@ -83,7 +83,7 @@ const FestivalForm: FC<FestivalFormProps> = (props) => {
       if (initialData) {
         // setIsEditing(true);
         updateFestivalRequest(values, initialData.id)
-          .then((response) => response.json())
+          // .then((response) => response.json())
           .then(async (data) => {
             // console.log("api success");
             toast.success(
@@ -103,14 +103,14 @@ const FestivalForm: FC<FestivalFormProps> = (props) => {
               form.reset();
             }
           })
-          .catch((error) => toast.error("something went wrong"))
+          .catch((error:Error) => toast.error(error.message))
           .finally(() => {
             setIsLoading(false);
             setIsEditing(false);
           });
       } else {
         createFestivalRequest(values)
-          .then((response) => response.json())
+          // .then((response) => response.json())
           .then(async (data) => {
             toast.success(
               t("messages.created", {
@@ -129,7 +129,7 @@ const FestivalForm: FC<FestivalFormProps> = (props) => {
               form.reset();
             }
           })
-          .catch((error) => toast.error("something went wrong"))
+          .catch((error:Error) => toast.error(error.message))
           .finally(() => setIsLoading(false));
       }
     });

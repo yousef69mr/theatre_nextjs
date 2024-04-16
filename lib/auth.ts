@@ -25,6 +25,14 @@ export const actorRoles = [
   UserRole.CAST_VICE_PRESIDENT,
 ];
 
+export const userRoles = [
+  UserRole.CAST_HEAD,
+  UserRole.ACTOR,
+  UserRole.CAST_VICE_PRESIDENT,
+  UserRole.USER,
+  UserRole.ADMIN,
+];
+
 export const executorRoles = [
   ExecutorRole.DIRECTOR,
   ExecutorRole.AUTHOR,
@@ -43,8 +51,7 @@ export const executorRoles = [
   ExecutorRole.OTHER,
 ];
 
-
-export const publicRoles=[UserRole.USER,UserRole.ACTOR]
+export const publicRoles = [UserRole.USER, UserRole.ACTOR];
 
 export const isAdmin = (loggedUserRole: UserRole) => {
   let isAdmin = false;

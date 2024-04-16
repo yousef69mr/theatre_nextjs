@@ -1,4 +1,4 @@
-import { currentRole, isAdmin } from "@/lib/auth";
+import { currentRole, currentUser, isAdmin } from "@/lib/auth";
 import { db } from "@/lib/database";
 import { ticketSchema } from "@/lib/validations/models/ticket";
 import { UserRole } from "@prisma/client";
@@ -57,21 +57,41 @@ export async function DELETE(request: NextRequest, props: TicketProps) {
   const {
     params: { ticketId },
   } = props;
-  const currentUserRole = await currentRole();
 
-  if (!isAdmin(currentUserRole as UserRole)) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  if (!ticketId) {
-    return NextResponse.json(
-      { error: "ticketId is missing!" },
-      { status: 400 }
-    );
-  }
-
-  // console.log("herer");
   try {
+    const loggedUser = await currentUser();
+
+    if (!ticketId) {
+      return NextResponse.json(
+        { error: "ticketId is missing!" },
+        { status: 400 }
+      );
+    }
+
+    const existingTicket = await db.ticket.findUnique({
+      where: {
+        id: ticketId,
+      },
+      include: {
+        createdBy: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+
+    if (!existingTicket) {
+      return NextResponse.json({ error: "not found" }, { status: 404 });
+    }
+
+    const isLoggedUserTicket = existingTicket.createdBy?.id === loggedUser?.id;
+
+    if (!isAdmin(loggedUser?.role as UserRole) && !isLoggedUserTicket) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    // console.log("herer");
+
     await db.ticket.delete({
       where: {
         id: ticketId,
@@ -92,11 +112,7 @@ export async function PATCH(request: NextRequest, props: TicketProps) {
     params: { ticketId },
   } = props;
 
-  const currentUserRole = await currentRole();
-
-  if (!isAdmin(currentUserRole as UserRole)) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const loggedUser = await currentUser();
 
   if (!ticketId) {
     return NextResponse.json(
@@ -104,27 +120,51 @@ export async function PATCH(request: NextRequest, props: TicketProps) {
       { status: 400 }
     );
   }
-  const values = await request.json();
-
-  const validatedFields = ticketSchema.safeParse(values);
-  // console.log(validatedFields);
-  if (!validatedFields.success) {
-    return NextResponse.json({ error: "Invalid fields" }, { status: 400 });
-  }
-
-  const { guestName } = validatedFields.data;
-
-  if (!guestName) {
-    return NextResponse.json(
-      { error: "guestName is missing!" },
-      { status: 400 }
-    );
-  }
-
-  // console.log(ticketId);
-
-  // console.log("herer");
   try {
+    const existingTicket = await db.ticket.findUnique({
+      where: {
+        id: ticketId,
+      },
+      include: {
+        createdBy: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+
+    if (!existingTicket) {
+      return NextResponse.json({ error: "not found" }, { status: 404 });
+    }
+
+    const isLoggedUserTicket = existingTicket.createdBy?.id === loggedUser?.id;
+
+    if (!isAdmin(loggedUser?.role as UserRole) && !isLoggedUserTicket) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const values = await request.json();
+
+    const validatedFields = ticketSchema.safeParse(values);
+    // console.log(validatedFields);
+    if (!validatedFields.success) {
+      return NextResponse.json({ error: "Invalid fields" }, { status: 400 });
+    }
+
+    const { guestName } = validatedFields.data;
+
+    if (!guestName) {
+      return NextResponse.json(
+        { error: "guestName is missing!" },
+        { status: 400 }
+      );
+    }
+
+    // console.log(ticketId);
+
+    // console.log("herer");
+
     const ticket = await db.ticket.update({
       where: {
         id: ticketId,

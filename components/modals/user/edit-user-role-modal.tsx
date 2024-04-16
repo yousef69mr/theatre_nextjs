@@ -10,8 +10,7 @@ import {
 import { useModal } from "@/hooks/stores/use-modal-store";
 // import ExecutorForm from "@/components/forms/executor-form";
 import { useTranslation } from "react-i18next";
-import LinkFestivalPlayForm from "@/components/forms/actions/link-festival-play-form";
-import UserForm from "@/components/forms/models/user-form";
+import UserRoleForm from "@/components/forms/auth/user-role-form";
 
 const EditUserRoleModal = () => {
   const { isOpen, onClose, type, data } = useModal();
@@ -30,13 +29,12 @@ const EditUserRoleModal = () => {
               instance: t("role.single", { ns: "constants" }),
             })}
           </DialogTitle>
+          <p className="text-sm text-primary">#{user?.id}</p>
         </DialogHeader>
         <div className="p-4">
-          <UserForm
+          <UserRoleForm
             initialData={user}
             className="flex flex-col justify-center w-full"
-            mode="modal"
-            type="role"
           />
         </div>
       </DialogContent>

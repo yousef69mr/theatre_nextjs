@@ -93,7 +93,7 @@ const UserClient: FC<UserClientProps> = (props) => {
   const { t } = useTranslation();
   const [isCopy, setIsCopy] = useState(false);
 
-  // const router = useRouter();
+  const router = useRouter();
   const params = useParams();
 
   const locale = params.locale as Locale;
@@ -102,11 +102,6 @@ const UserClient: FC<UserClientProps> = (props) => {
   // const updateUser = useUserStore((state) => state.updateUser);
   const handleUserDelete = () => {
     onOpen("deleteUser", { user });
-  };
-
-  const handleUserEdit = () => {
-    // router.push(`/${locale}/admin/users/${user.id}`);
-    toast.custom("soon not supported");
   };
 
   // useEffect(() => {
@@ -165,21 +160,38 @@ const UserClient: FC<UserClientProps> = (props) => {
   };
 
   const handleUserRoleEdit = () => {
-    // onOpen("editUserRole", {
-    //   user,
-    // });
-    toast.custom(
+    onOpen("editUserRole", {
+      user,
+    });
+    // toast.custom(
+    //   <div className="bg-blue-500 rounded-full flex items-center gap-x-2 py-2 px-3">
+    //     <HelpCircle className="w-5 h-5" />
+    //     {t("messages.soon", { ns: "constants" })}
+    //   </div>
+    // );
+  };
+
+  const handleUserEdit = () => {
+    // router.push(editUrl);
+   toast.custom(
       <div className="bg-blue-500 rounded-full flex items-center gap-x-2 py-2 px-3">
         <HelpCircle className="w-5 h-5" />
         {t("messages.soon", { ns: "constants" })}
       </div>
     );
-
   };
 
   const isAdminUser = isAdmin(activeUser?.role as UserRole);
   const isEditable = isAdminUser || isMyProfile;
+  const editUrl = isMyProfile
+    ? `/${locale}/settings`
+    : `/${locale}/admin/users/${user.id}`;
 
+  useEffect(() => {
+    isMyProfile
+      ? router.prefetch(`/${locale}/settings`)
+      : router.prefetch(`/${locale}/admin/users/${user.id}`);
+  }, [isMyProfile, user.id]);
   return (
     <div className="px-10">
       <div
@@ -367,51 +379,59 @@ const UserClient: FC<UserClientProps> = (props) => {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
 
-                    {actorProfile ? (
-                      <DropdownMenuItem
-                        className="flex justify-start rtl:flex-row-reverse px-0"
-                        onClick={handleActorLinkDelete}
-                      >
-                        <Trash className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
-                        {t("actions.unlink", {
-                          ns: "common",
-                          instance: t("actor.single", { ns: "constants" }),
-                        })}
-                      </DropdownMenuItem>
-                    ) : (
-                      <DropdownMenuItem
-                        className="flex justify-start rtl:flex-row-reverse px-0"
-                        onClick={handleUserActorLink}
-                      >
-                        <Link2 className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
-                        {t("actions.link", {
-                          ns: "common",
-                          instance: t("actor.single", { ns: "constants" }),
-                        })}
-                      </DropdownMenuItem>
-                    )}
-                    {executorProfile ? (
-                      <DropdownMenuItem
-                        className="flex justify-start rtl:flex-row-reverse px-0"
-                        onClick={handleExecutorLinkDelete}
-                      >
-                        <Trash className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
-                        {t("actions.unlink", {
-                          ns: "common",
-                          instance: t("executor.single", { ns: "constants" }),
-                        })}
-                      </DropdownMenuItem>
-                    ) : (
-                      <DropdownMenuItem
-                        className="flex justify-start rtl:flex-row-reverse px-0"
-                        onClick={handleUserExecutorLink}
-                      >
-                        <Link2 className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
-                        {t("actions.link", {
-                          ns: "common",
-                          instance: t("executor.single", { ns: "constants" }),
-                        })}
-                      </DropdownMenuItem>
+                    {isAdminUser && (
+                      <>
+                        {actorProfile ? (
+                          <DropdownMenuItem
+                            className="flex justify-start rtl:flex-row-reverse px-0"
+                            onClick={handleActorLinkDelete}
+                          >
+                            <Trash className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
+                            {t("actions.unlink", {
+                              ns: "common",
+                              instance: t("actor.single", { ns: "constants" }),
+                            })}
+                          </DropdownMenuItem>
+                        ) : (
+                          <DropdownMenuItem
+                            className="flex justify-start rtl:flex-row-reverse px-0"
+                            onClick={handleUserActorLink}
+                          >
+                            <Link2 className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
+                            {t("actions.link", {
+                              ns: "common",
+                              instance: t("actor.single", { ns: "constants" }),
+                            })}
+                          </DropdownMenuItem>
+                        )}
+                        {executorProfile ? (
+                          <DropdownMenuItem
+                            className="flex justify-start rtl:flex-row-reverse px-0"
+                            onClick={handleExecutorLinkDelete}
+                          >
+                            <Trash className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
+                            {t("actions.unlink", {
+                              ns: "common",
+                              instance: t("executor.single", {
+                                ns: "constants",
+                              }),
+                            })}
+                          </DropdownMenuItem>
+                        ) : (
+                          <DropdownMenuItem
+                            className="flex justify-start rtl:flex-row-reverse px-0"
+                            onClick={handleUserExecutorLink}
+                          >
+                            <Link2 className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
+                            {t("actions.link", {
+                              ns: "common",
+                              instance: t("executor.single", {
+                                ns: "constants",
+                              }),
+                            })}
+                          </DropdownMenuItem>
+                        )}
+                      </>
                     )}
                     <DropdownMenuItem
                       className="flex justify-start rtl:flex-row-reverse px-0"

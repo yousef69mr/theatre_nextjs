@@ -51,18 +51,17 @@ import {
   createUserRequest,
   updateUserRequest,
 } from "@/lib/api-calls/models/auth/user";
+import { userRoles } from "@/lib/auth";
 
 interface UserFormProps extends HtmlHTMLAttributes<HTMLElement> {
   initialData: UserType | null;
-  mode?: "modal" | "page";
-  type?: "all" | "role";
 }
 
 type UserFormValues = Zod.infer<typeof userSchema>;
 // const i18nextNamspaces = [...globalNamespaces, ...adminNamespaces];
 
-const UserForm: FC<UserFormProps> = (props) => {
-  const { initialData, className, mode = "page", type = "all" } = props;
+const UserRoleForm: FC<UserFormProps> = (props) => {
+  const { initialData, className } = props;
   const { onClose } = useModal();
   // const addUser = useUserStore((state) => state.addUser);
   // const updateUser = useUserStore((state) => state.updateUser);
@@ -111,12 +110,8 @@ const UserForm: FC<UserFormProps> = (props) => {
             // updateUser(data);
             router.refresh();
 
-            if (mode === "page") {
-              // router.push(`/${locale}/admin/users`);
-            } else {
-              onClose();
-              form.reset();
-            }
+            onClose();
+            form.reset();
           })
           .catch((error) => toast.error("something went wrong"))
           .finally(() => {
@@ -137,12 +132,8 @@ const UserForm: FC<UserFormProps> = (props) => {
             // addUser(data);
             router.refresh();
 
-            if (mode === "page") {
-              router.push(`/${locale}/admin/users`);
-            } else {
-              onClose();
-              form.reset();
-            }
+            onClose();
+            form.reset();
           })
           .catch((error) => toast.error("something went wrong"))
           .finally(() => setIsLoading(false));
@@ -163,266 +154,67 @@ const UserForm: FC<UserFormProps> = (props) => {
 
   const isSubmitting = isPending || form.formState.isSubmitting || isLoading;
   const isDisabled = isUploadingFile || isSubmitting;
-  const isValid = form.formState.isValid;
+
   return (
-    <>
-      {/* {initialData && (
-        <>
-          <div className="font-medium flex items-center justify-between">
-            <span className="capitalize">
-              {t("userForm.titleText", { ns: "admin" })}
-            </span>
-            <Button onClick={toggleEdit} variant="ghost" className="capitalize">
-              {isEditing ? (
-                <>{t("actions.cancel", { ns: "common" })}</>
-              ) : (
-                <>
-                  <Pencil className="h-4 w-4 rtl:ml-2 ltr:mr-2" />
-                  {t("actions.edit", {
-                    instance: t("userForm.title", { ns: "admin" }),
-                    ns: "common",
-                  })}
-                </>
-              )}
-            </Button>
-          </div>
-          <Separator className="my-2" />
-        </>
-      )} */}
-
-      {/* {!isEditing && (
-        <p
-          className={cn(
-            "text-sm mt-2",
-            !initialData && "text-slate-500 italic"
-          )}
-        >
-          {initialData ? initialData.name : t("userForm.inputs-default.name")}
-        </p>
-      )} */}
-      {/* {isEditing && ( */}
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className={cn("flex flex-col w-full space-y-4", className)}
-        >
-          {/* <div
-              className={cn(
-                "flex w-full flex-wrap",
-                mode === "modal" && "flex-col items-center"
-              )}
-            >
-              <div className={cn("w-full", mode === "page" && "md:w-96")}>
-                <FormField
-                  control={form.control}
-                  name="imgUrl"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        {t("forms.labels.image", {
-                          ns: "constants",
-                        })}
-                      </FormLabel>
-                      <FormControl>
-                        <FileUpload
-                          // className="max-h-40"
-                          endpoint="userImage"
-                          value={field.value || ""}
-                          onChange={field.onChange}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div
-                className={cn(
-                  "gap-4 flex-1",
-                  mode === "page" && "grid md:grid-cols-2 items-center",
-                  mode === "modal" && "w-full"
-                )}
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className={cn("flex flex-col w-full space-y-4", className)}
+      >
+        <FormField
+          control={form.control}
+          name="role"
+          render={({ field }) => (
+            <FormItem className="flex-1">
+              <FormLabel>
+                {t("forms.labels.role", { ns: "constants" })}
+              </FormLabel>
+              <Select
+                disabled={isDisabled}
+                onValueChange={field.onChange}
+                defaultValue={field.value}
               >
-                <div
-                  className={cn(
-                    "w-full flex items-center justify-center flex-wrap gap-x-1",
-                    mode === "page" && "md:col-span-2"
-                  )}
-                >
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem className="flex-1">
-                        <FormLabel>
-                          {t("forms.labels.userName", { ns: "constants" })}
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            disabled={isDisabled}
-                            placeholder={t("forms.placeholder.userName", {
-                              ns: "constants",
-                            })}
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="nickname"
-                    render={({ field }) => (
-                      <FormItem className="flex-1">
-                        <FormLabel>
-                          {t("forms.labels.nickname", { ns: "constants" })}
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            disabled={isDisabled}
-                            placeholder={t("forms.placeholder.nickname", {
-                              ns: "constants",
-                            })}
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                {!initialData && (
-                  <div className="flex gap-x-2 w-full flex-wrap items-center md:col-span-2">
-                    <FormField
-                      control={form.control}
-                      name="startDate"
-                      render={({ field }) => (
-                        <FormItem className="flex-1">
-                          <FormLabel>
-                            {t("forms.labels.startDate", {
-                              ns: "constants",
-                            })}
-                          </FormLabel>
-                          <FormControl>
-                            <Input
-                              type="date"
-                              disabled={isDisabled}
-                              className="fill-input"
-                              placeholder={t("forms.placeholder.startDate", {
-                                ns: "constants",
-                              })}
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue
+                      placeholder={t("actions.select", {
+                        ns: "common",
+                        instance: t("forms.labels.role", {
+                          ns: "constants",
+                        }),
+                      })}
                     />
-                    <FormField
-                      control={form.control}
-                      name="endDate"
-                      render={({ field }) => (
-                        <FormItem className="flex-1">
-                          <FormLabel>
-                            {t("forms.labels.endDate", {
-                              ns: "constants",
-                            })}
-                          </FormLabel>
-                          <FormControl>
-                            <Input
-                              type="date"
-                              disabled={isDisabled}
-                              placeholder={t("forms.placeholder.endDate", {
-                                ns: "constants",
-                              })}
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                )}
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {userRoles.map((role) => (
+                    <SelectItem key={role} value={role}>
+                      {t(`UserRole.${role}`, { ns: "common" })}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-                {mode === "page" && (
-                  <FormField
-                    control={form.control}
-                    name="description"
-                    render={({ field }) => (
-                      <FormItem className="w-full md:col-span-2">
-                        <FormLabel>
-                          {t("forms.labels.description", {
-                            ns: "constants",
-                          })}
-                        </FormLabel>
-                        <FormControl>
-                          <Textarea
-                            disabled={isDisabled}
-                            placeholder={t("forms.placeholder.description", {
-                              ns: "constants",
-                            })}
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                )}
-
-                {!initialData && (
-                  <FormField
-                    control={form.control}
-                    name="isCastMember"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-row items-start gap-x-2 space-x-3 space-y-0 rounded-md border p-4 md:col-span-2">
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                        <div className="space-y-1 leading-none ">
-                          <FormLabel>
-                            {t("forms.labels.isCastMember", {
-                              ns: "constants",
-                            })}
-                          </FormLabel>
-                          <FormDescription>
-                            {t("forms.placeholder.isCastMember", {
-                              ns: "constants",
-                            })}
-                          </FormDescription>
-                        </div>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                )}
-              </div>
-            </div> */}
-
-          <Separator />
-          <div className="flex w-full justify-end items-center">
-            <Button type="submit" disabled={isDisabled || !isValid}>
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="ltr:mr-2 rtl:ml-2 h-4 w-4 animate-spin" />
-                  {submitingText}
-                </>
-              ) : (
-                submitBtn
-              )}
-            </Button>
-          </div>
-        </form>
-      </Form>
-      {/* )} */}
-    </>
+        <Separator />
+        <div className="flex w-full justify-end items-center">
+          <Button type="submit" disabled={isDisabled}>
+            {isSubmitting ? (
+              <>
+                <Loader2 className="ltr:mr-2 rtl:ml-2 h-4 w-4 animate-spin" />
+                {submitingText}
+              </>
+            ) : (
+              submitBtn
+            )}
+          </Button>
+        </div>
+      </form>
+    </Form>
   );
 };
 
-export default UserForm;
+export default UserRoleForm;

@@ -128,7 +128,7 @@ const LinkExecutorPlayForm: FC<LinkExecutorPlayFormProps> = (props) => {
     startTransition(() => {
       if (initialData) {
         updateExecutorInPlayRequest(values, initialData.id)
-          .then((response) => response.json())
+          // .then((response) => response.json())
           .then(async (data) => {
             toast.success(
               t("messages.updated", {
@@ -155,11 +155,11 @@ const LinkExecutorPlayForm: FC<LinkExecutorPlayFormProps> = (props) => {
               form.reset();
             }
           })
-          .catch((error) => toast.error("something went wrong"))
+          .catch((error:Error) => toast.error(error.message))
           .finally(() => setIsLoading(false));
       } else {
         createExecutorInPlayRequest(values)
-          .then((response) => response.json())
+          // .then((response) => response.json())
           .then(async (data) => {
             toast.success(
               t("messages.created", {
@@ -186,7 +186,7 @@ const LinkExecutorPlayForm: FC<LinkExecutorPlayFormProps> = (props) => {
               form.reset();
             }
           })
-          .catch((error) => toast.error("something went wrong"))
+          .catch((error:Error) => toast.error(error.message))
           .finally(() => setIsLoading(false));
       }
     });

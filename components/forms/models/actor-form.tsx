@@ -96,7 +96,7 @@ const ActorForm: FC<ActorFormProps> = (props) => {
       if (initialData) {
         // setIsEditing(true);
         updateActorRequest(values, initialData.id)
-          .then((response) => response.json())
+          // .then((response) => response.json())
           .then(async (data) => {
             // console.log("api success");
             toast.success(
@@ -116,14 +116,14 @@ const ActorForm: FC<ActorFormProps> = (props) => {
               form.reset();
             }
           })
-          .catch((error) => toast.error("something went wrong"))
+          .catch((error:Error) => toast.error(error.message))
           .finally(() => {
             setIsLoading(false);
             setIsEditing(false);
           });
       } else {
         createActorRequest(values)
-          .then((response) => response.json())
+          // .then((response) => response.json())
           .then(async (data) => {
             toast.success(
               t("messages.created", {
@@ -142,7 +142,7 @@ const ActorForm: FC<ActorFormProps> = (props) => {
               form.reset();
             }
           })
-          .catch((error) => toast.error("something went wrong"))
+          .catch((error:Error) => toast.error(error.message))
           .finally(() => setIsLoading(false));
       }
     });

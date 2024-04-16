@@ -61,6 +61,13 @@ export async function POST(request: NextRequest) {
   try {
     const { playId, festivalId, showTime, guestNames } = validatedFields.data;
 
+    if (isAdmin(loggedUser.role as UserRole) && guestNames.length === 0) {
+      return NextResponse.json(
+        { error: "Guests names are required for admin users" },
+        { status: 400 }
+      );
+    }
+
     if (!festivalId) {
       return NextResponse.json(
         { error: "festivalId is missing!" },
@@ -132,7 +139,7 @@ export async function POST(request: NextRequest) {
 
     if (availableSeats < guestNames.length) {
       return NextResponse.json(
-        "remaining seats are less than the required amount",
+        { error: "remaining seats are less than the required amount" },
         {
           status: 403,
         }

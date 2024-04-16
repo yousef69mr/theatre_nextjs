@@ -112,7 +112,7 @@ const LinkActorPlayForm: FC<LinkActorPlayFormProps> = (props) => {
     startTransition(() => {
       if (initialData) {
         updateActorInPlayRequest(values, initialData.id)
-          .then((response) => response.json())
+          // .then((response) => response.json())
           .then(async (data) => {
             toast.success(
               t("messages.updated", {
@@ -139,11 +139,11 @@ const LinkActorPlayForm: FC<LinkActorPlayFormProps> = (props) => {
               form.reset();
             }
           })
-          .catch((error) => toast.error("something went wrong"))
+          .catch((error:Error) => toast.error(error.message))
           .finally(() => setIsLoading(false));
       } else {
         createActorInPlayRequest(values)
-          .then((response) => response.json())
+          // .then((response) => response.json())
           .then(async (data) => {
             toast.success(
               t("messages.created", {
@@ -170,7 +170,7 @@ const LinkActorPlayForm: FC<LinkActorPlayFormProps> = (props) => {
               form.reset();
             }
           })
-          .catch((error) => toast.error("something went wrong"))
+          .catch((error:Error) => toast.error(error.message))
           .finally(() => setIsLoading(false));
       }
     });

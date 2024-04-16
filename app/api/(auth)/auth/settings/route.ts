@@ -1,9 +1,10 @@
 import { getUserByEmail, getUserById } from "@/lib/actions/models/user";
-import { currentUser } from "@/lib/auth";
+import { currentUser, isAdmin } from "@/lib/auth";
 import { sendVerificationEmail } from "@/lib/mail";
 import { generateVerificationToken } from "@/lib/tokens";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
+import { UserRole } from "@prisma/client";
 import { db } from "@/lib/database";
 
 export async function POST(request: NextRequest) {
@@ -71,6 +72,10 @@ export async function POST(request: NextRequest) {
     const hashedPassword = await bcrypt.hash(values.newPassword, 10);
     values.password = hashedPassword;
     values.newPassword = undefined;
+  }
+
+  if (!isAdmin(user?.role as UserRole)) {
+    values.role = undefined;
   }
 
   try {

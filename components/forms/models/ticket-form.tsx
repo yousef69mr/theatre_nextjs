@@ -11,7 +11,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { ActorType } from "@/types";
+import { TicketType } from "@/types";
 import { useForm } from "react-hook-form";
 import { useParams, useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,16 +27,16 @@ import { Separator } from "@/components/ui/separator";
 
 import { useTranslation } from "react-i18next";
 
-import { actorSchema, facultyCasts } from "@/lib/validations/models/actor";
+import { ticketSchema } from "@/lib/validations/models/ticket";
 import { cn } from "@/lib/utils";
 import { useModal } from "@/hooks/stores/use-modal-store";
 // import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
 import FileUpload from "@/components/helpers/file-upload";
 import {
-  createActorRequest,
-  updateActorRequest,
-} from "@/lib/api-calls/models/actor";
-import { useActorStore } from "@/hooks/stores/use-actor-store";
+  createTicketRequest,
+  updateTicketRequest,
+} from "@/lib/api-calls/models/ticket";
+import { useTicketStore } from "@/hooks/stores/use-ticket-store";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -47,21 +47,23 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-interface ActorFormProps extends HtmlHTMLAttributes<HTMLElement> {
-  initialData: ActorType | null;
+interface TicketFormProps extends HtmlHTMLAttributes<HTMLElement> {
+  initialData: TicketType | null;
   mode?: "modal" | "page";
 }
 
-type ActorFormValues = Zod.infer<typeof actorSchema>;
+type TicketFormValues = Zod.infer<typeof ticketSchema>;
 // const i18nextNamspaces = [...globalNamespaces, ...adminNamespaces];
 
-const ActorForm: FC<ActorFormProps> = (props) => {
+const TicketForm: FC<TicketFormProps> = (props) => {
   const { initialData, className, mode = "page" } = props;
   const { onClose } = useModal();
-  const addActor = useActorStore((state) => state.addActor);
-  const updateActor = useActorStore((state) => state.updateActor);
+  const addTicket = useTicketStore((state) => state.addTickets);
+  const updateTicket = useTicketStore((state) => state.updateTicket);
   // console.log(initialData, Boolean(initialData));
-  const [isEditing, setIsEditing] = useState<boolean>(!Boolean(initialData));
+  const [isEditing, setIsEditing] = useState<boolean>(
+    !Boolean(initialData) || mode === "modal"
+  );
 
   const toggleEdit = () => setIsEditing((current) => !current);
 
@@ -77,71 +79,74 @@ const ActorForm: FC<ActorFormProps> = (props) => {
 
   const locale = params.locale;
 
-  const form = useForm<ActorFormValues>({
-    resolver: zodResolver(actorSchema),
+  const form = useForm<TicketFormValues>({
+    resolver: zodResolver(ticketSchema),
     defaultValues: {
       ...initialData,
+      playId: initialData?.play.id || undefined,
+      festivalId: initialData?.festival.id || undefined,
       // facultyCast: initialData?.facultyCast || undefined,
-      description: initialData?.description || undefined,
-      startDate: new Date().toDateString(),
-      nickname: initialData?.nickname || undefined,
     },
   });
 
-  const onSubmit = async (values: ActorFormValues) => {
+  const onSubmit = async (values: TicketFormValues) => {
     setIsLoading(true);
 
     startTransition(() => {
       if (initialData) {
         // setIsEditing(true);
-        updateActorRequest(values, initialData.id)
-          .then((response) => response.json())
+        updateTicketRequest(values, initialData.id)
+          // .then((response) => response.json())
           .then(async (data) => {
             // console.log("api success");
             toast.success(
               t("messages.updated", {
                 ns: "constants",
-                instance: t("actor.single", { ns: "constants" }),
+                instance: t("ticket.single", { ns: "constants" }),
               })
             );
 
-            updateActor(data);
+            updateTicket(data);
             router.refresh();
 
             if (mode === "page") {
-              // router.push(`/${locale}/admin/actors`);
+              router.push(`/${locale}/admin/tickets`);
             } else {
               onClose();
               form.reset();
             }
           })
-          .catch((error) => toast.error("something went wrong"))
+          .catch((error: Error) => {
+            toast.error(error.message)
+          })
           .finally(() => {
             setIsLoading(false);
             setIsEditing(false);
           });
       } else {
-        createActorRequest(values)
-          .then((response) => response.json())
+        createTicketRequest(values)
+          // .then((response) => response.json())
           .then(async (data) => {
             toast.success(
               t("messages.created", {
                 ns: "constants",
-                instance: t("actor.single", { ns: "constants" }),
+                instance: t("ticket.single", { ns: "constants" }),
               })
             );
 
-            addActor(data);
+            addTicket(data);
             router.refresh();
 
             if (mode === "page") {
-              router.push(`/${locale}/admin/actors`);
+              router.push(`/${locale}/admin/tickets`);
             } else {
               onClose();
               form.reset();
             }
           })
-          .catch((error) => toast.error("something went wrong"))
+          .catch((error: Error) => {
+            toast.error(error.message)
+          })
           .finally(() => setIsLoading(false));
       }
     });
@@ -162,12 +167,16 @@ const ActorForm: FC<ActorFormProps> = (props) => {
   const isDisabled = isUploadingFile || isSubmitting;
   const isValid = form.formState.isValid;
   return (
-    <div className={cn(initialData && "mt-6 border rounded-md p-4")}>
-      {initialData && (
+    <div
+      className={cn(
+        initialData && mode !== "modal" && "mt-6 border rounded-md p-4"
+      )}
+    >
+      {initialData && mode !== "modal" && (
         <>
           <div className="font-medium flex items-center justify-between">
             <span className="capitalize">
-              {t("actorForm.titleText", { ns: "admin" })}
+              {t("ticketForm.titleText", { ns: "admin" })}
             </span>
             <Button onClick={toggleEdit} variant="ghost" className="capitalize">
               {isEditing ? (
@@ -176,7 +185,7 @@ const ActorForm: FC<ActorFormProps> = (props) => {
                 <>
                   <Pencil className="h-4 w-4 rtl:ml-2 ltr:mr-2" />
                   {t("actions.edit", {
-                    instance: t("actorForm.title", { ns: "admin" }),
+                    instance: t("ticketForm.title", { ns: "admin" }),
                     ns: "common",
                   })}
                 </>
@@ -195,10 +204,8 @@ const ActorForm: FC<ActorFormProps> = (props) => {
           )}
         >
           {initialData
-            ? `${initialData.name} ${
-                initialData.nickname ? `(${initialData.nickname})` : ""
-              }`
-            : t("actorForm.inputs-default.name")}
+            ? `${initialData.guestName} ${`(${initialData.id})`}`
+            : t("ticketForm.inputs-default.name")}
         </p>
       )}
       {isEditing && (
@@ -213,30 +220,6 @@ const ActorForm: FC<ActorFormProps> = (props) => {
                 mode === "modal" && "flex-col items-center"
               )}
             >
-              <div className={cn("w-full", mode === "page" && "md:w-96")}>
-                <FormField
-                  control={form.control}
-                  name="imgUrl"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        {t("forms.labels.image", {
-                          ns: "constants",
-                        })}
-                      </FormLabel>
-                      <FormControl>
-                        <FileUpload
-                          // className="max-h-40"
-                          endpoint="actorImage"
-                          value={field.value || ""}
-                          onChange={field.onChange}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
               <div
                 className={cn(
                   "gap-4 flex-1",
@@ -252,194 +235,26 @@ const ActorForm: FC<ActorFormProps> = (props) => {
                 >
                   <FormField
                     control={form.control}
-                    name="name"
+                    name="guestName"
                     render={({ field }) => (
                       <FormItem className="flex-1">
                         <FormLabel>
-                          {t("forms.labels.actorName", { ns: "constants" })}
+                          {t("forms.labels.guestName", { ns: "constants" })}
                         </FormLabel>
                         <FormControl>
                           <Input
                             disabled={isDisabled}
-                            placeholder={t("forms.placeholder.actorName", {
+                            placeholder={t("forms.placeholder.guestName", {
                               ns: "constants",
                             })}
                             {...field}
                           />
                         </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="nickname"
-                    render={({ field }) => (
-                      <FormItem className="flex-1">
-                        <FormLabel>
-                          {t("forms.labels.nickname", { ns: "constants" })}
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            disabled={isDisabled}
-                            placeholder={t("forms.placeholder.nickname", {
-                              ns: "constants",
-                            })}
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="facultyCast"
-                    render={({ field }) => (
-                      <FormItem className="self-end flex-1 shrink md:min-w-[50px]">
-                        <FormLabel>
-                          {t("forms.labels.facultyCast", { ns: "constants" })}
-                        </FormLabel>
-                        <Select
-                          disabled={isDisabled}
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue
-                                placeholder={t("actions.select", {
-                                  ns: "common",
-                                  instance: t("forms.labels.facultyCast", {
-                                    ns: "constants",
-                                  }),
-                                })}
-                              />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {facultyCasts.map((faculty) => (
-                              <SelectItem key={faculty} value={faculty}>
-                                {t(`FacultyCast.${faculty}`, { ns: "common" })}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
                 </div>
-
-                {!initialData && (
-                  <div className="flex gap-x-2 w-full flex-wrap items-center md:col-span-2">
-                    <FormField
-                      control={form.control}
-                      name="startDate"
-                      render={({ field }) => (
-                        <FormItem className="flex-1">
-                          <FormLabel>
-                            {t("forms.labels.startDate", {
-                              ns: "constants",
-                            })}
-                          </FormLabel>
-                          <FormControl>
-                            <Input
-                              type="date"
-                              disabled={isDisabled}
-                              className="fill-input"
-                              placeholder={t("forms.placeholder.startDate", {
-                                ns: "constants",
-                              })}
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="endDate"
-                      render={({ field }) => (
-                        <FormItem className="flex-1">
-                          <FormLabel>
-                            {t("forms.labels.endDate", {
-                              ns: "constants",
-                            })}
-                          </FormLabel>
-                          <FormControl>
-                            <Input
-                              type="date"
-                              disabled={isDisabled}
-                              placeholder={t("forms.placeholder.endDate", {
-                                ns: "constants",
-                              })}
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                )}
-
-                {mode === "page" && (
-                  <FormField
-                    control={form.control}
-                    name="description"
-                    render={({ field }) => (
-                      <FormItem className="w-full md:col-span-2">
-                        <FormLabel>
-                          {t("forms.labels.description", {
-                            ns: "constants",
-                          })}
-                        </FormLabel>
-                        <FormControl>
-                          <Textarea
-                            disabled={isDisabled}
-                            placeholder={t("forms.placeholder.description", {
-                              ns: "constants",
-                            })}
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                )}
-
-                {!initialData && (
-                  <FormField
-                    control={form.control}
-                    name="isCastMember"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-row items-start gap-x-2 space-x-3 space-y-0 rounded-md border p-4 md:col-span-2">
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                        <div className="space-y-1 leading-none ">
-                          <FormLabel>
-                            {t("forms.labels.isCastMember", {
-                              ns: "constants",
-                            })}
-                          </FormLabel>
-                          <FormDescription>
-                            {t("forms.placeholder.isCastMember", {
-                              ns: "constants",
-                            })}
-                          </FormDescription>
-                        </div>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                )}
               </div>
             </div>
 
@@ -463,4 +278,4 @@ const ActorForm: FC<ActorFormProps> = (props) => {
   );
 };
 
-export default ActorForm;
+export default TicketForm;

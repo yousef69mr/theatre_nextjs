@@ -7,15 +7,17 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { TicketType } from "@/types";
+import { UserType } from "@/types";
 import { Button } from "@/components/ui/button";
-import { Copy, Edit, MoreHorizontal, Scan, Share2, Trash } from "lucide-react";
+import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
 import toast from "react-hot-toast";
 
-import { Fragment } from "react";
+import AlertModal from "@/components/modals/alert-modal";
+import { Fragment, useState } from "react";
+import axios from "axios";
 // import { apiInstance } from "@/lib/axios";
 import { useParams, useRouter } from "next/navigation";
-// import { PUBLIC_DOMAIN } from "@/routes";
+import { PUBLIC_DOMAIN } from "@/routes";
 import { useTranslation } from "react-i18next";
 import { dir } from "i18next";
 import { cn } from "@/lib/utils";
@@ -25,7 +27,7 @@ import { useModal } from "@/hooks/stores/use-modal-store";
 // import { useEmployeeStore } from "@/hooks/use-employee-store";
 
 interface Props {
-  data: TicketType;
+  data: UserType;
 }
 
 const CellAction = (props: Props) => {
@@ -55,19 +57,6 @@ const CellAction = (props: Props) => {
       icon: <Copy className="h-4 w-4 ltr:mr-2 rtl:ml-2" />,
     },
     {
-      name: t("actions.scan", {
-        ns: "constants",
-        instance: t("ticket.single", { ns: "constants" }),
-      }),
-      action: "scan",
-      icon: <Scan className="h-4 w-4 ltr:mr-2 rtl:ml-2" />,
-    },
-    {
-      name: t("share.default", { ns: "constants" }),
-      action: "share",
-      icon: <Share2 className="h-4 w-4 ltr:mr-2 rtl:ml-2" />,
-    },
-     {
       name: t("delete.default", { ns: "constants" }),
       action: "delete",
       icon: <Trash className="h-4 w-4 ltr:mr-2 rtl:ml-2" />,
@@ -85,19 +74,13 @@ const CellAction = (props: Props) => {
       case "delete":
         handleDelete();
         return;
-      case "scan":
-        handleScan();
-        break;
-      case "share":
-        handleShare();
-        break;
       default:
         return;
     }
   };
 
   const handleEdit = () => {
-    router.push(`/${locale}/admin/tickets/${data.id}`);
+    router.push(`/${locale}/admin/users/${data.id}`);
   };
 
   const handleCopy = () => {
@@ -105,22 +88,15 @@ const CellAction = (props: Props) => {
       toast.success(
         t("messages.copied", {
           ns: "constants",
-          instance: `${t("id.single", { ns: "constants" })} (${data.id})`,
+          instance: `${t("id.single", { ns: "constants" })} (${data.name})`,
         })
       )
     );
   };
   const handleDelete = () => {
-    onOpen("deleteTicket", { ticket: data });
+    onOpen("deleteUser", { user: data });
   };
 
-  const handleScan = () => {
-    onOpen("scanTicket", { ticket: data });
-  };
-
-  const handleShare = () => {
-    onOpen("shareTicket", { ticket: data });
-  };
   return (
     <>
       <DropdownMenu>
@@ -132,13 +108,13 @@ const CellAction = (props: Props) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align={dir(locale as Locale) === "ltr" ? "end" : "start"}
-          className="flex flex-col justify-center text-sm leading-5 font-medium rtl:items-end px-2"
+          className="flex flex-col justify-center text-sm leading-5 font-medium rtl:items-end"
         >
           <DropdownMenuLabel>
             {t("tables.actions", { ns: "constants" })}
           </DropdownMenuLabel>
           {actions.map((action) => (
-            <Fragment key={action.action}>
+             <Fragment key={action.action}>
               {action.action === "delete" && <Separator />}
               <DropdownMenuItem
                 className={cn(

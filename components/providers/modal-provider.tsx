@@ -25,6 +25,7 @@ import LinkUserExecutorModal from "@/components/modals/userExecutorLink/user-exe
 import { ShowBookedTicketsModal } from "@/components/modals/ticket/show-booked-tickets-modal";
 import EditUserRoleModal from "@/components/modals/user/edit-user-role-modal";
 import { ShareTicketModal } from "@/components/modals/ticket/share-ticket-modal";
+import { EditTicketModal } from "@/components/modals/ticket/edit-ticket-modal";
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -61,6 +62,7 @@ export const ModalProvider = () => {
       <DeleteUserExecutorLinkModal />
       <ShowBookedTicketsModal />
       <ShareTicketModal />
+      <EditTicketModal/>
       <EditUserRoleModal />
     </>
   );

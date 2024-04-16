@@ -51,7 +51,7 @@ export type UserType = {
   id: string;
   name: string;
   email: string;
-  password: String;
+  password?: String | null;
   emailVerified?: Date | null;
   role: UserRole;
   image: string | null;

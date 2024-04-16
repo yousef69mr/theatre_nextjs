@@ -1,30 +1,32 @@
 import { FC } from "react";
 import type { Metadata } from "next";
-import PlayListClient from "@/components/clients/play/admin/play-client";
 import TranslationsProvider from "@/components/providers/translation-provider";
-import { getAllPlaysRequest } from "@/lib/api-calls/models/play";
+import { getAllUsersRequest } from "@/lib/api-calls/models/user";
 import initTranslations from "@/lib/i18n";
 import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
 import { Locale } from "@/next-i18next.config";
-import { PlayType } from "@/types";
+import { UserType } from "@/types";
+import UserListClient from "@/components/clients/user/admin/user-client";
 
-interface AdminPlaysPageProps {
+interface AdminUsersPageProps {
   params: { locale: Locale };
 }
 
-
 export async function generateMetadata({
   params,
-}: AdminPlaysPageProps): // parent: ResolvingMetadata
+}: AdminUsersPageProps): // parent: ResolvingMetadata
 Promise<Metadata> {
   const { t } = await initTranslations(params.locale, i18nextNamspaces);
 
-  const title = `${t("play.plural",{ns:"constants"})} | ${t("UserRole.ADMIN", {
-    ns: "common",
-  })}`;
+  const title = `${t("user.plural", { ns: "constants" })} | ${t(
+    "UserRole.ADMIN",
+    {
+      ns: "common",
+    }
+  )}`;
 
   //TODO: make proper
-  const description = "all theatre plays";
+  const description = "all FCAI users ";
   return {
     title,
     description,
@@ -33,14 +35,20 @@ Promise<Metadata> {
 
 const i18nextNamspaces = [...globalNamespaces, ...adminNamespaces];
 
-const AdminPlaysPage: FC<AdminPlaysPageProps> = async (props) => {
+const AdminUsersPage: FC<AdminUsersPageProps> = async (props) => {
   const {
     params: { locale },
   } = props;
   const { resources } = await initTranslations(locale, i18nextNamspaces);
-  const plays: PlayType[] = await getAllPlaysRequest();
+  const users: UserType[] = await getAllUsersRequest();
 
-  // console.log(plays);
+  // console.log(users);
+  const formattedUsers = users.map((user) => ({
+    ...user,
+    userName: user.name,
+    // profileImage:user.image
+  }));
+
   return (
     <main className="flex flex-col w-full general-padding">
       <TranslationsProvider
@@ -49,11 +57,11 @@ const AdminPlaysPage: FC<AdminPlaysPageProps> = async (props) => {
         resources={resources}
       >
         <div className="flex-1 space-y-4 p-8 pt-6">
-          <PlayListClient data={plays} />
+          <UserListClient data={formattedUsers} />
         </div>
       </TranslationsProvider>
     </main>
   );
 };
 
-export default AdminPlaysPage;
+export default AdminUsersPage;

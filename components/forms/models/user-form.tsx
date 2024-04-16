@@ -98,7 +98,7 @@ const UserForm: FC<UserFormProps> = (props) => {
       if (initialData) {
         // setIsEditing(true);
         updateUserRequest(values, initialData.id)
-          .then((response) => response.json())
+          // .then((response) => response.json())
           .then(async (data) => {
             // console.log("api success");
             toast.success(
@@ -118,14 +118,14 @@ const UserForm: FC<UserFormProps> = (props) => {
               form.reset();
             }
           })
-          .catch((error) => toast.error("something went wrong"))
+          .catch((error:Error) => toast.error(error.message))
           .finally(() => {
             setIsLoading(false);
             // setIsEditing(false);
           });
       } else {
         createUserRequest(values)
-          .then((response) => response.json())
+          // .then((response) => response.json())
           .then(async (data) => {
             toast.success(
               t("messages.created", {
@@ -144,7 +144,7 @@ const UserForm: FC<UserFormProps> = (props) => {
               form.reset();
             }
           })
-          .catch((error) => toast.error("something went wrong"))
+          .catch((error:Error) => toast.error(error.message))
           .finally(() => setIsLoading(false));
       }
     });

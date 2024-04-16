@@ -121,7 +121,7 @@ const LinkUserActorForm: FC<LinkUserActorFormProps> = (props) => {
 
     startTransition(() => {
       createUserActorLinkRequest(values)
-        .then((response) => response.json())
+        // .then((response) => response.json())
         .then(async (data) => {
           toast.success(
             t("messages.created", {
@@ -148,10 +148,7 @@ const LinkUserActorForm: FC<LinkUserActorFormProps> = (props) => {
             form.reset();
           }
         })
-        .catch((error) => {
-          console.error(error);
-          toast.error("something went wrong");
-        })
+        .catch((error:Error) => toast.error(error.message))
         .finally(() => setIsLoading(false));
     });
   };

@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 
 interface PermissionBoxProps {
   handleDelete: () => void;
-  type: "actor" | "play" | "executor" | "ticket";
+  type: "actor" | "play" | "executor" | "ticket" | "user";
   isPublished?: boolean;
   handleIsPublished?: (isPublished: boolean) => void;
 }

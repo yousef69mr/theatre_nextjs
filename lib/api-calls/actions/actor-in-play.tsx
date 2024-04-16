@@ -11,11 +11,12 @@ export const createActorInPlayRequest = async (
     },
     body: JSON.stringify(values),
   });
-  // console.log(promise);
+  const response = await promise.json();
+
   if (!promise.ok) {
-    throw Error(promise.statusText);
+    throw Error(response["error"]);
   }
-  return promise;
+  return response;
 };
 
 export const updateActorInPlayRequest = async (
@@ -32,9 +33,10 @@ export const updateActorInPlayRequest = async (
       body: JSON.stringify(values),
     }
   );
-  // console.log(promise);
+  const response = await promise.json();
+
   if (!promise.ok) {
-    throw Error(promise.statusText);
+    throw Error(response["error"]);
   }
-  return promise;
+  return response;
 };

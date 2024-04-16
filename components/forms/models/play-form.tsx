@@ -132,7 +132,6 @@ const PlayForm: FC<PlayFormProps> = (props) => {
     startTransition(() => {
       if (initialData) {
         updatePlayRequest(values, initialData.id)
-          .then((response) => response.json())
           .then(async (data) => {
             // console.log("api success");
             toast.success(
@@ -145,14 +144,15 @@ const PlayForm: FC<PlayFormProps> = (props) => {
             router.refresh();
             router.push(`/${locale}/admin/plays`);
           })
-          .catch((error) => toast.error("something went wrong"))
+          .catch((error: Error) => {
+            toast.error(error.message);
+          })
           .finally(() => {
             setIsLoading(false);
             setIsEditing(false);
           });
       } else {
         createPlayRequest(values)
-          .then((response) => response.json())
           .then(async (data) => {
             toast.success(
               t("messages.created", {
@@ -164,7 +164,9 @@ const PlayForm: FC<PlayFormProps> = (props) => {
             router.refresh();
             router.push(`/${locale}/admin/plays`);
           })
-          .catch((error) => toast.error("something went wrong"))
+          .catch((error: Error) => {
+            toast.error(error.message);
+          })
           .finally(() => setIsLoading(false));
       }
     });
@@ -605,7 +607,7 @@ const PlayForm: FC<PlayFormProps> = (props) => {
                   /> */}
                       <FileUpload
                         endpoint="playImage"
-                        value={field.value||""}
+                        value={field.value || ""}
                         onChange={field.onChange}
                         className="w-40 h-72"
                       />
@@ -651,7 +653,6 @@ const PlayForm: FC<PlayFormProps> = (props) => {
                   <div className="max-w-full">
                     <iframe
                       title="video"
-                      
                       src={form.getValues().videoUrl || ""}
                     ></iframe>
                   </div>

@@ -25,6 +25,7 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { useTranslation } from "react-i18next";
 
 type loginValues = Zod.infer<typeof loginSchema>;
 
@@ -34,6 +35,7 @@ const LoginForm = () => {
   const [showTwoFactor, setShowTwoFactor] = useState(false);
   const [success, setSuccess] = useState<string | undefined>("");
   const [error, setError] = useState<string | undefined>("");
+  const { t } = useTranslation();
 
   const searchParams = useSearchParams();
   const urlError =
@@ -109,11 +111,15 @@ const LoginForm = () => {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>
+                      {t("forms.labels.email", { ns: "constants" })}
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type="email"
-                        placeholder="john@example.com"
+                        placeholder={t("forms.placeholder.email", {
+                          ns: "constants",
+                        })}
                         disabled={isSubmitting || isPending}
                         {...field}
                       />
@@ -127,11 +133,16 @@ const LoginForm = () => {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>
+                      {" "}
+                      {t("forms.labels.password", { ns: "constants" })}
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="********"
+                        placeholder={t("forms.placeholder.password", {
+                          ns: "constants",
+                        })}
                         disabled={isSubmitting || isPending}
                         {...field}
                       />
@@ -143,7 +154,7 @@ const LoginForm = () => {
                       variant={"link"}
                     >
                       <Link href={`/${locale}/auth/reset`}>
-                        Forgot password ?
+                        {t("messages.forget-password", { ns: "constants" })}
                       </Link>
                     </Button>
                     <FormMessage />
@@ -157,11 +168,16 @@ const LoginForm = () => {
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Two Factor Code</FormLabel>
+                  <FormLabel>
+                    {" "}
+                    {t("forms.labels.2FA", { ns: "constants" })}
+                  </FormLabel>
                   <FormControl>
                     <InputOTP
                       maxLength={6}
-                      placeholder="123456"
+                      placeholder={t("forms.placeholder.2FA", {
+                        ns: "constants",
+                      })}
                       disabled={isSubmitting || isPending}
                       render={({ slots }) => (
                         <InputOTPGroup>
@@ -186,7 +202,7 @@ const LoginForm = () => {
           type="submit"
           className="w-full"
         >
-          {showTwoFactor ? "Confirm" : "Login"}
+          {showTwoFactor ? t("confirm.default", { ns: "constants" }) : t("login", { ns: "constants" })}
         </Button>
       </form>
     </Form>

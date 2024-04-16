@@ -35,6 +35,9 @@ export async function GET(request: NextRequest, props: UserProps) {
           },
         },
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
 
     return NextResponse.json(tickets, { status: 200 });

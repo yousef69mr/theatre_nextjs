@@ -41,8 +41,10 @@ const LoginPage = async (props: LoginPageProps) => {
         <AuthCardWrapper
           headerMainLabel={title[0]}
           headerLabel={title[1]}
-          backButtonLabel="Don't have an account?"
-          backButtonHref={`/${locale}/auth/register`}
+          backButtonLabel={t("messages.don't-have-account", {
+            ns: "constants",
+          })}
+          // backButtonHref={`/${locale}/auth/register`}
           showSocial
         >
           <LoginForm />

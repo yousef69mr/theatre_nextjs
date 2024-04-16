@@ -10,11 +10,12 @@ export const getRemainingUserExecutorLinkRequest = async (
       method: "GET",
     }
   );
-  // console.log(promise);
+  const response = await promise.json();
+
   if (!promise.ok) {
-    throw Error(promise.statusText);
+    throw Error(response["error"]);
   }
-  return promise;
+  return response;
 };
 
 export const createUserExecutorLinkRequest = async (
@@ -28,10 +29,12 @@ export const createUserExecutorLinkRequest = async (
     body: JSON.stringify(values),
   });
   // console.log(promise);
-  if (!promise.ok) {
-    throw Error(promise.statusText);
-  }
-  return promise;
+  const response = await promise.json();
+
+    if (!promise.ok) {
+      throw Error(response["error"]);
+    }
+    return response;
 };
 
 export const deleteUserExecutorLinkRequest = async (
@@ -53,9 +56,10 @@ export const deleteUserExecutorLinkRequest = async (
       }),
     }
   );
-  // console.log(promise);
+  const response = await promise.json();
+
   if (!promise.ok) {
-    throw Error(promise.statusText);
+    throw Error(response["error"]);
   }
-  return promise;
+  return response;
 };

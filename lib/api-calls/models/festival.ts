@@ -7,12 +7,13 @@ export const getAllFestivalsRequest = async () => {
       method: "GET",
       cache: "no-store",
     });
-    // console.log(promise);
+
+    const response = await promise.json();
+
     if (!promise.ok) {
-      // This will activate the closest `error.js` Error Boundary
-      throw new Error("Failed to fetch data");
+      throw Error(response["error"]);
     }
-    return await promise.json();
+    return response;
   } catch (error) {
     console.error(error);
     return [];
@@ -28,10 +29,12 @@ export const getFestivalByIdRequest = async (festivalId: string) => {
         cache: "no-store",
       }
     );
+    const response = await promise.json();
+
     if (!promise.ok) {
-      throw Error(promise.statusText);
+      throw Error(response["error"]);
     }
-    return promise.json();
+    return response;
   } catch (error) {
     return null;
   }
@@ -47,10 +50,12 @@ export const createFestivalRequest = async (
     },
     body: JSON.stringify(values),
   });
+  const response = await promise.json();
+
   if (!promise.ok) {
-    throw Error(promise.statusText);
+    throw Error(response["error"]);
   }
-  return promise;
+  return response;
 };
 
 export const updateFestivalRequest = async (
@@ -67,8 +72,10 @@ export const updateFestivalRequest = async (
       body: JSON.stringify(values),
     }
   );
+  const response = await promise.json();
+
   if (!promise.ok) {
-    throw Error(promise.statusText);
+    throw Error(response["error"]);
   }
-  return promise;
+  return response;
 };

@@ -13,7 +13,7 @@ interface CardWrapperProps {
   headerMainLabel?: string | React.ReactNode;
   headerLabel: string | React.ReactNode;
   backButtonLabel: string;
-  backButtonHref: string;
+  backButtonHref?: string;
   showSocial?: boolean;
 }
 
@@ -39,9 +39,11 @@ const AuthCardWrapper: React.FC<CardWrapperProps> = (props) => {
           <Social />
         </CardFooter>
       )}
-      <CardFooter>
-        <BackButton href={backButtonHref} label={backButtonLabel} />
-      </CardFooter>
+      {backButtonHref && (
+        <CardFooter>
+          <BackButton href={backButtonHref} label={backButtonLabel} />
+        </CardFooter>
+      )}
     </Card>
   );
 };

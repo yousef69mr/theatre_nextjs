@@ -105,7 +105,7 @@ const CastMemberForm: FC<CastMemberFormProps> = (props) => {
       if (initialData) {
         // setIsEditing(true);
         updateCastMemberRequest(values, initialData.id)
-          .then((response) => response.json())
+          // .then((response) => response.json())
           .then(async (data) => {
             // console.log("api success");
             toast.success(
@@ -125,13 +125,13 @@ const CastMemberForm: FC<CastMemberFormProps> = (props) => {
               form.reset();
             }
           })
-          .catch((error) => toast.error("something went wrong"))
+          .catch((error:Error) => toast.error(error.message))
           .finally(() => {
             setIsLoading(false);
           });
       } else {
         createCastMemberRequest(values)
-          .then((response) => response.json())
+          // .then((response) => response.json())
           .then(async (data) => {
             toast.success(
               t("messages.added", {
@@ -150,7 +150,7 @@ const CastMemberForm: FC<CastMemberFormProps> = (props) => {
               form.reset();
             }
           })
-          .catch((error) => toast.error("something went wrong"))
+          .catch((error:Error) => toast.error(error.message))
           .finally(() => setIsLoading(false));
       }
     });

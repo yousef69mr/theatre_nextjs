@@ -11,11 +11,12 @@ export const createExecutorInPlayRequest = async (
     },
     body: JSON.stringify(values),
   });
-  // console.log(promise);
+  const response = await promise.json();
+
   if (!promise.ok) {
-    throw Error(promise.statusText);
+    throw Error(response["error"]);
   }
-  return promise;
+  return response;
 };
 
 export const updateExecutorInPlayRequest = async (
@@ -33,8 +34,10 @@ export const updateExecutorInPlayRequest = async (
     }
   );
   // console.log(promise);
-  if (!promise.ok) {
-    throw Error(promise.statusText);
-  }
-  return promise;
+  const response = await promise.json();
+
+    if (!promise.ok) {
+      throw Error(response["error"]);
+    }
+    return response;
 };

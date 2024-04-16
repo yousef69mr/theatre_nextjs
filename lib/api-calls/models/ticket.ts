@@ -25,11 +25,13 @@ export const getAllTicketsRequest = async () => {
       cache: "no-store",
     });
     // console.log(promise);
+    const response = await promise.json();
+
     if (!promise.ok) {
-      // This will activate the closest `error.js` Error Boundary
-      throw new Error("Failed to fetch data");
+      // console.log(response["error"]);
+      throw Error(response["error"]);
     }
-    return promise.json();
+    return response;
   } catch (error) {
     console.log(error);
     return [];
@@ -45,12 +47,13 @@ export const getTicketByIdRequest = async (ticketId: string) => {
         cache: "no-store",
       }
     );
-    if (!promise.ok) {
-      // This will activate the closest `error.js` Error Boundary
-      throw new Error("Failed to fetch data");
-    }
+    const response = await promise.json();
 
-    return promise.json();
+    if (!promise.ok) {
+      // console.log(response["error"]);
+      throw Error(response["error"]);
+    }
+    return response;
   } catch (error) {
     return null;
   }
@@ -66,11 +69,13 @@ export const createTicketRequest = async (
     },
     body: JSON.stringify({ ...values }),
   });
-  // console.log(promise);
+  const response = await promise.json();
+
   if (!promise.ok) {
-    throw Error(promise.statusText);
+    // console.log(response["error"]);
+    throw Error(response["error"]);
   }
-  return promise;
+  return response;
 };
 
 export const updateTicketRequest = async (
@@ -90,13 +95,11 @@ export const updateTicketRequest = async (
       cache: "no-store",
     }
   );
-  console.log(promise);
+  const response = await promise.json();
+
   if (!promise.ok) {
-    throw Error(promise.statusText);
+    // console.log(response["error"]);
+    throw Error(response["error"]);
   }
-  return promise;
-  // } catch (error) {
-  //   toast.error(error as string);
-  //   return error;
-  // }
+  return response;
 };

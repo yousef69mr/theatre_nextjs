@@ -118,7 +118,7 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
     startTransition(() => {
       if (initialData) {
         updateFestivalPlayRequest(values, initialData.id)
-          .then((response) => response.json())
+          // .then((response) => response.json())
           .then(async (data) => {
             toast.success(
               t("messages.updated", {
@@ -145,11 +145,11 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
               form.reset();
             }
           })
-          .catch((error) => toast.error("something went wrong"))
+          .catch((error:Error) => toast.error(error.message))
           .finally(() => setIsLoading(false));
       } else {
         createFestivalPlayRequest(values)
-          .then((response) => response.json())
+          // .then((response) => response.json())
           .then(async (data) => {
             toast.success(
               t("messages.created", {
@@ -175,10 +175,7 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
               form.reset();
             }
           })
-          .catch((error) => {
-            toast.error("something went wrong");
-            console.error(error);
-          })
+          .catch((error:Error) => toast.error(error.message))
           .finally(() => setIsLoading(false));
       }
     });

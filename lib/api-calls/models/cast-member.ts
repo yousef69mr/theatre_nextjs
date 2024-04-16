@@ -10,12 +10,12 @@ export const getCastMemberByIdRequest = async (castMemberId: string) => {
         cache: "no-store",
       }
     );
-    if (!promise.ok) {
-      // This will activate the closest `error.js` Error Boundary
-      throw new Error("Failed to fetch data");
-    }
+    const response = await promise.json();
 
-    return promise.json();
+    if (!promise.ok) {
+      throw Error(response["error"]);
+    }
+    return response;
   } catch (error) {
     return null;
   }
@@ -32,10 +32,12 @@ export const createCastMemberRequest = async (
     body: JSON.stringify({ ...values }),
   });
   // console.log(promise);
+  const response = await promise.json();
+
   if (!promise.ok) {
-    throw Error(promise.statusText);
+    throw Error(response["error"]);
   }
-  return promise;
+  return response;
 };
 
 export const updateCastMemberRequest = async (
@@ -55,13 +57,10 @@ export const updateCastMemberRequest = async (
       cache: "no-store",
     }
   );
-  console.log(promise);
+  const response = await promise.json();
+
   if (!promise.ok) {
-    throw Error(promise.statusText);
+    throw Error(response["error"]);
   }
-  return promise;
-  // } catch (error) {
-  //   toast.error(error as string);
-  //   return error;
-  // }
+  return response;
 };

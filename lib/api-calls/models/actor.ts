@@ -9,7 +9,12 @@ export const getAllActorsRequest = async () => {
       cache: "no-store",
     });
     // console.log(promise);
-    return promise.json();
+    const response = await promise.json();
+
+    if (!promise.ok) {
+      throw Error(response["error"]);
+    }
+    return response;
   } catch (error) {
     console.log(error);
     return [];
@@ -22,12 +27,12 @@ export const getActorByIdRequest = async (actorId: string) => {
     method: "GET",
     cache: "no-store",
   });
-  if (!promise.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch data");
-  }
+  const response = await promise.json();
 
-  return promise.json();
+  if (!promise.ok) {
+    throw Error(response["error"]);
+  }
+  return response;
   } catch (error) {
     return null;
   }
@@ -43,11 +48,12 @@ export const createActorRequest = async (
     },
     body: JSON.stringify({ ...values }),
   });
-  // console.log(promise);
-  if (!promise.ok) {
-    throw Error(promise.statusText);
-  }
-  return promise;
+  const response = await promise.json();
+
+    if (!promise.ok) {
+      throw Error(response["error"]);
+    }
+    return response;
 };
 
 export const updateActorRequest = async (
@@ -64,13 +70,10 @@ export const updateActorRequest = async (
     body: JSON.stringify(values),
     cache: "no-store",
   });
-  // console.log(promise);
+  const response = await promise.json();
+
   if (!promise.ok) {
-    throw Error(promise.statusText);
+    throw Error(response["error"]);
   }
-  return promise;
-  // } catch (error) {
-  //   toast.error(error as string);
-  //   return error;
-  // }
+  return response;
 };

@@ -10,11 +10,12 @@ export const getRemainingUserActorLinkRequest = async (
       method: "GET",
     }
   );
-  // console.log(promise);
+  const response = await promise.json();
+
   if (!promise.ok) {
-    throw Error(promise.statusText);
+    throw Error(response["error"]);
   }
-  return promise;
+  return response;
 };
 
 export const createUserActorLinkRequest = async (
@@ -27,11 +28,12 @@ export const createUserActorLinkRequest = async (
     },
     body: JSON.stringify(values),
   });
-  // console.log(promise);
+  const response = await promise.json();
+
   if (!promise.ok) {
-    throw Error(promise.statusText);
+    throw Error(response["error"]);
   }
-  return promise;
+  return response;
 };
 
 export const deleteUserActorLinkRequest = async (
@@ -53,9 +55,10 @@ export const deleteUserActorLinkRequest = async (
       }),
     }
   );
-  // console.log(promise);
+  const response = await promise.json();
+
   if (!promise.ok) {
-    throw Error(promise.statusText);
+    throw Error(response["error"]);
   }
-  return promise;
+  return response;
 };

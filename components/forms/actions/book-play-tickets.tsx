@@ -65,7 +65,7 @@ import { bookPlayTicketsSchema } from "@/lib/validations/actions/book-ticket-act
 import { isAdmin } from "@/lib/auth";
 import { UserRole } from "@prisma/client";
 import { useCurrentRole } from "@/hooks/use-current-role";
-import { createPlayTicketsRequest } from "@/lib/api-calls/actions/book-play-tickets";
+import { bookPlayTicketsRequest } from "@/lib/api-calls/actions/book-play-tickets";
 import {
   Select,
   SelectContent,
@@ -122,11 +122,12 @@ const BookPlayTicketsForm: FC<BookPlayTicketsFormProps> = (props) => {
       guestNames: [],
       festivalId: play?.festivals[0].festival.id || undefined,
       playId,
+      showTime: play?.festivals[0].showTimes[0] || undefined,
     },
   });
 
   const onSubmit = async (values: BookPlayTicketsFormValues) => {
-    if (values.guestNames.length === 0 && role === UserRole.ACTOR) {
+    if (values.guestNames.length === 0 && role !== UserRole.USER) {
       form.setError("guestNames", {
         message: "quest names should be at least one",
       });
@@ -135,13 +136,7 @@ const BookPlayTicketsForm: FC<BookPlayTicketsFormProps> = (props) => {
     setIsLoading(true);
 
     startTransition(() => {
-      createPlayTicketsRequest(values)
-        .then((response) => {
-          if (!response.ok) {
-            throw Error(response.statusText);
-          }
-          return response.json();
-        })
+      bookPlayTicketsRequest(values)
         .then(async (data) => {
           confetti.onOpen();
           addTickets(data);
@@ -156,9 +151,9 @@ const BookPlayTicketsForm: FC<BookPlayTicketsFormProps> = (props) => {
           }
           form.reset();
         })
-        .catch((error) => {
+        .catch((error: Error) => {
           toast.error(error.message);
-          console.error(error);
+          // console.error(error.message);
         })
         .finally(() => setIsLoading(false));
     });
@@ -391,7 +386,7 @@ const BookPlayTicketsForm: FC<BookPlayTicketsFormProps> = (props) => {
                   {t("forms.description.guestNames", { ns: "constants" })}
                 </FormDescription>
 
-                {form.getFieldState("guestNames").isTouched && <FormMessage />}
+                <FormMessage />
               </FormItem>
             )}
           />

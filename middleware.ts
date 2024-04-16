@@ -45,11 +45,15 @@ export default auth((req) => {
     return null;
   }
 
+  // console.log(nextUrl);
+  // console.log(pathname);
+
   if (isAuthRoute) {
     if (isLoggedIn) {
-      return Response.redirect(
-        new URL(locale.concat(DEFAULT_LOGIN_REDIRCT), nextUrl)
-      );
+      const url = new URL(locale.concat(DEFAULT_LOGIN_REDIRCT), nextUrl);
+      url.searchParams.append("redirect", locale.concat(pathname));
+      // console.log(url.toString());
+      return Response.redirect(url.toString());
     }
     return i18nMiddleware(req);
   }

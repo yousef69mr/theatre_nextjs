@@ -14,6 +14,7 @@
   "link": { "default": "link", "loading": "linking" },
   "book": { "default": "book", "loading": "booking" },
   "scan": { "default": "scan", "loading": "scanning" },
+  "share": { "default": "share", "loading": "sharing" },
 
   "yes": "yes",
   "no": "no",
@@ -110,6 +111,9 @@
     "unpublished": "{{instance}} unpublished",
     "live": "{{instance}} is live",
     "soon": "coming soon!!",
+    "forget-password": "Forgot password?",
+    "already-have-account": "Already have an account?",
+    "don't-have-account": "Don't have an account?",
     "confirm-message": "Are you sure you want to do this?",
     "irreversible": "This operation is irreversible",
     "ticket-scanned-once": "This ticket is valid for one-time scanning",
@@ -121,6 +125,8 @@
   "tables": {
     "id": "ID",
     "playName": "Play Name",
+    "userName": "Username",
+    "tickets": "Tickets",
     "guestName": "Guest Name",
     "festivalName": "Festival Name",
     "QRCode": "QR Code",
@@ -138,6 +144,7 @@
   "forms": {
     "labels": {
       "id": "ID",
+      "2FA": "Two Factor code",
       "playName": "Play Name",
       "director": "Director",
       "crew": "Crew",
@@ -165,10 +172,13 @@
       "endDate": "End Date",
       "showTimes": "Show Time",
       "ticketLink": "Ticket Link",
+      "email": "email",
+      "password": "password",
       "actions": "Actions"
     },
     "placeholder": {
       "id": "ID",
+      "2FA": "123456",
       "playName": "Play Name",
       "director": "Director",
       "crew": "Crew",
@@ -194,6 +204,8 @@
       "startDate": "Start Date",
       "endDate": "End Date",
       "showTimes": "Show Time",
+      "email": "johndoe@domain.com",
+      "password": "*********",
       "actions": "Actions"
     },
     "description": {

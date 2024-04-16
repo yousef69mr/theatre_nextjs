@@ -121,7 +121,7 @@ const LinkUserExecutorForm: FC<LinkUserExecutorFormProps> = (props) => {
 
     startTransition(() => {
       createUserExecutorLinkRequest(values)
-        .then((response) => response.json())
+        // .then((response) => response.json())
         .then(async (data) => {
           toast.success(
             t("messages.created", {
@@ -148,10 +148,7 @@ const LinkUserExecutorForm: FC<LinkUserExecutorFormProps> = (props) => {
             form.reset();
           }
         })
-        .catch((error) => {
-          console.error(error);
-          toast.error("something went wrong");
-        })
+        .catch((error:Error) => toast.error(error.message))
         .finally(() => setIsLoading(false));
     });
   };

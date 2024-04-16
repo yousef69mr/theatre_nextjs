@@ -1,6 +1,12 @@
 "use client";
 
-import { FC, HtmlHTMLAttributes, useEffect, useState, useTransition } from "react";
+import {
+  FC,
+  HtmlHTMLAttributes,
+  useEffect,
+  useState,
+  useTransition,
+} from "react";
 import {
   Form,
   FormControl,
@@ -50,7 +56,6 @@ type ExecutorFormValues = Zod.infer<typeof executorSchema>;
 const ExecutorForm: FC<ExecutorFormProps> = (props) => {
   const { initialData, className, mode = "page" } = props;
 
-
   const { onClose } = useModal();
   const addExecutor = useExecutorStore((state) => state.addExecutor);
   const updateExecutor = useExecutorStore((state) => state.updateExecutor);
@@ -84,7 +89,7 @@ const ExecutorForm: FC<ExecutorFormProps> = (props) => {
     startTransition(() => {
       if (initialData) {
         updateExecutorRequest(values, initialData.id)
-          .then((response) => response.json())
+          // .then((response) => response.json())
           .then(async (data) => {
             // console.log("api success");
             toast.success(
@@ -103,14 +108,16 @@ const ExecutorForm: FC<ExecutorFormProps> = (props) => {
               form.reset();
             }
           })
-          .catch((error) => toast.error("something went wrong"))
+          .catch((error: Error) => {
+            toast.error(error.message);
+          })
           .finally(() => {
             setIsLoading(false);
             setIsEditing(false);
           });
       } else {
         createExecutorRequest(values, pathname)
-          .then((response) => response.json())
+          // .then((response) => response.json())
           .then(async (data) => {
             // console.log("api success");
 
@@ -136,7 +143,7 @@ const ExecutorForm: FC<ExecutorFormProps> = (props) => {
               form.reset();
             }
           })
-          .catch((error) => console.error(error))
+          .catch((error) => toast.error(error))
           .finally(() => setIsLoading(false));
       }
     });
@@ -156,7 +163,6 @@ const ExecutorForm: FC<ExecutorFormProps> = (props) => {
   const isSubmitting = isPending || form.formState.isSubmitting || isLoading;
   const isDisabled = isUploadingFile || isSubmitting;
   const isValid = form.formState.isValid;
-
 
   return (
     <div className={cn(initialData && "mt-6 border rounded-md p-4")}>
@@ -193,7 +199,7 @@ const ExecutorForm: FC<ExecutorFormProps> = (props) => {
         >
           {initialData
             ? `${initialData.name} ${
-                initialData.nickname ? `(${initialData.nickname})`:""
+                initialData.nickname ? `(${initialData.nickname})` : ""
               }`
             : t("actorForm.inputs-default.name")}
         </p>

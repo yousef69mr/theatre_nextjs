@@ -12,6 +12,7 @@
   "link": { "default": "ربط", "loading": "جارى الربط" },
   "book": { "default": "حجز", "loading": "جارى الحجز" },
   "scan": { "default": "مسح ضوئى", "loading": "جارى المسح الضوئى" },
+  "share": { "default": "مشاركة", "loading": "جارى المشاركة" },
   "cancel": { "default": "إلغاء", "loading": "جارى الإلغاء" },
 
   "yes": "نعم",
@@ -110,6 +111,9 @@
     "unpublished": "تم إلغاء نشر {{instance}}",
     "live": "{{instance}} مباشر",
     "soon": "متاح قريباً!!",
+    "forget-password": "هل نسيت كلمة المرور ؟",
+    "don't-have-account": "ليس لديك حساب ؟",
+    "already-have-account": "لديك حساب بالفعل ؟",
     "confirm-message": "هل انت متأكد من أنك تريد أن تفعل هذا؟",
     "irreversible": "هذه العملية لا رجعة فيها",
     "ticket-scanned-once": "هذه التذكرة صالحة للمسح الضوئى لمرة واحدة",
@@ -164,6 +168,8 @@
       "endDate": "تاريخ النهاية",
       "showTimes": "معاد العرض",
       "actions": "الاجراءات",
+      "email": "بريد إلكترونى",
+      "password": "كلمة مرور",
       "ticketLink": "لينك التذكرة"
     },
     "placeholder": {
@@ -192,6 +198,8 @@
       "startDate": "تاريخ البداية",
       "endDate": "تاريخ النهاية",
       "showTimes": "معاد العرض",
+      "email": "johndoe@domain.com",
+      "password": "*********",
       "actions": "الاجراءات"
     },
     "description": {

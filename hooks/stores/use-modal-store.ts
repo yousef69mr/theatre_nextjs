@@ -22,6 +22,7 @@ export type ModalType =
   | "showBookedTickets"
   | "shareTicket"
   | "deleteTicket"
+  | "editTicket"
   | "deleteUser"
   | "createExecutor"
   | "deleteExecutor"

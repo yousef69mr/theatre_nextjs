@@ -1,7 +1,7 @@
 import { bookPlayTicketsSchema } from "@/lib/validations/actions/book-ticket-action";
 import { PUBLIC_DOMAIN } from "@/routes";
 
-export const createPlayTicketsRequest = async (
+export const bookPlayTicketsRequest = async (
   values: Zod.infer<typeof bookPlayTicketsSchema>
 ) => {
   const promise = await fetch(PUBLIC_DOMAIN.concat(`/api/play-tickets`), {
@@ -12,9 +12,12 @@ export const createPlayTicketsRequest = async (
     body: JSON.stringify(values),
   });
   // console.log(promise);
-  if (!promise.ok) {
-    throw Error(promise.statusText);
-  }
-  return promise;
-};
 
+  const response = await promise.json();
+  // console.log(promise.ok);
+  if (!promise.ok) {
+    // console.log(response["error"]);
+    throw Error(response["error"]);
+  }
+  return response;
+};

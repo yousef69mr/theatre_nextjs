@@ -22,6 +22,7 @@ import {
   MoreHorizontal,
   Share,
   Share2,
+  Edit,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
@@ -84,6 +85,11 @@ const TicketCard: FC<TicketCardProps> = (props) => {
   const handleTicketShare = () => {
     onOpen("shareTicket", { ticket });
   };
+
+  const handleTicketEdit = () => {
+    onOpen("editTicket", { ticket });
+  };
+
   const isMyTicket = loggedUser?.id === userId;
   const isEditable = isMyTicket || isAdmin(loggedUser?.role as UserRole);
   return (
@@ -127,6 +133,16 @@ const TicketCard: FC<TicketCardProps> = (props) => {
                 >
                   <Share2 className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
                   {t("actions.share", {
+                    ns: "common",
+                    instance: t("ticket.single", { ns: "constants" }),
+                  })}
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="flex justify-start rtl:flex-row-reverse"
+                  onClick={handleTicketEdit}
+                >
+                  <Edit className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
+                  {t("actions.edit", {
                     ns: "common",
                     instance: t("ticket.single", { ns: "constants" }),
                   })}
