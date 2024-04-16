@@ -173,6 +173,7 @@ const UserClient: FC<UserClientProps> = (props) => {
 
   const handleUserEdit = () => {
     // router.push(editUrl);
+    
    toast.custom(
       <div className="bg-blue-500 rounded-full flex items-center gap-x-2 py-2 px-3">
         <HelpCircle className="w-5 h-5" />
