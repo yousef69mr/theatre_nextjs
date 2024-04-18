@@ -3,6 +3,7 @@ import { FC } from "react";
 import initTranslations from "@/lib/i18n";
 import i18nConfig, { Locale } from "@/next-i18next.config";
 import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
+import TranslationsProvider from "@/components/providers/translation-provider";
 
 interface AdminDashboardPageProps {
   params: { locale: Locale };
@@ -32,11 +33,25 @@ Promise<Metadata> {
 
 const i18nextNamspaces = [...globalNamespaces, ...adminNamespaces];
 
-const AdminDashboardPage: FC<AdminDashboardPageProps> = (props) => {
+const AdminDashboardPage: FC<AdminDashboardPageProps> = async (props) => {
   const {
     params: { locale },
   } = props;
-  return <main className="w-full general-padding">AdminDashboardPage</main>;
+
+  const { resources } = await initTranslations(locale, i18nextNamspaces);
+
+  return 
+  return (
+    <main className="flex flex-col w-full general-padding">
+      <TranslationsProvider
+        locale={locale}
+        namespaces={i18nextNamspaces}
+        resources={resources}
+      >
+        <div className="flex-1 space-y-4 pt-6">Admin Dashboard</div>
+      </TranslationsProvider>
+    </main>
+  );
 };
 
 export default AdminDashboardPage;

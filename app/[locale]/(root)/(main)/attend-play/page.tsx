@@ -98,7 +98,7 @@ const AttendPlayPage: FC<AttendPlayPageProps> = async (props) => {
         resources={resources}
       >
         {livePlays.length > 0 ? (
-          <div className="flex-1 space-y-4  p-8 pt-6 ">
+          <div className="flex-1 space-y-4 pt-6">
             <div className="flex items-center justify-between">
               <Heading title={headingTitle} />
             </div>

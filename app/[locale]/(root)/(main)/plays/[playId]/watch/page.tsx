@@ -113,7 +113,7 @@ const WatchPlayPage: React.FC<BookPlayTicketPageProps> = async (props) => {
         namespaces={i18nextNamspaces}
         resources={resources}
       >
-        <div className="flex-1 flex-col space-y-4 p-8 mb-6 flex items-center w-full">
+        <div className="flex-1 flex-col space-y-4 mb-6 flex items-center w-full">
           <div className="flex size-full p-4 items-center justify-center relative">
             {play.videoUrl && (
               <>

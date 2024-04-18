@@ -61,7 +61,7 @@ export default async function MainLayout({
       dir={params.locale ? dir(params.locale) : dir(i18nConfig.defaultLocale)}
       suppressHydrationWarning
     >
-      <body className={cn("min-h-screen w-full", inter.className)}>
+      <body className={cn("min-h-screen w-full", inter?.className)}>
         <ConfettiProvider />
         <NextSSRPlugin
           /**
