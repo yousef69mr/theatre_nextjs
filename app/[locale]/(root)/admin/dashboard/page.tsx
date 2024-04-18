@@ -4,6 +4,7 @@ import initTranslations from "@/lib/i18n";
 import i18nConfig, { Locale } from "@/next-i18next.config";
 import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
 import TranslationsProvider from "@/components/providers/translation-provider";
+import { redirect } from "next/navigation";
 
 interface AdminDashboardPageProps {
   params: { locale: Locale };
@@ -40,7 +41,8 @@ const AdminDashboardPage: FC<AdminDashboardPageProps> = async (props) => {
 
   const { resources } = await initTranslations(locale, i18nextNamspaces);
 
-  return 
+  return redirect(`/${locale}/admin/plays`);
+
   return (
     <main className="flex flex-col w-full general-padding">
       <TranslationsProvider
@@ -48,7 +50,7 @@ const AdminDashboardPage: FC<AdminDashboardPageProps> = async (props) => {
         namespaces={i18nextNamspaces}
         resources={resources}
       >
-        <div className="flex-1 space-y-4 pt-6">Admin Dashboard</div>
+        <div className="flex-1 space-y-4">Admin Dashboard</div>
       </TranslationsProvider>
     </main>
   );

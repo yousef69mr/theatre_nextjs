@@ -47,11 +47,14 @@ Promise<Metadata> {
     };
   }
 
+  const title = `${t("errors.notFound", {
+    ns: "constants",
+    instance: t("play.single", { ns: "constants" }),
+  })} | ${t("UserRole.USER", {
+    ns: "common",
+  })}`;
   return {
-    title: t("errors.notFound", {
-      ns: "constants",
-      instance: t("play.single", { ns: "constants" }),
-    }),
+    title,
     description: "unknown play to the database.",
   };
 }
@@ -108,7 +111,7 @@ const BookPlayTicketPage: React.FC<BookPlayTicketPageProps> = async (props) => {
         resources={resources}
       >
         <div className="w-full h-full bg-neutral-800/40 backdrop-saturate-50 top-0 left-0 -z-10 absolute" />
-        <div className="flex-1 space-y-4 pt-6 flex items-center">
+        <div className="flex-1 space-y-4 flex items-center">
           <Image
             fill
             priority

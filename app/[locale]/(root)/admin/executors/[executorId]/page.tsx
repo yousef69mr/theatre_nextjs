@@ -91,7 +91,7 @@ const AdminSingleExecutorPage: FC<AdminSingleExecutorPageProps> = async (
         namespaces={i18nextNamspaces}
         resources={resources}
       >
-        <div className="flex-1 space-y-4 pt-6">
+        <div className="flex-1 space-y-4">
           <ExecutorListClient executor={executor} festivals={festivals} />
         </div>
       </TranslationsProvider>

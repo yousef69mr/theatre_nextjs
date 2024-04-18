@@ -87,6 +87,12 @@ const PlayClient: FC<PlayClientProps> = (props) => {
     updatePlay(play);
   }, [play]);
 
+  useEffect(() => {
+    router.prefetch(`/${locale}/admin/plays/${play.id}`);
+    router.prefetch(`${play.id}/book-tickets`);
+    router.prefetch(`${play.id}/watch`);
+  }, [router]);
+
   const executors = removePlayExecutorDuplicates(play);
 
   const festivals = play.festivals.map((festivalLink) => ({

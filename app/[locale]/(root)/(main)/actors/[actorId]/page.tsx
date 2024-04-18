@@ -38,8 +38,15 @@ Promise<Metadata> {
     };
   }
 
+  const title = `${t("errors.notFound", {
+    ns: "constants",
+    instance: t("actor.single", { ns: "constants" }),
+  })} | ${t("UserRole.USER", {
+    ns: "common",
+  })}`;
+
   return {
-    title: "not found",
+    title,
     description: "unknown actor to the database.",
   };
 }
@@ -77,7 +84,7 @@ const SingleActorPage: FC<SingleActorPageProps> = async (props) => {
         namespaces={i18nextNamspaces}
         resources={resources}
       >
-        <div className="flex-1 space-y-4 pt-6">
+        <div className="flex-1 space-y-4">
           <ActorClient actor={actor} />
         </div>
       </TranslationsProvider>

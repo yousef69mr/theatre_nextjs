@@ -8,6 +8,7 @@ import TranslationsProvider from "@/components/providers/translation-provider";
 import TicketClient from "@/components/clients/ticket/public/single-ticket-client";
 import { globalNamespaces } from "@/lib/namespaces";
 import { type Metadata } from "next";
+import { notFound } from "next/navigation";
 
 interface SingleTicketPageProps {
   params: {
@@ -39,8 +40,15 @@ Promise<Metadata> {
     };
   }
 
+  const title = `${t("errors.notFound", {
+    ns: "constants",
+    instance: t("ticket.single", { ns: "constants" }),
+  })} | ${t("UserRole.USER", {
+    ns: "common",
+  })}`;
+
   return {
-    title: "not found",
+    title,
     description: "unknown ticket to the database.",
   };
 }
@@ -68,7 +76,7 @@ const SingleTicketPage: FC<SingleTicketPageProps> = async (props) => {
   const ticket: TicketType | null = await getTicketByIdRequest(ticketId);
 
   if (!ticket) {
-    return <>not found</>;
+    notFound();
   }
 
   return (
@@ -78,7 +86,7 @@ const SingleTicketPage: FC<SingleTicketPageProps> = async (props) => {
         namespaces={i18nextNamspaces}
         resources={resources}
       >
-        <div className="flex-1 space-y-4 pt-6">
+        <div className="flex-1 space-y-4">
           <TicketClient ticket={ticket} />
         </div>
       </TranslationsProvider>

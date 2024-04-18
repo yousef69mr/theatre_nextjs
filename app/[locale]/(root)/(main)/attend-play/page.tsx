@@ -91,14 +91,14 @@ const AttendPlayPage: FC<AttendPlayPageProps> = async (props) => {
     </>
   );
   return (
-    <main className="flex flex-col w-full main-section general-padding">
+    <main className="flex flex-col w-full general-padding">
       <TranslationsProvider
         locale={locale}
         namespaces={i18nextNamspaces}
         resources={resources}
       >
         {livePlays.length > 0 ? (
-          <div className="flex-1 space-y-4 pt-6">
+          <div className="flex-1 space-y-4">
             <div className="flex items-center justify-between">
               <Heading title={headingTitle} />
             </div>

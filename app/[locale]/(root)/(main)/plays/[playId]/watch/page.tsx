@@ -50,12 +50,14 @@ Promise<Metadata> {
       description: play.description || title,
     };
   }
-
+  const title = `${t("errors.notFound", {
+    ns: "constants",
+    instance: t("play.single", { ns: "constants" }),
+  })} | ${t("UserRole.USER", {
+    ns: "common",
+  })}`;
   return {
-    title: t("errors.notFound", {
-      ns: "constants",
-      instance: t("play.single", { ns: "constants" }),
-    }),
+    title,
     description: "unknown play to the database.",
   };
 }
@@ -113,7 +115,7 @@ const WatchPlayPage: React.FC<BookPlayTicketPageProps> = async (props) => {
         namespaces={i18nextNamspaces}
         resources={resources}
       >
-        <div className="flex-1 flex-col space-y-4 mb-6 flex items-center w-full">
+        <div className="flex-1 flex-col space-y-4 flex items-center w-full">
           <div className="flex size-full p-4 items-center justify-center relative">
             {play.videoUrl && (
               <>

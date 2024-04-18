@@ -1,6 +1,6 @@
 {
   "name": "theatre_nextjs",
-  "version": "0.4.8",
+  "version": "0.4.9",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -49,7 +49,7 @@
     "i18next-resources-to-backend": "^1.2.0",
     "input-otp": "^1.0.1",
     "lucide-react": "^0.311.0",
-    "next": "^14.1.4",
+    "next": "^14.2.2",
     "next-auth": "^5.0.0-beta.4",
     "next-i18n-router": "^5.2.0",
     "next-themes": "^0.2.1",
@@ -85,7 +85,7 @@
     "@types/uuid": "^9.0.7",
     "autoprefixer": "^10.0.1",
     "eslint": "^8",
-    "eslint-config-next": "^14.1.4",
+    "eslint-config-next": "^14.2.2",
     "postcss": "^8",
     "prisma": "^5.12.1",
     "tailwindcss": "^3.3.0",

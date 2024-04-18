@@ -35,8 +35,14 @@ Promise<Metadata> {
     };
   }
 
+  const title = `${t("errors.notFound", {
+    ns: "constants",
+    instance: t("play.single", { ns: "constants" }),
+  })} | ${t("UserRole.USER", {
+    ns: "common",
+  })}`;
   return {
-    title: "not found",
+    title,
     description: "unknown play to the database.",
   };
 }
@@ -76,7 +82,7 @@ const SinglePlayPage: FC<SinglePlayPageProps> = async (props) => {
         namespaces={i18nextNamspaces}
         resources={resources}
       >
-        <div className="flex-1 space-y-4 pt-6">
+        <div className="flex-1 space-y-4">
           <PlayClient play={play} />
         </div>
       </TranslationsProvider>

@@ -48,7 +48,7 @@ const AdminPlaysPage: FC<AdminPlaysPageProps> = async (props) => {
         namespaces={i18nextNamspaces}
         resources={resources}
       >
-        <div className="flex-1 space-y-4 pt-6">
+        <div className="flex-1 space-y-4">
           <PlayListClient data={plays} />
         </div>
       </TranslationsProvider>

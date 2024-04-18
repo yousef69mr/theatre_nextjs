@@ -30,7 +30,7 @@ const LoginPage = async (props: LoginPageProps) => {
       namespaces={i18nextNamspaces}
       locale={locale}
     >
-      <main className="w-full flex items-center justify-center py-4 relative">
+      <main className="w-full flex items-center justify-center relative">
         <Image
           fill
           priority
