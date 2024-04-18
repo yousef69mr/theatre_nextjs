@@ -53,7 +53,7 @@
 @layer base {
   /* Styles for the scrollbar */
   ::-webkit-scrollbar {
-    width: 10px; /* Width of the scrollbar */
+    @apply w-1 md:w-[10px];
   }
 
   /* Track */
@@ -105,7 +105,7 @@
 
 @layer utilities {
   .general-padding {
-    @apply md:px-10 px-4 md:py-8;
+    @apply md:px-16 px-4;
   }
 
   .full-bleed {
