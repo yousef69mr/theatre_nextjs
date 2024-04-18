@@ -1,4 +1,4 @@
-import { ServerCrash } from "lucide-react";
+// import { ServerCrash } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -7,7 +7,7 @@ export default function NotFound() {
     <main className="flex items-center justify-center flex-col">
       <div className="flex flex-col justify-center items-center gap-1">
         {/* <ServerCrash className="h-20 md:h-40 w-20 md:w-40 text-zinc-500" /> */}
-        <div className="w-96 h-56 relative rounded-lg overflow-hidden max-w-full">
+        <div className="w-96 md:full h-56 relative rounded-lg overflow-hidden max-w-full">
           <Image
             src={"/not-found.gif"}
             className="object-cover"
