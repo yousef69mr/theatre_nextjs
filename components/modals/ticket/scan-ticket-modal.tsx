@@ -34,7 +34,7 @@ export const ScanTicketModal = () => {
     <Dialog open={isModalOpen} onOpenChange={onClose}>
       <DialogContent className="pb-2">
         <DialogHeader className="pt-8 px-6">
-          <DialogTitle className="text-2xl text-center font-bold">
+          <DialogTitle className="text-2xl text-center font-bold capitalize">
             {t("actions.scan", {
               ns: "common",
               instance: t("ticket.single", { ns: "constants" }),
@@ -42,7 +42,7 @@ export const ScanTicketModal = () => {
           </DialogTitle>
           <span className="text-primary font-semibold">#{ticket?.id}</span>
         </DialogHeader>
-        <div className="w-full p-10 dark:bg-zinc-800 rounded-lg">
+        <div className="w-full p-2 dark:bg-primary rounded-lg">
           <QRCode
             size={256}
             className="w-full mx-auto max-w-full h-auto"
@@ -50,7 +50,7 @@ export const ScanTicketModal = () => {
             viewBox={`0 0 256 256`}
           />
         </div>
-        <DialogDescription className="text-zinc-500 px-4 pb-2 md:text-lg">
+        <DialogDescription className="text-zinc-500 px-4 pb-2 md:!text-lg">
           <span className="text-red-500">**</span>{" "}
           {t("messages.ticket-scanned-once", { ns: "constants" })}
         </DialogDescription>

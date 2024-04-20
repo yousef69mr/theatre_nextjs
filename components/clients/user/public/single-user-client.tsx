@@ -387,7 +387,7 @@ const UserClient: FC<UserClientProps> = (props) => {
                       <>
                         {actorProfile ? (
                           <DropdownMenuItem
-                            className="flex justify-start rtl:flex-row-reverse px-0"
+                            className="flex justify-start rtl:flex-row-reverse"
                             onClick={handleActorLinkDelete}
                           >
                             <Trash className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
@@ -398,7 +398,7 @@ const UserClient: FC<UserClientProps> = (props) => {
                           </DropdownMenuItem>
                         ) : (
                           <DropdownMenuItem
-                            className="flex justify-start rtl:flex-row-reverse px-0"
+                            className="flex justify-start rtl:flex-row-reverse"
                             onClick={handleUserActorLink}
                           >
                             <Link2 className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
@@ -410,7 +410,7 @@ const UserClient: FC<UserClientProps> = (props) => {
                         )}
                         {executorProfile ? (
                           <DropdownMenuItem
-                            className="flex justify-start rtl:flex-row-reverse px-0"
+                            className="flex justify-start rtl:flex-row-reverse"
                             onClick={handleExecutorLinkDelete}
                           >
                             <Trash className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
@@ -423,7 +423,7 @@ const UserClient: FC<UserClientProps> = (props) => {
                           </DropdownMenuItem>
                         ) : (
                           <DropdownMenuItem
-                            className="flex justify-start rtl:flex-row-reverse px-0"
+                            className="flex justify-start rtl:flex-row-reverse"
                             onClick={handleUserExecutorLink}
                           >
                             <Link2 className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
@@ -438,7 +438,7 @@ const UserClient: FC<UserClientProps> = (props) => {
                       </>
                     )}
                     <DropdownMenuItem
-                      className="flex justify-start rtl:flex-row-reverse px-0"
+                      className="flex justify-start rtl:flex-row-reverse"
                       onClick={handleUserEdit}
                     >
                       <Pencil className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
@@ -449,7 +449,7 @@ const UserClient: FC<UserClientProps> = (props) => {
                     </DropdownMenuItem>
                     {isAdminUser && (
                       <DropdownMenuItem
-                        className="flex justify-start rtl:flex-row-reverse px-0"
+                        className="flex justify-start rtl:flex-row-reverse"
                         onClick={handleUserRoleEdit}
                       >
                         <Pencil className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
@@ -461,7 +461,7 @@ const UserClient: FC<UserClientProps> = (props) => {
                     )}
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
-                      className="flex justify-start rtl:flex-row-reverse px-0 text-primary"
+                      className="flex justify-start rtl:flex-row-reverse text-primary"
                       onClick={handleUserDelete}
                     >
                       <Trash className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />

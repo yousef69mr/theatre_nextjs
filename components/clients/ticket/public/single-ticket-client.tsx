@@ -130,7 +130,7 @@ const TicketClient: FC<TicketClientProps> = (props) => {
       >
         <div
           className={cn(
-            "w-full sm:max-w-56 md:max-w-64 lg:max-w-80 flex items-center justify-center  md:top-28 md:sticky dark:bg-zinc-400 dark:p-3 rounded-lg"
+            "w-full sm:max-w-56 md:max-w-64 lg:max-w-80 flex items-center justify-center dark:bg-primary dark:p-2 rounded-lg"
           )}
         >
           <QRCode
@@ -145,7 +145,7 @@ const TicketClient: FC<TicketClientProps> = (props) => {
           <div className="w-full relative space-y-4 sm:flex-1 sm:h-full flex flex-col items-start justify-center">
             <div className="w-full flex flex-wrap items-center justify-between">
               <div className="flex gap-x-2 items-center">
-                <h1 className="text-2xl font-semibold capitalize">
+                <h1 className="text-2xl break-words text-wrap w-full font-semibold capitalize">
                   {ticket.id}{" "}
                   <Button
                     onClick={handleCopy}
