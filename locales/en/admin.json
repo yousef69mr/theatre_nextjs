@@ -4,7 +4,8 @@
     { "id": 2, "href": "/admin/plays", "label": "Plays" },
     { "id": 3, "href": "/admin/actors", "label": "Actors" },
     { "id": 4, "href": "/admin/executors", "label": "Executors" },
-    { "id": 5, "href": "/admin/tickets", "label": "Tickets" }
+    { "id": 5, "href": "/admin/tickets", "label": "Tickets" },
+    { "id": 6, "href": "/admin/scan-tickets", "label": "Scan Tickets" }
   ],
   "permissions": {
     "publish": {
