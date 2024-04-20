@@ -97,7 +97,7 @@ const TicketCard: FC<TicketCardProps> = (props) => {
     <TooltipProvider>
       <Card className={cn("relative", className)}>
         <CardHeader>
-          <CardTitle className="flex items-center justify-evenly flex-row w-full flex-nowrap">
+          <CardTitle className="flex items-center justify-evenly flex-row w-full flex-wrap">
             <div className="text-wrap text-lg !break-words text-orange-300 w-full  md:max-w-56 xl:max-w-none">
               {ticket.id}
             </div>
