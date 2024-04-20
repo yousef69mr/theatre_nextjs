@@ -4,8 +4,9 @@
     { "id": 2, "href": "/admin/plays", "label": "عروض مسرحية" },
     { "id": 3, "href": "/admin/actors", "label": "ممثلون" },
     { "id": 4, "href": "/admin/executors", "label": "منفذون" },
-    { "id": 5, "href": "/admin/tickets", "label": "تذاكر" },
-    { "id": 6, "href": "/admin/scan-tickets", "label": "مسح ضوئى لتذاكر" }
+    { "id": 5, "href": "/admin/users", "label": "مستخدمون" },
+    { "id": 6, "href": "/admin/tickets", "label": "تذاكر" },
+    { "id": 7, "href": "/admin/scan-tickets", "label": "مسح ضوئى لتذاكر" }
   ],
   "permissions": {
     "publish": {

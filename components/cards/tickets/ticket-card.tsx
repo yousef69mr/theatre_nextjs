@@ -169,16 +169,18 @@ const TicketCard: FC<TicketCardProps> = (props) => {
                       )}`,
                     })}
                   </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className="flex justify-start rtl:flex-row-reverse"
-                    onClick={handleTicketEdit}
-                  >
-                    <Edit className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
-                    {t("actions.edit", {
-                      ns: "common",
-                      instance: t("ticket.single", { ns: "constants" }),
-                    })}
-                  </DropdownMenuItem>
+                  {!ticket.isScanned && (
+                    <DropdownMenuItem
+                      className="flex justify-start rtl:flex-row-reverse"
+                      onClick={handleTicketEdit}
+                    >
+                      <Edit className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
+                      {t("actions.edit", {
+                        ns: "common",
+                        instance: t("ticket.single", { ns: "constants" }),
+                      })}
+                    </DropdownMenuItem>
+                  )}
 
                   <Link href={`/${locale}/tickets/${ticket.id}`}>
                     <DropdownMenuItem className="flex justify-start rtl:flex-row-reverse">

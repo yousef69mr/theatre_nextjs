@@ -6,18 +6,10 @@ import { ArrowUpDown } from "lucide-react";
 import { UserType } from "@/types";
 import Image from "next/image";
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 // import ProgressList from "@/components/helpers/progress-list";
 import CellAction from "./cell-actions";
 import { useTranslation } from "react-i18next";
 // import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { ExecutorRole } from "@prisma/client";
-import { Progress } from "@/components/ui/progress";
 import Link from "next/link";
 
 export type UserColumnDef<TData> = ColumnDef<TData> & {
@@ -25,6 +17,41 @@ export type UserColumnDef<TData> = ColumnDef<TData> & {
 };
 
 export const UserColumns: UserColumnDef<UserType>[] = [
+  {
+    accessorKey: "profileImg",
+    header: () => {
+      const { t } = useTranslation();
+      return (
+        <Button
+          variant="ghost"
+          // onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          {t("tables.profileImg", { ns: "constants" })}
+          {/* <ArrowUpDown className="ml-2 h-4 w-4" /> */}
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const posterImgUrl = row.original.image
+        ? row.original.image
+        : "/default-profile.png";
+      return (
+        <Link href={posterImgUrl} target="_blank">
+          <div className="relative h-24 w-24">
+            {/* <AspectRatio ratio={2 / 3} className="bg-muted"> */}
+            <Image
+              src={posterImgUrl}
+              fill
+              alt="Image"
+              className="rounded-md object-contain"
+            />
+            {/* </AspectRatio> */}
+          </div>
+        </Link>
+      );
+    },
+    type: "image",
+  },
   {
     accessorKey: "id",
     header: ({ column }) => {
@@ -82,42 +109,6 @@ export const UserColumns: UserColumnDef<UserType>[] = [
       );
     },
     type: "string",
-  },
-
-  {
-    accessorKey: "profileImg",
-    header: () => {
-      const { t } = useTranslation();
-      return (
-        <Button
-          variant="ghost"
-          // onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          {t("tables.profileImg", { ns: "constants" })}
-          {/* <ArrowUpDown className="ml-2 h-4 w-4" /> */}
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      const posterImgUrl = row.original.image
-        ? row.original.image
-        : "/default-profile.png";
-      return (
-        <Link href={posterImgUrl} target="_blank">
-          <div className="relative h-24 w-24">
-            {/* <AspectRatio ratio={2 / 3} className="bg-muted"> */}
-            <Image
-              src={posterImgUrl}
-              fill
-              alt="Image"
-              className="rounded-md object-contain"
-            />
-            {/* </AspectRatio> */}
-          </div>
-        </Link>
-      );
-    },
-    type: "image",
   },
   {
     id: "actions",

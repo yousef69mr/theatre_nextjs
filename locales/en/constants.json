@@ -109,6 +109,7 @@
     "copied": "{{instance}} copied",
     "deleted": "{{instance}} deleted",
     "booked": "{{instance}} booked successfully",
+    "scanned": "{{instance}} scanned successfully",
     "created": "{{instance}} created",
     "published": "{{instance}} published",
     "unpublished": "{{instance}} unpublished",

@@ -53,9 +53,12 @@
   "cast": { "plural": "كاستات", "single": "كاست" },
   "other": { "plural": "أخرون", "single": "أخرى" },
   "description": { "plural": "شرح", "single": "شرح" },
-  "detail":{ "plural": "نفاصيل", "single":"تفصيلة" },
-  "tag" : { "plural": "علامات", "single": "علامة" },
-  "qr-code": { "plural": "رموز الاستجابة السريعة", "single": "رمز الاستجابة السريع" },
+  "detail": { "plural": "نفاصيل", "single": "تفصيلة" },
+  "tag": { "plural": "علامات", "single": "علامة" },
+  "qr-code": {
+    "plural": "رموز الاستجابة السريعة",
+    "single": "رمز الاستجابة السريع"
+  },
   "errors": {
     "notFound": "لم يتم العثور على {{instance}}",
     "notProvided": "{{instance}} غير متوفر حاليا",
@@ -109,6 +112,7 @@
     "copied": "تم نسخ {{instance}}",
     "deleted": "تم حذف {{instance}}",
     "booked": "تم حذف {{instance}} بنجاح",
+    "scanned": "تم مسح ضوئى ل {{instance}} بنجاح",
     "created": "تم إنشاء {{instance}}",
     "published": "تم نشر {{instance}}",
     "unpublished": "تم إلغاء نشر {{instance}}",

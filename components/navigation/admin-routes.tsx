@@ -5,7 +5,16 @@ import { cn } from "@/lib/utils";
 import { adminRouteType } from "@/types";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import { Drama, LayoutDashboard, Menu, Scan, Speech, Theater, Ticket } from "lucide-react";
+import {
+  Drama,
+  LayoutDashboard,
+  Menu,
+  Scan,
+  Speech,
+  Theater,
+  Ticket,
+  User,
+} from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -19,8 +28,9 @@ const routes = [
   { id: 2, Icon: Theater },
   { id: 3, Icon: Drama },
   { id: 4, Icon: Speech },
-  { id: 5, Icon: Ticket },
-  { id: 6, Icon: Scan },
+  { id: 5, Icon: User },
+  { id: 6, Icon: Ticket },
+  { id: 7, Icon: Scan },
 ];
 
 interface AdminRoutesProps extends HtmlHTMLAttributes<HTMLDivElement> {}

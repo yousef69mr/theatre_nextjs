@@ -67,7 +67,7 @@ const CellAction = (props: Props) => {
       action: "share",
       icon: <Share2 className="h-4 w-4 ltr:mr-2 rtl:ml-2" />,
     },
-     {
+    {
       name: t("delete.default", { ns: "constants" }),
       action: "delete",
       icon: <Trash className="h-4 w-4 ltr:mr-2 rtl:ml-2" />,
@@ -97,7 +97,8 @@ const CellAction = (props: Props) => {
   };
 
   const handleEdit = () => {
-    router.push(`/${locale}/admin/tickets/${data.id}`);
+    // router.push(`/${locale}/admin/tickets/${data.id}`);
+    onOpen("editTicket", { ticket: data });
   };
 
   const handleCopy = () => {

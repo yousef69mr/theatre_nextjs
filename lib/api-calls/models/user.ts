@@ -9,11 +9,11 @@ export const getAllUsersRequest = async () => {
     });
     const response = await promise.json();
 
-  if (!promise.ok) {
-    // console.log(response["error"]);
-    throw Error(response["error"]);
-  }
-  return response;
+    if (!promise.ok) {
+      // console.log(response["error"]);
+      throw Error(response["error"]);
+    }
+    return response;
   } catch (error) {
     console.log(error);
     return [];

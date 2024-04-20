@@ -183,21 +183,23 @@ const TicketClient: FC<TicketClientProps> = (props) => {
                 </Tooltip>
                 {isEditable && (
                   <>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button variant={"outline"} onClick={handleEdit}>
-                          <Pencil className={"h-4 w-4"} />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <span>
-                          {t("actions.edit", {
-                            ns: "common",
-                            instance: t("ticket.single", { ns: "constants" }),
-                          })}
-                        </span>
-                      </TooltipContent>
-                    </Tooltip>
+                    {!ticket.isScanned && (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button variant={"outline"} onClick={handleEdit}>
+                            <Pencil className={"h-4 w-4"} />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <span>
+                            {t("actions.edit", {
+                              ns: "common",
+                              instance: t("ticket.single", { ns: "constants" }),
+                            })}
+                          </span>
+                        </TooltipContent>
+                      </Tooltip>
+                    )}
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Button onClick={handleDelete}>
