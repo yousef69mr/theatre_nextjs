@@ -56,7 +56,7 @@ const TicketList: FC<TicketListProps> = (props) => {
             key={ticket.id}
             ticket={ticket}
             className={cn(
-              "w-full h-80 md:w-full md:h-80",
+              "w-full",
               mode === "modal" && "flex-1"
             )}
             mode={cardMode}

@@ -28,6 +28,8 @@ import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { useBreakpoint } from "@/hooks/use-break-point";
 import { ExtendedUser } from "@/next-auth";
+import { useEffect, useState } from "react";
+import { useNavigationStore } from "@/hooks/stores/use-navigation-store";
 
 const UserAvatar = (props: { user?: ExtendedUser }) => {
   const { user } = props;
@@ -58,6 +60,17 @@ const UserButton = () => {
   const { locale } = useParams();
   const { t } = useTranslation();
   const { isAboveMd } = useBreakpoint("md");
+  const [isMounted, setIsMounted] = useState<boolean>(false);
+  const onClose = useNavigationStore((state) => state.onClose);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
+
   return (
     <>
       {isAboveMd ? (
@@ -95,7 +108,7 @@ const UserButton = () => {
           </DropdownMenuContent>
         </DropdownMenu>
       ) : (
-        <Link href={`/${locale}/users/${user?.id}`}>
+        <Link href={`/${locale}/users/${user?.id}`} onClick={onClose}>
           <UserAvatar user={user} />
         </Link>
       )}

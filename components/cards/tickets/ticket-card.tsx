@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, HTMLAttributes } from "react";
+import { FC, HTMLAttributes, useEffect, useRef, useState } from "react";
 import {
   Tooltip,
   TooltipContent,
@@ -70,6 +70,7 @@ const TicketCard: FC<TicketCardProps> = (props) => {
 
   const locale = params.locale as string;
   const userId = params.userId as string;
+
   // const handleEdit = () => {
   //   router.push(`/${locale}/admin/tickets/${ticket.id}`);
   // };
@@ -94,13 +95,77 @@ const TicketCard: FC<TicketCardProps> = (props) => {
   const isEditable = isMyTicket || isAdmin(loggedUser?.role as UserRole);
   return (
     <TooltipProvider>
-      <Card className="relative">
-        <CardHeader className="flex items-center justify-between flex-row w-full flex-wrap">
-          <div className="flex-1">
-            <CardTitle className="text-wrap text-md break-words text-orange-300">
+      <Card className={cn("relative", className)}>
+        <CardHeader>
+          <CardTitle className="flex items-center justify-evenly flex-row w-full flex-nowrap">
+            <div className="text-wrap text-lg !break-words text-orange-300 w-full  md:max-w-56 xl:max-w-none">
               {ticket.id}
-            </CardTitle>
-            {mode === "details" && !ticket.isScanned && isEditable && (
+            </div>
+            {isEditable && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    size={"icon"}
+                    className="min-w-10"
+                  >
+                    <MoreHorizontal className="w-5 h-5 text-primary" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="">
+                  <DropdownMenuLabel className="flex rtl:flex-row-reverse">
+                    {t("action.plural", { ns: "constants" })}
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    className="flex justify-start rtl:flex-row-reverse"
+                    onClick={handleTicketShare}
+                  >
+                    <Share2 className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
+                    {t("actions.share", {
+                      ns: "common",
+                      instance: t("ticket.single", { ns: "constants" }),
+                    })}
+                  </DropdownMenuItem>
+                  {!ticket.isScanned && (
+                    <DropdownMenuItem
+                      className="flex justify-start rtl:flex-row-reverse"
+                      onClick={handleScan}
+                    >
+                      <Scan className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
+                      {t("actions.scan", {
+                        ns: "common",
+                        instance: t("ticket.single", { ns: "constants" }),
+                      })}
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuItem
+                    className="flex justify-start rtl:flex-row-reverse"
+                    onClick={handleTicketEdit}
+                  >
+                    <Edit className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
+                    {t("actions.edit", {
+                      ns: "common",
+                      instance: t("ticket.single", { ns: "constants" }),
+                    })}
+                  </DropdownMenuItem>
+
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    className="flex justify-start rtl:flex-row-reverse text-primary"
+                    onClick={handleTicketDelete}
+                  >
+                    <Trash className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
+                    {t("actions.delete", {
+                      ns: "common",
+                      instance: t("ticket.single", { ns: "constants" }),
+                    })}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+          </CardTitle>
+          {/* {mode === "details" && !ticket.isScanned && isEditable && (
               <div className="flex items-center justify-between">
                 <Button onClick={handleScan} size={"sm"}>
                   <Scan className="rtl:ml-2 ltr:mr-2 w-5 h-5" />
@@ -109,66 +174,15 @@ const TicketCard: FC<TicketCardProps> = (props) => {
                   })} ${t("ticket.single", { ns: "constants" })}`}
                 </Button>
               </div>
-            )}
-          </div>
-          {isEditable && (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant={"outline"}
-                  size={"icon"}
-                  className="self-start min-w-10"
-                >
-                  <MoreHorizontal className="w-5 h-5 text-primary" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="px-2">
-                <DropdownMenuLabel className="flex rtl:flex-row-reverse">
-                  {t("action.plural", { ns: "constants" })}
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  className="flex justify-start rtl:flex-row-reverse"
-                  onClick={handleTicketShare}
-                >
-                  <Share2 className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
-                  {t("actions.share", {
-                    ns: "common",
-                    instance: t("ticket.single", { ns: "constants" }),
-                  })}
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  className="flex justify-start rtl:flex-row-reverse"
-                  onClick={handleTicketEdit}
-                >
-                  <Edit className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
-                  {t("actions.edit", {
-                    ns: "common",
-                    instance: t("ticket.single", { ns: "constants" }),
-                  })}
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  className="flex justify-start rtl:flex-row-reverse px-0 text-primary"
-                  onClick={handleTicketDelete}
-                >
-                  <Trash className="w-4 h-4 ltr:mr-2 rtl:ml-2 text-primary" />
-                  {t("actions.delete", {
-                    ns: "common",
-                    instance: t("ticket.single", { ns: "constants" }),
-                  })}
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )}
+            )} */}
         </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-3 text-xs font-medium">
+        <CardContent className="max-w-full">
+          <div className="flex flex-wrap gap-3 text-lg md:!text-xl font-medium">
             <Tooltip>
               <TooltipTrigger>
-                <div className="flex items-center justify-center md:text-lg truncate">
+                <div className="flex items-center justify-center md:max-w-56 xl:max-w-none">
                   <Contact className="rtl:ml-2 ltr:mr-2 w-5 h-5 text-primary" />{" "}
-                  {ticket.guestName}
+                  <p className="truncate">{ticket.guestName}</p>
                 </div>
               </TooltipTrigger>
               <TooltipContent>
@@ -181,12 +195,12 @@ const TicketCard: FC<TicketCardProps> = (props) => {
           <p className="mt-2 text-gray-600">Time: 7:00 PM</p>
           <p className="mt-2 text-gray-600">Location: Venue Name, City</p>
           <p className="mt-2 text-gray-600">Seat Number: A12</p> */}
-          <div className="mt-2 flex flex-wrap gap-3 text-xs font-medium">
+          <div className="mt-2 flex flex-wrap gap-3 text-lg md:!text-xl font-medium">
             <Tooltip>
               <TooltipTrigger>
-                <div className="flex items-center justify-center md:text-lg truncate">
+                <div className="flex items-center justify-center md:max-w-56 xl:max-w-none">
                   <Theater className="rtl:ml-2 ltr:mr-2 w-5 h-5 text-primary" />{" "}
-                  {ticket.play.name}
+                  <p className="truncate">{ticket.play.name}</p>
                 </div>
               </TooltipTrigger>
               <TooltipContent>
@@ -194,14 +208,12 @@ const TicketCard: FC<TicketCardProps> = (props) => {
               </TooltipContent>
             </Tooltip>
           </div>
-          <div className="mt-2 flex flex-wrap gap-3 w-full text-xs font-medium">
+          <div className="mt-2 flex flex-wrap gap-3 w-full text-lg md:!text-xl font-medium">
             <Tooltip>
               <TooltipTrigger>
-                <div className="flex items-center justify-center md:text-lg w-full">
+                <div className="flex items-center justify-center max-w-56 xs:max-w-none md:max-w-56 xl:max-w-none">
                   <PartyPopper className="rtl:ml-2 ltr:mr-2 w-5 h-5 text-primary" />
-                  <p className="truncate text-ellipsis hover:text-pretty flex-1">
-                    {ticket.festival.name}
-                  </p>
+                  <p className="truncate">{ticket.festival.name}</p>
                 </div>
               </TooltipTrigger>
               <TooltipContent>
@@ -211,7 +223,7 @@ const TicketCard: FC<TicketCardProps> = (props) => {
           </div>
         </CardContent>
         <CardFooter>
-          <div className="flex flex-wrap gap-3 text-xs font-medium justify-between">
+          <div className="flex flex-wrap gap-3 text-sm font-medium justify-between">
             <Tooltip>
               <TooltipTrigger>
                 <div className="flex items-center justify-center">
