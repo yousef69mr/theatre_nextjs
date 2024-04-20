@@ -53,6 +53,9 @@
   "cast": { "plural": "كاستات", "single": "كاست" },
   "other": { "plural": "أخرون", "single": "أخرى" },
   "description": { "plural": "شرح", "single": "شرح" },
+  "detail":{ "plural": "نفاصيل", "single":"تفصيلة" },
+  "tag" : { "plural": "علامات", "single": "علامة" },
+  "qr-code": { "plural": "رموز الاستجابة السريعة", "single": "رمز الاستجابة السريع" },
   "errors": {
     "notFound": "لم يتم العثور على {{instance}}",
     "notProvided": "{{instance}} غير متوفر حاليا",
@@ -186,7 +189,7 @@
       "actorTicketLimit": "من: 0 - إلى: {{maxValue}} ",
       "seatsLimit": "من: 0 - إلى: ∞ ",
       "characterNames": "اسم شخصية العرض",
-      "guestName": "أحمد محسن",
+      "guestName": "مثال: أحمد محسن",
       "guestNames": "أحمد, محمد , علاءالدين",
       "nickname": "اسم الشهرة",
       "awards": "الجوائز",

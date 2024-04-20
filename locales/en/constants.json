@@ -53,6 +53,9 @@
   "cast": { "plural": "casts", "single": "cast" },
   "other": { "plural": "others", "single": "other" },
   "description": { "plural": "descriptions", "single": "description" },
+  "detail": { "plural": "details", "single": "detail" },
+  "tag": { "plural": "tags", "single": "tag" },
+  "qr-code": { "plural": "QR codes", "single": "QR code" },
   "errors": {
     "notFound": "No {{instance}} found",
     "notProvided": "{{instance}} is not provided",

@@ -151,6 +151,8 @@ export async function POST(request: NextRequest) {
     const userTickets = await db.ticket.findMany({
       where: {
         userId: loggedUser?.id,
+        festivalId,
+        playId,
         showTime: formatedShowtime,
       },
     });
@@ -210,6 +212,16 @@ export async function POST(request: NextRequest) {
         createdTickets.push(ticket);
         availableSeats--;
         guestLimit--;
+      }
+
+      if (userTicket && guestNames.length === 0) {
+        return NextResponse.json(
+          {
+            error:
+              "user already has his ticket and no guest names are provided",
+          },
+          { status: 400 }
+        );
       }
     }
     // console.log(guestLimit, guestNames.length);

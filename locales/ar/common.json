@@ -98,6 +98,7 @@
     "cancel": "إلغاء",
     "navigateTo": "الذهاب إالى {{instance}}",
     "book": "حجز {{instance}}",
+    "download": "تنزيل {{instance}}",
     "watch": "مشاهدة {{instance}}",
     "show": "إظهار {{instance}}",
     "link": "ربط {{instance}}",

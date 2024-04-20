@@ -116,7 +116,9 @@ const UserClient: FC<UserClientProps> = (props) => {
     await window.navigator.clipboard
       .writeText(user.id)
       .then(() => {
-        console.log("copied");
+        toast.success(
+          t("messages.copied", { ns: "constants", instance: `${user.id}` })
+        );
       })
       .catch((err) => {
         console.error("Error in copying text", err);
@@ -173,8 +175,8 @@ const UserClient: FC<UserClientProps> = (props) => {
 
   const handleUserEdit = () => {
     // router.push(editUrl);
-    
-   toast.custom(
+
+    toast.custom(
       <div className="bg-blue-500 rounded-full flex items-center gap-x-2 py-2 px-3">
         <HelpCircle className="w-5 h-5" />
         {t("messages.soon", { ns: "constants" })}
@@ -203,14 +205,15 @@ const UserClient: FC<UserClientProps> = (props) => {
       >
         <div
           className={cn(
-            "w-full min-h-80 sm:max-w-56 md:max-w-64 lg:max-w-80 flex items-center justify-center  md:top-28 md:sticky"
+            "w-full sm:max-w-56 md:max-w-64 lg:max-w-80 flex items-center justify-center relative"
           )}
         >
           {/* <AspectRatio ratio={9 / 16}> */}
           <Image
             src={user.image ?? "/default-profile.png"}
             fill
-            className="object-contain rounded-lg !relative"
+            sizes="32x32 64x64 128x128"
+            className="object-contain w-full rounded-lg !relative"
             alt={`${user.name} ${t("profile.single", { ns: "constants" })}`}
           />
           {/* </AspectRatio> */}
