@@ -96,7 +96,7 @@ export default function LanguageToggle() {
           {currentLocale && i18nConfig.locales.includes(currentLocale) ? (
             <Image
               loading="lazy"
-              // className="object-contain"
+              className="object-contain"
               width={20}
               height={20}
               // style={{ margin: 2 }}

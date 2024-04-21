@@ -196,7 +196,7 @@ const UserClient: FC<UserClientProps> = (props) => {
       : router.prefetch(`/${locale}/admin/users/${user.id}`);
   }, [isMyProfile, user.id]);
   return (
-    <div className="px-10">
+    <div>
       <div
         className={cn(
           "w-full flex flex-wrap items-start justify-between gap-6 relative"

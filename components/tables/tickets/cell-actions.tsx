@@ -63,7 +63,10 @@ const CellAction = (props: Props) => {
       icon: <Scan className="h-4 w-4 ltr:mr-2 rtl:ml-2" />,
     },
     {
-      name: t("share.default", { ns: "constants" }),
+      name: t("actions.share", {
+        ns: "common",
+        instance: t("ticket.single", { ns: "constants" }),
+      }),
       action: "share",
       icon: <Share2 className="h-4 w-4 ltr:mr-2 rtl:ml-2" />,
     },

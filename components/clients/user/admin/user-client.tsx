@@ -2,7 +2,7 @@
 import { Locale } from "@/next-i18next.config";
 import React, { FC, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { HelpCircle, Plus } from "lucide-react";
 // import RotateLoader from "react-spinners/RotateLoader";
 
 import { useParams, useRouter } from "next/navigation";
@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/tooltip";
 // import { useUserStore } from "@/hooks/stores/use-user-store";
 import TableSkeleton from "@/components/skeletons/table-skeleton";
+import toast from "react-hot-toast";
 
 interface UserListClientProps {
   data: UserType[];
@@ -48,6 +49,16 @@ const UserListClient: FC<UserListClientProps> = (props) => {
     router.prefetch(`/${locale}/admin/users/new`);
   }, [router]);
 
+  const handleUserEdit = () => {
+    // router.push(`/${locale}/admin/users/new`)
+    toast.custom(
+      <div className="bg-blue-500 rounded-full flex items-center gap-x-2 py-2 px-3">
+        <HelpCircle className="w-5 h-5" />
+        {t("messages.soon", { ns: "constants" })}
+      </div>
+    );
+  };
+
   return (
     <>
       <div className="flex items-center justify-between">
@@ -55,7 +66,7 @@ const UserListClient: FC<UserListClientProps> = (props) => {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button onClick={() => router.push(`/${locale}/admin/users/new`)}>
+              <Button onClick={handleUserEdit}>
                 <Plus className={cn("md:ltr:mr-2 md:rtl:ml-2 h-4 w-4")} />
                 <span className="hidden md:block">
                   {t("actions.add", {

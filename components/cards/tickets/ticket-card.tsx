@@ -1,16 +1,14 @@
 "use client";
 
-import { FC, HTMLAttributes, useEffect, useRef, useState } from "react";
+import { FC, HTMLAttributes } from "react";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { formatBigInt } from "@/lib/helpers/bigInt-converter";
 import { TicketCardType } from "@/types";
 import {
-  Eye,
   PartyPopper,
   Tag,
   Contact,
@@ -28,9 +26,7 @@ import {
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { removeArrayDuplicates } from "@/lib/helpers/list-fomratters";
-import { Badge } from "@/components/ui/badge";
-import { FacultyCast, UserRole } from "@prisma/client";
+import { UserRole } from "@prisma/client";
 import {
   Card,
   CardContent,
@@ -53,10 +49,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import toast from "react-hot-toast";
-// import { Button } from "@/components/ui/button";
-// import { isAdmin } from "@/lib/auth";
-// import { useCurrentRole } from "@/hooks/use-current-role";
-// import { UserRole } from "@prisma/client";
+
 interface TicketCardProps extends HTMLAttributes<HTMLElement> {
   ticket: TicketCardType;
   mode?: "details" | "abstract";
