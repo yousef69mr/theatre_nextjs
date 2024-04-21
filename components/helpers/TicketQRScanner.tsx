@@ -3,7 +3,7 @@
 import { useState } from "react";
 import QRScanner from "@/components/helpers/qr-scanner";
 import { useTranslation } from "react-i18next";
-import { Button } from "../ui/button";
+// import { Button } from "@/components/ui/button";
 import { scanTicketsRequest } from "@/lib/api-calls/actions/scan-tickets";
 import toast from "react-hot-toast";
 import { useTicketStore } from "@/hooks/stores/use-ticket-store";

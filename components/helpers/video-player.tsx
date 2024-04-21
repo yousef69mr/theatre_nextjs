@@ -5,7 +5,7 @@ import {
   VideoHTMLAttributes,
   useRef,
 } from "react";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 
 interface VideoPlayerProps {
   src: string;
