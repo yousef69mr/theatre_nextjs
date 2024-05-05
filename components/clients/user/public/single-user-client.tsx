@@ -259,7 +259,7 @@ const UserClient: FC<UserClientProps> = (props) => {
                     {user.tickets?.length}
                   </Badge>
                 </div>
-                {isMyProfile && (
+                {isEditable && !activeUser?.isOAuth && (
                   <Tooltip>
                     <TooltipTrigger>
                       <div className="flex items-center">

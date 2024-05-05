@@ -53,7 +53,7 @@ export default async function initTranslations(
 ) {
   i18nInstance = i18nInstance || createInstance();
 
-  i18nInstance.use(initReactI18next);
+  i18nInstance.use(initReactI18next).use(LanguageDetector);
 
   if (!resources) {
     i18nInstance.use(
@@ -81,4 +81,3 @@ export default async function initTranslations(
     t: i18nInstance.t,
   };
 }
-

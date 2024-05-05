@@ -18,7 +18,7 @@ export default auth((req) => {
 
   const currentLocale = cookies.get("i18next") || null;
 
-  // console.log(currentLanguage)
+  // console.log(currentLocale)
   const locale =
     currentLocale &&
     isValidLocale(currentLocale.value) &&
@@ -51,7 +51,7 @@ export default auth((req) => {
   if (isAuthRoute) {
     if (isLoggedIn) {
       const url = new URL(locale.concat(DEFAULT_LOGIN_REDIRCT), nextUrl);
-      url.searchParams.append("redirect", locale.concat(pathname));
+      // url.searchParams.append("redirect", locale.concat(pathname));
       // console.log(url.toString());
       return Response.redirect(url.toString());
     }
@@ -64,7 +64,10 @@ export default auth((req) => {
   // }
 
   if (!isLoggedIn && !isPublicRoute) {
-    return Response.redirect(new URL(locale.concat("/auth/login"), nextUrl));
+    const url = new URL(locale.concat("/auth/login"), nextUrl);
+    url.searchParams.append("redirect", locale.concat(pathname));
+
+    return Response.redirect(url.toString());
   }
 
   return i18nMiddleware(req);

@@ -9,11 +9,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { UserType } from "@/types";
 import { Button } from "@/components/ui/button";
-import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
+import { Copy, Edit, Eye, MoreHorizontal, Trash } from "lucide-react";
 import toast from "react-hot-toast";
 
 import AlertModal from "@/components/modals/alert-modal";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import axios from "axios";
 // import { apiInstance } from "@/lib/axios";
 import { useParams, useRouter } from "next/navigation";
@@ -49,6 +49,14 @@ const CellAction = (props: Props) => {
       icon: <Edit className="h-4 w-4 ltr:mr-2 rtl:ml-2" />,
     },
     {
+      name: t("actions.visit", {
+        ns: "constants",
+        instance: t("user.single", { ns: "constants" }),
+      }),
+      action: "visit_user",
+      icon: <Eye className="h-4 w-4 ltr:mr-2 rtl:ml-2" />,
+    },
+    {
       name: t("actions.copy", {
         ns: "constants",
         instance: t("id.single", { ns: "constants" }),
@@ -71,12 +79,19 @@ const CellAction = (props: Props) => {
       case "copy":
         handleCopy();
         return;
+      case "visit_user":
+        handleVisit();
+        break;
       case "delete":
         handleDelete();
         return;
       default:
         return;
     }
+  };
+
+  const handleVisit = () => {
+    router.push(`/${locale}/users/${data.id}`);
   };
 
   const handleEdit = () => {
@@ -97,6 +112,10 @@ const CellAction = (props: Props) => {
     onOpen("deleteUser", { user: data });
   };
 
+  useEffect(() => {
+    router.prefetch(`/${locale}/users/${data.id}`);
+    router.prefetch(`/${locale}/admin/users/${data.id}`);
+  }, [router, data.id]);
   return (
     <>
       <DropdownMenu>
@@ -114,7 +133,7 @@ const CellAction = (props: Props) => {
             {t("tables.actions", { ns: "constants" })}
           </DropdownMenuLabel>
           {actions.map((action) => (
-             <Fragment key={action.action}>
+            <Fragment key={action.action}>
               {action.action === "delete" && <Separator />}
               <DropdownMenuItem
                 className={cn(

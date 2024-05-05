@@ -12,8 +12,10 @@ import {
 } from "@/components/ui/tooltip";
 import { ActorInPlayType } from "@/types";
 import { useModal } from "@/hooks/stores/use-modal-store";
-import { Drama, Edit, PartyPopper, Theater, Trash } from "lucide-react";
+import { Bot, Drama, Edit, PartyPopper, Theater, Trash } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { removeArrayDuplicates } from "@/lib/helpers/list-fomratters";
+import { Badge } from "@/components/ui/badge";
 interface ActorInPlayCardProps {
   actorInPlay: ActorInPlayType;
   mode?: "search" | "default";
@@ -219,6 +221,18 @@ const ActorInPlayCard: FC<ActorInPlayCardProps> = (props) => {
             </span>
           </div>
         )}
+        {actorInPlay.characterNames &&
+          actorInPlay.characterNames.length !== 0 && (
+            <div className="flex items-center justify-start w-full gap-2">
+              {removeArrayDuplicates(actorInPlay.characterNames).map(
+                (characterName, index) => (
+                  <Badge key={index} variant={"outline"} className="px-4 py-2">
+                    {characterName}
+                  </Badge>
+                )
+              )}
+            </div>
+          )}
       </div>
     </div>
   );

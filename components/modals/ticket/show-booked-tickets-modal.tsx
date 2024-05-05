@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
+import TicketCarousel from "@/components/carousels/ticket-carousel";
 
 // import { useTicketStore } from "@/hooks/stores/use-ticket-store";
 
@@ -56,8 +57,8 @@ export const ShowBookedTicketsModal = () => {
             </span>
           </div>
         </DialogHeader>
-        <section className="w-full p-4 rounded-lg">
-          <TicketList tickets={tickets} mode="modal" />
+        <section className="w-full rounded-lg">
+          <TicketCarousel tickets={tickets} mode="modal" />
         </section>
         {/* <DialogDescription className="text-zinc-500 px-4 pb-2 md:text-lg">
           <span className="text-red-500">**</span>{" "}

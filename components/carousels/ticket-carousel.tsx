@@ -8,11 +8,13 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { cn } from "@/lib/utils";
 interface TicketCarouselProps {
   tickets: TicketType[];
+  mode?: "page" | "modal";
 }
 const TicketCarousel: FC<TicketCarouselProps> = (props) => {
-  const { tickets } = props;
+  const { tickets, mode = "page" } = props;
   return (
     <Carousel
       opts={{
@@ -25,7 +27,10 @@ const TicketCarousel: FC<TicketCarouselProps> = (props) => {
         {tickets.map((ticket) => (
           <CarouselItem
             key={ticket.id}
-            className="-ml-1 basis-full  md:basis-1/2 lg:basis-1/3"
+            className={cn(
+              "-ml-1 basis-full",
+              mode === "page" && "md:basis-1/2 lg:basis-1/3"
+            )}
           >
             <div className="p-1">
               <TicketCard

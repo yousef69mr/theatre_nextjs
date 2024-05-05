@@ -91,6 +91,7 @@
     "edit": "edit {{instance}}",
     "open": "open {{instance}}",
     "copy": "copy {{instance}}",
+    "visit": "visit {{instance}}",
     "search": "search {{instance}}",
     "select": "select {{instance}}",
     "filter": "filter {{instance}}",

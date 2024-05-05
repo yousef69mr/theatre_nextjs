@@ -16,6 +16,7 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { ExecutorRole } from "@prisma/client";
+import { removeArrayDuplicates } from "@/lib/helpers/list-fomratters";
 
 interface ExecutorCardProps extends HTMLAttributes<HTMLElement> {
   executor: ExecutorCardType;
@@ -44,7 +45,7 @@ const ExecutorCard: FC<ExecutorCardProps> = (props) => {
             </h3>
             {executor?.roles && executor?.roles.length !== 0 && (
               <p className="text-md capitalize font-bold text-red-500 flex flex-wrap items-center gap-1">
-                {executor.roles.map((role) => (
+                {removeArrayDuplicates(executor.roles).map((role) => (
                   <span key={role}>
                     {t(`ExecutorRole.${role}`, { ns: "common" })}
                   </span>
@@ -80,7 +81,7 @@ const ExecutorCard: FC<ExecutorCardProps> = (props) => {
                   )}
                 </TooltipContent>
               </Tooltip>
-             
+
               <div className="flex items-center justify-center">
                 <Trophy className="rtl:ml-2 ltr:mr-2 w-4 h-4" />
                 {executor.awards.length}

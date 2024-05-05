@@ -90,6 +90,7 @@
     "delete": "حذف {{instance}}",
     "edit": "تعديل {{instance}}",
     "open": "فتح {{instance}}",
+    "visit": "زيارة {{instance}}",
     "copy": "نسخ {{instance}}",
     "select": "إختار {{instance}}",
     "search": "بحث عن {{instance}}",

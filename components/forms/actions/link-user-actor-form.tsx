@@ -148,7 +148,7 @@ const LinkUserActorForm: FC<LinkUserActorFormProps> = (props) => {
             form.reset();
           }
         })
-        .catch((error:Error) => toast.error(error.message))
+        .catch((error: Error) => toast.error(error.message))
         .finally(() => setIsLoading(false));
     });
   };
@@ -163,7 +163,6 @@ const LinkUserActorForm: FC<LinkUserActorFormProps> = (props) => {
   useEffect(() => {
     const key = userId ? "actor" : "user";
     getRemainingUserActorLinkRequest(key)
-      .then((response) => response.json())
       .then((responseData) => {
         userId && setActors(responseData);
         !userId && setUsers(responseData);
