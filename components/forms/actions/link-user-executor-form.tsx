@@ -30,7 +30,12 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-import { ExecutorInPlayType, ExecutorType, FestivalType, UserType } from "@/types";
+import {
+  ExecutorInPlayType,
+  ExecutorType,
+  FestivalType,
+  UserType,
+} from "@/types";
 import { useForm } from "react-hook-form";
 import { useParams, useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -148,7 +153,7 @@ const LinkUserExecutorForm: FC<LinkUserExecutorFormProps> = (props) => {
             form.reset();
           }
         })
-        .catch((error:Error) => toast.error(error.message))
+        .catch((error: Error) => toast.error(error.message))
         .finally(() => setIsLoading(false));
     });
   };
@@ -198,11 +203,13 @@ const LinkUserExecutorForm: FC<LinkUserExecutorFormProps> = (props) => {
                       >
                         {field.value
                           ? `${
-                              executors?.find((executor) => executor.id === field.value)
-                                ?.name
+                              executors?.find(
+                                (executor) => executor.id === field.value
+                              )?.name
                             } ${
-                              executors?.find((executor) => executor.id === field.value)
-                                ?.nickname
+                              executors?.find(
+                                (executor) => executor.id === field.value
+                              )?.nickname
                                 ? `(${
                                     executors?.find(
                                       (executor) => executor.id === field.value
@@ -241,7 +248,9 @@ const LinkUserExecutorForm: FC<LinkUserExecutorFormProps> = (props) => {
                       <CommandGroup>
                         {executors?.map((executor) => (
                           <CommandItem
-                            value={executor.id}
+                            value={`${executor.name} ${
+                              executor.nickname ? `(${executor.nickname})` : ""
+                            }`}
                             key={executor.id}
                             onSelect={() => {
                               form.setValue("executorId", executor.id);

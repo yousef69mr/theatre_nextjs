@@ -123,6 +123,7 @@
     "already-have-account": "لديك حساب بالفعل ؟",
     "confirm-message": "هل انت متأكد من أنك تريد أن تفعل هذا؟",
     "irreversible": "هذه العملية لا رجعة فيها",
+    "scan-with-search": "مسح ل{{instance}} عن طريق البحث",
     "ticket-scanned-once": "هذه التذكرة صالحة للمسح الضوئى لمرة واحدة",
     "no-previous-tickets": "يبدو أنك لم تحجز أي تذاكر بعد. بمجرد حجز أى تذكرة ، ستظهر هنا."
   },
@@ -157,6 +158,7 @@
       "actorName": "اسم الممثل",
       "executorName": "اسم المنفذ",
       "festivalName": "اسم المهرجان",
+      "ticketId": "كود تذكرة",
       "playPlace": "مركز العرض",
       "nickname": "اسم الشهرة",
       "characterNames": "اسم شخصية العرض",

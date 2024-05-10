@@ -19,6 +19,7 @@ export type ModalType =
 
   | "deletePlay"
   | "scanTicket"
+  | "qrTicket"
   | "showBookedTickets"
   | "shareTicket"
   | "deleteTicket"

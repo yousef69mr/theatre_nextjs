@@ -1,17 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useState, FC } from "react";
 import QRScanner from "@/components/helpers/qr-scanner";
 import { useTranslation } from "react-i18next";
 // import { Button } from "@/components/ui/button";
 import { scanTicketsRequest } from "@/lib/api-calls/actions/scan-tickets";
 import toast from "react-hot-toast";
 import { useTicketStore } from "@/hooks/stores/use-ticket-store";
+import { Button } from "../ui/button";
+import { Separator } from "../ui/separator";
+import { useModal } from "@/hooks/stores/use-modal-store";
+import { PlayType, TicketType } from "@/types";
+import TicketCard from "../cards/tickets/ticket-card";
 
-const TicketQRScanner = () => {
-  const [scannedData, setScannedData] = useState<string | null>("no results");
+interface TicketQRScannerProps {
+  play?: PlayType;
+}
+const TicketQRScanner: FC<TicketQRScannerProps> = (props) => {
+  const { play } = props;
   const { t } = useTranslation();
+  const [scannedData, setScannedData] = useState<TicketType | string>(
+    t("errors.notFound", {
+      ns: "constants",
+      instance: t("ticket.plural", { ns: "constants" }),
+    })
+  );
   const updateTicket = useTicketStore((state) => state.updateTicket);
+  const onOpen = useModal((state) => state.onOpen);
 
   const handleScan = async (data: string) => {
     setScannedData(data);
@@ -43,15 +58,30 @@ const TicketQRScanner = () => {
     console.error("QR scanning error:", error);
   };
 
+  const handleScanTicketWithSearch = () => {
+    onOpen("scanTicket", { play });
+  };
+
   return (
     <div className="w-full flex flex-col items-center justify-center">
+      <Button onClick={handleScanTicketWithSearch}>
+        {t("messages.scan-with-search", {
+          ns: "constants",
+          instance: t("ticket.single", { ns: "constants" }),
+        })}
+      </Button>
+      <div className="flex gap-x-2 my-4 items-center mx-auto">
+        <Separator className="w-36" />
+        <span>{t("or", { ns: "constants" })}</span>
+        <Separator className="w-36" />
+      </div>
       <QRScanner onScan={handleScan} onError={handleError} />
       {/* </div> */}
       {/* <Button>{t("scan.defualt", { ns: "constants" })}</Button> */}
-      {scannedData && (
-        <p className=" text-black dark:text-white ">
-          Scanned data: {scannedData}
-        </p>
+      {typeof scannedData === "string" ? (
+        <p className=" text-black dark:text-white ">{scannedData}</p>
+      ) : (
+        <TicketCard ticket={scannedData} mode="abstract" />
       )}
     </div>
   );

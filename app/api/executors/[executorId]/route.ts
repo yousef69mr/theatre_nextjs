@@ -1,4 +1,4 @@
-import { currentRole, isAdmin } from "@/lib/auth";
+import { currentRole, currentUser, isAdmin } from "@/lib/auth";
 import { db } from "@/lib/database";
 import { executorSchema } from "@/lib/validations/models/executor";
 import { UserRole } from "@prisma/client";
@@ -40,7 +40,7 @@ export async function GET(request: NextRequest, props: ExecutorProps) {
                 id: true,
                 name: true,
                 posterImgUrl: true,
-                awards:true,
+                awards: true,
                 festivals: {
                   select: {
                     id: true,
@@ -119,9 +119,16 @@ export async function PATCH(request: NextRequest, props: ExecutorProps) {
     params: { executorId },
   } = props;
 
-  const currentUserRole = await currentRole();
+  const loggedUser = await currentUser();
 
-  if (!isAdmin(currentUserRole as UserRole)) {
+  const myExecutorProfile = await db.userExecutorLink.findFirst({
+    where: {
+      userId: loggedUser?.id,
+      executorId,
+    },
+  });
+
+  if (!isAdmin(loggedUser?.role as UserRole) && !myExecutorProfile) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

@@ -5,8 +5,30 @@ import { UserRole } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
+
+  const filter: Record<string, any> = {};
+
+  const isScanned = searchParams.get("isScanned");
+  const playId = searchParams.get("playId");
+  const festivalId = searchParams.get("festivalId");
+
+  if (isScanned !== null) {
+    filter["isScanned"] = JSON.parse(isScanned);
+  }
+
+  if (playId !== null) {
+    filter["playId"] = playId;
+  }
+  if (festivalId !== null) {
+    filter["festivalId"] = festivalId;
+  }
+
   try {
     const tickets = await db.ticket.findMany({
+      where: {
+        ...filter,
+      },
       include: {
         play: {
           select: {

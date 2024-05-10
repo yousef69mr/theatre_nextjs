@@ -71,7 +71,7 @@ const TicketCard: FC<TicketCardProps> = (props) => {
   // };
 
   const handleScan = () => {
-    onOpen("scanTicket", { ticket });
+    onOpen("qrTicket", { ticket });
   };
 
   const handleTicketDelete = () => {

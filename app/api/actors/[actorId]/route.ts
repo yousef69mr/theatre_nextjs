@@ -1,4 +1,4 @@
-import { currentRole, isAdmin } from "@/lib/auth";
+import { currentRole, currentUser, isAdmin } from "@/lib/auth";
 import { db } from "@/lib/database";
 import { actorSchema } from "@/lib/validations/models/actor";
 import { UserRole } from "@prisma/client";
@@ -125,9 +125,16 @@ export async function PATCH(request: NextRequest, props: ActorProps) {
     params: { actorId },
   } = props;
 
-  const currentUserRole = await currentRole();
+  const loggedUser = await currentUser();
 
-  if (!isAdmin(currentUserRole as UserRole)) {
+  const myActorProfile = await db.userActorLink.findFirst({
+    where: {
+      userId: loggedUser?.id,
+      actorId,
+    },
+  });
+
+  if (!isAdmin(loggedUser?.role as UserRole) && !myActorProfile) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

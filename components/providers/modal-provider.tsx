@@ -26,6 +26,7 @@ import { ShowBookedTicketsModal } from "@/components/modals/ticket/show-booked-t
 import EditUserRoleModal from "@/components/modals/user/edit-user-role-modal";
 import { ShareTicketModal } from "@/components/modals/ticket/share-ticket-modal";
 import { EditTicketModal } from "@/components/modals/ticket/edit-ticket-modal";
+import { QRTicketModal } from "@/components/modals/ticket/qr-ticket-modal";
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -56,13 +57,14 @@ export const ModalProvider = () => {
       <DeleteUserModal />
       <DeleteTicketModal />
       <ScanTicketModal />
+      <QRTicketModal />
       <LinkUserActorModal />
       <DeleteUserActorLinkModal />
       <LinkUserExecutorModal />
       <DeleteUserExecutorLinkModal />
       <ShowBookedTicketsModal />
       <ShareTicketModal />
-      <EditTicketModal/>
+      <EditTicketModal />
       <EditUserRoleModal />
     </>
   );

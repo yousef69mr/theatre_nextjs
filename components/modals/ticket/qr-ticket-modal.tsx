@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import {
   Dialog,
@@ -13,25 +13,23 @@ import {
 import { useModal } from "@/hooks/stores/use-modal-store";
 
 import { useTranslation } from "react-i18next";
-import ScanPlayTickeForm from "@/components/forms/actions/scan-play-ticket-form";
+import QRCode from "react-qr-code";
 
 // import { useTicketStore } from "@/hooks/stores/use-ticket-store";
 
-export const ScanTicketModal = () => {
+export const QRTicketModal = () => {
   const { isOpen, onClose, type, data } = useModal();
   // const removeTicket = useTicketStore((state) => state.removeTicket);
   // const params = useParams();
   const { t } = useTranslation();
 
-  const isModalOpen = isOpen && type === "scanTicket";
-  const { play } = data;
-
-  const searchParams = useSearchParams();
-
-  const playId = searchParams.get("playId");
-  const festivalId = searchParams.get("festivalId");
+  const isModalOpen = isOpen && type === "qrTicket";
+  const { ticket } = data;
 
   // const locale = params.locale;
+
+  const ticketScanUrlValue = `${process.env.NEXT_PUBLIC_DOMAIN}/api/tickets/${ticket?.id}/scan`;
+
   return (
     <Dialog open={isModalOpen} onOpenChange={onClose}>
       <DialogContent className="pb-2">
@@ -42,21 +40,20 @@ export const ScanTicketModal = () => {
               instance: t("ticket.single", { ns: "constants" }),
             })}
           </DialogTitle>
-          {play && (
-            <span className="text-primary font-semibold">#{play.name}</span>
-          )}
+          <span className="text-primary font-semibold">#{ticket?.id}</span>
         </DialogHeader>
-        <ScanPlayTickeForm
-          initialData={{
-            festivalId,
-            playId,
-          }}
-          mode="modal"
-        />
-        {/* <DialogDescription className="text-zinc-500 px-4 pb-2 md:!text-lg">
+        <div className="w-full p-2 dark:bg-primary rounded-lg">
+          <QRCode
+            size={256}
+            className="w-full mx-auto max-w-full h-auto"
+            value={ticketScanUrlValue}
+            viewBox={`0 0 256 256`}
+          />
+        </div>
+        <DialogDescription className="text-zinc-500 px-4 pb-2 md:!text-lg">
           <span className="text-red-500">**</span>{" "}
           {t("messages.ticket-scanned-once", { ns: "constants" })}
-        </DialogDescription> */}
+        </DialogDescription>
       </DialogContent>
     </Dialog>
   );

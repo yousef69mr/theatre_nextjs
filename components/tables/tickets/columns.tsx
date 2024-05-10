@@ -38,7 +38,7 @@ export const TicketColumns: TicketColumnDef<TicketType>[] = [
       const ticketScanUrlValue = `${process.env.NEXT_PUBLIC_DOMAIN}/api/tickets/${ticket?.id}/scan`;
 
       const handleTicketScan = () => {
-        onOpen("scanTicket", { ticket });
+        onOpen("qrTicket", { ticket });
       };
       return (
         <div

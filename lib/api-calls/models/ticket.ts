@@ -103,3 +103,37 @@ export const updateTicketRequest = async (
   }
   return response;
 };
+
+export const getNotScanedTicketsRequest = async ({
+  playId,
+  festivalId,
+}: {
+  playId?: string | null;
+  festivalId?: string | null;
+}) => {
+  const searchParams = new URLSearchParams();
+  searchParams.append("isScanned", "false");
+  playId && searchParams.append("playId", playId);
+  festivalId && searchParams.append("festivalId", festivalId);
+
+  try {
+    const promise = await fetch(
+      PUBLIC_DOMAIN.concat(`/api/tickets?${searchParams.toString()}`),
+      {
+        method: "GET",
+        cache: "no-store",
+      }
+    );
+    // console.log(promise);
+    const response = await promise.json();
+
+    if (!promise.ok) {
+      // console.log(response["error"]);
+      throw Error(response["error"]);
+    }
+    return response;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};

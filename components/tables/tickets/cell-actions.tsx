@@ -119,7 +119,7 @@ const CellAction = (props: Props) => {
   };
 
   const handleScan = () => {
-    onOpen("scanTicket", { ticket: data });
+    onOpen("qrTicket", { ticket: data });
   };
 
   const handleShare = () => {
