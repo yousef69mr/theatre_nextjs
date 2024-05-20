@@ -119,7 +119,7 @@ export async function PATCH(request: NextRequest, props: actorInPlayProps) {
     return NextResponse.json({ error: "Invalid fields" }, { status: 400 });
   }
 
-  const { actorId, festivalId, playId, characterNames } = validatedFields.data;
+  const { actorId, festivalId, playId, characterNames,imgUrl } = validatedFields.data;
 
   if (!actorId) {
     return NextResponse.json({ error: "actorId is missing!" }, { status: 400 });
@@ -175,6 +175,7 @@ export async function PATCH(request: NextRequest, props: actorInPlayProps) {
         playId,
         festivalId,
         characterNames: characterNames || [],
+        imgUrl
       },
       include: {
         actor: {

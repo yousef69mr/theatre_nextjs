@@ -13,8 +13,10 @@ export function removePlayActorDuplicates(play: PlayType): ActorCardType[] {
   // Iterate through the actors array and add unique actors to the map
   for (const actorLink of play.actors) {
     if (!uniqueActorsMap.has(actorLink.actor.id)) {
+      actorLink.imgUrl;
       uniqueActorsMap.set(actorLink.actor.id, {
         ...actorLink.actor,
+        images: actorLink.imgUrl ? [actorLink.imgUrl] : [],
         characterNames: actorLink.characterNames,
         festivals: [actorLink],
       });
@@ -24,6 +26,9 @@ export function removePlayActorDuplicates(play: PlayType): ActorCardType[] {
         ...existingActor.characterNames,
         ...actorLink.characterNames,
       ];
+
+      actorLink.imgUrl && existingActor.images?.push(actorLink.imgUrl);
+
       existingActor.festivals!.push(actorLink);
     }
   }
@@ -48,7 +53,9 @@ export function removePlayExecutorDuplicates(
         festivals: [executorLink],
       });
     } else {
-      const existingExecutor = uniqueExecutorsMap.get(executorLink.executor.id)!;
+      const existingExecutor = uniqueExecutorsMap.get(
+        executorLink.executor.id
+      )!;
       existingExecutor.roles!.push(executorLink.role);
       existingExecutor.festivals!.push(executorLink);
     }
@@ -88,8 +95,9 @@ export function removeActorPlayDuplicates(actor: ActorType): PlayCardType[] {
   return uniquePlays;
 }
 
-
-export function removeExecutorPlayDuplicates(executor: ExecutorType): PlayCardType[] {
+export function removeExecutorPlayDuplicates(
+  executor: ExecutorType
+): PlayCardType[] {
   const uniquePlaysMap = new Map<string, PlayCardType>();
 
   // Iterate through the actors array and add unique actors to the map
@@ -116,9 +124,6 @@ export function removeExecutorPlayDuplicates(executor: ExecutorType): PlayCardTy
 
   return uniquePlays;
 }
-
-
-
 
 export function removeArrayDuplicates(strings: string[]): string[] {
   // Create a Set to store unique lowercase strings

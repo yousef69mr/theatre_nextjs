@@ -59,6 +59,7 @@ import { usePlayStore } from "@/hooks/stores/use-play-store";
 import { useFestivalStore } from "@/hooks/stores/use-festivals-store";
 import { useActorStore } from "@/hooks/stores/use-actor-store";
 import { MultiInput } from "@/components/ui/multi-input";
+import FileUpload from "@/components/helpers/file-upload";
 
 interface LinkActorPlayFormProps extends HtmlHTMLAttributes<HTMLElement> {
   initialData: ActorInPlayType | null;
@@ -99,6 +100,7 @@ const LinkActorPlayForm: FC<LinkActorPlayFormProps> = (props) => {
   const form = useForm<LinkActorPlayFormValues>({
     resolver: zodResolver(actorInPlaySchema),
     defaultValues: {
+      imgUrl: initialData?.imgUrl,
       actorId: actorId || initialData?.actor.id,
       playId: playId || initialData?.play.id,
       festivalId: festivalId || initialData?.festival.id,
@@ -139,7 +141,7 @@ const LinkActorPlayForm: FC<LinkActorPlayFormProps> = (props) => {
               form.reset();
             }
           })
-          .catch((error:Error) => toast.error(error.message))
+          .catch((error: Error) => toast.error(error.message))
           .finally(() => setIsLoading(false));
       } else {
         createActorInPlayRequest(values)
@@ -170,7 +172,7 @@ const LinkActorPlayForm: FC<LinkActorPlayFormProps> = (props) => {
               form.reset();
             }
           })
-          .catch((error:Error) => toast.error(error.message))
+          .catch((error: Error) => toast.error(error.message))
           .finally(() => setIsLoading(false));
       }
     });
@@ -218,6 +220,30 @@ const LinkActorPlayForm: FC<LinkActorPlayFormProps> = (props) => {
         onSubmit={form.handleSubmit(onSubmit)}
         className={cn("flex flex-col w-full space-y-4", className)}
       >
+        <div>
+          <FormField
+            control={form.control}
+            name="imgUrl"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  {t("forms.labels.image", {
+                    ns: "constants",
+                  })}
+                </FormLabel>
+                <FormControl>
+                  <FileUpload
+                    // className="max-h-40"
+                    endpoint="actorInPlayImage"
+                    value={field.value || ""}
+                    onChange={field.onChange}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         {!actorId && (
           <FormField
             control={form.control}

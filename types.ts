@@ -69,6 +69,7 @@ export type UserType = {
 export type ActorInPlayType = {
   id: string;
   characterNames: string[];
+  imgUrl?: string | null;
   actor: ActorType;
   play: PlayType;
   festival: FestivalType;
@@ -200,6 +201,7 @@ export type UserExecutorLinkType = {
 ////////////////////////////////////////
 
 export type ActorCardType = ActorType & {
+  images: string[];
   characterNames: string[];
   festivals: ActorInPlayType[];
 };

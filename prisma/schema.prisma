@@ -245,6 +245,8 @@ model ActorInPlay {
   id             String   @id @default(auto()) @map("_id") @db.ObjectId
   characterNames String[]
 
+  imgUrl String?
+
   playId String @db.ObjectId
   play   Play   @relation(fields: [playId], references: [id], onDelete: Cascade)
 

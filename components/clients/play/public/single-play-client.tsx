@@ -104,6 +104,7 @@ const PlayClient: FC<PlayClientProps> = (props) => {
 
   const actors = removePlayActorDuplicates(play);
 
+  console.log(actors);
   const isLive = isPlayLive(festivals);
 
   return (

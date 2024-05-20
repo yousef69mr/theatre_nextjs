@@ -19,6 +19,7 @@ interface FileUploadProps
     | "userImage"
     | "playImagesGallery"
     | "festivalImage"
+    | "actorInPlayImage"
     | "messageFile";
   value: string;
   onChange: (url?: string) => void;

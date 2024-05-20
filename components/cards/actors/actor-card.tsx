@@ -24,6 +24,7 @@ import { FacultyCast } from "@prisma/client";
 interface ActorCardProps extends HTMLAttributes<HTMLElement> {
   actor: ActorCardType;
 }
+
 const ActorCard: FC<ActorCardProps> = (props) => {
   const { actor, className } = props;
   const { t } = useTranslation();
@@ -38,12 +39,15 @@ const ActorCard: FC<ActorCardProps> = (props) => {
   // };
 
   const { value: numOfViews, unit } = formatBigInt(actor.numOfViews || "0");
+
+  const imgUrl =
+    actor.images?.length > 0
+      ? actor.images[0]
+      : actor.imgUrl ?? "/default-profile.png";
+
   return (
     <TooltipProvider>
-      <DirectionAwareHover
-        className={className}
-        imageUrl={actor.imgUrl ? actor.imgUrl : "/default-profile.png"}
-      >
+      <DirectionAwareHover className={className} imageUrl={imgUrl}>
         <Link href={`/${locale}/actors/${actor.id}`}>
           <div className="flex flex-col items-start justify-center px-2 space-y-2 w-full">
             <h3 className="text-sm md:text-md font-medium truncate">

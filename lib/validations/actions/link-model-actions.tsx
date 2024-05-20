@@ -5,6 +5,7 @@ export const actorInPlaySchema = object({
   characterNames: array(
     string().min(1, { message: "character name is required" })
   ),
+  imgUrl: string().optional().nullable(),
   actorId: string().min(1, { message: "actorId is required" }),
   playId: string().min(1, { message: "playId is required" }),
   festivalId: string().min(1, { message: "festivalId is required" }),
@@ -50,7 +51,6 @@ export const userActorLinkSchema = object({
   actorId: string().min(1, { message: "actorId is required" }),
   userId: string().min(1, { message: "userId is required" }),
 });
-
 
 export const userExecutorLinkSchema = object({
   executorId: string().min(1, { message: "executorId is required" }),

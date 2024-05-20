@@ -15,7 +15,6 @@ interface ActorCarouselProps {
 const ActorCarousel: FC<ActorCarouselProps> = (props) => {
   const { actors } = props;
 
-  // const uniqueActors = actors.
   return (
     <Carousel
       opts={{
@@ -32,7 +31,7 @@ const ActorCarousel: FC<ActorCarouselProps> = (props) => {
             <div className="p-1">
               <ActorCard
                 actor={actor}
-                className="w-full h-80 md:w-full md:h-80"
+                className="w-full min-h-80 md:w-full md:h-96"
               />
             </div>
           </CarouselItem>

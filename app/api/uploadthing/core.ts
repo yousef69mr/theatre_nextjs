@@ -37,6 +37,11 @@ export const ourFileRouter = {
     .onUploadComplete((data) => {
       console.log("actor image", data);
     }),
+  actorInPlayImage: f({ image: { maxFileSize: "16MB", maxFileCount: 1 } })
+    .middleware(() => handleAuth())
+    .onUploadComplete((data) => {
+      console.log("actor in play image", data);
+    }),
   userImage: f({ image: { maxFileSize: "8MB", maxFileCount: 1 } })
     .middleware(() => handleAuth())
     .onUploadComplete((data) => {

@@ -72,6 +72,7 @@ export const ActorColumns: ActorColumnDef<ActorType>[] = [
         </Button>
       );
     },
+    
     cell: ({ row }) => {
       const actor = row.original as unknown as ActorType;
       return (
