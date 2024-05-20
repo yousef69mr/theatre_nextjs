@@ -21,28 +21,25 @@ const TicketCarousel: FC<TicketCarouselProps> = (props) => {
         active: true,
       }}
       //   className="w-full max-w-xs sm:max-w-lg md:max-w-xl lg:max-w-4xl xl:max-w-6xl"
-      className="w-full"
+      className={cn("w-full max-w-full relative", mode === "modal" && "px-5")}
     >
       <CarouselContent className="flex rtl:flex-row-reverse">
         {tickets.map((ticket) => (
           <CarouselItem
             key={ticket.id}
             className={cn(
-              "-ml-1 basis-full",
-              mode === "page" && "md:basis-1/2 lg:basis-1/3"
+              "basis-full",
+              mode === "page" && "-ml-1 md:basis-1/2 lg:basis-1/3"
             )}
           >
             <div className="p-1">
-              <TicketCard
-                ticket={ticket}
-                className="w-full h-80 md:w-full md:h-80"
-              />
+              <TicketCard ticket={ticket} className="w-full" />
             </div>
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      <CarouselPrevious className="-left-3" />
+      <CarouselNext className="-right-4" />
     </Carousel>
   );
 };

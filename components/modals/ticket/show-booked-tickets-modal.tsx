@@ -57,7 +57,7 @@ export const ShowBookedTicketsModal = () => {
             </span>
           </div>
         </DialogHeader>
-        <section className="w-full rounded-lg">
+        <section className="w-full rounded-lg max-w-full relative">
           <TicketCarousel tickets={tickets} mode="modal" />
         </section>
         {/* <DialogDescription className="text-zinc-500 px-4 pb-2 md:text-lg">

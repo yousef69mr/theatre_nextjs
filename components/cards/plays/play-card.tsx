@@ -43,14 +43,14 @@ const PlayCard: FC<PlayCardProps> = (props) => {
       ? `/${locale}/plays/${play.id}`
       : `/${locale}/plays/${play.id}/book-tickets`;
   return (
-    <DirectionAwareHover
-      className={className}
-      imageUrl={
-        play.posterImgUrl ? play.posterImgUrl : "/play-poster-template.png"
-      }
-    >
-      <TooltipProvider>
-        <Link href={redirectUrl}>
+    <Link href={redirectUrl}>
+      <DirectionAwareHover
+        className={className}
+        imageUrl={
+          play.posterImgUrl ? play.posterImgUrl : "/play-poster-template.png"
+        }
+      >
+        <TooltipProvider>
           <div className="flex flex-col items-start justify-center px-2 space-y-2 w-full">
             <div className="flex items-center justify-start gap-x-2">
               <h3 className="text-sm md:text-md font-medium truncate">
@@ -125,9 +125,9 @@ const PlayCard: FC<PlayCardProps> = (props) => {
               )}
             </div>
           </div>
-        </Link>
-      </TooltipProvider>
-    </DirectionAwareHover>
+        </TooltipProvider>
+      </DirectionAwareHover>
+    </Link>
   );
 };
 

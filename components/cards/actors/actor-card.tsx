@@ -47,8 +47,8 @@ const ActorCard: FC<ActorCardProps> = (props) => {
 
   return (
     <TooltipProvider>
-      <DirectionAwareHover className={className} imageUrl={imgUrl}>
-        <Link href={`/${locale}/actors/${actor.id}`}>
+      <Link href={`/${locale}/actors/${actor.id}`}>
+        <DirectionAwareHover className={className} imageUrl={imgUrl}>
           <div className="flex flex-col items-start justify-center px-2 space-y-2 w-full">
             <h3 className="text-sm md:text-md font-medium truncate">
               {actor.name} {actor.nickname ? `(${actor.nickname})` : ""}
@@ -126,8 +126,8 @@ const ActorCard: FC<ActorCardProps> = (props) => {
               )}
             </div>
           </div>
-        </Link>
-      </DirectionAwareHover>
+        </DirectionAwareHover>
+      </Link>
     </TooltipProvider>
   );
 };

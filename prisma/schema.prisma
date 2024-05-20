@@ -203,7 +203,7 @@ model PlayFestival {
   seatsLimit       Int    @default(0)
   availableSeats   Int    @default(0)
   actorTicketLimit Int    @default(8)
-  guestTicketLimit Int    @default(1)
+  guestTicketLimit Int    @default(0)
 
   showTimes DateTime[]
   // images    String[]

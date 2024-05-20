@@ -33,11 +33,11 @@ const ExecutorCard: FC<ExecutorCardProps> = (props) => {
   // console.log(executor);
   return (
     <TooltipProvider>
-      <DirectionAwareHover
-        className={className}
-        imageUrl={executor.imgUrl ? executor.imgUrl : "/default-profile.png"}
-      >
-        <Link href={`/${locale}/executors/${executor.id}`}>
+      <Link href={`/${locale}/executors/${executor.id}`}>
+        <DirectionAwareHover
+          className={className}
+          imageUrl={executor.imgUrl ? executor.imgUrl : "/default-profile.png"}
+        >
           <div className="flex flex-col items-start justify-center px-2 space-y-1 w-full">
             <h3 className="text-sm md:text-md font-medium truncate">
               {executor.name}{" "}
@@ -105,8 +105,8 @@ const ExecutorCard: FC<ExecutorCardProps> = (props) => {
               )}
             </div>
           </div>
-        </Link>
-      </DirectionAwareHover>
+        </DirectionAwareHover>
+      </Link>
     </TooltipProvider>
   );
 };

@@ -160,6 +160,11 @@ const TicketClient: FC<TicketClientProps> = (props) => {
                     )}
                   </Button>
                 </h1>
+                <h1 className="text-lg md:text-2xl w-full font-semibold capitalize">
+                  <span className="break-all text-wrap word">
+                    {ticket.guestName}
+                  </span>
+                </h1>
               </div>
 
               <div className="flex items-center gap-x-2">

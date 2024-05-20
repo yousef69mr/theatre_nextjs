@@ -41,6 +41,7 @@ const TicketQRScanner: FC<TicketQRScannerProps> = (props) => {
       .then((data) => {
         // console.log(localPlays);
         updateTicket(data);
+        setScannedData(data);
         toast.success(
           t("messages.scanned", {
             ns: "constants",
@@ -63,7 +64,7 @@ const TicketQRScanner: FC<TicketQRScannerProps> = (props) => {
   };
 
   return (
-    <div className="w-full flex flex-col items-center justify-center">
+    <div className="w-full flex flex-col items-center justify-center overflow-hidden">
       <Button onClick={handleScanTicketWithSearch}>
         {t("messages.scan-with-search", {
           ns: "constants",

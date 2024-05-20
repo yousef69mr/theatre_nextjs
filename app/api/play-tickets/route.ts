@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    console.log(userTickets);
+    // console.log(userTickets);
     return NextResponse.json(userTickets, { status: 200 });
   } catch (error) {
     console.log(error);
@@ -61,9 +61,9 @@ export async function POST(request: NextRequest) {
   try {
     const { playId, festivalId, showTime, guestNames } = validatedFields.data;
 
-    if (isAdmin(loggedUser.role as UserRole) && guestNames.length === 0) {
+    if (guestNames.length === 0) {
       return NextResponse.json(
-        { error: "Guests names are required for admin users" },
+        { error: "Guests names are required" },
         { status: 400 }
       );
     }
@@ -176,67 +176,67 @@ export async function POST(request: NextRequest) {
     let createdTickets = [];
 
     // create a ticket for the logged user if it is a normal user
-    if (loggedUser?.role === UserRole.USER) {
-      const userTicket = userTickets.find(
-        (ticket) => ticket.userId === loggedUser.id
-      );
+    // if (loggedUser?.role === UserRole.USER) {
+    //   const userTicket = userTickets.find(
+    //     (ticket) => ticket.userId === loggedUser.id
+    //   );
 
-      // create user ticket if he not having its own ticket
-      if (!userTicket) {
-        const ticket = await db.ticket.create({
-          data: {
-            showTime: formatedShowtime,
-            playId,
-            festivalId,
-            guestName: loggedUser.name as string,
-            seatNumber: availableSeats,
-            userId: loggedUser?.id,
-          },
-          include: {
-            play: {
-              select: {
-                id: true,
-                name: true,
-                posterImgUrl: true,
-              },
-            },
-            festival: {
-              select: {
-                id: true,
-                name: true,
-                imgUrl: true,
-              },
-            },
-          },
-        });
-        createdTickets.push(ticket);
-        availableSeats--;
-        guestLimit--;
-      }
+    // create user ticket if he not having its own ticket
+    // if (!userTicket) {
+    //   const ticket = await db.ticket.create({
+    //     data: {
+    //       showTime: formatedShowtime,
+    //       playId,
+    //       festivalId,
+    //       guestName: loggedUser.name as string,
+    //       seatNumber: availableSeats,
+    //       userId: loggedUser?.id,
+    //     },
+    //     include: {
+    //       play: {
+    //         select: {
+    //           id: true,
+    //           name: true,
+    //           posterImgUrl: true,
+    //         },
+    //       },
+    //       festival: {
+    //         select: {
+    //           id: true,
+    //           name: true,
+    //           imgUrl: true,
+    //         },
+    //       },
+    //     },
+    //   });
+    //   createdTickets.push(ticket);
+    //   availableSeats--;
+    //   guestLimit--;
+    // }
 
-      if (userTicket && guestNames.length === 0) {
-        return NextResponse.json(
-          {
-            error:
-              "user already has his ticket and no guest names are provided",
-          },
-          { status: 400 }
-        );
-      }
-    }
+    //   if (userTicket && guestNames.length === 0) {
+    //     return NextResponse.json(
+    //       {
+    //         error:
+    //           "user already has his ticket and no guest names are provided",
+    //       },
+    //       { status: 400 }
+    //     );
+    //   }
+    // }
     // console.log(guestLimit, guestNames.length);
-    if (guestLimit < guestNames.length && createdTickets.length > 0) {
-      await db.playFestival.updateMany({
-        where: {
-          playId,
-          festivalId,
-        },
-        data: {
-          availableSeats,
-        },
-      });
-      return NextResponse.json(createdTickets, { status: 202 });
-    }
+    // if (guestLimit < guestNames.length && createdTickets.length > 0) {
+    //   await db.playFestival.updateMany({
+    //     where: {
+    //       playId,
+    //       festivalId,
+    //     },
+    //     data: {
+    //       availableSeats,
+    //     },
+    //   });
+    //   return NextResponse.json(createdTickets, { status: 202 });
+    // }
     if (guestLimit < guestNames.length) {
       return NextResponse.json(
         { error: "can't create more tickets for this user" },

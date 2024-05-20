@@ -64,7 +64,6 @@ import { MultiInput } from "@/components/ui/multi-input";
 import { bookPlayTicketsSchema } from "@/lib/validations/actions/book-ticket-action";
 import { isAdmin } from "@/lib/auth";
 import { UserRole } from "@prisma/client";
-import { useCurrentRole } from "@/hooks/use-current-role";
 import { bookPlayTicketsRequest } from "@/lib/api-calls/actions/book-play-tickets";
 import {
   Select,
@@ -76,6 +75,7 @@ import {
 import { formatDate } from "date-fns";
 import { useTicketStore } from "@/hooks/stores/use-ticket-store";
 import { useConfettiStore } from "@/hooks/use-confetti-store";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 interface BookPlayTicketsFormProps extends HtmlHTMLAttributes<HTMLElement> {
   play: PlayType | null;
@@ -88,7 +88,8 @@ type BookPlayTicketsFormValues = Zod.infer<typeof bookPlayTicketsSchema>;
 const BookPlayTicketsForm: FC<BookPlayTicketsFormProps> = (props) => {
   const { play, userTickets, className, mode = "page" } = props;
 
-  const role = useCurrentRole();
+  const loggedUser = useCurrentUser();
+  const role = loggedUser?.role;
 
   const onClose = useModal((state) => state.onClose);
   const onOpen = useModal((state) => state.onOpen);
@@ -119,17 +120,24 @@ const BookPlayTicketsForm: FC<BookPlayTicketsFormProps> = (props) => {
   const form = useForm<BookPlayTicketsFormValues>({
     resolver: zodResolver(bookPlayTicketsSchema),
     defaultValues: {
-      guestNames: [],
+      guestNames:
+        role === UserRole.USER && loggedUser?.name ? [loggedUser.name] : [],
       festivalId: play?.festivals[0].festival.id || undefined,
       playId,
       showTime: play?.festivals[0].showTimes[0] || undefined,
     },
   });
 
+  useEffect(() => {
+    role === UserRole.USER && loggedUser?.name
+      ? form.setValue("guestNames", [loggedUser.name])
+      : form.setValue("guestNames", []);
+  }, [loggedUser, role]);
+
   const onSubmit = async (values: BookPlayTicketsFormValues) => {
-    if (values.guestNames.length === 0 && role !== UserRole.USER) {
+    if (values.guestNames.length === 0) {
       form.setError("guestNames", {
-        message: "quest names should be at least one",
+        message: "guest names should be at least one",
       });
       return;
     }
@@ -218,6 +226,7 @@ const BookPlayTicketsForm: FC<BookPlayTicketsFormProps> = (props) => {
     } else if (role === UserRole.ACTOR) {
       setNumberOfGuest(selectedFestival.actorTicketLimit);
     } else {
+      // more than one
       setNumberOfGuest(2);
     }
 
@@ -301,7 +310,7 @@ const BookPlayTicketsForm: FC<BookPlayTicketsFormProps> = (props) => {
                       <CommandGroup>
                         {festivals?.map((festival) => (
                           <CommandItem
-                            value={festival.id}
+                            value={`${festival.name} (${festival.id})`}
                             key={festival.id}
                             onSelect={() => {
                               form.setValue("festivalId", festival.id);
@@ -406,12 +415,17 @@ const BookPlayTicketsForm: FC<BookPlayTicketsFormProps> = (props) => {
                     placeholder={t("forms.placeholder.guestName", {
                       ns: "constants",
                     })}
+                    value={field.value.length > 0 ? field.value[0] : undefined}
                     name={field.name}
                     onBlur={field.onBlur}
                     ref={field.ref}
                     disabled={isDisabled}
                     onChange={(event) => {
-                      form.setValue("guestNames", [event.target.value]);
+                      // console.log(field.value);
+                      const value = event.target.value;
+                      value === ""
+                        ? form.setValue("guestNames", [])
+                        : form.setValue("guestNames", [value]);
                       form.trigger("guestNames");
                     }}
                   />

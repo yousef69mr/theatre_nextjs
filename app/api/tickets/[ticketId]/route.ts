@@ -97,12 +97,32 @@ export async function DELETE(request: NextRequest, props: TicketProps) {
         id: ticketId,
       },
     });
+
+    // increase available play ticket
+    const playFestival = await db.playFestival.findFirst({
+      where: {
+        festivalId: existingTicket.festivalId,
+        playId: existingTicket.playId,
+      },
+    });
+    await db.playFestival.updateMany({
+      where: {
+        festivalId: existingTicket.festivalId,
+        playId: existingTicket.playId,
+      },
+      data: {
+        availableSeats: playFestival?.availableSeats
+          ? playFestival?.availableSeats + 1
+          : undefined,
+      },
+    });
+
     return NextResponse.json(
       { success: "ticket deleted successfully" },
       { status: 204 }
     );
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return NextResponse.json({ error: "Internal error" }, { status: 500 });
   }
 }
