@@ -155,7 +155,7 @@ const LinkExecutorPlayForm: FC<LinkExecutorPlayFormProps> = (props) => {
               form.reset();
             }
           })
-          .catch((error:Error) => toast.error(error.message))
+          .catch((error: Error) => toast.error(error.message))
           .finally(() => setIsLoading(false));
       } else {
         createExecutorInPlayRequest(values)
@@ -186,7 +186,7 @@ const LinkExecutorPlayForm: FC<LinkExecutorPlayFormProps> = (props) => {
               form.reset();
             }
           })
-          .catch((error:Error) => toast.error(error.message))
+          .catch((error: Error) => toast.error(error.message))
           .finally(() => setIsLoading(false));
       }
     });
@@ -207,7 +207,7 @@ const LinkExecutorPlayForm: FC<LinkExecutorPlayFormProps> = (props) => {
     // console.log();
     if (takenPlayRoles.includes(ExecutorRole.DIRECTOR)) {
       const remainingRoleOptions: typeof executorRoles = executorRoles.filter(
-        (role) => role !==ExecutorRole.DIRECTOR
+        (role) => role !== ExecutorRole.DIRECTOR
       );
       setAvailableRoles(remainingRoleOptions);
     } else {
@@ -316,7 +316,9 @@ const LinkExecutorPlayForm: FC<LinkExecutorPlayFormProps> = (props) => {
                       <CommandGroup>
                         {localExecutors?.map((executor) => (
                           <CommandItem
-                            value={executor.id}
+                            value={`${executor.name} ${
+                              executor.nickname ? `(${executor.nickname})` : ""
+                            }`}
                             key={executor.id}
                             onSelect={() => {
                               form.setValue("executorId", executor.id);
@@ -418,7 +420,7 @@ const LinkExecutorPlayForm: FC<LinkExecutorPlayFormProps> = (props) => {
                       <CommandGroup>
                         {localPlays?.map((play) => (
                           <CommandItem
-                            value={play.id}
+                            value={play.name}
                             key={play.id}
                             onSelect={() => {
                               form.setValue("playId", play.id);
@@ -502,7 +504,7 @@ const LinkExecutorPlayForm: FC<LinkExecutorPlayFormProps> = (props) => {
                       <CommandGroup>
                         {festivals?.map((festival) => (
                           <CommandItem
-                            value={festival.id}
+                            value={festival.name}
                             key={festival.id}
                             onSelect={() => {
                               form.setValue("festivalId", festival.id);
@@ -549,9 +551,9 @@ const LinkExecutorPlayForm: FC<LinkExecutorPlayFormProps> = (props) => {
                       <SelectValue
                         placeholder={t("actions.select", {
                           ns: "common",
-                          instance:t("forms.labels.role", {
+                          instance: t("forms.labels.role", {
                             ns: "constants",
-                          })
+                          }),
                         })}
                       />
                     </SelectTrigger>

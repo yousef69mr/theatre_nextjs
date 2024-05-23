@@ -39,7 +39,7 @@ const ExecutorCard: FC<ExecutorCardProps> = (props) => {
           imageUrl={executor.imgUrl ? executor.imgUrl : "/default-profile.png"}
         >
           <div className="flex flex-col items-start justify-center px-2 space-y-1 w-full">
-            <h3 className="text-sm md:text-md font-medium truncate">
+            <h3 className="text-sm md:!text-lg font-medium truncate">
               {executor.name}{" "}
               {executor.nickname ? `(${executor.nickname})` : ""}
             </h3>

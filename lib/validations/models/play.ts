@@ -3,7 +3,7 @@ import { array, boolean, date, object, string } from "zod";
 export const playSchema = object({
   name: string().min(1, { message: "name is required" }),
   festivalId: string().min(1, { message: "festivalId is required" }),
-  executorId: string().min(1, { message: "festivalId is required" }),
+  executorId: string().min(1, { message: "executorId is required" }),
   showTime: date(),
   videoUrl: string().nullable().optional(),
   description: string().optional(),

@@ -52,8 +52,8 @@ const PlayCard: FC<PlayCardProps> = (props) => {
       >
         <TooltipProvider>
           <div className="flex flex-col items-start justify-center px-2 space-y-2 w-full">
-            <div className="flex items-center justify-start gap-x-2">
-              <h3 className="text-sm md:text-md font-medium truncate">
+            <div className="flex items-center justify-start gap-x-2 max-w-full">
+              <h3 className="text-sm md:!text-lg font-medium truncate">
                 {play.name}
               </h3>
               {isLive && (

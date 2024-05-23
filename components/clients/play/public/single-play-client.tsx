@@ -1,7 +1,7 @@
 "use client";
 
 import { Locale } from "@/next-i18next.config";
-import { FC, useEffect } from "react";
+import { FC, Fragment, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -197,11 +197,11 @@ const PlayClient: FC<PlayClientProps> = (props) => {
                 // console.log(executor.roles)
                 // console.log(roles)
                 return (
-                  <>
+                  <Fragment key={executor.id}>
                     {roles.map((role) => (
-                      <>
+                      <Fragment key={role}>
                         {isMainPlayExecutors(role as ExecutorRole) && (
-                          <HoverCard key={executor.id}>
+                          <HoverCard>
                             <HoverCardTrigger asChild>
                               <Link
                                 href={`/${locale}/executors/${executor.id}`}
@@ -255,9 +255,9 @@ const PlayClient: FC<PlayClientProps> = (props) => {
                             </HoverCardContent>
                           </HoverCard>
                         )}
-                      </>
+                      </Fragment>
                     ))}
-                  </>
+                  </Fragment>
                 );
               })}
             </div>
@@ -265,12 +265,9 @@ const PlayClient: FC<PlayClientProps> = (props) => {
               0 && (
               <div className="flex flex-wrap items-center justify-start gap-2">
                 {festivals.map((festival) => (
-                  <>
+                  <Fragment key={festival.id}>
                     {festival.position && (
-                      <div
-                        key={festival.id}
-                        className="flex items-center flex-nowrap gap-x-2 text-wrap"
-                      >
+                      <div className="flex items-center flex-nowrap gap-x-2 text-wrap">
                         <Award className="w-5 h-5 text-orange-300 ltr:mr-2 rtl:ml-2" />
                         <div className="flex gap-x-2 items-center justify-center rtl:flex-row ltr:flex-row-reverse">
                           <span>
@@ -283,12 +280,12 @@ const PlayClient: FC<PlayClientProps> = (props) => {
                               ns: "constants",
                             })}
                           </span>
-                        </div>{" "}
+                        </div>
                         <hr className="w-2 h-1 rounded-md dark:bg-red-100 bg-red-700/15" />
                         <span>{festival.name}</span>
                       </div>
                     )}
-                  </>
+                  </Fragment>
                 ))}
               </div>
             )}

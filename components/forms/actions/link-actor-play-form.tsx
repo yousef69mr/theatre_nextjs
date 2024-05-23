@@ -311,7 +311,9 @@ const LinkActorPlayForm: FC<LinkActorPlayFormProps> = (props) => {
                       <CommandGroup>
                         {localActors?.map((actor) => (
                           <CommandItem
-                            value={actor.id}
+                            value={`${actor.name} ${
+                              actor.nickname ? `(${actor.nickname})` : ""
+                            }`}
                             key={actor.id}
                             onSelect={() => {
                               form.setValue("actorId", actor.id);
@@ -413,7 +415,7 @@ const LinkActorPlayForm: FC<LinkActorPlayFormProps> = (props) => {
                       <CommandGroup>
                         {localPlays?.map((play) => (
                           <CommandItem
-                            value={play.id}
+                            value={play.name}
                             key={play.id}
                             onSelect={() => {
                               form.setValue("playId", play.id);
@@ -497,7 +499,7 @@ const LinkActorPlayForm: FC<LinkActorPlayFormProps> = (props) => {
                       <CommandGroup>
                         {festivals?.map((festival) => (
                           <CommandItem
-                            value={festival.id}
+                            value={festival.name}
                             key={festival.id}
                             onSelect={() => {
                               form.setValue("festivalId", festival.id);

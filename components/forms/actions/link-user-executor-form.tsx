@@ -355,7 +355,7 @@ const LinkUserExecutorForm: FC<LinkUserExecutorFormProps> = (props) => {
                       <CommandGroup>
                         {users?.map((user) => (
                           <CommandItem
-                            value={user.id}
+                            value={`${user.name} (${user.id})`}
                             key={user.id}
                             onSelect={() => {
                               form.setValue("userId", user.id);

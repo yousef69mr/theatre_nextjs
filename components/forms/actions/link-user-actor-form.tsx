@@ -240,8 +240,9 @@ const LinkUserActorForm: FC<LinkUserActorFormProps> = (props) => {
                       <CommandGroup>
                         {actors?.map((actor) => (
                           <CommandItem
-                            value={`${actor.name}{" "}
-                            ${actor.nickname ? `(${actor.nickname})` : ""}`}
+                            value={`${actor.name} ${
+                              actor.nickname ? `(${actor.nickname})` : ""
+                            }`}
                             key={actor.id}
                             onSelect={() => {
                               form.setValue("actorId", actor.id);
@@ -346,7 +347,7 @@ const LinkUserActorForm: FC<LinkUserActorFormProps> = (props) => {
                       <CommandGroup>
                         {users?.map((user) => (
                           <CommandItem
-                            value={user.id}
+                            value={`${user.name} (${user.id})`}
                             key={user.id}
                             onSelect={() => {
                               form.setValue("userId", user.id);

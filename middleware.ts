@@ -18,7 +18,7 @@ export default auth((req) => {
 
   const currentLocale = cookies.get("i18next") || null;
 
-  // console.log(currentLocale)
+  // console.log(currentLocale);
   const locale =
     currentLocale &&
     isValidLocale(currentLocale.value) &&
@@ -34,6 +34,7 @@ export default auth((req) => {
     ? nextUrl.pathname.replace(/^\/([^\/]+)\/(.*)$/, "/$2")
     : nextUrl.pathname;
 
+  // console.log(pathname);
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
 
   const isAuthRoute = authRoutes.includes(pathname);
@@ -69,6 +70,8 @@ export default auth((req) => {
 
     return Response.redirect(url.toString());
   }
+
+  // console.log("here");
 
   return i18nMiddleware(req);
 });

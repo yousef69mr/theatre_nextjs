@@ -17,6 +17,7 @@ import i18nConfig, { Locale } from "@/next-i18next.config";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useNavigationStore } from "@/hooks/stores/use-navigation-store";
+import Cookies from "js-cookie";
 
 export const LocaleFlags: Record<string, string> = {
   ar: "eg",
@@ -26,6 +27,7 @@ export const LocaleFlags: Record<string, string> = {
 
 export default function LanguageToggle() {
   const { i18n, t } = useTranslation("constants");
+
   const currentLocale = i18n.language;
   const router = useRouter();
   const currentPathname = usePathname();
@@ -38,11 +40,12 @@ export default function LanguageToggle() {
   const handleLocaleChange = (newLocale: Locale) => {
     // set cookie for next-i18n-router
     const days = 30;
-    const date = new Date();
-    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-    const expires = "; expires=" + date.toUTCString();
-    document.cookie = `i18next=${newLocale};expires=${expires};path=/`;
+    // const date = new Date();
+    // date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+    // const expires = "; expires=" + date.toUTCString();
+    // document.cookie = `i18next=${newLocale};expires=${expires};path=/`;
 
+    Cookies.set("i18next", newLocale, { expires: days, path: "/" });
     // redirect to the new locale path
 
     const segmanets = currentPathname.split("/");
@@ -60,7 +63,7 @@ export default function LanguageToggle() {
         if (secondSlash !== -1) {
           const newUrl = currentPathname.slice(secondSlash);
 
-          // console.log(newUrl);
+          console.log(newUrl);
 
           if (newLocale !== i18nConfig.defaultLocale) {
             router.push(`/${newLocale}${newUrl}`);

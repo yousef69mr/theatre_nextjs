@@ -328,7 +328,11 @@ const PlayForm: FC<PlayFormProps> = (props) => {
                           <CommandGroup>
                             {localExecutors?.map((executor) => (
                               <CommandItem
-                                value={executor.id}
+                                value={`${executor.name} ${
+                                  executor.nickname
+                                    ? `${executor.nickname}`
+                                    : ""
+                                }`}
                                 key={executor.id}
                                 onSelect={() => {
                                   form.setValue("executorId", executor.id);
@@ -342,7 +346,10 @@ const PlayForm: FC<PlayFormProps> = (props) => {
                                       : "opacity-0"
                                   )}
                                 />
-                                {executor.name}
+                                {executor.name}{" "}
+                                {executor.nickname
+                                  ? `(${executor.nickname})`
+                                  : ""}
                               </CommandItem>
                             ))}
                           </CommandGroup>
@@ -430,7 +437,7 @@ const PlayForm: FC<PlayFormProps> = (props) => {
                               <CommandGroup>
                                 {localFestivals?.map((festival) => (
                                   <CommandItem
-                                    value={festival.id}
+                                    value={`${festival.name} (${festival.id})`}
                                     key={festival.id}
                                     onSelect={() => {
                                       form.setValue("festivalId", festival.id);
@@ -592,19 +599,6 @@ const PlayForm: FC<PlayFormProps> = (props) => {
                       })}
                     </FormLabel>
                     <FormControl>
-                      {/* <SingleImageUpload
-                    // disabled={isSubmitting}
-                    value={field.value ? field.value : ""}
-                    setImageUrl={(url) => {
-                      // console.log(url);
-                      form.setValue(field.name, url);
-                      form.trigger(field.name);
-                      // console.log(form.getFieldState("posterImgUrl"));
-                    }}
-                    onLoading={setIsUploadingFile}
-                    //   onRemove={() => field.onChange("")}
-                    // {...field}
-                  /> */}
                       <FileUpload
                         endpoint="playImage"
                         value={field.value || ""}

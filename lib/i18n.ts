@@ -71,7 +71,14 @@ export default async function initTranslations(
     supportedLngs: i18nConfig.locales,
     defaultNS: namespaces[0],
     fallbackNS: namespaces[0],
+    detection: {
+      order: ["cookie", "path", "htmlTag", "localStorage", "subdomain"],
+      caches: ["cookie"],
+    },
     ns: namespaces,
+    interpolation: {
+      escapeValue: false, // react already safes from xss
+    },
     preload: resources ? [] : i18nConfig.locales,
   });
 
