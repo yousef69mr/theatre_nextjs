@@ -20,9 +20,7 @@ import { useParams } from "next/navigation";
 // import { AspectRatio } from "@/components/ui/aspect-ratio";
 // import { ExecutorRole } from "@prisma/client";
 
-export type ExecutorColumnDef<TData> = ColumnDef<TData> & {
-  type: string; // Replace 'string' with the actual type you want to use
-};
+export type ExecutorColumnDef<TData> = ColumnDef<TData>;
 
 export const ExecutorColumns: ExecutorColumnDef<ExecutorType>[] = [
   {
@@ -57,7 +55,9 @@ export const ExecutorColumns: ExecutorColumnDef<ExecutorType>[] = [
         </div>
       );
     },
-    type: "image",
+    meta: {
+      type: "image",
+    },
   },
   {
     accessorKey: "executorName",
@@ -86,14 +86,19 @@ export const ExecutorColumns: ExecutorColumnDef<ExecutorType>[] = [
       const params = useParams();
       const locale = params.locale as string;
       return (
-        <Link href={`/${locale}/executors/${executor.id}`} className="hover:text-orange-300">
+        <Link
+          href={`/${locale}/executors/${executor.id}`}
+          className="hover:text-orange-300"
+        >
           <div className="flex items-center justify-center">
             <p>{getValue() as string}</p>
           </div>
         </Link>
       );
     },
-    type: "string",
+    meta: {
+      type: "string",
+    },
   },
   {
     accessorKey: "awards",
@@ -123,7 +128,9 @@ export const ExecutorColumns: ExecutorColumnDef<ExecutorType>[] = [
         </div>
       );
     },
-    type: "number",
+    meta: {
+      type: "number",
+    },
   },
 
   {
@@ -140,12 +147,16 @@ export const ExecutorColumns: ExecutorColumnDef<ExecutorType>[] = [
         </Button>
       );
     },
-    type: "string",
+    meta: {
+      type: "string",
+    },
     // cell: ({ row }) => <div>{row.original.employeeID.toString()}</div>,
   },
   {
     id: "actions",
     cell: ({ row }) => <CellAction data={row.original} />,
-    type: "action",
+    meta: {
+      type: "actions",
+    },
   },
 ];

@@ -20,12 +20,13 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
-export type ActorColumnDef<TData> = ColumnDef<TData> & {
-  type: string; // Replace 'string' with the actual type you want to use
-};
+export type ActorColumnDef<TData> = ColumnDef<TData>;
 
 export const ActorColumns: ActorColumnDef<ActorType>[] = [
   {
+    meta: {
+      type: "image",
+    },
     accessorKey: "profileImg",
     header: () => {
       const { t } = useTranslation();
@@ -57,7 +58,6 @@ export const ActorColumns: ActorColumnDef<ActorType>[] = [
         </div>
       );
     },
-    type: "image",
   },
 
   {
@@ -98,7 +98,9 @@ export const ActorColumns: ActorColumnDef<ActorType>[] = [
         </Link>
       );
     },
-    type: "string",
+    meta: {
+      type: "string",
+    },
   },
 
   {
@@ -128,7 +130,9 @@ export const ActorColumns: ActorColumnDef<ActorType>[] = [
         </div>
       );
     },
-    type: "number",
+    meta: {
+      type: "number",
+    },
   },
   {
     accessorKey: "id",
@@ -144,12 +148,16 @@ export const ActorColumns: ActorColumnDef<ActorType>[] = [
         </Button>
       );
     },
-    type: "string",
+    meta: {
+      type: "string",
+    },
     // cell: ({ row }) => <div>{row.original.employeeID.toString()}</div>,
   },
   {
     id: "actions",
     cell: ({ row }) => <CellAction data={row.original} />,
-    type: "action",
+    meta: {
+      type: "actions",
+    },
   },
 ];

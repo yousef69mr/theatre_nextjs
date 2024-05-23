@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, RowData } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { PlayType } from "@/types";
 import Image from "next/image";
@@ -21,9 +21,13 @@ import { Progress } from "@/components/ui/progress";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
-export type PlayColumnDef<TData> = ColumnDef<TData> & {
-  type: string; // Replace 'string' with the actual type you want to use
-};
+// declare module '@tanstack/react-table' {
+//   interface PlayColumnDef<TData extends RowData, TValue> {
+//     type: string;
+//   }
+// }
+
+export type PlayColumnDef<TData> = ColumnDef<TData>;
 
 export const PlayColumns: PlayColumnDef<PlayType>[] = [
   {
@@ -40,7 +44,9 @@ export const PlayColumns: PlayColumnDef<PlayType>[] = [
         </Button>
       );
     },
-    type: "string",
+    meta: {
+      type: "string",
+    },
     // cell: ({ row }) => <div>{row.original.employeeID.toString()}</div>,
   },
   {
@@ -80,7 +86,9 @@ export const PlayColumns: PlayColumnDef<PlayType>[] = [
         </Link>
       );
     },
-    type: "string",
+    meta: {
+      type: "string",
+    },
   },
   {
     accessorKey: "director",
@@ -126,7 +134,9 @@ export const PlayColumns: PlayColumnDef<PlayType>[] = [
         </Link>
       );
     },
-    type: "string",
+    meta: {
+      type: "string",
+    },
   },
   {
     accessorKey: "crew",
@@ -210,7 +220,9 @@ export const PlayColumns: PlayColumnDef<PlayType>[] = [
         </div>
       );
     },
-    type: "number",
+    meta: {
+      type: "number",
+    },
   },
   {
     accessorKey: "poster",
@@ -246,11 +258,15 @@ export const PlayColumns: PlayColumnDef<PlayType>[] = [
         </Link>
       );
     },
-    type: "image",
+    meta: {
+      type: "image",
+    },
   },
   {
     id: "actions",
     cell: ({ row }) => <CellAction data={row.original} />,
-    type: "action",
+    meta: {
+      type: "actions",
+    },
   },
 ];

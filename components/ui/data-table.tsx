@@ -36,7 +36,7 @@ interface DataTableProps<TData, TValue> {
   columns: (ColumnDef<TData, TValue> & { type?: string })[];
   data: TData[];
   initialSearchKey?: string;
-  type: "play" | "actor" | "executor" | "ticket" | "festival" |"user";
+  type: "play" | "actor" | "executor" | "ticket" | "festival" | "user";
 }
 
 export function DataTable<TData, TValue>({
@@ -100,7 +100,7 @@ export function DataTable<TData, TValue>({
             >
               {table
                 .getAllColumns()
-                // .filter((column) => column.columnDef.type === "string")
+                .filter((column) => column.columnDef.meta?.type === "string")
                 .map((column) => {
                   // console.log(column)
                   return (
