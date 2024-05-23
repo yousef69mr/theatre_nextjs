@@ -70,7 +70,7 @@ const FestivalPlayCard: FC<FestivalPlayCardProps> = (props) => {
               <div className="flex gap-2 mt-2 items-center justify-start">
                 {festivalPlay.showTimes.map((showtime, index) => (
                   <Badge key={index} variant={"outline"}>
-                    {format(showtime, "MMMM do, yyyy")}
+                    {format(showtime, "MMMM do, yyyy HH:MM")}
                   </Badge>
                 ))}
               </div>

@@ -17,12 +17,13 @@ import { cn } from "@/lib/utils";
 // import { Separator } from "@/components/ui/separator";
 interface ExecutorListProps {
   executors: ExecutorType[];
+  cardsPerPage?:number
 }
 
 const CARDS_PER_PAGE = 8;
 
 const ExecutorList: FC<ExecutorListProps> = (props) => {
-  const { executors } = props;
+  const { executors,cardsPerPage=CARDS_PER_PAGE } = props;
   const searchKey = "executorPage";
   const {
     currentPage,
@@ -31,7 +32,7 @@ const ExecutorList: FC<ExecutorListProps> = (props) => {
     previousPage,
     goToPage,
     getCurrentPageData,
-  } = usePagination(CARDS_PER_PAGE, searchKey, executors);
+  } = usePagination(cardsPerPage, searchKey, executors);
 
   const params = useParams();
   const pathname = usePathname();

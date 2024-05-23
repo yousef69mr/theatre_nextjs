@@ -19,6 +19,7 @@ import { useTranslation } from "react-i18next";
 import { ExecutorRole } from "@prisma/client";
 import { Progress } from "@/components/ui/progress";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 
 export type PlayColumnDef<TData> = ColumnDef<TData> & {
   type: string; // Replace 'string' with the actual type you want to use
@@ -44,6 +45,11 @@ export const PlayColumns: PlayColumnDef<PlayType>[] = [
   },
   {
     accessorKey: "playName",
+    accessorFn: (originalRow) => {
+      const play = originalRow;
+      const playName = play.name;
+      return playName;
+    },
     header: ({ column }) => {
       const { t } = useTranslation();
       return (
@@ -56,18 +62,39 @@ export const PlayColumns: PlayColumnDef<PlayType>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => {
+
+    cell: ({ row, getValue }) => {
       const play = row.original as unknown as PlayType;
+
+      const params = useParams();
+      const locale = params.locale as string;
+
       return (
-        <div className="flex items-center justify-center">
-          <p>{play.name}</p>
-        </div>
+        <Link
+          href={`/${locale}/plays/${play.id}`}
+          className="hover:text-orange-300"
+        >
+          <div className="flex items-center justify-center">
+            <p>{`${getValue()}`}</p>
+          </div>
+        </Link>
       );
     },
     type: "string",
   },
   {
     accessorKey: "director",
+    accessorFn: (originalRow) => {
+      const director = originalRow.executors.find(
+        (executor) => executor.role === ExecutorRole.DIRECTOR
+      );
+      // console.log(director);
+      const directorName = `${director?.executor?.name}
+      ${
+        director?.executor?.nickname ? `(${director?.executor?.nickname})` : ""
+      }`;
+      return directorName;
+    },
     header: ({ column }) => {
       const { t } = useTranslation();
       return (
@@ -80,27 +107,40 @@ export const PlayColumns: PlayColumnDef<PlayType>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => {
+    cell: ({ row, getValue }) => {
       const director = row.original.executors.find(
         (executor) => executor.role === ExecutorRole.DIRECTOR
       );
-      // console.log(director);
+
+      const params = useParams();
+      const locale = params.locale as string;
 
       return (
-        <div className="flex items-center justify-center">
-          <p>
-            {director?.executor?.name}{" "}
-            {director?.executor?.nickname
-              ? `(${director?.executor?.nickname})`
-              : ""}
-          </p>
-        </div>
+        <Link
+          href={`/${locale}/executors/${director?.executor?.id}`}
+          className="hover:text-orange-300"
+        >
+          <div className="flex items-center justify-center">
+            <p>{`${getValue()}`}</p>
+          </div>
+        </Link>
       );
     },
     type: "string",
   },
   {
     accessorKey: "crew",
+    accessorFn: (originalRow) => {
+      const actors = originalRow.actors;
+      const executors = originalRow.executors;
+      // console.log(actors, executors);
+      const numOfActors = actors.length || 0;
+      const numOfExecutors = executors.length || 0;
+
+      const crew =
+        numOfActors + numOfExecutors > 0 ? numOfActors + numOfExecutors : 1;
+      return crew;
+    },
     header: ({ column }) => {
       const { t } = useTranslation();
       return (
@@ -113,16 +153,16 @@ export const PlayColumns: PlayColumnDef<PlayType>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => {
+    cell: ({ row, getValue }) => {
       const { t } = useTranslation();
+
       const actors = row.original.actors;
       const executors = row.original.executors;
       // console.log(actors, executors);
       const numOfActors = actors.length || 0;
       const numOfExecutors = executors.length || 0;
 
-      const crew =
-        numOfActors + numOfExecutors > 0 ? numOfActors + numOfExecutors : 1;
+      const crew = getValue() as number;
       return (
         <div className="flex items-center justify-center">
           <TooltipProvider>
@@ -174,11 +214,12 @@ export const PlayColumns: PlayColumnDef<PlayType>[] = [
   },
   {
     accessorKey: "poster",
-    header: ({ column }) => {
+    header: () => {
       const { t } = useTranslation();
       return (
         <Button
           variant="ghost"
+          className="hover:bg-inherit hover:text-inherit"
           // onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           {t("tables.poster", { ns: "constants" })}

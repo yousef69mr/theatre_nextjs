@@ -16,6 +16,7 @@ import Image from "next/image";
 import CellAction from "./cell-actions";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 // import { AspectRatio } from "@/components/ui/aspect-ratio";
 // import { ExecutorRole } from "@prisma/client";
 
@@ -26,11 +27,12 @@ export type ExecutorColumnDef<TData> = ColumnDef<TData> & {
 export const ExecutorColumns: ExecutorColumnDef<ExecutorType>[] = [
   {
     accessorKey: "profileImg",
-    header: ({ column }) => {
+    header: () => {
       const { t } = useTranslation();
       return (
         <Button
           variant="ghost"
+          className="hover:bg-inherit hover:text-inherit"
           // onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           {t("tables.profileImg", { ns: "constants" })}
@@ -59,6 +61,13 @@ export const ExecutorColumns: ExecutorColumnDef<ExecutorType>[] = [
   },
   {
     accessorKey: "executorName",
+    accessorFn: (originalRow) => {
+      const executor = originalRow;
+      const executorName = `${executor.name} ${
+        executor.nickname ? `(${executor.nickname})` : ""
+      }`;
+      return executorName;
+    },
     header: ({ column }) => {
       const { t } = useTranslation();
       return (
@@ -71,21 +80,28 @@ export const ExecutorColumns: ExecutorColumnDef<ExecutorType>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => {
+    cell: ({ row, getValue }) => {
       const executor = row.original as unknown as ExecutorType;
+
+      const params = useParams();
+      const locale = params.locale as string;
       return (
-        <div className="flex items-center justify-center">
-          <p>
-            {executor.name} {executor.nickname ? `(${executor.nickname})` : ""}
-          </p>
-        </div>
+        <Link href={`/${locale}/executors/${executor.id}`} className="hover:text-orange-300">
+          <div className="flex items-center justify-center">
+            <p>{getValue() as string}</p>
+          </div>
+        </Link>
       );
     },
     type: "string",
   },
-
   {
     accessorKey: "awards",
+    accessorFn: (originalRow) => {
+      const awards = originalRow.awards;
+
+      return awards.length || 0;
+    },
     header: ({ column }) => {
       const { t } = useTranslation();
       return (
@@ -98,12 +114,12 @@ export const ExecutorColumns: ExecutorColumnDef<ExecutorType>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => {
-      const awards = row.original.awards;
+    cell: ({ getValue }) => {
+      const awardsNum = getValue() as number;
 
       return (
         <div className="flex items-center justify-center">
-          <p>{awards.length}</p>
+          <p>{awardsNum}</p>
         </div>
       );
     },

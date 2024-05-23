@@ -33,7 +33,9 @@ const FileUpload = (props: FileUploadProps) => {
 
   if (value && fileType !== "pdf") {
     return (
-      <div className={cn("relative max-w-32 rounded-lg", className)}>
+      <div
+        className={cn("relative max-w-full md:max-w-32 rounded-lg", className)}
+      >
         {/* <Image src={value} alt="Upload" fill /> */}
         <AspectRatio ratio={2 / 3} className="bg-muted">
           <Image

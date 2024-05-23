@@ -91,7 +91,16 @@ const AttendPlayPage: FC<AttendPlayPageProps> = async (props) => {
     </>
   );
   return (
-    <main className="flex flex-col w-full general-padding">
+    <main className="flex flex-col w-full justify-center items-center general-padding main-section relative">
+      <div className="w-full h-full bg-neutral-800/40 backdrop-saturate-50 top-0 left-0 -z-10 absolute" />
+            <Image
+              fill
+              priority
+              src="/book-tickets.jpg"
+              alt="theatre background"
+              className="-z-20"
+            />
+
       <TranslationsProvider
         locale={locale}
         namespaces={i18nextNamspaces}
@@ -106,15 +115,8 @@ const AttendPlayPage: FC<AttendPlayPageProps> = async (props) => {
             <PlayList plays={livePlays} redirect="attend" />
           </div>
         ) : (
-          <div className="size-full flex items-center justify-center relative main-section">
-            <div className="w-full h-full bg-neutral-800/40 backdrop-saturate-50 top-0 left-0 -z-10 absolute" />
-            <Image
-              fill
-              priority
-              src="/book-tickets.jpg"
-              alt="theatre background"
-              className="-z-20"
-            />
+          
+            
             <CardWrapper headerTitle={pageTitle}>
               <FormError
                 message={t("errors.noPlaysToAttend", {
@@ -122,7 +124,7 @@ const AttendPlayPage: FC<AttendPlayPageProps> = async (props) => {
                 })}
               />
             </CardWrapper>
-          </div>
+          
         )}
       </TranslationsProvider>
     </main>

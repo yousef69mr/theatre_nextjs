@@ -144,7 +144,7 @@ const TicketClient: FC<TicketClientProps> = (props) => {
         <TooltipProvider>
           <div className="w-full relative space-y-4 sm:flex-1 sm:h-full flex flex-col items-start justify-center">
             <div className="w-full flex flex-wrap items-center justify-between">
-              <div className="flex gap-x-2 items-center">
+              <div className="flex gap-y-2 justify-start flex-col">
                 <h1 className="text-lg md:text-2xl w-full font-semibold capitalize">
                   <span className="break-all text-wrap word">{ticket.id}</span>
                   <Button

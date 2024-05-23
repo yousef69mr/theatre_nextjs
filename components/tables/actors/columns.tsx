@@ -18,6 +18,7 @@ import { useTranslation } from "react-i18next";
 // import { AspectRatio } from "@/components/ui/aspect-ratio";
 // import { ExecutorRole } from "@prisma/client";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 
 export type ActorColumnDef<TData> = ColumnDef<TData> & {
   type: string; // Replace 'string' with the actual type you want to use
@@ -31,6 +32,7 @@ export const ActorColumns: ActorColumnDef<ActorType>[] = [
       return (
         <Button
           variant="ghost"
+          className="hover:bg-inherit hover:text-inherit"
           // onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           {t("tables.profileImg", { ns: "constants" })}
@@ -60,6 +62,13 @@ export const ActorColumns: ActorColumnDef<ActorType>[] = [
 
   {
     accessorKey: "actorName",
+    accessorFn: (originalRow) => {
+      const actor = originalRow;
+      const actorName = `${actor.name} ${
+        actor.nickname ? `(${actor.nickname})` : ""
+      }`;
+      return actorName;
+    },
     header: ({ column }) => {
       const { t } = useTranslation();
       return (
@@ -72,15 +81,21 @@ export const ActorColumns: ActorColumnDef<ActorType>[] = [
         </Button>
       );
     },
-    
-    cell: ({ row }) => {
-      const actor = row.original as unknown as ActorType;
+
+    cell: ({ row, getValue }) => {
+      const actor = row.original;
+
+      const params = useParams();
+      const locale = params.locale as string;
       return (
-        <div className="flex items-center justify-center">
-          <p>
-            {actor.name} {actor.nickname ? `(${actor.nickname})` : ""}
-          </p>
-        </div>
+        <Link
+          href={`/${locale}/actors/${actor.id}`}
+          className="hover:text-orange-300"
+        >
+          <div className="flex items-center justify-center">
+            <p>{getValue() as string}</p>
+          </div>
+        </Link>
       );
     },
     type: "string",
@@ -88,6 +103,11 @@ export const ActorColumns: ActorColumnDef<ActorType>[] = [
 
   {
     accessorKey: "awards",
+    accessorFn: (originalRow) => {
+      const awards = originalRow.awards;
+
+      return awards.length || 0;
+    },
     header: ({ column }) => {
       const { t } = useTranslation();
       return (
@@ -100,12 +120,11 @@ export const ActorColumns: ActorColumnDef<ActorType>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => {
-      const awards = row.original.awards;
-
+    cell: ({ getValue }) => {
+      const awardsNum = getValue() as number;
       return (
         <div className="flex items-center justify-center">
-          <p>{awards?.length || 0}</p>
+          <p>{awardsNum}</p>
         </div>
       );
     },

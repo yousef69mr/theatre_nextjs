@@ -12,16 +12,18 @@ interface AdminPlaysPageProps {
   params: { locale: Locale };
 }
 
-
 export async function generateMetadata({
   params,
 }: AdminPlaysPageProps): // parent: ResolvingMetadata
 Promise<Metadata> {
   const { t } = await initTranslations(params.locale, i18nextNamspaces);
 
-  const title = `${t("play.plural",{ns:"constants"})} | ${t("UserRole.ADMIN", {
-    ns: "common",
-  })}`;
+  const title = `${t("play.plural", { ns: "constants" })} | ${t(
+    "UserRole.ADMIN",
+    {
+      ns: "common",
+    }
+  )}`;
 
   //TODO: make proper
   const description = "all theatre plays";

@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import { useNavigationStore } from "@/hooks/stores/use-navigation-store";
 import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
 
 interface LoginButtonProps {
   children?: React.ReactNode;
@@ -26,6 +27,10 @@ const LoginButton = (props: LoginButtonProps) => {
       onClose();
     }
   };
+
+  useEffect(()=>{
+    router.prefetch("/auth/login");
+  },[router])
 
   const btnText = children ? children : t("common:login");
 

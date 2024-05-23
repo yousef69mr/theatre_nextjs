@@ -273,7 +273,7 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
                       <CommandGroup>
                         {localPlays?.map((play) => (
                           <CommandItem
-                            value={play.id}
+                            value={play.name}
                             key={play.id}
                             onSelect={() => {
                               form.setValue("playId", play.id);
@@ -335,7 +335,7 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
-                  <PopoverContent className=" p-0">
+                  <PopoverContent className="p-0">
                     <Command>
                       <CommandInput
                         placeholder={t("actions.select", {
@@ -356,7 +356,7 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
                       <CommandGroup>
                         {festivals?.map((festival) => (
                           <CommandItem
-                            value={festival.id}
+                            value={festival.name}
                             key={festival.id}
                             onSelect={() => {
                               form.setValue("festivalId", festival.id);
@@ -428,6 +428,7 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
                   ref={field.ref}
                   disabled={isDisabled}
                   type="datetime-local"
+                  
                 />
               </FormControl>
               <FormDescription>
