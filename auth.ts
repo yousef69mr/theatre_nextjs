@@ -80,6 +80,8 @@ export const {
       token.role = existingUser.role;
       token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
       token.isEditable = existingUser.isEditable;
+      token.executorId = existingUser.executor?.executorId;
+      token.actorId = existingUser.actor?.actorId;
 
       return token;
     },
@@ -98,6 +100,8 @@ export const {
         session.user.email = token.email;
         session.user.isOAuth = token.isOAuth as boolean;
         session.user.isEditable = token.isEditable as boolean;
+        session.user.actorId = token.actorId as string;
+        session.user.executorId = token.executorId as string;
       }
 
       return session;

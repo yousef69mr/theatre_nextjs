@@ -34,6 +34,13 @@ import {
 import toast from "react-hot-toast";
 
 import { Separator } from "@/components/ui/separator";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 import { useTranslation } from "react-i18next";
 
@@ -44,6 +51,7 @@ import { useModal } from "@/hooks/stores/use-modal-store";
 import { useExecutorStore } from "@/hooks/stores/use-executor-store";
 import FileUpload from "../../helpers/file-upload";
 import { Textarea } from "@/components/ui/textarea";
+import { facultyCasts } from "@/lib/constants";
 
 interface ExecutorFormProps extends HtmlHTMLAttributes<HTMLElement> {
   initialData: ExecutorType | null;
@@ -80,6 +88,7 @@ const ExecutorForm: FC<ExecutorFormProps> = (props) => {
     resolver: zodResolver(executorSchema),
     defaultValues: {
       ...initialData,
+      nickname: initialData?.nickname || undefined,
       description: initialData?.description || undefined,
     },
   });
@@ -102,7 +111,7 @@ const ExecutorForm: FC<ExecutorFormProps> = (props) => {
             updateExecutor(data);
             router.refresh();
             if (mode === "page") {
-              router.push(`/${locale}/admin/executors`);
+              // router.push(`/${locale}/admin/executors`);
             } else {
               onClose();
               form.reset();
@@ -165,8 +174,12 @@ const ExecutorForm: FC<ExecutorFormProps> = (props) => {
   const isValid = form.formState.isValid;
 
   return (
-    <div className={cn(initialData && "mt-6 border rounded-md p-4")}>
-      {initialData && (
+    <div
+      className={cn(
+        initialData && mode !== "modal" && "mt-6 border rounded-md p-4"
+      )}
+    >
+      {initialData && mode !== "modal" && (
         <>
           <div className="font-medium flex items-center justify-between">
             <span className="capitalize">
@@ -244,83 +257,122 @@ const ExecutorForm: FC<ExecutorFormProps> = (props) => {
               <div
                 className={cn(
                   "gap-4 flex-1",
-                  mode === "page" && "grid md:grid-cols-2 gap-6",
+                  mode === "page" && "grid md:grid-cols-2 items-center",
                   mode === "modal" && "w-full"
                 )}
               >
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        {t("executorForm.inputs-label.name", { ns: "admin" })}
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          disabled={isDisabled}
-                          placeholder={t(
-                            "executorForm.inputs-placeholder.name",
-                            {
-                              ns: "admin",
-                            }
-                          )}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                <div
+                  className={cn(
+                    "w-full flex items-center justify-center flex-wrap gap-x-1",
+                    mode === "page" && "md:col-span-2"
                   )}
-                />
-                <FormField
-                  control={form.control}
-                  name="nickname"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        {t("executorForm.inputs-label.nickname", {
-                          ns: "admin",
-                        })}
-                      </FormLabel>
-                      <FormControl>
-                        <Input
+                >
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem className="flex-1">
+                        <FormLabel>
+                          {t("forms.labels.actorName", { ns: "constants" })}
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            disabled={isDisabled}
+                            placeholder={t("forms.placeholder.actorName", {
+                              ns: "constants",
+                            })}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="nickname"
+                    render={({ field }) => (
+                      <FormItem className="flex-1">
+                        <FormLabel>
+                          {t("forms.labels.nickname", { ns: "constants" })}
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            disabled={isDisabled}
+                            placeholder={t("forms.placeholder.nickname", {
+                              ns: "constants",
+                            })}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="facultyCast"
+                    render={({ field }) => (
+                      <FormItem className="self-end flex-1 shrink md:min-w-[50px]">
+                        <FormLabel>
+                          {t("forms.labels.facultyCast", { ns: "constants" })}
+                        </FormLabel>
+                        <Select
                           disabled={isDisabled}
-                          placeholder={t(
-                            "executorForm.inputs-placeholder.nickname",
-                            {
-                              ns: "admin",
-                            }
-                          )}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                {/* <FormField
-                  control={form.control}
-                  name="description"
-                  render={({ field }) => (
-                    <FormItem className="w-full md:col-span-2">
-                      <FormLabel>
-                        {t("forms.labels.description", {
-                          ns: "constants",
-                        })}
-                      </FormLabel>
-                      <FormControl>
-                        <Textarea
-                          disabled={isDisabled}
-                          placeholder={t("forms.placeholder.description", {
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue
+                                placeholder={t("actions.select", {
+                                  ns: "common",
+                                  instance: t("forms.labels.facultyCast", {
+                                    ns: "constants",
+                                  }),
+                                })}
+                              />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {facultyCasts.map((faculty) => (
+                              <SelectItem key={faculty} value={faculty}>
+                                {t(`FacultyCast.${faculty}`, { ns: "common" })}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                {(mode === "page" || initialData) && (
+                  <FormField
+                    control={form.control}
+                    name="description"
+                    render={({ field }) => (
+                      <FormItem className="w-full md:col-span-2">
+                        <FormLabel>
+                          {t("forms.labels.description", {
                             ns: "constants",
                           })}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                /> */}
+                        </FormLabel>
+                        <FormControl>
+                          <Textarea
+                            disabled={isDisabled}
+                            placeholder={t("forms.placeholder.description", {
+                              ns: "constants",
+                            })}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
               </div>
             </div>
 

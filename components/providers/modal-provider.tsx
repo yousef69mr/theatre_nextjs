@@ -27,6 +27,7 @@ import EditUserRoleModal from "@/components/modals/user/edit-user-role-modal";
 import { ShareTicketModal } from "@/components/modals/ticket/share-ticket-modal";
 import { EditTicketModal } from "@/components/modals/ticket/edit-ticket-modal";
 import { QRTicketModal } from "@/components/modals/ticket/qr-ticket-modal";
+import EditActorModal from "@/components/modals/actor/edit-actor-modal";
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -43,6 +44,7 @@ export const ModalProvider = () => {
       <CreateExecutorModal />
       <DeleteExecutorModal />
       <CreateActorModal />
+      <EditActorModal />
       <DeleteActorModal />
       <DeletePlayModal />
       <CreateFestivalModal />

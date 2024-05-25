@@ -27,7 +27,8 @@ import { Separator } from "@/components/ui/separator";
 
 import { useTranslation } from "react-i18next";
 
-import { actorSchema, facultyCasts } from "@/lib/validations/models/actor";
+import { actorSchema } from "@/lib/validations/models/actor";
+import { facultyCasts } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { useModal } from "@/hooks/stores/use-modal-store";
 // import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
@@ -46,7 +47,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { FacultyCast } from "@prisma/client";
+// import { FacultyCast } from "@prisma/client";
 
 interface ActorFormProps extends HtmlHTMLAttributes<HTMLElement> {
   initialData: ActorType | null;
@@ -62,7 +63,9 @@ const ActorForm: FC<ActorFormProps> = (props) => {
   const addActor = useActorStore((state) => state.addActor);
   const updateActor = useActorStore((state) => state.updateActor);
   // console.log(initialData, Boolean(initialData));
-  const [isEditing, setIsEditing] = useState<boolean>(!Boolean(initialData));
+  const [isEditing, setIsEditing] = useState<boolean>(
+    !Boolean(initialData) || mode === "modal"
+  );
 
   const toggleEdit = () => setIsEditing((current) => !current);
 
@@ -116,7 +119,7 @@ const ActorForm: FC<ActorFormProps> = (props) => {
               form.reset();
             }
           })
-          .catch((error:Error) => toast.error(error.message))
+          .catch((error: Error) => toast.error(error.message))
           .finally(() => {
             setIsLoading(false);
             setIsEditing(false);
@@ -142,7 +145,7 @@ const ActorForm: FC<ActorFormProps> = (props) => {
               form.reset();
             }
           })
-          .catch((error:Error) => toast.error(error.message))
+          .catch((error: Error) => toast.error(error.message))
           .finally(() => setIsLoading(false));
       }
     });
@@ -163,8 +166,12 @@ const ActorForm: FC<ActorFormProps> = (props) => {
   const isDisabled = isUploadingFile || isSubmitting;
   const isValid = form.formState.isValid;
   return (
-    <div className={cn(initialData && "mt-6 border rounded-md p-4")}>
-      {initialData && (
+    <div
+      className={cn(
+        initialData && mode !== "modal" && "mt-6 border rounded-md p-4"
+      )}
+    >
+      {initialData && mode !== "modal" && (
         <>
           <div className="font-medium flex items-center justify-between">
             <span className="capitalize">
@@ -386,7 +393,7 @@ const ActorForm: FC<ActorFormProps> = (props) => {
                   </div>
                 )}
 
-                {mode === "page" && (
+                {(mode === "page" || initialData) && (
                   <FormField
                     control={form.control}
                     name="description"

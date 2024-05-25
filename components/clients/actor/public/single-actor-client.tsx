@@ -2,7 +2,6 @@
 
 import { Locale } from "@/next-i18next.config";
 import { FC, useEffect } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
@@ -50,6 +49,8 @@ import { Separator } from "@/components/ui/separator";
 
 import PlayCarousel from "@/components/carousels/play-carousel";
 import { removeActorPlayDuplicates } from "@/lib/helpers/list-fomratters";
+import { useCurrentUser } from "@/hooks/use-current-user";
+import toast from "react-hot-toast";
 
 // import {
 //   removeActorActorDuplicates,
@@ -62,9 +63,10 @@ interface ActorClientProps {
 
 const ActorClient: FC<ActorClientProps> = (props) => {
   const { actor } = props;
-  const role = useCurrentRole();
+  const loggedUser = useCurrentUser();
   const { t } = useTranslation();
   // const { isBelowMd, isAboveMd } = useBreakpoint("md");
+  // console.log(loggedUser);
   const router = useRouter();
   const params = useParams();
 
@@ -79,14 +81,28 @@ const ActorClient: FC<ActorClientProps> = (props) => {
   };
 
   const handleEdit = () => {
-    router.push(`/${locale}/admin/actors/${actor.id}`);
+    if (loggedUser?.role === UserRole.ADMIN) {
+      router.push(`/${locale}/admin/actors/${actor.id}`);
+    } else if (isMyActorProfile) {
+      onOpen("editActor", { actor });
+    } else {
+      toast.error(t("errors.codes.401", { ns: "constants" }));
+    }
   };
+
+  const plays = removeActorPlayDuplicates(actor);
+
+  const isMyActorProfile = actor.id === loggedUser?.actorId;
+  // console.log(isMyActorProfile);
+  const isAdminUser = isAdmin(loggedUser?.role as UserRole);
 
   useEffect(() => {
     updateActor(actor);
   }, [actor]);
 
-  const plays = removeActorPlayDuplicates(actor);
+  useEffect(() => {
+    isAdminUser && router.prefetch(`/${locale}/admin/actors/${actor.id}`);
+  }, [router, isAdminUser]);
 
   return (
     <div className="px-10">
@@ -98,13 +114,14 @@ const ActorClient: FC<ActorClientProps> = (props) => {
       >
         <div
           className={cn(
-            "w-full min-h-80 sm:max-w-56 md:max-w-64 lg:max-w-80 flex items-center justify-center  md:top-28 md:sticky"
+            "w-full min-h-80 sm:max-w-56 md:max-w-64 lg:max-w-80 flex items-center justify-center relative"
           )}
         >
           {/* <AspectRatio ratio={9 / 16}> */}
           <Image
             src={actor.imgUrl ? actor.imgUrl : "/actor-poster-template.png"}
             fill
+            sizes="32x32 64x64 128x128"
             className="object-contain rounded-lg !relative"
             alt={`${actor.name} ${t("poster.single", { ns: "constants" })}`}
           />
@@ -118,38 +135,43 @@ const ActorClient: FC<ActorClientProps> = (props) => {
                   {actor.name} {actor.nickname ? `(${actor.nickname})` : ""}
                 </h1>
               </div>
-              {isAdmin(role as UserRole) && (
+
+              {(isAdminUser || isMyActorProfile) && (
                 <div className="flex items-center gap-x-2">
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant={"outline"} onClick={handleEdit}>
-                        <Pencil className={"h-4 w-4"} />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <span>
-                        {t("actions.edit", {
-                          ns: "common",
-                          instance: t("actor.single", { ns: "constants" }),
-                        })}
-                      </span>
-                    </TooltipContent>
-                  </Tooltip>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button onClick={handleDelete}>
-                        <Trash className={"h-4 w-4"} />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <span>
-                        {t("actions.delete", {
-                          ns: "common",
-                          instance: t("actor.single", { ns: "constants" }),
-                        })}
-                      </span>
-                    </TooltipContent>
-                  </Tooltip>
+                  {(isAdminUser || isMyActorProfile) && (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button variant={"outline"} onClick={handleEdit}>
+                          <Pencil className={"h-4 w-4"} />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <span>
+                          {t("actions.edit", {
+                            ns: "common",
+                            instance: t("actor.single", { ns: "constants" }),
+                          })}
+                        </span>
+                      </TooltipContent>
+                    </Tooltip>
+                  )}
+                  {isAdminUser && (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button onClick={handleDelete}>
+                          <Trash className={"h-4 w-4"} />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <span>
+                          {t("actions.delete", {
+                            ns: "common",
+                            instance: t("actor.single", { ns: "constants" }),
+                          })}
+                        </span>
+                      </TooltipContent>
+                    </Tooltip>
+                  )}
                 </div>
               )}
             </div>

@@ -140,7 +140,7 @@ export async function PATCH(request: NextRequest, props: ExecutorProps) {
     return NextResponse.json({ error: "Invalid fields" }, { status: 400 });
   }
 
-  const { name, imgUrl, isPublished, nickname, description } =
+  const { name, imgUrl, isPublished, nickname, description, facultyCast } =
     validatedFields.data;
 
   if (!name) {
@@ -159,6 +159,7 @@ export async function PATCH(request: NextRequest, props: ExecutorProps) {
         nickname,
         description,
         isPublished,
+        facultyCast,
       },
       include: {
         awards: true,

@@ -50,6 +50,8 @@ import { Separator } from "@/components/ui/separator";
 
 import PlayCarousel from "@/components/carousels/play-carousel";
 import { removeExecutorPlayDuplicates } from "@/lib/helpers/list-fomratters";
+import { useCurrentUser } from "@/hooks/use-current-user";
+import toast from "react-hot-toast";
 
 // import {
 //   removeExecutorExecutorDuplicates,
@@ -62,7 +64,7 @@ interface ExecutorClientProps {
 
 const ExecutorClient: FC<ExecutorClientProps> = (props) => {
   const { executor } = props;
-  const role = useCurrentRole();
+  const loggedUser = useCurrentUser();
   const { t } = useTranslation();
   // const { isBelowMd, isAboveMd } = useBreakpoint("md");
   const router = useRouter();
@@ -79,14 +81,28 @@ const ExecutorClient: FC<ExecutorClientProps> = (props) => {
   };
 
   const handleEdit = () => {
-    router.push(`/${locale}/admin/executors/${executor.id}`);
+    if (loggedUser?.role === UserRole.ADMIN) {
+      router.push(`/${locale}/admin/executors/${executor.id}`);
+    } else if (isMyExecutorProfile) {
+      onOpen("editExecutor", { executor });
+    } else {
+      toast.error(t("errors.codes.401", { ns: "constants" }));
+    }
   };
+
+  const plays = removeExecutorPlayDuplicates(executor);
+
+  const isMyExecutorProfile = executor.id === loggedUser?.executorId;
+  // console.log(isMyActorProfile);
+  const isAdminUser = isAdmin(loggedUser?.role as UserRole);
 
   useEffect(() => {
     updateExecutor(executor);
   }, [executor]);
 
-  const plays = removeExecutorPlayDuplicates(executor);
+  useEffect(() => {
+    isAdminUser && router.prefetch(`/${locale}/admin/executors/${executor.id}`);
+  }, [router, isAdminUser]);
 
   return (
     <div className="px-10">
@@ -103,7 +119,11 @@ const ExecutorClient: FC<ExecutorClientProps> = (props) => {
         >
           {/* <AspectRatio ratio={9 / 16}> */}
           <Image
-            src={executor.imgUrl ? executor.imgUrl : "/executor-poster-template.png"}
+            src={
+              executor.imgUrl
+                ? executor.imgUrl
+                : "/executor-poster-template.png"
+            }
             fill
             className="object-contain rounded-lg !relative"
             alt={`${executor.name} ${t("poster.single", { ns: "constants" })}`}
@@ -115,46 +135,52 @@ const ExecutorClient: FC<ExecutorClientProps> = (props) => {
             <div className="w-full flex flex-wrap items-center justify-between">
               <div className="flex gap-x-2 items-center">
                 <h1 className="text-2xl font-semibold capitalize">
-                  {executor.name} {executor.nickname ? `(${executor.nickname})` : ""}
+                  {executor.name}{" "}
+                  {executor.nickname ? `(${executor.nickname})` : ""}
                 </h1>
               </div>
-              {isAdmin(role as UserRole) && (
+
+              {(isAdminUser || isMyExecutorProfile) && (
                 <div className="flex items-center gap-x-2">
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant={"outline"} onClick={handleEdit}>
-                        <Pencil className={"h-4 w-4"} />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <span>
-                        {t("actions.edit", {
-                          ns: "common",
-                          instance: t("executor.single", { ns: "constants" }),
-                        })}
-                      </span>
-                    </TooltipContent>
-                  </Tooltip>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button onClick={handleDelete}>
-                        <Trash className={"h-4 w-4"} />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <span>
-                        {t("actions.delete", {
-                          ns: "common",
-                          instance: t("executor.single", { ns: "constants" }),
-                        })}
-                      </span>
-                    </TooltipContent>
-                  </Tooltip>
+                  {(isAdminUser || isMyExecutorProfile) && (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button variant={"outline"} onClick={handleEdit}>
+                          <Pencil className={"h-4 w-4"} />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <span>
+                          {t("actions.edit", {
+                            ns: "common",
+                            instance: t("executor.single", { ns: "constants" }),
+                          })}
+                        </span>
+                      </TooltipContent>
+                    </Tooltip>
+                  )}
+                  {isAdminUser && (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button onClick={handleDelete}>
+                          <Trash className={"h-4 w-4"} />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <span>
+                          {t("actions.delete", {
+                            ns: "common",
+                            instance: t("executor.single", { ns: "constants" }),
+                          })}
+                        </span>
+                      </TooltipContent>
+                    </Tooltip>
+                  )}
                 </div>
               )}
             </div>
 
-            {/* <div className="flex item-center justify-start gap-2">
+            <div className="flex item-center justify-start gap-2">
               <Badge
                 variant={"secondary"}
                 className="flex items-center justify-center rtl:flex-row-reverse gap-x-1 px-3 py-2"
@@ -164,7 +190,7 @@ const ExecutorClient: FC<ExecutorClientProps> = (props) => {
                 </span>
                 <span>{t(`cast.single`, { ns: "constants" })}</span>
               </Badge>
-            </div> */}
+            </div>
             {/* {festivals.filter((festivalLink) => festivalLink.position).length >
               0 && (
               <div className="flex flex-wrap items-center justify-start gap-2">

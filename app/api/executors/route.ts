@@ -26,7 +26,6 @@ export async function GET(request: NextRequest) {
                   id: true,
                   name: true,
                   posterImgUrl: true,
-                  
                 },
               },
               festival: {
@@ -67,7 +66,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid fields" }, { status: 400 });
   }
 
-  const { name, imgUrl, nickname, description } = validatedFields.data;
+  const { name, imgUrl, nickname, description, facultyCast } =
+    validatedFields.data;
 
   if (!name) {
     return NextResponse.json({ error: "name is missing!" }, { status: 400 });
@@ -81,6 +81,7 @@ export async function POST(request: NextRequest) {
         imgUrl,
         nickname,
         description,
+        facultyCast,
       },
       include: {
         awards: true,
@@ -99,11 +100,11 @@ export async function POST(request: NextRequest) {
                 id: true,
                 name: true,
                 posterImgUrl: true,
-                awards:true,
+                awards: true,
                 festivals: {
                   select: {
                     id: true,
-                    showTimes:true,
+                    showTimes: true,
                     festival: {
                       select: {
                         id: true,

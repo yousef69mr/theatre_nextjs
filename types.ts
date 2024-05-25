@@ -2,7 +2,7 @@ import { ExecutorRole, type MediaEnum, UserRole } from "@prisma/client";
 import { Locale } from "./next-i18next.config";
 import { ReactElement } from "react";
 import { actorRoles } from "@/lib/auth";
-import { facultyCasts } from "./lib/validations/models/actor";
+import { facultyCasts } from "@/lib/constants";
 
 export type DataTransationModeType = "serverAction" | "api";
 
@@ -143,6 +143,7 @@ export type ExecutorType = {
   numOfViews: string;
   actor?: ActorType | null;
   // role: ExecutorRole;
+  facultyCast: (typeof facultyCasts)[number];
   plays: ExecutorInPlayType[];
   awards: AwardType[];
   isPublished: boolean;

@@ -21,6 +21,10 @@ export const getUserById = async (id: string) => {
       where: {
         id,
       },
+      include: {
+        actor: true,
+        executor: true,
+      },
     });
     return user;
   } catch (error) {

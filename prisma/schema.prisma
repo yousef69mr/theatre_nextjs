@@ -370,7 +370,8 @@ model Executor {
   description String?
   imgUrl      String?
   nickname    String?
-  numOfViews  BigInt  @default(0)
+  facultyCast FacultyCast @default(OTHER)
+  numOfViews  BigInt      @default(0)
 
   user  UserExecutorLink?
   actor ActorExecutorLink?

@@ -57,6 +57,9 @@
   "tag": { "plural": "tags", "single": "tag" },
   "qr-code": { "plural": "QR codes", "single": "QR code" },
   "errors": {
+    "codes": {
+      "401": "unauthorized action!!"
+    },
     "notFound": "No {{instance}} found",
     "notProvided": "{{instance}} is not provided",
     "notLive": "{{instance}} is not live",
