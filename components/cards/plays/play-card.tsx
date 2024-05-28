@@ -74,14 +74,14 @@ const PlayCard: FC<PlayCardProps> = (props) => {
               )}
             </div>
             {play.executorRoles && (
-              <p className="text-sm md:!text-lg capitalize font-bold text-muted-foreground">
+              <p className="text-sm capitalize font-bold text-muted-foreground">
                 {removeArrayDuplicates(play.executorRoles)
                   .map((role) => t(`ExecutorRole.${role}`, { ns: "common" }))
                   .join(", ")}
               </p>
             )}
             {play.characterNames && (
-              <p className="text-sm md:!text-lg capitalize font-bold text-muted-foreground">
+              <p className="text-sm capitalize font-bold text-muted-foreground">
                 {removeArrayDuplicates(play.characterNames).join(", ")}
               </p>
             )}

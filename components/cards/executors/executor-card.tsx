@@ -60,12 +60,10 @@ const ExecutorCard: FC<ExecutorCardProps> = (props) => {
               // </div>
             )}
             {executor?.roles && executor?.roles.length !== 0 && (
-              <p className="text-md capitalize font-bold text-red-500 flex flex-wrap items-center gap-1">
-                {removeArrayDuplicates(executor.roles).map((role) => (
-                  <span key={role}>
-                    {t(`ExecutorRole.${role}`, { ns: "common" })}
-                  </span>
-                ))}
+              <p className="text-sm capitalize font-bold text-red-500 flex flex-wrap items-center gap-1">
+                {removeArrayDuplicates(executor.roles)
+                  .map((role) => t(`ExecutorRole.${role}`, { ns: "common" }))
+                  .join(", ")}
               </p>
             )}
             <div className="flex flex-wrap gap-3 text-xs font-medium">

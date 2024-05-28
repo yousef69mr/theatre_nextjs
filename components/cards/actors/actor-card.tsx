@@ -54,7 +54,7 @@ const ActorCard: FC<ActorCardProps> = (props) => {
               {actor.name} {actor.nickname ? `(${actor.nickname})` : ""}
             </h3>
             {actor.characterNames && (
-              <p className="text-sm md:!text-lg capitalize font-bold text-muted-foreground">
+              <p className="text-sm capitalize font-bold text-muted-foreground">
                 {removeArrayDuplicates(actor.characterNames).join(", ")}
               </p>
             )}
