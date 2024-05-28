@@ -12,9 +12,7 @@ import Link from "next/link";
 import QRCode from "react-qr-code";
 import { useModal } from "@/hooks/stores/use-modal-store";
 // import { AspectRatio } from "@/components/ui/aspect-ratio";
-export type TicketColumnDef<TData> = ColumnDef<TData> & {
-  type: string; // Replace 'string' with the actual type you want to use
-};
+export type TicketColumnDef<TData> = ColumnDef<TData>;
 
 export const TicketColumns: TicketColumnDef<TicketType>[] = [
   {
@@ -54,7 +52,9 @@ export const TicketColumns: TicketColumnDef<TicketType>[] = [
         </div>
       );
     },
-    type: "image",
+    meta: {
+      type: "image",
+    },
   },
   {
     accessorKey: "id",
@@ -70,11 +70,17 @@ export const TicketColumns: TicketColumnDef<TicketType>[] = [
         </Button>
       );
     },
-    type: "string",
+    meta: {
+      type: "string",
+    },
     // cell: ({ row }) => <div>{row.original.employeeID.toString()}</div>,
   },
   {
     accessorKey: "guestName",
+    accessorFn: (originalRow) => {
+      const guestName = originalRow.guestName;
+      return guestName;
+    },
     header: ({ column }) => {
       const { t } = useTranslation();
       return (
@@ -95,10 +101,17 @@ export const TicketColumns: TicketColumnDef<TicketType>[] = [
         </div>
       );
     },
-    type: "string",
+    meta: {
+      type: "string",
+    },
   },
   {
     accessorKey: "playName",
+    accessorFn: (originalRow) => {
+      const play = originalRow.play;
+      const playName = play.name;
+      return playName;
+    },
     header: ({ column }) => {
       const { t } = useTranslation();
       return (
@@ -124,10 +137,17 @@ export const TicketColumns: TicketColumnDef<TicketType>[] = [
         </Link>
       );
     },
-    type: "string",
+    meta: {
+      type: "string",
+    },
   },
   {
     accessorKey: "festivalName",
+    accessorFn: (originalRow) => {
+      const festival = originalRow.festival;
+      const festivalName = festival.name;
+      return festivalName;
+    },
     header: ({ column }) => {
       const { t } = useTranslation();
       return (
@@ -150,7 +170,9 @@ export const TicketColumns: TicketColumnDef<TicketType>[] = [
         </div>
       );
     },
-    type: "string",
+    meta: {
+      type: "string",
+    },
   },
   {
     accessorKey: "status",
@@ -190,11 +212,15 @@ export const TicketColumns: TicketColumnDef<TicketType>[] = [
         </>
       );
     },
-    type: "string",
+    meta: {
+      type: "boolean",
+    },
   },
   {
     id: "actions",
     cell: ({ row }) => <CellAction data={row.original} />,
-    type: "action",
+    meta: {
+      type: "actions",
+    },
   },
 ];

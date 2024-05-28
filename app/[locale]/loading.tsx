@@ -1,6 +1,10 @@
-import BounceLoader from "react-spinners/BounceLoader";
+import ClimbingBoxLoader from "react-spinners/ClimbingBoxLoader";
 
 export default function Loading() {
   // You can add any UI inside Loading, including a Skeleton.
-  return <BounceLoader className="text-primary" size={96} />;
+  return (
+    <div className="w-full h-screen flex items-center justify-center main-section">
+      <ClimbingBoxLoader size={30} color="red" />
+    </div>
+  );
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { Inter } from "next/font/google";
 import "@/app/globals.css";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
@@ -16,9 +17,30 @@ import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 // import { EdgeStoreProvider } from "@/lib/edgestore";
 import initTranslations from "@/lib/i18n";
-import { ToastProvider } from "@/components/providers/toaster-provider";
-import { ModalProvider } from "@/components/providers/modal-provider";
-import { ConfettiProvider } from "@/components/providers/confetti-provider";
+// import { ToastProvider } from "@/components/providers/toaster-provider";
+// import ModalProvider from "@/components/providers/modal-provider";
+// import { ConfettiProvider } from "@/components/providers/confetti-provider";
+
+const ToastProvider = dynamic(
+  () =>
+    import("@/components/providers/toaster-provider").then(
+      (module) => module.ToastProvider
+    ),
+  { ssr: false }
+);
+
+const ConfettiProvider = dynamic(
+  () =>
+    import("@/components/providers/confetti-provider").then(
+      (module) => module.ConfettiProvider
+    ),
+  { ssr: false }
+);
+
+const ModalProvider = dynamic(
+  () => import("@/components/providers/modal-provider"),
+  { ssr: false }
+);
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -61,12 +83,7 @@ export default async function MainLayout({
       dir={params.locale ? dir(params.locale) : dir(i18nConfig.defaultLocale)}
       suppressHydrationWarning
     >
-      <body
-        className={cn(
-          "min-h-screen w-full",
-          inter?.className
-        )}
-      >
+      <body className={cn("min-h-screen w-full", inter?.className)}>
         <ConfettiProvider />
         <NextSSRPlugin
           /**

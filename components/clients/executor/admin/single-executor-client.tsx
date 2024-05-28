@@ -27,6 +27,8 @@ import { useModal } from "@/hooks/stores/use-modal-store";
 import { useFestivalStore } from "@/hooks/stores/use-festivals-store";
 import Link from "next/link";
 import ExecutorInPlayControl from "@/components/controls/executor-in-play-control";
+import { FacultyCast } from "@prisma/client";
+import { facultyCasts } from "@/lib/constants";
 
 interface ExecutorClientProps {
   executor: ExecutorType | null;
@@ -62,6 +64,7 @@ const ExecutorClient: FC<ExecutorClientProps> = (props) => {
         name: executor?.name as string,
         imgUrl: executor?.imgUrl,
         description: executor?.description,
+        facultyCast: executor?.facultyCast as (typeof facultyCasts)[number],
         isPublished,
       },
       executor?.id as string

@@ -143,7 +143,7 @@ export type ExecutorType = {
   numOfViews: string;
   actor?: ActorType | null;
   // role: ExecutorRole;
-  facultyCast: (typeof facultyCasts)[number];
+  facultyCast?: (typeof facultyCasts)[number];
   plays: ExecutorInPlayType[];
   awards: AwardType[];
   isPublished: boolean;

@@ -50,6 +50,7 @@ export const ActorColumns: ActorColumnDef<ActorType>[] = [
             <Image
               src={imgUrl}
               fill
+              sizes="64x64 32x32 128x128"
               alt="Image"
               className="rounded-md object-contain"
             />

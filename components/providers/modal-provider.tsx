@@ -29,7 +29,7 @@ import { EditTicketModal } from "@/components/modals/ticket/edit-ticket-modal";
 import { QRTicketModal } from "@/components/modals/ticket/qr-ticket-modal";
 import EditActorModal from "@/components/modals/actor/edit-actor-modal";
 
-export const ModalProvider = () => {
+ const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
   useEffect(() => {
     setIsMounted(true);
@@ -71,3 +71,5 @@ export const ModalProvider = () => {
     </>
   );
 };
+
+export default ModalProvider

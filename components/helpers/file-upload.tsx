@@ -41,6 +41,7 @@ const FileUpload = (props: FileUploadProps) => {
           <Image
             src={value}
             fill
+            sizes="32x32 64x64 128x128"
             alt="Image"
             className="rounded-md object-contain"
           />

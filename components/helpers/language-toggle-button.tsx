@@ -63,7 +63,7 @@ export default function LanguageToggle() {
         if (secondSlash !== -1) {
           const newUrl = currentPathname.slice(secondSlash);
 
-          console.log(newUrl);
+          // console.log(newUrl);
 
           if (newLocale !== i18nConfig.defaultLocale) {
             router.push(`/${newLocale}${newUrl}`);
@@ -99,9 +99,10 @@ export default function LanguageToggle() {
           {currentLocale && i18nConfig.locales.includes(currentLocale) ? (
             <Image
               loading="lazy"
-              className="object-contain"
-              width={20}
-              height={20}
+              className="object-contain w-[20px] h-auto"
+              width={"0"}
+              height={"0"}
+              // sizes="100vw"
               // style={{ margin: 2 }}
               src={`https://flagcdn.com/w20/${
                 LocaleFlags[currentLocale.toLocaleLowerCase()]
@@ -136,10 +137,9 @@ export default function LanguageToggle() {
               {localeCountryCode && (
                 <Image
                   loading="lazy"
-                  width={20}
-                  className="mx-1"
-                  height={20}
-                  // style={{ margin: 2 }}
+                  width={"0"}
+                  className="mx-1 object-contain w-[20px] h-auto"
+                  height={"0"}
                   src={`https://flagcdn.com/w20/${localeCountryCode.toLowerCase()}.png`}
                   // srcSet={`https://flagcdn.com/w40/${localeCountryCode.toLowerCase()}.png 2x`}
                   alt={locale.toLocaleLowerCase()}

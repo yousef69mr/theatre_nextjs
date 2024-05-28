@@ -21,12 +21,6 @@ import { Progress } from "@/components/ui/progress";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
-// declare module '@tanstack/react-table' {
-//   interface PlayColumnDef<TData extends RowData, TValue> {
-//     type: string;
-//   }
-// }
-
 export type PlayColumnDef<TData> = ColumnDef<TData>;
 
 export const PlayColumns: PlayColumnDef<PlayType>[] = [
@@ -250,6 +244,8 @@ export const PlayColumns: PlayColumnDef<PlayType>[] = [
             <Image
               src={posterImgUrl}
               fill
+              priority
+              sizes="64x64 32x32 128x128"
               alt="Image"
               className="rounded-md object-contain"
             />
