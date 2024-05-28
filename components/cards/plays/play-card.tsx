@@ -9,16 +9,17 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { formatBigInt } from "@/lib/helpers/bigInt-converter";
-import { PlayType } from "@/types";
+import { PlayCardType } from "@/types";
 import { AudioLines, Eye, PartyPopper, Trophy } from "lucide-react";
 
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { isPlayLive } from "@/lib/helpers/play-validations";
+import { removeArrayDuplicates } from "@/lib/helpers/list-fomratters";
 
 interface PlayCardProps extends HTMLAttributes<HTMLElement> {
-  play: PlayType;
+  play: PlayCardType;
   redirect?: "attend" | "default";
 }
 const PlayCard: FC<PlayCardProps> = (props) => {
@@ -72,6 +73,18 @@ const PlayCard: FC<PlayCardProps> = (props) => {
                 </Tooltip>
               )}
             </div>
+            {play.executorRoles && (
+              <p className="text-sm md:!text-lg capitalize font-bold text-muted-foreground">
+                {removeArrayDuplicates(play.executorRoles)
+                  .map((role) => t(`ExecutorRole.${role}`, { ns: "common" }))
+                  .join(", ")}
+              </p>
+            )}
+            {play.characterNames && (
+              <p className="text-sm md:!text-lg capitalize font-bold text-muted-foreground">
+                {removeArrayDuplicates(play.characterNames).join(", ")}
+              </p>
+            )}
             <div className="flex flex-wrap gap-3 text-xs font-medium">
               <Tooltip>
                 <TooltipTrigger>

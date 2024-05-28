@@ -1,4 +1,4 @@
-import { PlayType } from "@/types";
+import { PlayCardType } from "@/types";
 import { FC } from "react";
 import PlayCard from "@/components/cards/plays/play-card";
 import {
@@ -9,7 +9,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 interface PlayCarouselProps {
-  plays: PlayType[];
+  plays: PlayCardType[];
 }
 const PlayCarousel: FC<PlayCarouselProps> = (props) => {
   const { plays } = props;

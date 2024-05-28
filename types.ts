@@ -123,7 +123,7 @@ export type ActorType = {
   description?: string;
   nickname?: string;
   facultyCast: (typeof facultyCasts)[number];
-  imgUrl: string;
+  imgUrl?: string | null;
   executor?: ExecutorType | null;
   castMembers: CastMemberType[];
   userId?: string;
@@ -138,7 +138,7 @@ export type ExecutorType = {
   name: string;
   description?: string;
   nickname?: string;
-  imgUrl?: string;
+  imgUrl?: string | null;
   userId?: string;
   numOfViews: string;
   actor?: ActorType | null;
@@ -207,7 +207,10 @@ export type ActorCardType = ActorType & {
   festivals: ActorInPlayType[];
 };
 
-export type PlayCardType = PlayType;
+export type PlayCardType = PlayType & {
+  executorRoles?: ExecutorRole[];
+  characterNames?: string[];
+};
 
 export type ExecutorCardType = ExecutorType & {
   roles: string[];

@@ -5,7 +5,7 @@ export const executorSchema = object({
   name: string().min(1, { message: "name is required" }),
   nickname: string().optional(),
   description: string().optional(),
-  imgUrl: string().optional(),
+  imgUrl: string().optional().nullable(),
   facultyCast: enum_([
     FacultyCast.AGRICULTURE,
     FacultyCast.ARCHAEOLOGY,

@@ -294,7 +294,7 @@ model Actor {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
   name        String
-  imgUrl      String
+  imgUrl      String?
   nickname    String?
   description String?
   facultyCast FacultyCast @default(OTHER)

@@ -12,12 +12,17 @@ export async function GET(request: NextRequest, props: ActorProps) {
   const {
     params: { actorId },
   } = props;
+  const searchParams = request.nextUrl.searchParams;
 
   if (!actorId) {
     return NextResponse.json({ error: "actorId is required" }, { status: 400 });
   }
+
+  const viewIncrement = searchParams.get("viewIncrement") || "false";
+
   try {
-    const actor = await db.actor.findUnique({
+    let actor;
+    actor = await db.actor.findUnique({
       where: {
         id: actorId,
       },
@@ -77,6 +82,71 @@ export async function GET(request: NextRequest, props: ActorProps) {
 
     if (!actor) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
+
+    if (JSON.parse(viewIncrement)) {
+      actor = await db.actor.update({
+        where: {
+          id: actorId,
+        },
+        data: {
+          numOfViews: {
+            increment: 1,
+          },
+        },
+        include: {
+          plays: {
+            include: {
+              actor: {
+                select: {
+                  id: true,
+                  name: true,
+                  imgUrl: true,
+                },
+              },
+              play: {
+                select: {
+                  id: true,
+                  name: true,
+                  posterImgUrl: true,
+                  awards: true,
+                  festivals: {
+                    select: {
+                      showTimes: true,
+                      id: true,
+                      festival: {
+                        select: {
+                          id: true,
+                          name: true,
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+              festival: {
+                select: {
+                  id: true,
+                  name: true,
+                  imgUrl: true,
+                },
+              },
+            },
+          },
+          castMembers: {
+            include: {
+              actor: {
+                select: {
+                  id: true,
+                  name: true,
+                  nickname: true,
+                  imgUrl: true,
+                },
+              },
+            },
+          },
+        },
+      });
     }
 
     return NextResponse.json(

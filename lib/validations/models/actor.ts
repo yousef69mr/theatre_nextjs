@@ -2,11 +2,10 @@ import { FacultyCast } from "@prisma/client";
 // import { FacultyCast } from "@prisma/client";
 import { boolean, object, string, enum as enum_ } from "zod";
 
-
 export const actorSchema = object({
   name: string().min(1, { message: "name is required" }),
   nickname: string().optional(),
-  imgUrl: string(),
+  imgUrl: string().optional().nullable(),
   startDate: string().min(1, { message: "start date is required" }),
   endDate: string().optional(),
   description: string().optional(),

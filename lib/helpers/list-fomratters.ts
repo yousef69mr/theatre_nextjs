@@ -75,18 +75,13 @@ export function removeActorPlayDuplicates(actor: ActorType): PlayCardType[] {
     if (!uniquePlaysMap.has(playLink.play.id)) {
       uniquePlaysMap.set(playLink.play.id, {
         ...playLink.play,
-
+        characterNames: [...playLink.characterNames],
         // festivals: [...playLink],
       });
+    } else {
+      const existingPlay = uniquePlaysMap.get(playLink.play.id)!;
+      existingPlay.characterNames!.push(...playLink.characterNames);
     }
-    // else {
-    //   const existingPlay = uniquePlaysMap.get(playLink.play.id)!;
-    // existingPlay.characterNames = [
-    //   ...existingPlay.characterNames,
-    //   ...playLink.characterNames,
-    // ];
-    // existingPlay.festivals!.push(playLink);
-    // }
   }
 
   // Convert the unique actors map values back to an array
@@ -105,20 +100,16 @@ export function removeExecutorPlayDuplicates(
     if (!uniquePlaysMap.has(playLink.play.id)) {
       uniquePlaysMap.set(playLink.play.id, {
         ...playLink.play,
-
+        executorRoles: [playLink.role],
         // festivals: [...playLink],
       });
+    } else {
+      const existingPlay = uniquePlaysMap.get(playLink.play.id)!;
+      !existingPlay.executorRoles?.includes(playLink.role) &&
+        existingPlay.executorRoles!.push(playLink.role);
     }
-    // else {
-    //   const existingPlay = uniquePlaysMap.get(playLink.play.id)!;
-    // existingPlay.characterNames = [
-    //   ...existingPlay.characterNames,
-    //   ...playLink.characterNames,
-    // ];
-    // existingPlay.festivals!.push(playLink);
-    // }
   }
-
+  // console.log(uniquePlaysMap);
   // Convert the unique actors map values back to an array
   const uniquePlays = Array.from(uniquePlaysMap.values());
 

@@ -62,7 +62,7 @@ const ExecutorClient: FC<ExecutorClientProps> = (props) => {
     updateExecutorRequest(
       {
         name: executor?.name as string,
-        imgUrl: executor?.imgUrl,
+        imgUrl: executor?.imgUrl || undefined,
         description: executor?.description,
         facultyCast: executor?.facultyCast as (typeof facultyCasts)[number],
         isPublished,

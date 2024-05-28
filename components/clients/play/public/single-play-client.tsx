@@ -226,7 +226,7 @@ const PlayClient: FC<PlayClientProps> = (props) => {
                               <div className="flex justify-start gap-x-4 items-center space-x-4">
                                 <Avatar>
                                   <AvatarImage
-                                    src={executor.imgUrl}
+                                    src={executor.imgUrl ?? undefined}
                                     className="w-11 h-11 object-cover"
                                   />
                                   <AvatarFallback className="bg-primary text-xl">

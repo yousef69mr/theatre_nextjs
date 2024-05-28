@@ -54,7 +54,7 @@ const ActorCard: FC<ActorCardProps> = (props) => {
               {actor.name} {actor.nickname ? `(${actor.nickname})` : ""}
             </h3>
             {actor.characterNames && (
-              <p className="text-sm capitalize font-bold text-muted-foreground">
+              <p className="text-sm md:!text-lg capitalize font-bold text-muted-foreground">
                 {removeArrayDuplicates(actor.characterNames).join(", ")}
               </p>
             )}
@@ -62,10 +62,7 @@ const ActorCard: FC<ActorCardProps> = (props) => {
               actor.facultyCast as any
             ) && (
               // <div className="flex item-center justify-start gap-2">
-              <div
-                // variant={"secondary"}
-                className="flex items-center justify-center rtl:flex-row-reverse gap-x-1 text-red-500 font-medium"
-              >
+              <div className="flex items-center justify-center rtl:flex-row-reverse gap-x-1 text-red-500 font-medium">
                 <span>
                   {t(`FacultyCast.${actor.facultyCast}`, { ns: "common" })}
                 </span>

@@ -114,7 +114,7 @@ const ExecutorClient: FC<ExecutorClientProps> = (props) => {
       >
         <div
           className={cn(
-            "w-full min-h-80 sm:max-w-56 md:max-w-64 lg:max-w-80 flex items-center justify-center  md:top-28 md:sticky"
+            "w-full min-h-80 sm:max-w-56 md:max-w-64 lg:max-w-80 flex items-center justify-center relative"
           )}
         >
           {/* <AspectRatio ratio={9 / 16}> */}
@@ -125,6 +125,7 @@ const ExecutorClient: FC<ExecutorClientProps> = (props) => {
                 : "/executor-poster-template.png"
             }
             fill
+            sizes="32x32 64x64 128x128"
             className="object-contain rounded-lg !relative"
             alt={`${executor.name} ${t("poster.single", { ns: "constants" })}`}
           />

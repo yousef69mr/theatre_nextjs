@@ -42,7 +42,7 @@ export const ActorColumns: ActorColumnDef<ActorType>[] = [
       );
     },
     cell: ({ row }) => {
-      const imgUrl = row.original.imgUrl;
+      const imgUrl = row.original.imgUrl ?? "/default-profile.png";
       return (
         <div className="relative h-24 w-24">
           {/* <AspectRatio ratio={2 / 3} className="bg-muted"> */}

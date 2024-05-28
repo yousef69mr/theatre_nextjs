@@ -74,7 +74,7 @@ const ActorClient: FC<ActorClientProps> = (props) => {
       updateActorRequest(
         {
           name: actor.name,
-          imgUrl: actor.imgUrl,
+          imgUrl: actor.imgUrl||undefined,
           startDate: "",
           description: actor.description,
           facultyCast: actor.facultyCast,

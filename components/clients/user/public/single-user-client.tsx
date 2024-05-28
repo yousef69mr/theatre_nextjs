@@ -301,7 +301,7 @@ const UserClient: FC<UserClientProps> = (props) => {
                       <div className="flex justify-start gap-x-4 items-center space-x-4">
                         <Avatar className="w-20 h-20">
                           <AvatarImage
-                            src={executorProfile?.imgUrl}
+                            src={executorProfile?.imgUrl ?? undefined}
                             className="object-cover"
                           />
                           <AvatarFallback className="bg-primary text-xl">
@@ -343,7 +343,7 @@ const UserClient: FC<UserClientProps> = (props) => {
                       <div className="flex justify-start gap-x-4 items-center space-x-4">
                         <Avatar className="w-20 h-20">
                           <AvatarImage
-                            src={actorProfile.imgUrl}
+                            src={actorProfile.imgUrl ?? undefined}
                             className="object-cover"
                           />
                           <AvatarFallback className="bg-primary text-xl">
