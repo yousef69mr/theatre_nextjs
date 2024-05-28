@@ -27,7 +27,9 @@ Promise<Metadata> {
   // fetch data
   const id = params.actorId;
 
-  const actor: ActorType | null = await getActorByIdRequest(id);
+  const actor: ActorType | null = await getActorByIdRequest(id, {
+    viewIncrement: true,
+  });
   // console.log(actor);
 
   if (actor) {

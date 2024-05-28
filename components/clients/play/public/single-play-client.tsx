@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import {
   AudioLines,
   Award,
+  Eye,
   // CalendarDays,
   Pencil,
   Ticket,
@@ -56,6 +57,7 @@ import {
   removePlayActorDuplicates,
   removePlayExecutorDuplicates,
 } from "@/lib/helpers/list-fomratters";
+import { formatBigInt } from "@/lib/helpers/bigInt-converter";
 
 interface PlayClientProps {
   play: PlayType;
@@ -104,8 +106,10 @@ const PlayClient: FC<PlayClientProps> = (props) => {
 
   const actors = removePlayActorDuplicates(play);
 
-  console.log(actors);
+  // console.log(actors);
   const isLive = isPlayLive(festivals);
+
+  const { value: numOfViews, unit } = formatBigInt(play.numOfViews || "0");
 
   return (
     <div className="px-10">
@@ -289,6 +293,36 @@ const PlayClient: FC<PlayClientProps> = (props) => {
                 ))}
               </div>
             )}
+            <div className="flex item-center justify-start gap-2">
+              <Tooltip>
+                <TooltipTrigger>
+                  <div className="flex items-center justify-center">
+                    <Eye className="rtl:ml-2 ltr:mr-2 w-4 h-4" /> {numOfViews}
+                    {unit && t(`units.${unit}.symbol`, { ns: "constants" })}
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  {!unit ? (
+                    <>
+                      {numOfViews}{" "}
+                      {Number(numOfViews) > 1 && Number(numOfViews) <= 10
+                        ? t(`view.plural`, { ns: "constants" })
+                        : t(`view.single`, { ns: "constants" })}
+                    </>
+                  ) : (
+                    <>
+                      {numOfViews}{" "}
+                      {Number(numOfViews) > 1
+                        ? t(`units.${unit}.plural`, { ns: "constants" })
+                        : t(`units.${unit}.single`, { ns: "constants" })}{" "}
+                      {Number(numOfViews) > 1 && Number(numOfViews) <= 10
+                        ? t(`view.plural`, { ns: "constants" })
+                        : t(`view.single`, { ns: "constants" })}
+                    </>
+                  )}
+                </TooltipContent>
+              </Tooltip>
+            </div>
             {(isLive || play.videoUrl) && (
               <div className="flex gap-4 items-center justify-start my-1">
                 {play.videoUrl && (

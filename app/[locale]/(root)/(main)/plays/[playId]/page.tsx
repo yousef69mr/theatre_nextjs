@@ -69,7 +69,9 @@ const SinglePlayPage: FC<SinglePlayPageProps> = async (props) => {
     params: { locale, playId },
   } = props;
   const { resources } = await initTranslations(locale, i18nextNamspaces);
-  const play: PlayType | null = await getPlayByIdRequest(playId);
+  const play: PlayType | null = await getPlayByIdRequest(playId, {
+    viewIncrement: true,
+  });
 
   if (!play) {
     notFound();

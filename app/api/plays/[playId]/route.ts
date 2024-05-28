@@ -13,97 +13,215 @@ export async function GET(request: NextRequest, props: PlayProps) {
     params: { playId },
   } = props;
 
+  const searchParams = request.nextUrl.searchParams;
+
   if (!playId) {
     return NextResponse.json({ error: "playId is required" }, { status: 400 });
   }
-  try {
-    const play = await db.play.findFirst({
-      where: {
-        id: playId,
-      },
-      include: {
-        executors: {
-          include: {
-            executor: {
-              select: {
-                id: true,
-                name: true,
-                facultyCast: true,
-                nickname: true,
-                imgUrl: true,
-                awards: true,
-              },
-            },
-            play: {
-              select: {
-                id: true,
-                name: true,
-              },
-            },
-            festival: {
-              select: {
-                id: true,
-                name: true,
-              },
-            },
-          },
-        },
-        awards: true,
-        actors: {
-          include: {
-            actor: {
-              select: {
-                id: true,
-                name: true,
-                nickname: true,
-                facultyCast: true,
-                imgUrl: true,
-                awards: true,
-              },
-            },
-            play: {
-              select: {
-                id: true,
-                name: true,
-                posterImgUrl: true,
-              },
-            },
+  const viewIncrement = searchParams.get("viewIncrement") || "false";
 
-            festival: {
-              select: {
-                id: true,
-                name: true,
-                imgUrl: true,
+  try {
+    let play;
+    if (JSON.parse(viewIncrement)) {
+      play = await db.play.update({
+        where: {
+          id: playId,
+        },
+        data: {
+          numOfViews: {
+            increment: 1,
+          },
+        },
+        include: {
+          executors: {
+            include: {
+              executor: {
+                select: {
+                  id: true,
+                  name: true,
+                  facultyCast: true,
+                  nickname: true,
+                  numOfViews: true,
+                  imgUrl: true,
+                  awards: true,
+                },
+              },
+              play: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+              festival: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
+          awards: true,
+          actors: {
+            include: {
+              actor: {
+                select: {
+                  id: true,
+                  name: true,
+                  nickname: true,
+                  facultyCast: true,
+                  numOfViews: true,
+                  imgUrl: true,
+                  awards: true,
+                },
+              },
+              play: {
+                select: {
+                  id: true,
+                  name: true,
+                  posterImgUrl: true,
+                },
+              },
+
+              festival: {
+                select: {
+                  id: true,
+                  name: true,
+                  imgUrl: true,
+                },
+              },
+            },
+          },
+          tickets: true,
+          festivals: {
+            include: {
+              festival: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+              play: {
+                select: {
+                  id: true,
+                  name: true,
+                },
               },
             },
           },
         },
-        tickets: true,
-        festivals: {
-          include: {
-            festival: {
-              select: {
-                id: true,
-                name: true,
+      });
+    } else {
+      play = await db.play.findFirst({
+        where: {
+          id: playId,
+        },
+        include: {
+          executors: {
+            include: {
+              executor: {
+                select: {
+                  id: true,
+                  name: true,
+                  facultyCast: true,
+                  numOfViews: true,
+                  nickname: true,
+                  imgUrl: true,
+                  awards: true,
+                },
+              },
+              play: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+              festival: {
+                select: {
+                  id: true,
+                  name: true,
+                },
               },
             },
-            play: {
-              select: {
-                id: true,
-                name: true,
+          },
+          awards: true,
+          actors: {
+            include: {
+              actor: {
+                select: {
+                  id: true,
+                  name: true,
+                  nickname: true,
+                  facultyCast: true,
+                  imgUrl: true,
+                  numOfViews: true,
+                  awards: true,
+                },
+              },
+              play: {
+                select: {
+                  id: true,
+                  name: true,
+                  posterImgUrl: true,
+                },
+              },
+
+              festival: {
+                select: {
+                  id: true,
+                  name: true,
+                  imgUrl: true,
+                },
+              },
+            },
+          },
+          tickets: true,
+          festivals: {
+            include: {
+              festival: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+              play: {
+                select: {
+                  id: true,
+                  name: true,
+                },
               },
             },
           },
         },
-      },
-    });
+      });
+    }
 
     if (!play) {
       return NextResponse.json({ error: "not found" }, { status: 404 });
     }
 
+    const formattedPlayActors = play.actors.map((actorLink) => ({
+      ...actorLink,
+      actor: {
+        ...actorLink.actor,
+        numOfViews: actorLink.actor.numOfViews.toString(),
+      },
+    }));
+
+    const formattedPlayExecutors = play.executors.map((executorLink) => ({
+      ...executorLink,
+      executor: {
+        ...executorLink.executor,
+        numOfViews: executorLink.executor.numOfViews.toString(),
+      },
+    }));
+
     return NextResponse.json(
-      { ...play, numOfViews: play.numOfViews.toString() },
+      {
+        ...play,
+        numOfViews: play.numOfViews.toString(),
+        actors: formattedPlayActors,
+        executors: formattedPlayExecutors,
+      },
       { status: 200 }
     );
   } catch (error) {

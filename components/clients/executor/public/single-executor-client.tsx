@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import {
   AudioLines,
   Award,
+  Eye,
   // CalendarDays,
   Pencil,
   Ticket,
@@ -52,6 +53,7 @@ import PlayCarousel from "@/components/carousels/play-carousel";
 import { removeExecutorPlayDuplicates } from "@/lib/helpers/list-fomratters";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import toast from "react-hot-toast";
+import { formatBigInt } from "@/lib/helpers/bigInt-converter";
 
 // import {
 //   removeExecutorExecutorDuplicates,
@@ -103,6 +105,8 @@ const ExecutorClient: FC<ExecutorClientProps> = (props) => {
   useEffect(() => {
     isAdminUser && router.prefetch(`/${locale}/admin/executors/${executor.id}`);
   }, [router, isAdminUser]);
+
+  const { value: numOfViews, unit } = formatBigInt(executor.numOfViews || "0");
 
   return (
     <div className="px-10">
@@ -191,6 +195,36 @@ const ExecutorClient: FC<ExecutorClientProps> = (props) => {
                 </span>
                 <span>{t(`cast.single`, { ns: "constants" })}</span>
               </Badge>
+            </div>
+            <div className="flex item-center justify-start gap-2">
+              <Tooltip>
+                <TooltipTrigger>
+                  <div className="flex items-center justify-center">
+                    <Eye className="rtl:ml-2 ltr:mr-2 w-4 h-4" /> {numOfViews}
+                    {unit && t(`units.${unit}.symbol`, { ns: "constants" })}
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  {!unit ? (
+                    <>
+                      {numOfViews}{" "}
+                      {Number(numOfViews) > 1 && Number(numOfViews) <= 10
+                        ? t(`view.plural`, { ns: "constants" })
+                        : t(`view.single`, { ns: "constants" })}
+                    </>
+                  ) : (
+                    <>
+                      {numOfViews}{" "}
+                      {Number(numOfViews) > 1
+                        ? t(`units.${unit}.plural`, { ns: "constants" })
+                        : t(`units.${unit}.single`, { ns: "constants" })}{" "}
+                      {Number(numOfViews) > 1 && Number(numOfViews) <= 10
+                        ? t(`view.plural`, { ns: "constants" })
+                        : t(`view.single`, { ns: "constants" })}
+                    </>
+                  )}
+                </TooltipContent>
+              </Tooltip>
             </div>
             {/* {festivals.filter((festivalLink) => festivalLink.position).length >
               0 && (

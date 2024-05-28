@@ -74,7 +74,8 @@ const SingleExecutorPage: FC<SingleExecutorPageProps> = async (props) => {
   } = props;
   const { resources } = await initTranslations(locale, i18nextNamspaces);
   const executor: ExecutorType | null = await getExecutorByIdRequest(
-    executorId
+    executorId,
+    { viewIncrement: true }
   );
 
   if (!executor) {

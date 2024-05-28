@@ -13,66 +13,139 @@ export async function GET(request: NextRequest, props: ExecutorProps) {
     params: { executorId },
   } = props;
 
+  const searchParams = request.nextUrl.searchParams;
+
   if (!executorId) {
     return NextResponse.json(
       { error: "executorId is required" },
       { status: 400 }
     );
   }
+
+  const viewIncrement = searchParams.get("viewIncrement") || "false";
+
   try {
-    const executor = await db.executor.findFirst({
-      where: {
-        id: executorId,
-      },
-      include: {
-        awards: true,
-        plays: {
-          include: {
-            executor: {
-              select: {
-                id: true,
-                name: true,
-                imgUrl: true,
+    let executor;
+    if (JSON.parse(viewIncrement)) {
+      executor = await db.executor.update({
+        where: {
+          id: executorId,
+        },
+        data: {
+          numOfViews: {
+            increment: 1,
+          },
+        },
+        include: {
+          awards: true,
+          plays: {
+            include: {
+              executor: {
+                select: {
+                  id: true,
+                  name: true,
+                  imgUrl: true,
+                },
               },
-            },
-            play: {
-              select: {
-                id: true,
-                name: true,
-                posterImgUrl: true,
-                awards: true,
-                festivals: {
-                  select: {
-                    id: true,
-                    showTimes: true,
-                    festival: {
-                      select: {
-                        id: true,
-                        name: true,
+              play: {
+                select: {
+                  id: true,
+                  name: true,
+                  posterImgUrl: true,
+                  numOfViews: true,
+                  awards: true,
+                  festivals: {
+                    select: {
+                      id: true,
+                      showTimes: true,
+                      festival: {
+                        select: {
+                          id: true,
+                          name: true,
+                        },
                       },
                     },
                   },
                 },
               },
-            },
-            festival: {
-              select: {
-                id: true,
-                name: true,
-                imgUrl: true,
+              festival: {
+                select: {
+                  id: true,
+                  name: true,
+                  imgUrl: true,
+                },
               },
             },
           },
         },
-      },
-    });
+      });
+    } else {
+      executor = await db.executor.findFirst({
+        where: {
+          id: executorId,
+        },
+        include: {
+          awards: true,
+          plays: {
+            include: {
+              executor: {
+                select: {
+                  id: true,
+                  name: true,
+                  imgUrl: true,
+                },
+              },
+              play: {
+                select: {
+                  id: true,
+                  name: true,
+                  posterImgUrl: true,
+                  numOfViews: true,
+                  awards: true,
+                  festivals: {
+                    select: {
+                      id: true,
+                      showTimes: true,
+                      festival: {
+                        select: {
+                          id: true,
+                          name: true,
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+              festival: {
+                select: {
+                  id: true,
+                  name: true,
+                  imgUrl: true,
+                },
+              },
+            },
+          },
+        },
+      });
+    }
 
     if (!executor) {
       return NextResponse.json({ error: "not found" }, { status: 404 });
     }
 
+    const formattedExecutorPlays = executor.plays.map((playLink) => ({
+      ...playLink,
+      play: {
+        ...playLink.play,
+        numOfViews: playLink.play.numOfViews.toString(),
+      },
+    }));
     return NextResponse.json(
-      { ...executor, numOfViews: executor.numOfViews.toString() },
+      {
+        ...executor,
+        numOfViews: executor.numOfViews.toString(),
+        plays: formattedExecutorPlays,
+      },
       { status: 200 }
     );
   } catch (error) {

@@ -21,18 +21,27 @@ export const getAllActorsRequest = async () => {
   }
 };
 
-export const getActorByIdRequest = async (actorId: string) => {
+export const getActorByIdRequest = async (
+  actorId: string,
+  options?: { viewIncrement?: boolean }
+) => {
+  const searchParams = new URLSearchParams();
+  options?.viewIncrement &&
+    searchParams.append("viewIncrement", options.viewIncrement.toString());
   try {
-  const promise = await fetch(PUBLIC_DOMAIN.concat(`/api/actors/${actorId}`), {
-    method: "GET",
-    cache: "no-store",
-  });
-  const response = await promise.json();
+    const promise = await fetch(
+      PUBLIC_DOMAIN.concat(`/api/actors/${actorId}?${searchParams.toString()}`),
+      {
+        method: "GET",
+        cache: "no-store",
+      }
+    );
+    const response = await promise.json();
 
-  if (!promise.ok) {
-    throw Error(response["error"]);
-  }
-  return response;
+    if (!promise.ok) {
+      throw Error(response["error"]);
+    }
+    return response;
   } catch (error) {
     return null;
   }
@@ -50,10 +59,10 @@ export const createActorRequest = async (
   });
   const response = await promise.json();
 
-    if (!promise.ok) {
-      throw Error(response["error"]);
-    }
-    return response;
+  if (!promise.ok) {
+    throw Error(response["error"]);
+  }
+  return response;
 };
 
 export const updateActorRequest = async (

@@ -20,14 +20,23 @@ export const getAllPlaysRequest = async () => {
   }
 };
 
-export const getPlayByIdRequest = async (playId: string) => {
+export const getPlayByIdRequest = async (
+  playId: string,
+  options?: { viewIncrement?: boolean }
+) => {
   // if
+  const searchParams = new URLSearchParams();
+  options?.viewIncrement &&
+    searchParams.append("viewIncrement", options.viewIncrement.toString());
   try {
     // console.log(playId);
-    const promise = await fetch(PUBLIC_DOMAIN.concat(`/api/plays/${playId}`), {
-      method: "GET",
-      cache: "no-store",
-    });
+    const promise = await fetch(
+      PUBLIC_DOMAIN.concat(`/api/plays/${playId}?${searchParams.toString()}`),
+      {
+        method: "GET",
+        cache: "no-store",
+      }
+    );
     const reponse = await promise.json();
     // console.log(promise);
     if (!promise.ok) {

@@ -15,10 +15,18 @@ export const getAllExecutorsRequest = async () => {
   }
 };
 
-export const getExecutorByIdRequest = async (executorId: string) => {
+export const getExecutorByIdRequest = async (
+  executorId: string,
+  options?: { viewIncrement?: boolean }
+) => {
+  const searchParams = new URLSearchParams();
+  options?.viewIncrement &&
+    searchParams.append("viewIncrement", options.viewIncrement.toString());
   try {
     const promise = await fetch(
-      PUBLIC_DOMAIN.concat(`/api/executors/${executorId}`),
+      PUBLIC_DOMAIN.concat(
+        `/api/executors/${executorId}?${searchParams.toString()}`
+      ),
       {
         method: "GET",
         cache: "no-store",

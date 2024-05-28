@@ -22,67 +22,6 @@ export async function GET(request: NextRequest, props: ActorProps) {
 
   try {
     let actor;
-    actor = await db.actor.findUnique({
-      where: {
-        id: actorId,
-      },
-      include: {
-        plays: {
-          include: {
-            actor: {
-              select: {
-                id: true,
-                name: true,
-                imgUrl: true,
-              },
-            },
-            play: {
-              select: {
-                id: true,
-                name: true,
-                posterImgUrl: true,
-                awards: true,
-                festivals: {
-                  select: {
-                    showTimes: true,
-                    id: true,
-                    festival: {
-                      select: {
-                        id: true,
-                        name: true,
-                      },
-                    },
-                  },
-                },
-              },
-            },
-            festival: {
-              select: {
-                id: true,
-                name: true,
-                imgUrl: true,
-              },
-            },
-          },
-        },
-        castMembers: {
-          include: {
-            actor: {
-              select: {
-                id: true,
-                name: true,
-                nickname: true,
-                imgUrl: true,
-              },
-            },
-          },
-        },
-      },
-    });
-
-    if (!actor) {
-      return NextResponse.json({ error: "Not found" }, { status: 404 });
-    }
 
     if (JSON.parse(viewIncrement)) {
       actor = await db.actor.update({
@@ -109,6 +48,66 @@ export async function GET(request: NextRequest, props: ActorProps) {
                   id: true,
                   name: true,
                   posterImgUrl: true,
+                  numOfViews: true,
+                  awards: true,
+                  festivals: {
+                    select: {
+                      showTimes: true,
+                      id: true,
+                      festival: {
+                        select: {
+                          id: true,
+                          name: true,
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+              festival: {
+                select: {
+                  id: true,
+                  name: true,
+                  imgUrl: true,
+                },
+              },
+            },
+          },
+          castMembers: {
+            include: {
+              actor: {
+                select: {
+                  id: true,
+                  name: true,
+                  nickname: true,
+                  imgUrl: true,
+                },
+              },
+            },
+          },
+        },
+      });
+    } else {
+      actor = await db.actor.findUnique({
+        where: {
+          id: actorId,
+        },
+        include: {
+          plays: {
+            include: {
+              actor: {
+                select: {
+                  id: true,
+                  name: true,
+                  imgUrl: true,
+                },
+              },
+              play: {
+                select: {
+                  id: true,
+                  name: true,
+                  posterImgUrl: true,
+                  numOfViews: true,
                   awards: true,
                   festivals: {
                     select: {
@@ -149,8 +148,24 @@ export async function GET(request: NextRequest, props: ActorProps) {
       });
     }
 
+    if (!actor) {
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
+
+    const formattedActorPlays = actor.plays.map((playLink) => ({
+      ...playLink,
+      play: {
+        ...playLink.play,
+        numOfViews: playLink.play.numOfViews.toString(),
+      },
+    }));
+
     return NextResponse.json(
-      { ...actor, numOfViews: actor.numOfViews.toString() },
+      {
+        ...actor,
+        numOfViews: actor.numOfViews.toString(),
+        plays: formattedActorPlays,
+      },
       { status: 200 }
     );
   } catch (error) {
