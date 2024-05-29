@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 // import { Logo } from "./logo";
 import Link from "next/link";
 import { dir } from "i18next";
@@ -12,10 +13,14 @@ import { FC } from "react";
 
 import { ThemeModeToggle } from "@/components/helpers/theme-button";
 import LanguageToggle from "@/components/helpers/language-toggle-button";
-import UserButton from "@/components/auth/user-button";
+// import UserButton from "@/components/auth/user-button";
 import LoginButton from "@/components/auth/login-button";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import LogoutButton from "@/components/auth/logout-button";
+
+const UserButton = dynamic(() => import("@/components/auth/user-button"), {
+  ssr: false,
+});
 
 interface SidebarProps {
   locale: Locale;

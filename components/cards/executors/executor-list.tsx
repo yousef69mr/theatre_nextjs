@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { ExecutorType } from "@/types";
 import { FC, useEffect } from "react";
 import ExecutorCard from "./executor-card";
@@ -14,16 +14,17 @@ import {
 import { usePagination } from "@/hooks/use-pagination";
 import { useParams, usePathname, useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { CARDS_PER_PAGE } from "@/lib/constants";
 // import { Separator } from "@/components/ui/separator";
 interface ExecutorListProps {
   executors: ExecutorType[];
-  cardsPerPage?:number
+  cardsPerPage?: number;
 }
 
-const CARDS_PER_PAGE = 8;
+// const CARDS_PER_PAGE = 8;
 
 const ExecutorList: FC<ExecutorListProps> = (props) => {
-  const { executors,cardsPerPage=CARDS_PER_PAGE } = props;
+  const { executors, cardsPerPage = CARDS_PER_PAGE } = props;
   const searchKey = "executorPage";
   const {
     currentPage,

@@ -20,12 +20,13 @@ import { cn } from "@/lib/utils";
 interface TicketListProps {
   tickets: TicketType[];
   mode?: "page" | "modal";
+  cardsPerPage?: number;
 }
 
 const CARDS_PER_PAGE = 6;
 
 const TicketList: FC<TicketListProps> = (props) => {
-  const { tickets, mode = "page" } = props;
+  const { tickets, mode = "page", cardsPerPage = CARDS_PER_PAGE } = props;
   const searchKey = "ticketPage";
   const {
     currentPage,
@@ -34,7 +35,7 @@ const TicketList: FC<TicketListProps> = (props) => {
     previousPage,
     goToPage,
     getCurrentPageData,
-  } = usePagination(CARDS_PER_PAGE, searchKey, tickets);
+  } = usePagination(cardsPerPage, searchKey, tickets);
 
   // const params = useParams();
 
@@ -55,10 +56,7 @@ const TicketList: FC<TicketListProps> = (props) => {
           <TicketCard
             key={ticket.id}
             ticket={ticket}
-            className={cn(
-              "w-full",
-              mode === "modal" && "flex-1"
-            )}
+            className={cn("w-full", mode === "modal" && "flex-1")}
             mode={cardMode}
           />
         ))}

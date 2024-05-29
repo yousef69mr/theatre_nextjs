@@ -15,15 +15,17 @@ import {
 import { usePagination } from "@/hooks/use-pagination";
 import { useParams, usePathname, useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { CARDS_PER_PAGE } from "@/lib/constants";
 // import { Separator } from "@/components/ui/separator";
 interface ActorListProps {
   actors: ActorType[];
+  cardsPerPage?: number;
 }
 
-const CARDS_PER_PAGE = 8;
+// const CARDS_PER_PAGE = 8;
 
 const ActorList: FC<ActorListProps> = (props) => {
-  const { actors } = props;
+  const { actors, cardsPerPage = CARDS_PER_PAGE } = props;
   const searchKey = "actorPage";
   const {
     currentPage,
@@ -32,7 +34,7 @@ const ActorList: FC<ActorListProps> = (props) => {
     previousPage,
     goToPage,
     getCurrentPageData,
-  } = usePagination(CARDS_PER_PAGE, searchKey, actors);
+  } = usePagination(cardsPerPage, searchKey, actors);
 
   const params = useParams();
   const pathname = usePathname();
@@ -52,11 +54,7 @@ const ActorList: FC<ActorListProps> = (props) => {
       {/**TODO: filter plays */}
       <div className="w-full gap-6 mt-2  grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
         {getCurrentPageData().map((actor) => (
-          <ActorCard
-            key={actor.id}
-            actor={actor}
-            className="w-full h-80 md:w-full md:h-80"
-          />
+          <ActorCard key={actor.id} actor={actor} className="w-full h-80" />
         ))}
       </div>
       {totalPages > 1 && (

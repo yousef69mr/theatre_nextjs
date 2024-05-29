@@ -24,6 +24,7 @@ import PlayList from "@/components/cards/plays/play-list";
 import { isAdmin } from "@/lib/auth";
 import { useCurrentRole } from "@/hooks/use-current-role";
 import { UserRole } from "@prisma/client";
+import PlaysClientSkeleton from "@/components/skeletons/play/client/public/plays-client-skeleton";
 
 interface PlayListClientProps {
   data: PlayType[];
@@ -91,7 +92,7 @@ const PlayListClient: FC<PlayListClientProps> = (props) => {
         <>{Array.isArray(data) && <PlayList plays={data} />}</>
       ) : (
         <div className=" w-full h-full">
-          <TableSkeleton cols={5} rows={4} />
+          <PlaysClientSkeleton />
         </div>
       )}
     </>

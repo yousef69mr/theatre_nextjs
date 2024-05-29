@@ -15,16 +15,18 @@ import {
 import { usePagination } from "@/hooks/use-pagination";
 import { useParams, usePathname, useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { CARDS_PER_PAGE } from "@/lib/constants";
 // import { Separator } from "@/components/ui/separator";
 interface PlayListProps {
   plays: PlayType[];
   redirect?: "attend" | "default";
+  cardsPerPage?: number;
 }
 
-const CARDS_PER_PAGE = 8;
+// const CARDS_PER_PAGE = 8;
 
 const PlayList: FC<PlayListProps> = (props) => {
-  const { plays, redirect = "default" } = props;
+  const { plays, redirect = "default", cardsPerPage = CARDS_PER_PAGE } = props;
   const searchKey = "playPage";
   const {
     currentPage,
@@ -33,7 +35,7 @@ const PlayList: FC<PlayListProps> = (props) => {
     previousPage,
     goToPage,
     getCurrentPageData,
-  } = usePagination(CARDS_PER_PAGE, searchKey, plays);
+  } = usePagination(cardsPerPage, searchKey, plays);
 
   const params = useParams();
   const pathname = usePathname();

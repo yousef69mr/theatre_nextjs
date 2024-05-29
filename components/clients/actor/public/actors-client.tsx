@@ -26,6 +26,7 @@ import { useCurrentRole } from "@/hooks/use-current-role";
 import { UserRole } from "@prisma/client";
 import { useActorStore } from "@/hooks/stores/use-actor-store";
 import ActorList from "@/components/cards/actors/actor-list";
+import ActorsClientSkeleton from "@/components/skeletons/actor/client/public/actors-client-skeleton";
 
 interface ActorListClientProps {
   data: ActorType[];
@@ -40,8 +41,7 @@ const ActorListClient: FC<ActorListClientProps> = (props) => {
   const role = useCurrentRole();
   const setLocalActors = useActorStore((state) => state.setActors);
   // const localPlays = usePlayStore((state) => state.plays);
-  const [filteredActors, setFilteredActors] =
-    useState<ActorType[]>(data);
+  const [filteredActors, setFilteredActors] = useState<ActorType[]>(data);
 
   const locale = params.locale as Locale;
 
@@ -90,8 +90,8 @@ const ActorListClient: FC<ActorListClientProps> = (props) => {
       {filteredActors ? (
         <>{Array.isArray(data) && <ActorList actors={data} />}</>
       ) : (
-        <div className=" w-full h-full">
-          <TableSkeleton cols={5} rows={4} />
+        <div className="size-full">
+          <ActorsClientSkeleton />
         </div>
       )}
     </>

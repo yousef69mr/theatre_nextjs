@@ -1,17 +1,27 @@
+import { HTMLAttributes } from "react";
+import Link from "next/link";
+import dynamic from "next/dynamic";
 import { cn } from "@/lib/utils";
 import { Locale } from "@/next-i18next.config";
 import { dir } from "i18next";
 import { NavbarRoutes } from "./navbar-routes";
-import { MobileSidebar } from "./mobile-sidebar";
-import { HTMLAttributes } from "react";
+// import { MobileSidebar } from "./mobile-sidebar";
 import LanguageToggle from "@/components/helpers/language-toggle-button";
 
-import UserButton from "@/components/auth/user-button";
+// import UserButton from "@/components/auth/user-button";
 import LoginButton from "@/components/auth/login-button";
 import Logo from "@/components/helpers/logo";
-import Link from "next/link";
 import { currentUser } from "@/lib/auth";
 import { ThemeModeToggle } from "@/components/helpers/theme-button";
+
+const UserButton = dynamic(() => import("@/components/auth/user-button"), {
+  ssr: false,
+});
+
+const MobileSidebar = dynamic(
+  () => import("./mobile-sidebar").then((module) => module.MobileSidebar),
+  { ssr: false }
+);
 
 interface NavbarProps extends HTMLAttributes<HTMLElement> {
   locale: Locale;

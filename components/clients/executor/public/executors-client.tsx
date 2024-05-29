@@ -26,6 +26,7 @@ import { useCurrentRole } from "@/hooks/use-current-role";
 import { UserRole } from "@prisma/client";
 import { useExecutorStore } from "@/hooks/stores/use-executor-store";
 import ExecutorList from "@/components/cards/executors/executor-list";
+import ExecutorsClientSkeleton from "@/components/skeletons/executor/client/public/executors-client-skeleton";
 
 interface ExecutorListClientProps {
   data: ExecutorType[];
@@ -91,7 +92,7 @@ const ExecutorListClient: FC<ExecutorListClientProps> = (props) => {
         <>{Array.isArray(data) && <ExecutorList executors={data} />}</>
       ) : (
         <div className=" w-full h-full">
-          <TableSkeleton cols={5} rows={4} />
+          <ExecutorsClientSkeleton />
         </div>
       )}
     </>
