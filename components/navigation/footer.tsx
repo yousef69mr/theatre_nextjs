@@ -28,7 +28,7 @@ const Footer: FC<FooterProps> = (props) => {
           </div>
         </Link>
         <div className="flex flex-col justify-center items-center">
-          <p>
+          <p className="text-sm md:text-lg">
             {t("messages.rights-preserved", {
               ns: "constants",
             })}
@@ -40,9 +40,9 @@ const Footer: FC<FooterProps> = (props) => {
               {author.name}
             </Link>
           </p>
-          <p>© 2024</p>
+          <p className="text-sm md:text-lg">© 2024</p>
         </div>
-        <div>
+        <div className="flex flex-wrap gap-2">
           {socalMedia.map((socal) => (
             <Link href={socal.href} key={socal.name}></Link>
           ))}
