@@ -2,12 +2,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { CARDS_PER_PAGE } from "@/lib/constants";
 import { FC } from "react";
 
-interface ExecutorsClientSkeletonProps {
+interface CardsListClientSkeletonProps {
   withHeader?: boolean;
   cardsPerPage?: number;
 }
 
-const ExecutorsClientSkeleton: FC<ExecutorsClientSkeletonProps> = (props) => {
+const CardsListClientSkeleton: FC<CardsListClientSkeletonProps> = (props) => {
   const { withHeader = false, cardsPerPage = CARDS_PER_PAGE } = props;
 
   const navButtons = 3;
@@ -35,4 +35,4 @@ const ExecutorsClientSkeleton: FC<ExecutorsClientSkeletonProps> = (props) => {
   );
 };
 
-export default ExecutorsClientSkeleton;
+export default CardsListClientSkeleton;

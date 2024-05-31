@@ -162,7 +162,7 @@ export type PlayType = {
   name: string;
   description?: string;
   videoUrl?: string;
-  posterImgUrl?: string;
+  posterImgUrl?: string | null;
   director?: ExecutorType;
   numOfViews: string;
   festivals: PlayFestivalType[];
@@ -202,8 +202,8 @@ export type UserExecutorLinkType = {
 ////////////////////////////////////////
 
 export type ActorCardType = ActorType & {
-  images: string[];
-  characterNames: string[];
+  images?: string[];
+  characterNames?: string[];
   festivals: ActorInPlayType[];
 };
 
@@ -213,11 +213,19 @@ export type PlayCardType = PlayType & {
 };
 
 export type ExecutorCardType = ExecutorType & {
-  roles: string[];
+  roles?: string[];
   festivals: ExecutorInPlayType[];
 };
 
 export type TicketCardType = TicketType;
+
+export type NewsCardType = {
+  id:string
+  title: string;
+  // href: string;
+  imageUrl?: string | null;
+  type: "play" | "actor";
+};
 
 ////////////////////////////////////////
 

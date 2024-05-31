@@ -195,9 +195,10 @@ const PlayClient: FC<PlayClientProps> = (props) => {
                 </div>
               )}
             </div>
+
             <div className="flex gap-2 flex-wrap">
               {executors.map((executor) => {
-                const roles = removeArrayDuplicates(executor.roles);
+                const roles = removeArrayDuplicates(executor.roles ?? []);
                 // console.log(executor.roles)
                 // console.log(roles)
                 return (
@@ -265,6 +266,7 @@ const PlayClient: FC<PlayClientProps> = (props) => {
                 );
               })}
             </div>
+
             {festivals.filter((festivalLink) => festivalLink.position).length >
               0 && (
               <div className="flex flex-wrap items-center justify-start gap-2">

@@ -1,4 +1,4 @@
-import { ExecutorCardType, ExecutorType } from "@/types";
+import { ExecutorCardType, } from "@/types";
 import { FC } from "react";
 import ExecutorCard from "@/components/cards/executors/executor-card";
 import {
@@ -8,7 +8,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { ExecutorRole } from "@prisma/client";
 
 interface ExecutorCarouselProps {
   executors: ExecutorCardType[];
@@ -32,7 +31,7 @@ const ExecutorCarousel: FC<ExecutorCarouselProps> = (props) => {
             <div className="p-1">
               <ExecutorCard
                 executor={executor}
-                className="w-full h-80 md:w-full md:h-80"
+                className="w-full h-80"
               />
             </div>
           </CarouselItem>

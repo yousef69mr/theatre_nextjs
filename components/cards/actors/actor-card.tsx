@@ -9,7 +9,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { formatBigInt } from "@/lib/helpers/bigInt-converter";
-import { ActorCardType } from "@/types";
+import { ActorCardType, ActorInPlayType } from "@/types";
 import { Eye, PartyPopper, Trophy } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
@@ -41,9 +41,16 @@ const ActorCard: FC<ActorCardProps> = (props) => {
   const { value: numOfViews, unit } = formatBigInt(actor.numOfViews || "0");
 
   const imgUrl =
-    actor.images?.length > 0
+    actor.images && actor.images?.length > 0
       ? actor.images[0]
       : actor.imgUrl ?? "/default-profile.png";
+
+  const festivals = actor.festivals.reduce((prev, current) => {
+    if (!prev.some((x) => x.festival.id === current.festival.id)) {
+      return [...prev, current];
+    }
+    return prev;
+  }, [] as ActorInPlayType[]);
 
   return (
     <TooltipProvider>
@@ -104,17 +111,17 @@ const ActorCard: FC<ActorCardProps> = (props) => {
                 <Trophy className="rtl:ml-2 ltr:mr-2 w-4 h-4" />
                 {actor.awards.length}
               </div>
-              {actor.festivals && (
+              {festivals && (
                 <Tooltip>
                   <TooltipTrigger>
                     <div className="flex items-center justify-center">
                       <PartyPopper className="rtl:ml-2 ltr:mr-2 w-4 h-4" />{" "}
-                      {actor.festivals?.length}
+                      {festivals?.length}
                     </div>
                   </TooltipTrigger>
                   <TooltipContent align="center">
                     <div className="flex flex-col items-center justify-center gap-2">
-                      {actor.festivals?.map((festival) => (
+                      {festivals?.map((festival) => (
                         <div key={festival.id}>{festival.festival.name}</div>
                       ))}
                     </div>

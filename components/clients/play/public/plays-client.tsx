@@ -19,12 +19,11 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { usePlayStore } from "@/hooks/stores/use-play-store";
-import TableSkeleton from "@/components/skeletons/table-skeleton";
 import PlayList from "@/components/cards/plays/play-list";
 import { isAdmin } from "@/lib/auth";
 import { useCurrentRole } from "@/hooks/use-current-role";
 import { UserRole } from "@prisma/client";
-import PlaysClientSkeleton from "@/components/skeletons/play/client/public/plays-client-skeleton";
+import CardsListClientSkeleton from "@/components/skeletons/clients/public/cards-list-client-skeleton";
 
 interface PlayListClientProps {
   data: PlayType[];
@@ -50,15 +49,16 @@ const PlayListClient: FC<PlayListClientProps> = (props) => {
     setLocalPlays(data);
   }, [data]);
 
-  useEffect(() => {
-    router.prefetch(`/${locale}/admin/plays/new`);
-  }, [router]);
+  const isUserAdmin = isAdmin(role as UserRole);
 
+  useEffect(() => {
+    isUserAdmin && router.prefetch(`/${locale}/admin/plays/new`);
+  }, [router, isUserAdmin]);
   return (
     <>
       <div className="flex items-center justify-between">
         <Heading title={headingTitle} />
-        {isAdmin(role as UserRole) && (
+        {isUserAdmin && (
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -92,7 +92,7 @@ const PlayListClient: FC<PlayListClientProps> = (props) => {
         <>{Array.isArray(data) && <PlayList plays={data} />}</>
       ) : (
         <div className=" w-full h-full">
-          <PlaysClientSkeleton />
+          <CardsListClientSkeleton />
         </div>
       )}
     </>

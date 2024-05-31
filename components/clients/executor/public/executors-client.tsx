@@ -19,14 +19,12 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-import TableSkeleton from "@/components/skeletons/table-skeleton";
-
 import { isAdmin } from "@/lib/auth";
 import { useCurrentRole } from "@/hooks/use-current-role";
 import { UserRole } from "@prisma/client";
 import { useExecutorStore } from "@/hooks/stores/use-executor-store";
 import ExecutorList from "@/components/cards/executors/executor-list";
-import ExecutorsClientSkeleton from "@/components/skeletons/executor/client/public/executors-client-skeleton";
+import CardsListClientSkeleton from "@/components/skeletons/clients/public/cards-list-client-skeleton";
 
 interface ExecutorListClientProps {
   data: ExecutorType[];
@@ -54,11 +52,17 @@ const ExecutorListClient: FC<ExecutorListClientProps> = (props) => {
     setLocalExecutors(data);
   }, [data]);
 
+  const isUserAdmin = isAdmin(role as UserRole);
+
+  useEffect(() => {
+    isUserAdmin && router.prefetch(`/${locale}/admin/executors/new`);
+  }, [router, isUserAdmin]);
+
   return (
     <>
       <div className="flex items-center justify-between">
         <Heading title={headingTitle} />
-        {isAdmin(role as UserRole) && (
+        {isUserAdmin && (
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -92,7 +96,7 @@ const ExecutorListClient: FC<ExecutorListClientProps> = (props) => {
         <>{Array.isArray(data) && <ExecutorList executors={data} />}</>
       ) : (
         <div className=" w-full h-full">
-          <ExecutorsClientSkeleton />
+          <CardsListClientSkeleton />
         </div>
       )}
     </>

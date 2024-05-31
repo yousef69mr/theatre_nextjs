@@ -1,13 +1,13 @@
 "use client";
 
-import ActorsClientSkeleton from "@/components/skeletons/actor/client/public/actors-client-skeleton";
+import CardsListClientSkeleton from "@/components/skeletons/clients/public/cards-list-client-skeleton";
 
 export default function Loading() {
   // You can add any UI inside Loading, including a Skeleton.
-//   console.log("loading...");
+  //   console.log("loading...");
   return (
     <div className="flex flex-col w-full main-section general-padding">
-      <ActorsClientSkeleton  withHeader/>
+      <CardsListClientSkeleton withHeader />
     </div>
   );
 }

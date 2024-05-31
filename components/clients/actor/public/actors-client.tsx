@@ -19,14 +19,12 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-import TableSkeleton from "@/components/skeletons/table-skeleton";
-
 import { isAdmin } from "@/lib/auth";
 import { useCurrentRole } from "@/hooks/use-current-role";
 import { UserRole } from "@prisma/client";
 import { useActorStore } from "@/hooks/stores/use-actor-store";
 import ActorList from "@/components/cards/actors/actor-list";
-import ActorsClientSkeleton from "@/components/skeletons/actor/client/public/actors-client-skeleton";
+import CardsListClientSkeleton from "@/components/skeletons/clients/public/cards-list-client-skeleton";
 
 interface ActorListClientProps {
   data: ActorType[];
@@ -53,11 +51,17 @@ const ActorListClient: FC<ActorListClientProps> = (props) => {
     setLocalActors(data);
   }, [data]);
 
+  const isUserAdmin = isAdmin(role as UserRole);
+
+  useEffect(() => {
+    isUserAdmin && router.prefetch(`/${locale}/admin/actors/new`);
+  }, [router, isUserAdmin]);
+
   return (
     <>
       <div className="flex items-center justify-between">
         <Heading title={headingTitle} />
-        {isAdmin(role as UserRole) && (
+        {isUserAdmin && (
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -91,7 +95,7 @@ const ActorListClient: FC<ActorListClientProps> = (props) => {
         <>{Array.isArray(data) && <ActorList actors={data} />}</>
       ) : (
         <div className="size-full">
-          <ActorsClientSkeleton />
+          <CardsListClientSkeleton />
         </div>
       )}
     </>

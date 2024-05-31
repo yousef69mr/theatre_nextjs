@@ -10,7 +10,7 @@ import Navbar from "@/components/navigation/navbar";
 import { dir } from "i18next";
 import i18nConfig, { Locale } from "@/next-i18next.config";
 import { SessionProvider } from "next-auth/react";
-import ScrollToTopButton from "@/components/helpers/scroll-to-top-button";
+// import ScrollToTopButton from "@/components/helpers/scroll-to-top-button";
 import TranslationsProvider from "@/components/providers/translation-provider";
 import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
 import { cn } from "@/lib/utils";
@@ -20,6 +20,11 @@ import initTranslations from "@/lib/i18n";
 // import { ToastProvider } from "@/components/providers/toaster-provider";
 // import ModalProvider from "@/components/providers/modal-provider";
 // import { ConfettiProvider } from "@/components/providers/confetti-provider";
+
+const ScrollToTopButton = dynamic(
+  () => import("@/components/helpers/scroll-to-top-button"),
+  { ssr: false }
+);
 
 const ToastProvider = dynamic(
   () =>
