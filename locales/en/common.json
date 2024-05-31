@@ -111,5 +111,12 @@
   },
   "menus": {
     "admin": "admin menu"
+  },
+  "social": {
+    "google": "google",
+    "facebook": "facebook",
+    "github": "github",
+    "discord": "discord",
+    "whatsapp": "whatsapp"
   }
 }

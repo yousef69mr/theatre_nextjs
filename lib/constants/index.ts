@@ -26,3 +26,8 @@ export const facultyCasts = [
 ];
 
 export const CARDS_PER_PAGE = 8;
+
+export const author = {
+  name: "yousef shemy",
+  socialLink: "https://www.linkedin.com/in/yousef-mostafa-84a8a1194/",
+};

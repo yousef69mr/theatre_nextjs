@@ -125,7 +125,8 @@
     "irreversible": "This operation is irreversible",
     "scan-with-search": "Scan {{instance}} by search",
     "ticket-scanned-once": "This ticket is valid for one-time scanning",
-    "no-previous-tickets": "It seems you haven't submitted any tickets yet. Once you submit a ticket, it will appear here."
+    "no-previous-tickets": "It seems you haven't submitted any tickets yet. Once you submit a ticket, it will appear here.",
+    "rights-preserved":"All rights preserved by "
   },
   "greetings": {
     "congratulations": "congratulations"

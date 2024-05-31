@@ -111,5 +111,12 @@
   },
   "menus": {
     "admin": "قائمة الأدمن"
+  },
+  "social": {
+    "google": "جوجل",
+    "facebook": "فيس بوك",
+    "github": "جيت هاب",
+    "discord": "ديسكورد",
+    "whatsapp": "واتساب"
   }
 }

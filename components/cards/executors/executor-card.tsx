@@ -9,13 +9,13 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { formatBigInt } from "@/lib/helpers/bigInt-converter";
-import { ExecutorCardType, ExecutorType } from "@/types";
+import { ExecutorCardType } from "@/types";
 import { Eye, PartyPopper, Trophy } from "lucide-react";
 
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { ExecutorRole, FacultyCast } from "@prisma/client";
+import { FacultyCast } from "@prisma/client";
 import { removeArrayDuplicates } from "@/lib/helpers/list-fomratters";
 import { Badge } from "@/components/ui/badge";
 

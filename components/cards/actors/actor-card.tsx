@@ -45,7 +45,7 @@ const ActorCard: FC<ActorCardProps> = (props) => {
       ? actor.images[0]
       : actor.imgUrl ?? "/default-profile.png";
 
-  const festivals = actor.festivals.reduce((prev, current) => {
+  const festivals = actor.festivals?.reduce((prev, current) => {
     if (!prev.some((x) => x.festival.id === current.festival.id)) {
       return [...prev, current];
     }

@@ -128,7 +128,8 @@
     "irreversible": "هذه العملية لا رجعة فيها",
     "scan-with-search": "مسح ل{{instance}} عن طريق البحث",
     "ticket-scanned-once": "هذه التذكرة صالحة للمسح الضوئى لمرة واحدة",
-    "no-previous-tickets": "يبدو أنك لم تحجز أي تذاكر بعد. بمجرد حجز أى تذكرة ، ستظهر هنا."
+    "no-previous-tickets": "يبدو أنك لم تحجز أي تذاكر بعد. بمجرد حجز أى تذكرة ، ستظهر هنا.",
+    "rights-preserved": "جميع الحقوق محفوظة بواسطة "
   },
   "greetings": {
     "congratulations": "مبروك"

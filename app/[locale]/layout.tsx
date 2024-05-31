@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 // import { EdgeStoreProvider } from "@/lib/edgestore";
 import initTranslations from "@/lib/i18n";
+import Footer from "@/components/navigation/footer";
 // import { ToastProvider } from "@/components/providers/toaster-provider";
 // import ModalProvider from "@/components/providers/modal-provider";
 // import { ConfettiProvider } from "@/components/providers/confetti-provider";
@@ -81,14 +82,15 @@ export default async function MainLayout({
   };
 }) {
   // console.log(params.locale);
-  const { resources } = await initTranslations(params.locale, i18nextNamspaces);
+  const { locale } = params;
+  const { resources } = await initTranslations(locale, i18nextNamspaces);
   return (
     <html
-      lang={params.locale ? params.locale : i18nConfig.defaultLocale}
-      dir={params.locale ? dir(params.locale) : dir(i18nConfig.defaultLocale)}
+      lang={locale ?? i18nConfig.defaultLocale}
+      dir={locale ? dir(locale) : dir(i18nConfig.defaultLocale)}
       suppressHydrationWarning
     >
-      <body className={cn("min-h-screen w-full", inter?.className)}>
+      <body className={cn("min-h-screen w-full pb-5", inter?.className)}>
         <ConfettiProvider />
         <NextSSRPlugin
           /**
@@ -101,7 +103,7 @@ export default async function MainLayout({
         />
         <SessionProvider>
           <TranslationsProvider
-            locale={params.locale}
+            locale={locale}
             namespaces={i18nextNamspaces}
             resources={resources}
           >
@@ -116,10 +118,11 @@ export default async function MainLayout({
               <ToastProvider />
 
               <Navbar
-                locale={params.locale}
+                locale={locale}
                 className="general-padding min-h-[var(--header-height)]"
               />
               {children}
+              <Footer className="general-padding" locale={locale} />
             </ThemeProvider>
           </TranslationsProvider>
           <ScrollToTopButton />

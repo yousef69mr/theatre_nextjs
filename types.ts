@@ -204,7 +204,7 @@ export type UserExecutorLinkType = {
 export type ActorCardType = ActorType & {
   images?: string[];
   characterNames?: string[];
-  festivals: ActorInPlayType[];
+  festivals?: ActorInPlayType[];
 };
 
 export type PlayCardType = PlayType & {
@@ -214,13 +214,13 @@ export type PlayCardType = PlayType & {
 
 export type ExecutorCardType = ExecutorType & {
   roles?: string[];
-  festivals: ExecutorInPlayType[];
+  festivals?: ExecutorInPlayType[];
 };
 
 export type TicketCardType = TicketType;
 
 export type NewsCardType = {
-  id:string
+  id: string;
   title: string;
   // href: string;
   imageUrl?: string | null;
@@ -255,4 +255,9 @@ export type SelectType = {
   id?: number;
   value: string;
   label: string;
+};
+
+export type SocalMediaType = {
+  href: string;
+  name: string;
 };
