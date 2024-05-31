@@ -35,7 +35,7 @@ const Footer: FC<FooterProps> = (props) => {
             <Link
               href={author.socialLink}
               target="_blank"
-              className="capitalize text-primary hover:text-orange-300 hover:scale-125 font-semibold text-lg"
+              className="capitalize text-primary hover:text-orange-300 hover:scale-125 font-semibold text-sm md:text-lg"
             >
               {author.name}
             </Link>
