@@ -22,10 +22,8 @@ export function removePlayActorDuplicates(play: PlayType): ActorCardType[] {
       });
     } else {
       const existingActor = uniqueActorsMap.get(actorLink.actor.id)!;
-      existingActor.characterNames = [
-        ...existingActor.characterNames,
-        ...actorLink.characterNames,
-      ];
+
+      existingActor.characterNames?.push(...actorLink.characterNames);
 
       actorLink.imgUrl && existingActor.images?.push(actorLink.imgUrl);
 
