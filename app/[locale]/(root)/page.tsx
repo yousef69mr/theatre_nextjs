@@ -70,9 +70,9 @@ const HomePage: FC<HomePageProps> = async (props) => {
               <>
                 <Separator className="bg-red-100 dark:bg-red-700/15  my-10" />
                 <section className="space-y-3 w-full">
-                  <h3 className="font-bold text-2xl capitalize">
+                  <h1 className="font-bold text-2xl capitalize">
                     {t("actor.plural", { ns: "constants" })} ({actors.length})
-                  </h3>
+                  </h1>
 
                   <ActorCarousel actors={formattedActors} />
                 </section>
@@ -83,10 +83,10 @@ const HomePage: FC<HomePageProps> = async (props) => {
               <>
                 <Separator className="bg-red-100 dark:bg-red-700/15 my-10" />
                 <section className="space-y-3 w-full">
-                  <h3 className="font-bold text-2xl capitalize">
+                  <h1 className="font-bold text-2xl capitalize">
                     {t("executor.plural", { ns: "constants" })} (
                     {executors.length})
-                  </h3>
+                  </h1>
 
                   <ExecutorCarousel executors={formattedExecutors} />
                 </section>

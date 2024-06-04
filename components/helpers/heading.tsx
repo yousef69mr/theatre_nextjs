@@ -7,9 +7,9 @@ const Heading: React.FC<Props> = (props) => {
   return (
     <div>
       {title && (
-        <h2 className="text-3xl font-bold tracking-tight capitalize">
+        <h1 className="text-3xl font-bold tracking-tight capitalize">
           {title}
-        </h2>
+        </h1>
       )}
       {description && (
         <p className="text-sm text-muted-foreground">{description}</p>
