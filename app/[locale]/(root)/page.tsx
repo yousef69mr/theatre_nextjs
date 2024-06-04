@@ -14,7 +14,6 @@ import { globalNamespaces } from "@/lib/namespaces";
 import i18nConfig, { Locale } from "@/next-i18next.config";
 import { ActorType, ExecutorType, NewsCardType, PlayType } from "@/types";
 
-
 interface HomePageProps {
   params: {
     locale: Locale;
@@ -56,6 +55,10 @@ const HomePage: FC<HomePageProps> = async (props) => {
   }));
 
   // console.log(news);
+  const app_title = t("app_title", { ns: "common" }).split("|");
+  const title = app_title[0];
+  const subTitle = app_title[1];
+  
   return (
     <main className="flex flex-col w-full general-padding">
       <TranslationsProvider
@@ -65,14 +68,18 @@ const HomePage: FC<HomePageProps> = async (props) => {
       >
         <div className="flex-1 space-y-4">
           <div className="px-10">
+            <section className="my-2">
+              <h1 className="text-2xl font-bold text-primary">{title}</h1>
+              <h2 className="text-lg font-semibold text-muted-foreground dark:text-primary-foreground">{subTitle}</h2>
+            </section>
             <HomeCarousel news={news} />
             {formattedActors.length > 0 && (
               <>
                 <Separator className="bg-red-100 dark:bg-red-700/15  my-10" />
                 <section className="space-y-3 w-full">
-                  <h1 className="font-bold text-2xl capitalize">
+                  <h2 className="font-bold text-2xl capitalize">
                     {t("actor.plural", { ns: "constants" })} ({actors.length})
-                  </h1>
+                  </h2>
 
                   <ActorCarousel actors={formattedActors} />
                 </section>
@@ -83,10 +90,10 @@ const HomePage: FC<HomePageProps> = async (props) => {
               <>
                 <Separator className="bg-red-100 dark:bg-red-700/15 my-10" />
                 <section className="space-y-3 w-full">
-                  <h1 className="font-bold text-2xl capitalize">
+                  <h2 className="font-bold text-2xl capitalize">
                     {t("executor.plural", { ns: "constants" })} (
                     {executors.length})
-                  </h1>
+                  </h2>
 
                   <ExecutorCarousel executors={formattedExecutors} />
                 </section>
