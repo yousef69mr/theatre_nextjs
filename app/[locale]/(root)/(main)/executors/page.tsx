@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Metadata } from "next";
+import { Metadata, ResolvingMetadata } from "next";
 import ExecutorListClient from "@/components/clients/executor/public/executors-client";
 
 import TranslationsProvider from "@/components/providers/translation-provider";
@@ -21,18 +21,32 @@ export async function generateStaticParams() {
   return i18nConfig.locales.map((locale) => ({ locale: locale }));
 }
 
-export async function generateMetadata({
-  params,
-}: ExecutorsPageProps): // parent: ResolvingMetadata
-Promise<Metadata> {
+export async function generateMetadata(
+  { params }: ExecutorsPageProps,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
   const { t } = await initTranslations(params.locale, i18nextNamspaces);
 
-  const title = `${t("executor.plural",{ns:"constants"})} | ${t("UserRole.USER", {
-    ns: "common",
-  })}`;
+  const executors: ExecutorType[] = await getAllExecutorsRequest();
+
+  const parentKeywords = (await parent).keywords || [];
+  const keywords = executors.map((executor) => executor.name);
+
+  const title = `${t("executor.plural", { ns: "constants" })} | ${t(
+    "UserRole.USER",
+    {
+      ns: "common",
+    }
+  )}`;
   return {
     title,
     description: title,
+    keywords: [
+      ...parentKeywords,
+      t("executor.single", { ns: "constants" }),
+      t("executor.plural", { ns: "constants" }),
+      ...keywords,
+    ],
   };
 }
 

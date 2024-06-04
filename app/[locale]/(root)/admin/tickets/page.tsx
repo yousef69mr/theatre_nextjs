@@ -1,5 +1,5 @@
 import { FC } from "react";
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
 import TicketListClient from "@/components/clients/ticket/admin/ticket-client";
 import TranslationsProvider from "@/components/providers/translation-provider";
 import { getAllTicketsRequest } from "@/lib/api-calls/models/ticket";
@@ -12,24 +12,33 @@ interface AdminTicketsPage {
   params: { locale: Locale };
 }
 
-export async function generateMetadata({
-  params,
-}: AdminTicketsPage): // parent: ResolvingMetadata
+export async function generateMetadata(
+  { params }: AdminTicketsPage,
+  parent: ResolvingMetadata
+): // parent: ResolvingMetadata
 Promise<Metadata> {
   const { t } = await initTranslations(params.locale, i18nextNamspaces);
 
-  const title = `${t("ticket.plural", { ns: "constants" })} | ${t(
-    "UserRole.ADMIN",
-    {
-      ns: "common",
-    }
-  )}`;
+  const tickets: TicketType[] = await getAllTicketsRequest();
 
+  const parentKeywords = (await parent).keywords || [];
+  const keywords = tickets.flatMap((ticket) => [
+    ticket.festival.name,
+    ticket.play.name,
+  ]);
+
+  const title = `${t("ticket.plural", { ns: "constants" })}`;
   //TODO: make proper
   const description = "all theatre tickets";
   return {
     title,
     description,
+    keywords: [
+      ...parentKeywords,
+      t("ticket.single", { ns: "constants" }),
+      t("ticket.plural", { ns: "constants" }),
+      ...keywords,
+    ],
   };
 }
 

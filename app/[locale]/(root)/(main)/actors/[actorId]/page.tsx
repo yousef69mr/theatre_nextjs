@@ -6,7 +6,7 @@ import { globalNamespaces } from "@/lib/namespaces";
 
 import { Locale } from "@/next-i18next.config";
 import { ActorType } from "@/types";
-import { type Metadata } from "next";
+import { ResolvingMetadata, type Metadata } from "next";
 import { notFound } from "next/navigation";
 import { FC } from "react";
 
@@ -19,24 +19,37 @@ interface SingleActorPageProps {
 
 const i18nextNamspaces = [...globalNamespaces];
 
-export async function generateMetadata({
-  params,
-}: SingleActorPageProps): // parent: ResolvingMetadata
+export async function generateMetadata(
+  { params }: SingleActorPageProps,
+  parent: ResolvingMetadata
+): // parent: ResolvingMetadata
 Promise<Metadata> {
   const { t } = await initTranslations(params.locale, i18nextNamspaces);
+  const parentKeywords = (await parent).keywords || [];
+
   // fetch data
   const id = params.actorId;
 
-  const actor: ActorType | null = await getActorByIdRequest(id, {
-    viewIncrement: true,
-  });
+  const actor: ActorType | null = await getActorByIdRequest(id);
   // console.log(actor);
+  const baseKeywords = [
+    ...parentKeywords,
+    t("actor.single", { ns: "constants" }),
+  ];
 
   if (actor) {
     const title = `${actor.name} | ${t("actor.single", { ns: "constants" })}`;
+    const description = actor.description || title;
     return {
       title,
-      description: actor.description || title,
+      description,
+      keywords: [...baseKeywords, actor.name, actor.nickname || ""],
+      openGraph: {
+        title,
+        description,
+        type: "profile",
+        images: actor.imgUrl ?? undefined,
+      },
     };
   }
 
@@ -50,6 +63,7 @@ Promise<Metadata> {
   return {
     title,
     description: "unknown actor to the database.",
+    keywords: [...baseKeywords],
   };
 }
 
@@ -73,7 +87,9 @@ const SingleActorPage: FC<SingleActorPageProps> = async (props) => {
     params: { locale, actorId },
   } = props;
   const { resources } = await initTranslations(locale, i18nextNamspaces);
-  const actor: ActorType | null = await getActorByIdRequest(actorId);
+  const actor: ActorType | null = await getActorByIdRequest(actorId, {
+    viewIncrement: true,
+  });
 
   if (!actor) {
     notFound();

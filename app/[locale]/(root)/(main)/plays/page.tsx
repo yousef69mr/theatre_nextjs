@@ -6,7 +6,7 @@ import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
 // import { cn } from "@/lib/utils";
 import i18nConfig, { Locale } from "@/next-i18next.config";
 import { PlayType } from "@/types";
-import { Metadata } from "next";
+import { Metadata, ResolvingMetadata } from "next";
 import { FC } from "react";
 interface PlaysPageProps {
   params: {
@@ -18,12 +18,15 @@ export async function generateStaticParams() {
   return i18nConfig.locales.map((locale) => ({ locale: locale }));
 }
 
-export async function generateMetadata({
-  params,
-}: PlaysPageProps): // parent: ResolvingMetadata
-Promise<Metadata> {
+export async function generateMetadata(
+  { params }: PlaysPageProps,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
   const { t } = await initTranslations(params.locale, i18nextNamspaces);
 
+  const plays: PlayType[] = await getAllPlaysRequest();
+  const parentKeywords = (await parent).keywords || [];
+  const keywords = plays.map((play) => play.name);
   const title = `${t("play.plural", { ns: "constants" })} | ${t(
     "UserRole.USER",
     {
@@ -33,6 +36,12 @@ Promise<Metadata> {
   return {
     title,
     description: title,
+    keywords: [
+      ...parentKeywords,
+      t("play.single", { ns: "constants" }),
+      t("play.plural", { ns: "constants" }),
+      ...keywords,
+    ],
   };
 }
 

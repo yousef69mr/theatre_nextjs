@@ -1,6 +1,6 @@
 import { getAllActorsRequest } from "@/lib/api-calls/models/actor";
 import { FC } from "react";
-import { Metadata } from "next";
+import { Metadata, ResolvingMetadata } from "next";
 import ActorListClient from "@/components/clients/actor/public/actors-client";
 
 import TranslationsProvider from "@/components/providers/translation-provider";
@@ -16,11 +16,16 @@ interface ActorsPageProps {
   };
 }
 
-export async function generateMetadata({
-  params,
-}: ActorsPageProps): // parent: ResolvingMetadata
-Promise<Metadata> {
+export async function generateMetadata(
+  { params }: ActorsPageProps,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
   const { t } = await initTranslations(params.locale, i18nextNamspaces);
+
+  const actors: ActorType[] = await getAllActorsRequest();
+
+  const parentKeywords = (await parent).keywords || [];
+  const keywords = actors.map((actor) => actor.name);
 
   const title = `${t("actor.plural", { ns: "constants" })} | ${t(
     "UserRole.USER",
@@ -31,6 +36,12 @@ Promise<Metadata> {
   return {
     title,
     description: title,
+    keywords: [
+      ...parentKeywords,
+      t("actor.single", { ns: "constants" }),
+      t("actor.plural", { ns: "constants" }),
+      ...keywords,
+    ],
   };
 }
 

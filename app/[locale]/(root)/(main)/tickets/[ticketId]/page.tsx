@@ -7,7 +7,7 @@ import initTranslations from "@/lib/i18n";
 import TranslationsProvider from "@/components/providers/translation-provider";
 import TicketClient from "@/components/clients/ticket/public/single-ticket-client";
 import { globalNamespaces } from "@/lib/namespaces";
-import { type Metadata } from "next";
+import { ResolvingMetadata, type Metadata } from "next";
 import { notFound } from "next/navigation";
 
 interface SingleTicketPageProps {
@@ -19,24 +19,39 @@ interface SingleTicketPageProps {
 
 const i18nextNamspaces = [...globalNamespaces];
 
-export async function generateMetadata({
-  params,
-}: SingleTicketPageProps): // parent: ResolvingMetadata
-Promise<Metadata> {
+export async function generateMetadata(
+  { params }: SingleTicketPageProps,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
   const { t } = await initTranslations(params.locale, i18nextNamspaces);
+  const parentKeywords = (await parent).keywords || [];
+
   // fetch data
   const id = params.ticketId;
 
   const ticket: TicketType | null = await getTicketByIdRequest(id);
   // console.log(ticket);
 
+  const baseKeywords = [
+    ...parentKeywords,
+    t("ticket.single", { ns: "constants" }),
+  ];
+
   if (ticket) {
     const title = `${ticket.guestName} (${ticket.id}) | ${t("ticket.single", {
       ns: "constants",
     })}`;
+    const description = ticket.play.name;
     return {
       title,
-      description: ticket.festival.name || title,
+      description,
+      keywords: [...baseKeywords, ticket.festival.name, ticket.play.name],
+      openGraph: {
+        title,
+        description,
+        type: "website",
+        // images: executor.imgUrl ?? undefined,
+      },
     };
   }
 
@@ -50,6 +65,7 @@ Promise<Metadata> {
   return {
     title,
     description: "unknown ticket to the database.",
+    keywords: [...baseKeywords],
   };
 }
 

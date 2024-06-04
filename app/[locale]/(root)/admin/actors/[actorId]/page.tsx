@@ -14,7 +14,7 @@ import initTranslations from "@/lib/i18n";
 import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
 import i18nConfig, { Locale } from "@/next-i18next.config";
 import { ActorType, FestivalType, PlayType } from "@/types";
-import { Metadata } from "next";
+import { Metadata, ResolvingMetadata } from "next";
 
 // export async function generateStaticParams() {
 //   const actors: ActorType[] = await getAllActorsRequest();
@@ -35,24 +35,32 @@ interface AdminSingleActorPageProps {
   params: { locale: Locale; actorId: string };
 }
 
-export async function generateMetadata({
-  params,
-}: AdminSingleActorPageProps): // parent: ResolvingMetadata
-Promise<Metadata> {
+export async function generateMetadata(
+  { params }: AdminSingleActorPageProps,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
   const { t } = await initTranslations(params.locale, i18nextNamspaces);
+  const parentKeywords = (await parent).keywords || [];
 
   // fetch data
   const id = params.actorId;
 
   const actor: ActorType | null =
     id !== "new" ? await getActorByIdRequest(id) : null;
+
+  const baseKeywords = [
+    ...parentKeywords,
+    t("actor.single", { ns: "constants" }),
+  ];
   if (actor) {
     const title = `${actor?.name}  ${
       actor.nickname ? `(${actor.nickname})` : ""
     } | ${t("actor.single", { ns: "constants" })}`;
+
     return {
       title,
       description: actor.description || title,
+      keywords: [...baseKeywords, actor.name, actor.nickname || ""],
       icons: {
         icon: actor.imgUrl || "",
         apple: [
@@ -69,6 +77,7 @@ Promise<Metadata> {
       instance: t("actor.single", { ns: "constants" }),
     }),
     description: "Add a new actor to the database.",
+    keywords: [...baseKeywords],
   };
 }
 

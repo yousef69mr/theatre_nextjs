@@ -3,7 +3,7 @@ import TranslationsProvider from "@/components/providers/translation-provider";
 import { getAllActorsRequest } from "@/lib/api-calls/models/actor";
 
 import initTranslations from "@/lib/i18n";
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
 import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
 import { Locale } from "@/next-i18next.config";
 import { ActorType } from "@/types";
@@ -12,24 +12,29 @@ interface AdminActorsPageProps {
   params: { locale: Locale };
 }
 
-export async function generateMetadata({
-  params,
-}: AdminActorsPageProps): // parent: ResolvingMetadata
-Promise<Metadata> {
+export async function generateMetadata(
+  { params }: AdminActorsPageProps,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
   const { t } = await initTranslations(params.locale, i18nextNamspaces);
+  const actors: ActorType[] = await getAllActorsRequest();
 
-  const title = `${t("actor.plural", { ns: "constants" })} | ${t(
-    "UserRole.ADMIN",
-    {
-      ns: "common",
-    }
-  )}`;
+  const parentKeywords = (await parent).keywords || [];
+  const keywords = actors.map((actor) => actor.name);
+
+  const title = `${t("actor.plural", { ns: "constants" })}`;
 
   //TODO: make proper
   const description = "all theatre actors";
   return {
     title,
     description,
+    keywords: [
+      ...parentKeywords,
+      t("actor.single", { ns: "constants" }),
+      t("actor.plural", { ns: "constants" }),
+      ...keywords,
+    ],
   };
 }
 
@@ -41,6 +46,7 @@ const AdminActorsPage: FC<AdminActorsPageProps> = async (props) => {
   } = props;
   const { resources } = await initTranslations(locale, i18nextNamspaces);
   const actors: ActorType[] = await getAllActorsRequest();
+
   return (
     <main className="flex flex-col w-full general-padding">
       <TranslationsProvider

@@ -1,3 +1,5 @@
+import { FC } from "react";
+
 import ActorCarousel from "@/components/carousels/actor-carousel";
 import ExecutorCarousel from "@/components/carousels/executor-carousel";
 import HomeCarousel from "@/components/carousels/home-carousel";
@@ -7,12 +9,11 @@ import { getAllActorsRequest } from "@/lib/api-calls/models/actor";
 import { getAllExecutorsRequest } from "@/lib/api-calls/models/executor";
 import { getAllPlaysRequest } from "@/lib/api-calls/models/play";
 import initTranslations from "@/lib/i18n";
-import { globalNamespaces, homeNamespaces } from "@/lib/namespaces";
-import { cn } from "@/lib/utils";
+import { globalNamespaces } from "@/lib/namespaces";
+// import { cn } from "@/lib/utils";
 import i18nConfig, { Locale } from "@/next-i18next.config";
 import { ActorType, ExecutorType, NewsCardType, PlayType } from "@/types";
 
-import { FC } from "react";
 
 interface HomePageProps {
   params: {

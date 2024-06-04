@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Metadata } from "next";
+import { Metadata, ResolvingMetadata } from "next";
 import { getPlayByIdRequest } from "@/lib/api-calls/models/play";
 import { Locale } from "@/next-i18next.config";
 import { PlayType } from "@/types";
@@ -8,6 +8,7 @@ import initTranslations from "@/lib/i18n";
 import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
 import PlayClient from "@/components/clients/play/public/single-play-client";
 import { notFound } from "next/navigation";
+import { ExecutorRole } from "@prisma/client";
 
 interface SinglePlayPageProps {
   params: {
@@ -16,22 +17,45 @@ interface SinglePlayPageProps {
   };
 }
 
-export async function generateMetadata({
-  params,
-}: SinglePlayPageProps): // parent: ResolvingMetadata
-Promise<Metadata> {
+export async function generateMetadata(
+  { params }: SinglePlayPageProps,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
   const { t } = await initTranslations(params.locale, i18nextNamspaces);
   // fetch data
   const id = params.playId;
 
+  const parentKeywords = (await parent).keywords || [];
+
   const play: PlayType | null = await getPlayByIdRequest(id);
   // console.log(play);
 
+  const baseKeywords = [
+    ...parentKeywords,
+    t("play.single", { ns: "constants" }),
+  ];
+
   if (play) {
+    const director = play.executors.find(
+      (executor) => executor.role === ExecutorRole.DIRECTOR
+    )?.executor;
+
+    const directorKeywords = director
+      ? [director.name, director.nickname || ""]
+      : [];
+
     const title = `${play.name} | ${t("play.single", { ns: "constants" })}`;
+    const description = play.description || title;
     return {
       title,
-      description: play.description || title,
+      description,
+      keywords: [...baseKeywords, play.name, ...directorKeywords],
+      openGraph: {
+        title,
+        description,
+        type: "video.tv_show",
+        images: play.posterImgUrl ?? undefined,
+      },
     };
   }
 
@@ -44,6 +68,7 @@ Promise<Metadata> {
   return {
     title,
     description: "unknown play to the database.",
+    keywords: [...baseKeywords],
   };
 }
 

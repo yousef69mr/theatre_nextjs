@@ -1,5 +1,5 @@
 import { FC } from "react";
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
 import TicketListClient from "@/components/clients/ticket/admin/ticket-client";
 import TranslationsProvider from "@/components/providers/translation-provider";
 import { getAllTicketsRequest } from "@/lib/api-calls/models/ticket";
@@ -13,17 +13,17 @@ interface AdminScanTicketsPage {
   params: { locale: Locale };
 }
 
-export async function generateMetadata({
-  params,
-}: AdminScanTicketsPage): // parent: ResolvingMetadata
-Promise<Metadata> {
+export async function generateMetadata(
+  { params }: AdminScanTicketsPage,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
   const { t } = await initTranslations(params.locale, i18nextNamspaces);
+
+  const parentKeywords = (await parent).keywords || [];
 
   const title = `${t("actions.scan", {
     ns: "common",
     instance: t("ticket.plural", { ns: "constants" }),
-  })} | ${t("UserRole.ADMIN", {
-    ns: "common",
   })}`;
 
   //TODO: make proper
@@ -31,6 +31,7 @@ Promise<Metadata> {
   return {
     title,
     description,
+    keywords: [...parentKeywords],
   };
 }
 
@@ -51,7 +52,7 @@ const AdminScanTicketsPage: FC<AdminScanTicketsPage> = async (props) => {
         resources={resources}
       >
         <div className="flex-1 space-y-4 w-full md:max-w-96 mx-auto">
-          <TicketQRScanner/>
+          <TicketQRScanner />
         </div>
       </TranslationsProvider>
     </main>

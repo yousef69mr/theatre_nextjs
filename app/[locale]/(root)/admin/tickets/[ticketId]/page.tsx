@@ -6,7 +6,7 @@ import initTranslations from "@/lib/i18n";
 import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
 import { Locale } from "@/next-i18next.config";
 import { TicketType } from "@/types";
-import { Metadata } from "next";
+import { Metadata, ResolvingMetadata } from "next";
 import { FC } from "react";
 
 // export async function generateStaticParams() {
@@ -28,11 +28,13 @@ interface AdminSingleTicketPageProps {
   params: { locale: Locale; ticketId: string };
 }
 
-export async function generateMetadata({
-  params,
-}: AdminSingleTicketPageProps): // parent: ResolvingMetadata
-Promise<Metadata> {
+export async function generateMetadata(
+  { params }: AdminSingleTicketPageProps,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
   const { t } = await initTranslations(params.locale, i18nextNamspaces);
+  const parentKeywords = (await parent).keywords || [];
+
   // fetch data
   const id = params.ticketId;
 
@@ -40,6 +42,12 @@ Promise<Metadata> {
     id !== "new" ? await getTicketByIdRequest(id) : null;
   // console.log(ticket);
 
+  const baseKeywords = [
+    ...parentKeywords,
+    t("ticket.single", {
+      ns: "constants",
+    }),
+  ];
   if (ticket) {
     const title = `${ticket.guestName} (${ticket.id}) | ${t("ticket.single", {
       ns: "constants",
@@ -47,6 +55,7 @@ Promise<Metadata> {
     return {
       title,
       description: ticket.festival.name || title,
+      keywords: [...baseKeywords, ticket.festival.name, ticket.play.name],
     };
   }
 
@@ -56,6 +65,7 @@ Promise<Metadata> {
       instance: t("ticket.single", { ns: "constants" }),
     }),
     description: "Add a new ticket to the database.",
+    keywords: [...baseKeywords],
   };
 }
 

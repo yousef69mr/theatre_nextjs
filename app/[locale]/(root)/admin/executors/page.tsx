@@ -5,7 +5,7 @@ import initTranslations from "@/lib/i18n";
 import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
 import { Locale } from "@/next-i18next.config";
 import { ExecutorType } from "@/types";
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
 import { FC } from "react";
 
 interface AdminExecutorsPageProps {
@@ -13,19 +13,27 @@ interface AdminExecutorsPageProps {
 }
 export async function generateMetadata({
   params,
-}: AdminExecutorsPageProps): // parent: ResolvingMetadata
+}: AdminExecutorsPageProps, parent: ResolvingMetadata): // parent: ResolvingMetadata
 Promise<Metadata> {
   const { t } = await initTranslations(params.locale, i18nextNamspaces);
 
-  const title = `${t("executor.plural",{ns:"constants"})} | ${t("UserRole.ADMIN", {
-    ns: "common",
-  })}`;
+  const executors: ExecutorType[] = await getAllExecutorsRequest();
+
+  const parentKeywords = (await parent).keywords || [];
+  const keywords = executors.map((executor) => executor.name);
+  const title = `${t("executor.plural",{ns:"constants"})}`;
 
   //TODO: make proper
   const description = "all theatre executors";
   return {
     title,
     description,
+    keywords: [
+      ...parentKeywords,
+      t("executor.single", { ns: "constants" }),
+      t("executor.plural", { ns: "constants" }),
+      ...keywords,
+    ],
   };
 }
 const i18nextNamspaces = [...globalNamespaces, ...adminNamespaces];

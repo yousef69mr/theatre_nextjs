@@ -7,7 +7,7 @@ import initTranslations from "@/lib/i18n";
 import TranslationsProvider from "@/components/providers/translation-provider";
 import ExecutorClient from "@/components/clients/executor/public/single-executor-client";
 import { globalNamespaces } from "@/lib/namespaces";
-import { type Metadata } from "next";
+import { ResolvingMetadata, type Metadata } from "next";
 import { notFound } from "next/navigation";
 
 interface SingleExecutorPageProps {
@@ -19,24 +19,38 @@ interface SingleExecutorPageProps {
 
 const i18nextNamspaces = [...globalNamespaces];
 
-export async function generateMetadata({
-  params,
-}: SingleExecutorPageProps): // parent: ResolvingMetadata
+export async function generateMetadata(
+  { params }: SingleExecutorPageProps,
+  parent: ResolvingMetadata
+): // parent: ResolvingMetadata
 Promise<Metadata> {
   const { t } = await initTranslations(params.locale, i18nextNamspaces);
+  const parentKeywords = (await parent).keywords || [];
   // fetch data
   const id = params.executorId;
 
   const executor: ExecutorType | null = await getExecutorByIdRequest(id);
   // console.log(executor);
 
+  const baseKeywords = [
+    ...parentKeywords,
+    t("executor.single", { ns: "constants" }),
+  ];
   if (executor) {
     const title = `${executor.name} | ${t("executor.single", {
       ns: "constants",
     })}`;
+    const description = executor.description || title;
     return {
       title,
-      description: executor.description || title,
+      description,
+      keywords: [...baseKeywords, executor.name, executor.nickname || ""],
+      openGraph: {
+        title,
+        description,
+        type: "profile",
+        images: executor.imgUrl ?? undefined,
+      },
     };
   }
 
@@ -50,6 +64,7 @@ Promise<Metadata> {
   return {
     title,
     description: "unknown executor to the database.",
+    keywords: [...baseKeywords],
   };
 }
 

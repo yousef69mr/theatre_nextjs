@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import { Metadata, ResolvingMetadata } from "next";
 import { FC } from "react";
 import initTranslations from "@/lib/i18n";
 import i18nConfig, { Locale } from "@/next-i18next.config";
@@ -16,19 +16,19 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({
   params,
-}: AdminDashboardPageProps): // parent: ResolvingMetadata
+}: AdminDashboardPageProps, parent: ResolvingMetadata):
 Promise<Metadata> {
   const { t } = await initTranslations(params.locale, i18nextNamspaces);
+  const parentKeywords = (await parent).keywords || [];
 
-  const title = `${t("navbar.routes.adminDashboard")} | ${t("UserRole.ADMIN", {
-    ns: "common",
-  })}`;
+  const title = `${t("navbar.routes.adminDashboard")}`;
 
   //TODO: make proper
   const description = title;
   return {
     title,
     description,
+    keywords:[...parentKeywords]
   };
 }
 

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
 import PlayListClient from "@/components/clients/play/admin/play-client";
 import TranslationsProvider from "@/components/providers/translation-provider";
 import { getAllPlaysRequest } from "@/lib/api-calls/models/play";
@@ -12,24 +12,28 @@ interface AdminPlaysPageProps {
   params: { locale: Locale };
 }
 
-export async function generateMetadata({
-  params,
-}: AdminPlaysPageProps): // parent: ResolvingMetadata
-Promise<Metadata> {
+export async function generateMetadata(
+  { params }: AdminPlaysPageProps,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
   const { t } = await initTranslations(params.locale, i18nextNamspaces);
 
-  const title = `${t("play.plural", { ns: "constants" })} | ${t(
-    "UserRole.ADMIN",
-    {
-      ns: "common",
-    }
-  )}`;
+  const plays: PlayType[] = await getAllPlaysRequest();
 
+  const title = `${t("play.plural", { ns: "constants" })}`;
+  const parentKeywords = (await parent).keywords || [];
+  const keywords = plays.map((play) => play.name);
   //TODO: make proper
   const description = "all theatre plays";
   return {
     title,
     description,
+    keywords: [
+      ...parentKeywords,
+      t("play.single", { ns: "constants" }),
+      t("play.plural", { ns: "constants" }),
+      ...keywords,
+    ],
   };
 }
 

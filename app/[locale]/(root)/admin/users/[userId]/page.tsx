@@ -12,7 +12,7 @@ import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
 import i18nConfig, { Locale } from "@/next-i18next.config";
 import { ActorType, ExecutorType, FestivalType, UserType } from "@/types";
 import { ExecutorRole } from "@prisma/client";
-import { Metadata } from "next";
+import { Metadata, ResolvingMetadata } from "next";
 import { FC } from "react";
 
 // export async function generateStaticParams() {
@@ -34,11 +34,13 @@ interface AdminSingleUserPageProps {
   params: { locale: Locale; userId: string };
 }
 
-export async function generateMetadata({
-  params,
-}: AdminSingleUserPageProps): // parent: ResolvingMetadata
-Promise<Metadata> {
+export async function generateMetadata(
+  { params }: AdminSingleUserPageProps,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
   const { t } = await initTranslations(params.locale, i18nextNamspaces);
+  const parentKeywords = (await parent).keywords || [];
+
   // fetch data
   const id = params.userId;
 
@@ -48,9 +50,27 @@ Promise<Metadata> {
 
   if (user) {
     const title = `${user.name} | ${t("user.single", { ns: "constants" })}`;
+
+    const actorProfile = user.actor?.actor;
+    const executorProfile = user.executor?.executor;
+    const actorProfileKeywords = actorProfile
+      ? [actorProfile.name, actorProfile.nickname || ""]
+      : [];
+    const executorProfileKeywords = executorProfile
+      ? [executorProfile.name, executorProfile.nickname || ""]
+      : [];
     return {
       title,
       description: title,
+      keywords: [
+        ...parentKeywords,
+        ...actorProfileKeywords,
+        ...executorProfileKeywords,
+        user.name,
+        t("user.single", {
+          ns: "constants",
+        }),
+      ],
     };
   }
 
@@ -60,6 +80,7 @@ Promise<Metadata> {
       instance: t("user.single", { ns: "constants" }),
     }),
     description: "Add a new user to the database.",
+    keywords:[...parentKeywords]
   };
 }
 

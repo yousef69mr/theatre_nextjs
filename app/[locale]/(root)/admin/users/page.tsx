@@ -1,5 +1,5 @@
 import { FC } from "react";
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
 import TranslationsProvider from "@/components/providers/translation-provider";
 import { getAllUsersRequest } from "@/lib/api-calls/models/user";
 import initTranslations from "@/lib/i18n";
@@ -12,24 +12,31 @@ interface AdminUsersPageProps {
   params: { locale: Locale };
 }
 
-export async function generateMetadata({
-  params,
-}: AdminUsersPageProps): // parent: ResolvingMetadata
+export async function generateMetadata(
+  { params }: AdminUsersPageProps,
+  parent: ResolvingMetadata
+): // parent: ResolvingMetadata
 Promise<Metadata> {
   const { t } = await initTranslations(params.locale, i18nextNamspaces);
 
-  const title = `${t("user.plural", { ns: "constants" })} | ${t(
-    "UserRole.ADMIN",
-    {
-      ns: "common",
-    }
-  )}`;
+  const users: UserType[] = await getAllUsersRequest();
+
+  const parentKeywords = (await parent).keywords || [];
+  const keywords = users.map((user) => user.name);
+
+  const title = `${t("user.plural", { ns: "constants" })}`;
 
   //TODO: make proper
   const description = "all FCAI users ";
   return {
     title,
     description,
+    keywords: [
+      ...parentKeywords,
+      t("user.single", { ns: "constants" }),
+      t("user.plural", { ns: "constants" }),
+      ...keywords,
+    ],
   };
 }
 

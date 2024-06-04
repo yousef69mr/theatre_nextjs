@@ -18,6 +18,7 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 // import { EdgeStoreProvider } from "@/lib/edgestore";
 import initTranslations from "@/lib/i18n";
 import Footer from "@/components/navigation/footer";
+import { author } from "@/lib/constants";
 // import { ToastProvider } from "@/components/providers/toaster-provider";
 // import ModalProvider from "@/components/providers/modal-provider";
 // import { ConfettiProvider } from "@/components/providers/confetti-provider";
@@ -58,11 +59,40 @@ export async function generateMetadata({
   };
 }): // parent: ResolvingMetadata
 Promise<Metadata> {
-  const { t } = await initTranslations(params.locale, i18nextNamspaces);
+  const { locale } = params;
+  const { t } = await initTranslations(locale, i18nextNamspaces);
+
+  const title = t("app_title", { ns: "common" });
+
+  const languages: Record<string, string> = {};
+
+  i18nConfig.locales.forEach((languageCode) => {
+    languages[languageCode] = languageCode;
+  });
+
+  // console.log(languages);
 
   return {
-    title: t("app_title", { ns: "common" }),
+    title: {
+      template: `%s | ${title}`,
+      default: title,
+    },
     description: t("app_description", { ns: "common" }),
+    keywords: [...title.split(/[,| ]+/)],
+    applicationName: title,
+    creator: author.name,
+    authors: [{ name: author.name, url: author.socialLink }],
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN!),
+    alternates: {
+      canonical: "/",
+      languages,
+    },
+    openGraph: {
+      title,
+      url: process.env.NEXT_PUBLIC_DOMAIN,
+      type: "website",
+      locale,
+    },
   };
 }
 

@@ -27,9 +27,15 @@ Promise<Metadata> {
   )}`;
 
   //TODO: make proper
-  const description = "all theatre executors";
+  const description = "all theatre admin routes";
+
   return {
-    title,
+    title: {
+      template: `%s | ${t("UserRole.ADMIN", {
+        ns: "common",
+      })}`,
+      default: title,
+    },
     description,
   };
 }

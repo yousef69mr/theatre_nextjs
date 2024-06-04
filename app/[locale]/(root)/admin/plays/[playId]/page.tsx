@@ -12,7 +12,7 @@ import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
 import i18nConfig, { Locale } from "@/next-i18next.config";
 import { ActorType, ExecutorType, FestivalType, PlayType } from "@/types";
 import { ExecutorRole } from "@prisma/client";
-import { Metadata } from "next";
+import { Metadata, ResolvingMetadata } from "next";
 import { FC } from "react";
 
 // export async function generateStaticParams() {
@@ -34,11 +34,15 @@ interface AdminSinglePlayPageProps {
   params: { locale: Locale; playId: string };
 }
 
-export async function generateMetadata({
-  params,
-}: AdminSinglePlayPageProps): // parent: ResolvingMetadata
+export async function generateMetadata(
+  { params }: AdminSinglePlayPageProps,
+  parent: ResolvingMetadata
+): // parent: ResolvingMetadata
 Promise<Metadata> {
   const { t } = await initTranslations(params.locale, i18nextNamspaces);
+
+  const parentKeywords = (await parent).keywords || [];
+
   // fetch data
   const id = params.playId;
 
@@ -46,11 +50,25 @@ Promise<Metadata> {
     id !== "new" ? await getPlayByIdRequest(id) : null;
   // console.log(play);
 
+  const baseKeywords = [
+    ...parentKeywords,
+    t("play.single", { ns: "constants" }),
+  ];
+
   if (play) {
+    const director = play.executors.find(
+      (executor) => executor.role === ExecutorRole.DIRECTOR
+    )?.executor;
+
+    const directorKeywords = director
+      ? [director.name, director.nickname || ""]
+      : [];
+
     const title = `${play.name} | ${t("play.single", { ns: "constants" })}`;
     return {
       title,
       description: play.description || title,
+      keywords: [...baseKeywords, play.name, ...directorKeywords],
     };
   }
 
@@ -60,6 +78,7 @@ Promise<Metadata> {
       instance: t("play.single", { ns: "constants" }),
     }),
     description: "Add a new play to the database.",
+    keywords: [...baseKeywords],
   };
 }
 

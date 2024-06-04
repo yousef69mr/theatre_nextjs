@@ -11,7 +11,7 @@ import initTranslations from "@/lib/i18n";
 import { adminNamespaces, globalNamespaces } from "@/lib/namespaces";
 import i18nConfig, { Locale } from "@/next-i18next.config";
 import { ExecutorType, FestivalType } from "@/types";
-import { Metadata } from "next";
+import { Metadata, ResolvingMetadata } from "next";
 import { FC } from "react";
 
 // export async function generateStaticParams() {
@@ -33,23 +33,36 @@ interface AdminSingleExecutorPageProps {
   params: { locale: Locale; executorId: string };
 }
 
-export async function generateMetadata({
-  params,
-}: AdminSingleExecutorPageProps): // parent: ResolvingMetadata
-Promise<Metadata> {
+export async function generateMetadata(
+  { params }: AdminSingleExecutorPageProps,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
   const { t } = await initTranslations(params.locale, i18nextNamspaces);
+  const parentKeywords = (await parent).keywords || [];
+
   // fetch data
   const id = params.executorId;
   const executor: ExecutorType | null =
     id !== "new" ? await getExecutorByIdRequest(id) : null;
 
+    const baseKeywords = [
+      ...parentKeywords,
+      t("executor.single", { ns: "constants" }),
+    ];
+
   if (executor) {
     const title = `${executor.name} ${
       executor.nickname ? `(${executor.nickname})` : ""
     } | ${t("executor.single", { ns: "constants" })}`;
+
     return {
       title,
       description: executor.description || title,
+      keywords: [
+       ...baseKeywords,
+        executor.name,
+        executor.nickname || "",
+      ],
       icons: {
         icon: executor.imgUrl || "",
         apple: [
@@ -66,6 +79,7 @@ Promise<Metadata> {
       instance: t("executor.single", { ns: "constants" }),
     }),
     description: "Add a new executor to the database.",
+    keywords:[...baseKeywords]
   };
 }
 
