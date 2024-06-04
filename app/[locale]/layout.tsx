@@ -67,7 +67,11 @@ Promise<Metadata> {
   const languages: Record<string, string> = {};
 
   i18nConfig.locales.forEach((languageCode) => {
-    languages[languageCode] = languageCode;
+    if (languageCode === i18nConfig.defaultLocale) {
+      languages[languageCode] = "/";
+    } else {
+      languages[languageCode] = languageCode;
+    }
   });
 
   // console.log(languages);
@@ -92,6 +96,7 @@ Promise<Metadata> {
       url: process.env.NEXT_PUBLIC_DOMAIN,
       type: "website",
       locale,
+      images: "/favicon.ico",
     },
   };
 }
