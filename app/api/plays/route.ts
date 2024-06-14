@@ -161,7 +161,7 @@ export async function POST(request: NextRequest) {
         posterImgUrl,
         name,
         // images: images || [],
-        videoUrl,
+        
         description,
         executors: {
           create: [
@@ -178,6 +178,7 @@ export async function POST(request: NextRequest) {
         festivals: {
           create: [
             {
+              videoUrl,
               showTimes: [showTime],
               festival: {
                 connect: { id: festivalId },

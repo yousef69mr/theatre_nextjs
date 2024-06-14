@@ -69,7 +69,7 @@ const ExecutorClient: FC<ExecutorClientProps> = (props) => {
       },
       executor?.id as string
     )
-      .then((response) => response.json())
+      // .then((response) => response.json())
       .then(async (data) => {
         // console.log("api success");
         data.isPublished
@@ -89,7 +89,7 @@ const ExecutorClient: FC<ExecutorClientProps> = (props) => {
         updateExecutor(data);
         router.refresh();
       })
-      .catch((error) => toast.error("something went wrong"));
+      .catch((error) => toast.error(error));
   };
 
   useEffect(() => {

@@ -90,7 +90,7 @@ const PlayClient: FC<PlayClientProps> = (props) => {
   }, [play]);
 
   useEffect(() => {
-    router.prefetch(`/${locale}/admin/plays/${play.id}`);
+    isAdminUser && router.prefetch(`/${locale}/admin/plays/${play.id}`);
     router.prefetch(`${play.id}/book-tickets`);
     router.prefetch(`${play.id}/watch`);
   }, [router]);
@@ -108,11 +108,15 @@ const PlayClient: FC<PlayClientProps> = (props) => {
 
   // console.log(actors);
   const isLive = isPlayLive(festivals);
+  const videoUrls = play.festivals.filter(
+    (festivalLink) => festivalLink.videoUrl
+  );
 
   const { value: numOfViews, unit } = formatBigInt(play.numOfViews || "0");
+  const isAdminUser = isAdmin(role as UserRole);
 
   return (
-    <div className="px-10">
+    <div className="md:px-10">
       <div
         className={cn(
           "w-full flex flex-row flex-wrap items-start justify-between gap-6 relative"
@@ -160,7 +164,7 @@ const PlayClient: FC<PlayClientProps> = (props) => {
                   </Tooltip>
                 )}
               </div>
-              {isAdmin(role as UserRole) && (
+              {isAdminUser && (
                 <div className="flex items-center gap-x-2">
                   <Tooltip>
                     <TooltipTrigger asChild>
@@ -325,9 +329,9 @@ const PlayClient: FC<PlayClientProps> = (props) => {
                 </TooltipContent>
               </Tooltip>
             </div>
-            {(isLive || play.videoUrl) && (
+            {(isLive || videoUrls.length > 0) && (
               <div className="flex gap-4 items-center justify-start my-1">
-                {play.videoUrl && (
+                {videoUrls.length > 0 && (
                   <Button
                     onClick={() => router.push(`${play.id}/watch`)}
                     size={"lg"}

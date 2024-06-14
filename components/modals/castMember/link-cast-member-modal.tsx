@@ -21,18 +21,27 @@ const LinkCastMemberModal = () => {
 
   return (
     <Dialog open={isModalOpen} onOpenChange={onClose}>
-      <DialogContent className=" p-0 overflow-hidden">
+      <DialogContent className="p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center capitalize truncate">
-            {castMember
-              ? t("actions.edit", {
+            {castMember ? (
+              <span>
+                {t("actions.edit", {
                   ns: "common",
                   instance: t(`UserRole.${castMember.role}`, { ns: "common" }),
-                })
-              : t("actions.add", {
+                })}
+
+                {t("actions.add", {
                   ns: "common",
                   instance: t("role.single", { ns: "constants" }),
                 })}
+              </span>
+            ) : (
+              t("actions.add", {
+                ns: "common",
+                instance: t("role.single", { ns: "constants" }),
+              })
+            )}
           </DialogTitle>
         </DialogHeader>
         <div className="p-4">

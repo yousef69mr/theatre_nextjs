@@ -134,6 +134,7 @@ export async function GET(request: NextRequest, props: ActorProps) {
           },
           castMembers: {
             include: {
+              timeIntervals: true,
               actor: {
                 select: {
                   id: true,
@@ -261,6 +262,7 @@ export async function PATCH(request: NextRequest, props: ActorProps) {
         awards: true,
         castMembers: {
           include: {
+            timeIntervals: true,
             actor: {
               select: {
                 id: true,

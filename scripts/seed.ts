@@ -2,7 +2,7 @@
 
 // const database = new PrismaClient();
 
-async function main() {
+async function generateFestivals() {
   try {
     await database.festival.deleteMany();
 
@@ -15,11 +15,39 @@ async function main() {
         { name: "مهرجان جامعة القاهرة للعروض القصيرة" },
       ],
     });
+  } catch (error) {
+    console.error("Error seeding the database festivals", error);
+    throw error;
+  }
+}
+
+async function generateActors() {
+  try {
+    await database.actor.deleteMany();
+
+    // await database.$queryRaw`ALTER TABLE Festival A`
+    await database.actor.createMany({
+      data: [
+        { name: "طارق الحلوانى" },
+        { name: "ندى أشرف" },
+        { name: "سارة عادل" },
+        { name: "محمود تويكس", nickname: "twix" },
+      ],
+    });
+  } catch (error) {
+    console.error("Error seeding the database festivals", error);
+    throw error;
+  }
+}
+async function main() {
+  try {
+    await generateFestivals();
+
+    await generateActors();
 
     console.log("Success");
     process.exit(0);
   } catch (error) {
-    console.error("Error seeding the database festivals", error);
     process.exit(1);
   } finally {
     await database.$disconnect();

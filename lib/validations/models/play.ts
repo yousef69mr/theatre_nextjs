@@ -6,7 +6,7 @@ export const playSchema = object({
   executorId: string().min(1, { message: "executorId is required" }),
   showTime: date(),
   videoUrl: string().nullable().optional(),
-  description: string().optional(),
+  description: string().optional().nullable(),
   posterImgUrl: string().optional().nullable(),
   images: array(
     string().min(1, { message: "image url is required" })

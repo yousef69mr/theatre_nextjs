@@ -183,6 +183,7 @@
       "actions": "الاجراءات",
       "email": "بريد إلكترونى",
       "password": "كلمة مرور",
+      "timeIntervals": "فاصل زمني",
       "ticketLink": "لينك التذكرة"
     },
     "placeholder": {

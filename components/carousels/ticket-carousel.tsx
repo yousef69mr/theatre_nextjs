@@ -38,8 +38,8 @@ const TicketCarousel: FC<TicketCarouselProps> = (props) => {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious className="-left-3" />
-      <CarouselNext className="-right-4" />
+      <CarouselPrevious className="hidden md:block -left-3" />
+      <CarouselNext className="hidden md:block -right-4" />
     </Carousel>
   );
 };

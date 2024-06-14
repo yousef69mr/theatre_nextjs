@@ -151,9 +151,9 @@ export async function PATCH(request: NextRequest, props: CastMemberProps) {
     return NextResponse.json({ error: "Invalid fields" }, { status: 400 });
   }
 
-  const { startDate, endDate } = validatedFields.data;
+  const { timeIntervals } = validatedFields.data;
 
-  if (!startDate) {
+  if (!timeIntervals.length) {
     return NextResponse.json(
       { error: "startDate is missing!" },
       { status: 400 }
@@ -163,16 +163,34 @@ export async function PATCH(request: NextRequest, props: CastMemberProps) {
   // console.log(actorId);
 
   // console.log("herer");
+
   try {
-    const castMember = await db.castMember.update({
+    // delete all existing intervals
+
+    await db.timeInterval.deleteMany({
+      where: {
+        castMemberId,
+      },
+    });
+
+    for (let timeInterval of timeIntervals) {
+      await db.timeInterval.create({
+        data: {
+          startDate: new Date(timeInterval.startDate),
+          endDate: timeInterval.endDate
+            ? new Date(timeInterval.endDate)
+            : undefined,
+          castMemberId,
+        },
+      });
+    }
+
+    const castMember = await db.castMember.findUnique({
       where: {
         id: castMemberId,
       },
-      data: {
-        startDate: new Date(startDate),
-        endDate: endDate ? new Date(endDate) : null,
-      },
       include: {
+        timeIntervals: true,
         actor: {
           select: {
             id: true,

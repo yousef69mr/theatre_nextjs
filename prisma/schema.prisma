@@ -113,6 +113,20 @@ model TwoFactorConfirmation {
 
 // 
 
+model TimeInterval {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  startDate DateTime
+  endDate   DateTime?
+
+  castMemberId String     @db.ObjectId
+  castMember   CastMember @relation(fields: [castMemberId], references: [id], onDelete: Cascade)
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  @@index([castMemberId])
+}
+
 model CastMember {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
@@ -122,8 +136,7 @@ model CastMember {
   actor   Actor?  @relation(fields: [actorId], references: [id], onDelete: Cascade)
   // actor Actor?
 
-  startDate DateTime
-  endDate   DateTime?
+  timeIntervals TimeInterval[]
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
@@ -199,6 +212,7 @@ model Media {
 
 model PlayFestival {
   id               String @id @default(auto()) @map("_id") @db.ObjectId
+  videoUrl     String?
   position         Int?
   seatsLimit       Int    @default(0)
   availableSeats   Int    @default(0)
@@ -223,7 +237,6 @@ model Play {
   id           String  @id @default(auto()) @map("_id") @db.ObjectId
   name         String
   description  String?
-  videoUrl     String?
   posterImgUrl String?
   numOfViews   BigInt  @default(0)
 
@@ -297,7 +310,7 @@ model Actor {
   imgUrl      String?
   nickname    String?
   description String?
-  facultyCast FacultyCast @default(OTHER)
+  facultyCast FacultyCast @default(COMPUTERS)
   numOfViews  BigInt      @default(0)
 
   user UserActorLink?

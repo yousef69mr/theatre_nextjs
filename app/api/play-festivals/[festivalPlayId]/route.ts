@@ -139,6 +139,7 @@ export async function PATCH(request: NextRequest, props: FestivalPlayProps) {
     seatsLimit,
     actorTicketLimit,
     guestTicketLimit,
+    videoUrl,
   } = validatedFields.data;
 
   if (!seatsLimit) {
@@ -221,6 +222,7 @@ export async function PATCH(request: NextRequest, props: FestivalPlayProps) {
         availableSeats: availableSeats > 0 ? availableSeats : 0,
         actorTicketLimit,
         guestTicketLimit,
+        videoUrl,
       },
       include: {
         play: {

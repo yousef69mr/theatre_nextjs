@@ -184,6 +184,7 @@
       "ticketLink": "Ticket Link",
       "email": "email",
       "password": "password",
+      "timeIntervals":"Time Interval",
       "actions": "Actions"
     },
     "placeholder": {

@@ -109,7 +109,7 @@ const ActorClient: FC<ActorClientProps> = (props) => {
   const { value: numOfViews, unit } = formatBigInt(actor.numOfViews || "0");
 
   return (
-    <div className="px-10">
+    <div className="md:px-10">
       <div
         className={cn(
           "w-full flex flex-row flex-wrap items-start justify-between gap-6 relative"

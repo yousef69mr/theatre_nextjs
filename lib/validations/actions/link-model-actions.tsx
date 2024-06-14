@@ -45,6 +45,7 @@ export const festivalPlaySchema = object({
   guestTicketLimit: number().min(0, { message: "0 minimum" }).optional(),
   actorTicketLimit: number().min(0, { message: "0 minimum" }).optional(),
   showTimes: array(string()),
+  videoUrl: string().nullable().optional(),
 });
 
 export const userActorLinkSchema = object({

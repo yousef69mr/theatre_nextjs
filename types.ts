@@ -99,6 +99,7 @@ export type FestivalType = {
 
 export type PlayFestivalType = {
   id: string;
+  videoUrl?: string | null;
   position?: number;
   seatsLimit: number;
   guestTicketLimit: number;
@@ -109,10 +110,16 @@ export type PlayFestivalType = {
   festival: FestivalType;
 };
 
+export type TimeIntervalType = {
+  // id: string;
+  startDate: string;
+  endDate?: string | null;
+  castMember?: CastMemberType;
+};
+
 export type CastMemberType = {
   id: string;
-  startDate: string;
-  endDate?: string;
+  timeIntervals: TimeIntervalType[];
   actor: ActorType;
   role: (typeof actorRoles)[number];
 };
@@ -160,8 +167,7 @@ export type ExecutorInPlayType = {
 export type PlayType = {
   id: string;
   name: string;
-  description?: string;
-  videoUrl?: string;
+  description?: string | null;
   posterImgUrl?: string | null;
   director?: ExecutorType;
   numOfViews: string;

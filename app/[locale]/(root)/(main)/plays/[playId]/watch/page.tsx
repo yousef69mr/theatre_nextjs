@@ -19,6 +19,8 @@ import EmbedPlayer from "@/components/helpers/emded-player";
 import { Separator } from "@/components/ui/separator";
 import PlayCarousel from "@/components/carousels/play-carousel";
 import { notFound } from "next/navigation";
+import { Card } from "@/components/ui/card";
+import Link from "next/link";
 // import { redirect } from "next/navigation";
 
 interface BookPlayTicketPageProps {
@@ -26,25 +28,36 @@ interface BookPlayTicketPageProps {
     locale: Locale;
     playId: string;
   };
+  searchParams: {
+    festivalId?: string;
+  };
 }
 const i18nextNamspaces = [...globalNamespaces, ...adminNamespaces];
 
 export async function generateMetadata({
   params,
+  searchParams,
 }: BookPlayTicketPageProps): // parent: ResolvingMetadata
 Promise<Metadata> {
   const { t } = await initTranslations(params.locale, i18nextNamspaces);
   // fetch data
   const id = params.playId;
+  const festivalId = searchParams.festivalId;
 
   const play: PlayType | null = await getPlayByIdRequest(id);
   // console.log(play);
+  const festival = play?.festivals.find(
+    (festivalLink) => festivalLink.festival.id === festivalId
+  );
 
   if (play) {
-    const title = `${play.name} | ${t("actions.watch", {
-      ns: "common",
-      instance: t("play.single", { ns: "constants" }),
-    })}`;
+    const title = `${play.name} ${festival ? festival.festival.name : ""} | ${t(
+      "actions.watch",
+      {
+        ns: "common",
+        instance: t("play.single", { ns: "constants" }),
+      }
+    )}`;
     return {
       title,
       description: play.description || title,
@@ -65,6 +78,7 @@ Promise<Metadata> {
 const WatchPlayPage: React.FC<BookPlayTicketPageProps> = async (props) => {
   const {
     params: { locale, playId },
+    searchParams: { festivalId },
   } = props;
   const { t, resources } = await initTranslations(locale, i18nextNamspaces);
 
@@ -108,6 +122,10 @@ const WatchPlayPage: React.FC<BookPlayTicketPageProps> = async (props) => {
   );
 
   const otherPlays = plays?.filter((temp) => temp.id !== play.id);
+  const festivalVideoUrls = play.festivals.filter(
+    (festival) => festival.videoUrl
+  );
+
   return (
     <main className="flex flex-col items-center justify-center w-full relative general-padding">
       <TranslationsProvider
@@ -117,7 +135,7 @@ const WatchPlayPage: React.FC<BookPlayTicketPageProps> = async (props) => {
       >
         <div className="flex-1 flex-col space-y-4 flex items-center w-full">
           <div className="flex size-full p-4 items-center justify-center relative">
-            {play.videoUrl && (
+            {festivalVideoUrls.length === 0 && (
               <>
                 <div className="w-full h-full bg-neutral-800/40 backdrop-saturate-50 top-0 left-0 -z-10 absolute" />
                 <Image
@@ -130,12 +148,36 @@ const WatchPlayPage: React.FC<BookPlayTicketPageProps> = async (props) => {
               </>
             )}
 
-            {play.videoUrl ? (
+            {festivalVideoUrls.length === 1 && festivalVideoUrls[0].videoUrl ? (
               <EmbedPlayer
-                src={play.videoUrl}
+                src={festivalVideoUrls[0].videoUrl}
                 type="video"
                 className="w-full play-video-section"
               />
+            ) : festivalVideoUrls.length > 0 ? (
+              <section className="space-y-3 w-full">
+                <div className="flex items-center gap-2 justify-start">
+                  <h3 className="flex items-center gap-x-2 font-bold text-2xl capitalize rtl:flex-row-reverse">
+                    <span>{t("festival.plural", { ns: "constants" })}</span>
+                  </h3>
+                  <span className="font-bold text-2xl">
+                    ({festivalVideoUrls.length})
+                  </span>
+                </div>
+
+                <div className="flex gap-6 flex-wrap justify-start items-center">
+                  {festivalVideoUrls.map((festival) => (
+                    <Link
+                      href={`?festivalId=${festival.festival.id}`}
+                      key={festival.id}
+                    >
+                      <CardWrapper>
+                        <p>{festival.festival.name}</p>
+                      </CardWrapper>
+                    </Link>
+                  ))}
+                </div>
+              </section>
             ) : (
               <CardWrapper headerTitle={pageTitle} headerSubTitle={subTitle}>
                 <FormError
@@ -148,7 +190,7 @@ const WatchPlayPage: React.FC<BookPlayTicketPageProps> = async (props) => {
             )}
           </div>
           {otherPlays && (
-            <div className="px-10 space-y-4 w-full">
+            <div className="md:px-10 space-y-4 w-full">
               <Separator className="bg-red-100 dark:bg-red-700/15  my-16" />
               <section className="space-y-3 w-full">
                 <div className="flex items-center gap-2 justify-start">

@@ -11,7 +11,11 @@ export async function GET(request: NextRequest) {
       await db.actor.findMany({
         include: {
           awards: true,
-          castMembers: true,
+          castMembers: {
+            include: {
+              timeIntervals: true,
+            },
+          },
           plays: {
             include: {
               actor: {
@@ -150,8 +154,12 @@ export async function POST(request: NextRequest) {
         data: {
           // role: UserRole.ACTOR,
           actorId: actor.id,
-          startDate: new Date(startDate),
-          endDate: endDate ? new Date(endDate) : null,
+          timeIntervals: {
+            create: {
+              startDate: new Date(startDate),
+              endDate: endDate ? new Date(endDate) : undefined,
+            },
+          },
         },
         include: {
           actor: {

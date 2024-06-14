@@ -34,6 +34,9 @@ const CastMemberCard: FC<CastMemberCardProps> = (props) => {
     onOpen("deleteCastMember", { castMember: castMember });
   };
 
+  const intervals = castMember.timeIntervals;
+
+  // console.log(castMember);
   if (mode === "search") {
     return (
       <div className="flex justify-between items-center w-full ">
@@ -46,16 +49,21 @@ const CastMemberCard: FC<CastMemberCardProps> = (props) => {
             </div>
           </div>
 
-          <div className="flex gap-2 mt-2 items-center justify-between">
-            <Badge variant={"outline"}>
-              {format(castMember.startDate, "MMMM do, yyyy")}
-            </Badge>
-            <Badge variant={"outline"}>
-              {castMember.endDate
-                ? format(castMember.endDate, "MMMM do, yyyy")
-                : t("present", { ns: "constants" })}
-            </Badge>
-          </div>
+          {intervals.length > 0 && (
+            <div className="flex gap-2 mt-2 items-center justify-center flex-col">
+              {intervals.map((interval, index) => (
+                <Badge variant={"outline"} className="px-2" key={index}>
+                  <div className="flex gap-x-2 items-center justify-between">
+                    {format(interval.startDate, "MMMM do, yyyy")}
+                    <Separator className="mx-2 w-5" />
+                    {interval.endDate
+                      ? format(interval.endDate, "MMMM do, yyyy")
+                      : t("present", { ns: "constants" })}
+                  </div>
+                </Badge>
+              ))}
+            </div>
+          )}
         </div>
         <div className="flex items-center justify-center">
           <TooltipProvider>
@@ -162,16 +170,21 @@ const CastMemberCard: FC<CastMemberCardProps> = (props) => {
         </div>
 
         {/* <Separator className="bg-red-100 dark:bg-red-700/15 my-1" /> */}
-        <div className="flex flex-col gap-2 mt-2 flex-wrap items-start justify-center">
-          <Badge variant={"outline"} className="px-2">
-            {format(castMember.startDate, "MMMM do, yyyy")}
-          </Badge>
-          <Badge variant={"outline"} className="px-2">
-            {castMember.endDate
-              ? format(castMember.endDate, "MMMM do, yyyy")
-              : t("present", { ns: "constants" })}
-          </Badge>
-        </div>
+        {intervals.length > 0 && (
+          <div className="flex flex-col gap-2 mt-2 flex-wrap items-start justify-center">
+            {intervals.map((interval, index) => (
+              <Badge variant={"outline"} className="px-2" key={index}>
+                <div className="flex gap-x-2 items-center justify-between">
+                  {format(interval.startDate, "MMMM do, yyyy")}
+                  <Separator className="mx-2 w-5" />
+                  {interval.endDate
+                    ? format(interval.endDate, "MMMM do, yyyy")
+                    : t("present", { ns: "constants" })}
+                </div>
+              </Badge>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -52,6 +52,7 @@ import {
 // import { UserRole } from "@prisma/client";
 import { actorRoles } from "@/lib/auth";
 import { convertDateFormat } from "@/lib/helpers/time-parser";
+import { MultiDateIntervalInput } from "@/components/ui/multi-date-interval-input";
 
 interface CastMemberFormProps extends HtmlHTMLAttributes<HTMLElement> {
   initialData: CastMemberType | null;
@@ -68,7 +69,7 @@ const CastMemberForm: FC<CastMemberFormProps> = (props) => {
     (state) => state.updateActorCastMembers
   );
   const localActors = useActorStore((state) => state.actors);
-  console.log(initialData, Boolean(initialData));
+  // console.log(initialData, Boolean(initialData));
 
   const [isPending, startTransition] = useTransition();
   const [availableRoles, setAvailableRoles] = useState<typeof actorRoles>([]);
@@ -84,16 +85,20 @@ const CastMemberForm: FC<CastMemberFormProps> = (props) => {
   // const locale = params.locale;
   const actorId = params.actorId as string;
 
+  const intervals = initialData?.timeIntervals
+    ? initialData?.timeIntervals.map((interval) => ({
+        startDate: convertDateFormat(interval.startDate),
+        endDate:
+          (interval?.endDate && convertDateFormat(interval.endDate)) ||
+          undefined,
+      }))
+    : [];
+
   const form = useForm<CastMemberFormValues>({
     resolver: zodResolver(castMemberSchema),
     defaultValues: {
       ...initialData,
-      startDate:
-        (initialData?.startDate && convertDateFormat(initialData.startDate)) ||
-        undefined,
-      endDate:
-        (initialData?.endDate && convertDateFormat(initialData.endDate)) ||
-        undefined,
+      timeIntervals: intervals,
       actorId: actorId || initialData?.actor.id,
     },
   });
@@ -125,7 +130,7 @@ const CastMemberForm: FC<CastMemberFormProps> = (props) => {
               form.reset();
             }
           })
-          .catch((error:Error) => toast.error(error.message))
+          .catch((error: Error) => toast.error(error.message))
           .finally(() => {
             setIsLoading(false);
           });
@@ -150,7 +155,7 @@ const CastMemberForm: FC<CastMemberFormProps> = (props) => {
               form.reset();
             }
           })
-          .catch((error:Error) => toast.error(error.message))
+          .catch((error: Error) => toast.error(error.message))
           .finally(() => setIsLoading(false));
       }
     });
@@ -250,46 +255,31 @@ const CastMemberForm: FC<CastMemberFormProps> = (props) => {
           <div className="flex w-full flex-wrap gap-x-2 items-center">
             <FormField
               control={form.control}
-              name="startDate"
+              name="timeIntervals"
               render={({ field }) => (
                 <FormItem className="flex-1">
                   <FormLabel>
-                    {t("forms.labels.startDate", {
+                    {t("forms.labels.timeInterval", {
                       ns: "constants",
                     })}
                   </FormLabel>
                   <FormControl>
-                    <Input
+                    <MultiDateIntervalInput
                       type="date"
+                      // name="timeInterval"
                       disabled={isDisabled}
-                      placeholder={t("forms.placeholder.startDate", {
-                        ns: "constants",
-                      })}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="endDate"
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <FormLabel>
-                    {t("forms.labels.endDate", {
-                      ns: "constants",
-                    })}
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="date"
-                      disabled={isDisabled}
+                      startName="startDate"
+                      endName="endDate"
+                      values={field.value || []}
                       placeholder={t("forms.placeholder.endDate", {
                         ns: "constants",
                       })}
-                      {...field}
+                      onBlur={field.onBlur}
+                      ref={field.ref}
+                      onChange={(values) => {
+                        form.setValue("timeIntervals", values);
+                        form.trigger("timeIntervals");
+                      }}
                     />
                   </FormControl>
                   <FormMessage />

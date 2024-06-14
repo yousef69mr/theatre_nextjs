@@ -9,6 +9,7 @@ export async function GET(request: NextRequest) {
   try {
     const castMembers = await db.castMember.findMany({
       include: {
+        timeIntervals: true,
         actor: {
           select: {
             id: true,
@@ -40,13 +41,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid fields" }, { status: 400 });
   }
 
-  const { role, startDate, endDate, actorId } = validatedFields.data;
+  const { role, timeIntervals, actorId } = validatedFields.data;
 
   if (!role) {
     return NextResponse.json({ error: "role is missing!" }, { status: 400 });
   }
 
-  if (!startDate) {
+  if (timeIntervals.length === 0) {
     return NextResponse.json(
       { error: "startDate is missing!" },
       { status: 400 }
@@ -57,15 +58,17 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "actorId is missing!" }, { status: 400 });
   }
   // console.log("herer");
+
+  const intervals = [];
+
   try {
     const castMember = await db.castMember.create({
       data: {
         role,
-        startDate: new Date(startDate),
-        endDate: endDate ? new Date(endDate) : null,
         actorId,
       },
       include: {
+        // timeIntervals: true,
         actor: {
           select: {
             id: true,
@@ -77,6 +80,19 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    for (let timeInterval of timeIntervals) {
+      const interval = await db.timeInterval.create({
+        data: {
+          startDate: new Date(timeInterval.startDate),
+          endDate: timeInterval.endDate
+            ? new Date(timeInterval.endDate)
+            : undefined,
+          castMemberId: castMember.id,
+        },
+      });
+      intervals.push(interval);
+    }
+
     //update linked user role
     // await db.user.updateMany({
     //   where: { actorId: actorId },
@@ -85,7 +101,9 @@ export async function POST(request: NextRequest) {
     //   },
     // });
 
-    return NextResponse.json(castMember, { status: 201 });
+    const formattedCastMember = { ...castMember, timeIntervals: intervals };
+
+    return NextResponse.json(formattedCastMember, { status: 201 });
   } catch (error) {
     console.log(error);
     return NextResponse.json({ error: "Internal error" }, { status: 500 });

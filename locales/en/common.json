@@ -84,6 +84,9 @@
     "DAR_ULOOM": "dar uloom",
     "OTHER": "other"
   },
+  "time": {
+    "present": "present"
+  },
   "actions": {
     "add": "add {{instance}}",
     "create": "create {{instance}}",

@@ -26,6 +26,7 @@ export async function POST(request: NextRequest) {
     seatsLimit,
     actorTicketLimit,
     guestTicketLimit,
+    videoUrl
   } = validatedFields.data;
 
   if (!festivalId) {
@@ -93,6 +94,7 @@ export async function POST(request: NextRequest) {
         availableSeats: availableSeats > 0 ? availableSeats : 0,
         actorTicketLimit,
         guestTicketLimit,
+        videoUrl
       },
       include: {
         play: {

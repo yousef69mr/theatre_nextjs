@@ -105,7 +105,7 @@
 
 @layer utilities {
   .general-padding {
-    @apply md:px-16 px-3 sm:px-4;
+    @apply md:px-16 px-4 sm:px-6;
   }
 
   .full-bleed {

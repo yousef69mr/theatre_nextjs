@@ -278,8 +278,10 @@ export async function PATCH(request: NextRequest, props: PlayProps) {
     ...values,
     showTime: new Date(values.showTime),
   });
-  // console.log(validatedFields);
+  // console.log(validatedFields.error);
+  
   if (!validatedFields.success) {
+    console.log(validatedFields.error)
     return NextResponse.json({ error: "Invalid fields" }, { status: 400 });
   }
 
@@ -290,7 +292,7 @@ export async function PATCH(request: NextRequest, props: PlayProps) {
     // festivalId,
     // showTime,
     description,
-    videoUrl,
+    // videoUrl,
     executorId,
     isPublished,
   } = values;
@@ -373,8 +375,9 @@ export async function PATCH(request: NextRequest, props: PlayProps) {
       data: {
         name,
         posterImgUrl,
-        videoUrl,
+        
         // images,
+
         description,
         isPublished,
       },

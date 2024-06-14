@@ -74,7 +74,7 @@ const ActorClient: FC<ActorClientProps> = (props) => {
       updateActorRequest(
         {
           name: actor.name,
-          imgUrl: actor.imgUrl||undefined,
+          imgUrl: actor.imgUrl || undefined,
           startDate: "",
           description: actor.description,
           facultyCast: actor.facultyCast,
@@ -83,7 +83,7 @@ const ActorClient: FC<ActorClientProps> = (props) => {
         },
         actor.id
       )
-        .then((response) => response.json())
+        // .then((response) => response.json())
         .then(async (data) => {
           // console.log("api success");
           data.isPublished
@@ -103,7 +103,7 @@ const ActorClient: FC<ActorClientProps> = (props) => {
           updateActor(data);
           router.refresh();
         })
-        .catch((error) => toast.error("something went wrong"));
+        .catch((error) => toast.error(error));
     }
   };
 

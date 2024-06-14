@@ -6,14 +6,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
-  AudioLines,
-  Award,
+  // AudioLines,
+  // Award,
   BadgeAlert,
   Check,
   CheckSquare,
   Copy,
   Drama,
-  Edit,
+  // Edit,
   HelpCircle,
   Link2,
   LucideTicket,
@@ -58,23 +58,23 @@ import {
 import { useModal } from "@/hooks/stores/use-modal-store";
 // import { useUserStore } from "@/hooks/stores/use-user-store";
 
-import { useCurrentRole } from "@/hooks/use-current-role";
+// import { useCurrentRole } from "@/hooks/use-current-role";
 import { isAdmin } from "@/lib/auth";
 import { ExecutorRole, UserRole } from "@prisma/client";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+// import {
+//   Accordion,
+//   AccordionContent,
+//   AccordionItem,
+//   AccordionTrigger,
+// } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 
-import PlayCarousel from "@/components/carousels/play-carousel";
+// import PlayCarousel from "@/components/carousels/play-carousel";
 import toast from "react-hot-toast";
 import { useCurrentUser } from "@/hooks/use-current-user";
-import TicketCarousel from "@/components/carousels/ticket-carousel";
+// import TicketCarousel from "@/components/carousels/ticket-carousel";
 import TicketList from "@/components/cards/tickets/ticket-list";
 // import { removeUserPlayDuplicates } from "@/lib/helpers/list-fomratters";
 

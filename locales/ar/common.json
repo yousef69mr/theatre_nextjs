@@ -84,6 +84,9 @@
     "DAR_ULOOM": "دار علوم",
     "OTHER": "أخرى"
   },
+  "time": {
+    "present": "الحاضر"
+  },
   "actions": {
     "add": "إضافة {{instance}}",
     "create": "إنشاء {{instance}}",

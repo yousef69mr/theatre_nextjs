@@ -108,7 +108,7 @@ const PlayForm: FC<PlayFormProps> = (props) => {
     resolver: zodResolver(playSchema),
     defaultValues: {
       ...initialData,
-      description: initialData?.description || undefined,
+      description: initialData?.description ?? undefined,
       // name: "قصة لا يرويها بطل",
       executorId: initialData?.director?.id || undefined,
       // posterImgUrl:
@@ -250,405 +250,431 @@ const PlayForm: FC<PlayFormProps> = (props) => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="w-full space-y-8"
+            className="w-full space-y-8 flex flex-col gap-2"
           >
-            <div className="grid sm:grid-cols-2 md:grid-cols-3  gap-8">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      {t("playForm.inputs-label.name", { ns: "admin" })}
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={isDisabled}
-                        placeholder={t("playForm.inputs-placeholder.name", {
-                          ns: "admin",
-                        })}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="executorId"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col justify-end">
-                    <FormLabel>
-                      {t("playForm.inputs-label.director", { ns: "admin" })}
-                    </FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant="outline"
-                            role="combobox"
-                            className={cn(
-                              "justify-between",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value
-                              ? localExecutors?.find(
-                                  (executor) => executor.id === field.value
-                                )?.name
-                              : t("actions.select", {
-                                  ns: "common",
-                                  instance: t("executor.single", {
-                                    ns: "constants",
-                                  }),
-                                })}
-                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className=" p-0">
-                        <Command>
-                          <CommandInput
-                            placeholder={t("actions.select", {
-                              ns: "common",
-                              instance: t("executor.single", {
-                                ns: "constants",
-                              }),
-                            })}
-                          />
-                          <CommandEmpty>
-                            {t("errors.notFound", {
-                              ns: "constants",
-                              instance: t("executor.single", {
-                                ns: "constants",
-                              }),
-                            })}
-                          </CommandEmpty>
-                          <CommandGroup>
-                            {localExecutors?.map((executor) => (
-                              <CommandItem
-                                value={`${executor.name} ${
-                                  executor.nickname
-                                    ? `${executor.nickname}`
-                                    : ""
-                                }`}
-                                key={executor.id}
-                                onSelect={() => {
-                                  form.setValue("executorId", executor.id);
-                                }}
-                              >
-                                <Check
-                                  className={cn(
-                                    "mr-2 h-4 w-4",
-                                    executor.id === field.value
-                                      ? "opacity-100"
-                                      : "opacity-0"
-                                  )}
-                                />
-                                {executor.name}{" "}
-                                {executor.nickname
-                                  ? `(${executor.nickname})`
-                                  : ""}
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                          <Separator />
-                          <CommandGroup>
-                            <CommandItem
-                              onSelect={() => {
-                                onOpen("createExecutor");
-                              }}
-                            >
-                              <PlusCircle
-                                className={cn(
-                                  "ltr:mr-2 rtl:ml-2 h-4 w-4 text-emerald-600"
-                                )}
-                              />
-                              {t("actions.create", {
-                                ns: "common",
-                                instance: t("executor.single", {
-                                  ns: "constants",
-                                }),
-                              })}
-                            </CommandItem>
-                          </CommandGroup>
-                        </Command>
-                      </PopoverContent>
-                    </Popover>
-
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              {!initialData && (
-                <>
-                  <FormField
-                    control={form.control}
-                    name="festivalId"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-col justify-end">
-                        <FormLabel>
-                          {t("playForm.inputs-label.festival", { ns: "admin" })}
-                        </FormLabel>
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <FormControl>
-                              <Button
-                                variant="outline"
-                                role="combobox"
-                                className={cn(
-                                  "justify-between",
-                                  !field.value && "text-muted-foreground"
-                                )}
-                              >
-                                {field.value
-                                  ? localFestivals?.find(
-                                      (festival) => festival.id === field.value
-                                    )?.name
-                                  : t("actions.select", {
-                                      ns: "common",
-                                      instance: t("festival.single", {
-                                        ns: "constants",
-                                      }),
-                                    })}
-                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                              </Button>
-                            </FormControl>
-                          </PopoverTrigger>
-                          <PopoverContent className=" p-0">
-                            <Command>
-                              <CommandInput
-                                placeholder={t("actions.select", {
-                                  ns: "common",
-                                  instance: t("festival.single", {
-                                    ns: "constants",
-                                  }),
-                                })}
-                              />
-                              <CommandEmpty>
-                                {t("errors.notFound", {
-                                  ns: "constants",
-                                  instance: t("festival.single", {
-                                    ns: "constants",
-                                  }),
-                                })}
-                              </CommandEmpty>
-                              <CommandGroup>
-                                {localFestivals?.map((festival) => (
-                                  <CommandItem
-                                    value={`${festival.name} (${festival.id})`}
-                                    key={festival.id}
-                                    onSelect={() => {
-                                      form.setValue("festivalId", festival.id);
-                                    }}
-                                  >
-                                    <Check
-                                      className={cn(
-                                        "mr-2 h-4 w-4",
-                                        festival.id === field.value
-                                          ? "opacity-100"
-                                          : "opacity-0"
-                                      )}
-                                    />
-                                    {festival.name}
-                                  </CommandItem>
-                                ))}
-                              </CommandGroup>
-                              <Separator />
-                              <CommandGroup>
-                                <CommandItem
-                                  onSelect={() => {
-                                    onOpen("createFestival");
-                                  }}
-                                >
-                                  <PlusCircle
-                                    className={cn(
-                                      "ltr:mr-2 rtl:ml-2 h-4 w-4 text-emerald-600"
-                                    )}
-                                  />
-                                  {t("actions.create", {
-                                    ns: "common",
-                                    instance: t("festival.single", {
-                                      ns: "constants",
-                                    }),
-                                  })}
-                                </CommandItem>
-                              </CommandGroup>
-                            </Command>
-                          </PopoverContent>
-                        </Popover>
-
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="showTime"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-col justify-end">
-                        <FormLabel>
-                          {t("playForm.inputs-label.showTime", { ns: "admin" })}
-                        </FormLabel>
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <FormControl>
-                              <Button
-                                variant={"outline"}
-                                className={cn(
-                                  "w-full justify-start  font-normal",
-                                  !field.value && "text-muted-foreground"
-                                )}
-                              >
-                                <CalendarIcon className="ltr:mr-2 rtl:ml-2 h-4 w-4" />
-                                {field.value ? (
-                                  format(field.value, "PPP")
-                                ) : (
-                                  <span>
-                                    {t("playForm.inputs-placeholder.showTime", {
-                                      ns: "admin",
-                                    })}
-                                  </span>
-                                )}
-                              </Button>
-                            </FormControl>
-                          </PopoverTrigger>
-                          <PopoverContent className="flex w-auto flex-col space-y-2 p-2">
-                            <Select
-                              disabled={isDisabled}
-                              onValueChange={(value) => {
-                                form.setValue(
-                                  "showTime",
-                                  addDays(new Date(), parseInt(value))
-                                );
-                                form.trigger("showTime");
-                              }}
-                            >
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select" />
-                              </SelectTrigger>
-                              <SelectContent position="popper">
-                                <SelectItem value="0">Today</SelectItem>
-                                <SelectItem value="1">Tomorrow</SelectItem>
-                                <SelectItem value="3">In 3 days</SelectItem>
-                                <SelectItem value="7">In a week</SelectItem>
-                              </SelectContent>
-                            </Select>
-                            <div className="rounded-md border">
-                              <Calendar
-                                mode="single"
-                                selected={field.value}
-                                onSelect={(value) => {
-                                  field.onChange(value);
-                                  // if (!value) return;
-                                  // if (new Date(value) < new Date()) {
-                                  //   form.setError("showTime", {
-                                  //     message: "The date must be a future date.",
-                                  //   });
-                                  //   return;
-                                  // }
-                                  // form.setValue("showTime", value);
-                                  // form.trigger("showTime");
-                                }}
-                              />
-                            </div>
-                          </PopoverContent>
-                        </Popover>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </>
+            <div
+              className={cn(
+                "flex w-full flex-wrap gap-6",
+                !initialData && "flex-col"
               )}
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem className="w-full md:col-span-2">
-                    <FormLabel>
-                      {t("forms.labels.story", {
-                        ns: "constants",
-                      })}
-                    </FormLabel>
-                    <FormControl>
-                      <Textarea
-                        disabled={isDisabled}
-                        placeholder={t("forms.placeholder.description", {
-                          ns: "constants",
-                        })}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <Separator />
-            <div className="grid md:grid-cols-3 gap-8 w-full">
-              <FormField
-                control={form.control}
-                name="posterImgUrl"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      {t("playForm.inputs-label.poster", {
-                        ns: "admin",
-                      })}
-                    </FormLabel>
-                    <FormControl>
-                      <FileUpload
-                        endpoint="playImage"
-                        value={field.value || ""}
-                        onChange={field.onChange}
-                        className="w-40 h-72"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div className="md:col-span-2">
+            >
+              <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 flex-1">
                 <FormField
                   control={form.control}
-                  name="videoUrl"
+                  name="name"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="flex flex-col justify-center">
                       <FormLabel>
-                        {t("playForm.inputs-label.videoUrl", {
-                          ns: "admin",
-                        })}
+                        {t("playForm.inputs-label.name", { ns: "admin" })}
                       </FormLabel>
                       <FormControl>
                         <Input
                           disabled={isDisabled}
-                          placeholder={t(
-                            "playForm.inputs-placeholder.videoUrl",
-                            {
-                              ns: "admin",
-                            }
-                          )}
-                          // {...field}
-                          onChange={(e) => {
-                            const { value } = e.target;
-                            const embedLink = extractEmbedLink(value);
-                            form.setValue("videoUrl", embedLink || value);
-                            form.trigger("videoUrl");
-                          }}
+                          placeholder={t("playForm.inputs-placeholder.name", {
+                            ns: "admin",
+                          })}
+                          {...field}
                         />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-                {form.getValues().videoUrl && (
-                  <div className="max-w-full">
-                    <iframe
-                      title="video"
-                      src={form.getValues().videoUrl || ""}
-                    ></iframe>
+                <FormField
+                  control={form.control}
+                  name="executorId"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col justify-center">
+                      <FormLabel>
+                        {t("playForm.inputs-label.director", { ns: "admin" })}
+                      </FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant="outline"
+                              role="combobox"
+                              className={cn(
+                                "justify-between",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value
+                                ? localExecutors?.find(
+                                    (executor) => executor.id === field.value
+                                  )?.name
+                                : t("actions.select", {
+                                    ns: "common",
+                                    instance: t("executor.single", {
+                                      ns: "constants",
+                                    }),
+                                  })}
+                              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="p-0">
+                          <Command>
+                            <CommandInput
+                              placeholder={t("actions.select", {
+                                ns: "common",
+                                instance: t("executor.single", {
+                                  ns: "constants",
+                                }),
+                              })}
+                            />
+                            <CommandEmpty>
+                              {t("errors.notFound", {
+                                ns: "constants",
+                                instance: t("executor.single", {
+                                  ns: "constants",
+                                }),
+                              })}
+                            </CommandEmpty>
+                            <CommandGroup>
+                              {localExecutors?.map((executor) => (
+                                <CommandItem
+                                  value={`${executor.name} ${
+                                    executor.nickname
+                                      ? `${executor.nickname}`
+                                      : ""
+                                  }`}
+                                  key={executor.id}
+                                  onSelect={() => {
+                                    form.setValue("executorId", executor.id);
+                                  }}
+                                >
+                                  <Check
+                                    className={cn(
+                                      "mr-2 h-4 w-4",
+                                      executor.id === field.value
+                                        ? "opacity-100"
+                                        : "opacity-0"
+                                    )}
+                                  />
+                                  {executor.name}{" "}
+                                  {executor.nickname
+                                    ? `(${executor.nickname})`
+                                    : ""}
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                            <Separator />
+                            <CommandGroup>
+                              <CommandItem
+                                onSelect={() => {
+                                  onOpen("createExecutor");
+                                }}
+                              >
+                                <PlusCircle
+                                  className={cn(
+                                    "ltr:mr-2 rtl:ml-2 h-4 w-4 text-emerald-600"
+                                  )}
+                                />
+                                {t("actions.create", {
+                                  ns: "common",
+                                  instance: t("executor.single", {
+                                    ns: "constants",
+                                  }),
+                                })}
+                              </CommandItem>
+                            </CommandGroup>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                {!initialData && (
+                  <>
+                    <FormField
+                      control={form.control}
+                      name="festivalId"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col justify-end">
+                          <FormLabel>
+                            {t("playForm.inputs-label.festival", {
+                              ns: "admin",
+                            })}
+                          </FormLabel>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <FormControl>
+                                <Button
+                                  variant="outline"
+                                  role="combobox"
+                                  className={cn(
+                                    "justify-between",
+                                    !field.value && "text-muted-foreground"
+                                  )}
+                                >
+                                  {field.value
+                                    ? localFestivals?.find(
+                                        (festival) =>
+                                          festival.id === field.value
+                                      )?.name
+                                    : t("actions.select", {
+                                        ns: "common",
+                                        instance: t("festival.single", {
+                                          ns: "constants",
+                                        }),
+                                      })}
+                                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                </Button>
+                              </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent className=" p-0">
+                              <Command>
+                                <CommandInput
+                                  placeholder={t("actions.select", {
+                                    ns: "common",
+                                    instance: t("festival.single", {
+                                      ns: "constants",
+                                    }),
+                                  })}
+                                />
+                                <CommandEmpty>
+                                  {t("errors.notFound", {
+                                    ns: "constants",
+                                    instance: t("festival.single", {
+                                      ns: "constants",
+                                    }),
+                                  })}
+                                </CommandEmpty>
+                                <CommandGroup>
+                                  {localFestivals?.map((festival) => (
+                                    <CommandItem
+                                      value={`${festival.name} (${festival.id})`}
+                                      key={festival.id}
+                                      onSelect={() => {
+                                        form.setValue(
+                                          "festivalId",
+                                          festival.id
+                                        );
+                                      }}
+                                    >
+                                      <Check
+                                        className={cn(
+                                          "mr-2 h-4 w-4",
+                                          festival.id === field.value
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                        )}
+                                      />
+                                      {festival.name}
+                                    </CommandItem>
+                                  ))}
+                                </CommandGroup>
+                                <Separator />
+                                <CommandGroup>
+                                  <CommandItem
+                                    onSelect={() => {
+                                      onOpen("createFestival");
+                                    }}
+                                  >
+                                    <PlusCircle
+                                      className={cn(
+                                        "ltr:mr-2 rtl:ml-2 h-4 w-4 text-emerald-600"
+                                      )}
+                                    />
+                                    {t("actions.create", {
+                                      ns: "common",
+                                      instance: t("festival.single", {
+                                        ns: "constants",
+                                      }),
+                                    })}
+                                  </CommandItem>
+                                </CommandGroup>
+                              </Command>
+                            </PopoverContent>
+                          </Popover>
+
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="showTime"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col justify-end">
+                          <FormLabel>
+                            {t("playForm.inputs-label.showTime", {
+                              ns: "admin",
+                            })}
+                          </FormLabel>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <FormControl>
+                                <Button
+                                  variant={"outline"}
+                                  className={cn(
+                                    "w-full justify-start  font-normal",
+                                    !field.value && "text-muted-foreground"
+                                  )}
+                                >
+                                  <CalendarIcon className="ltr:mr-2 rtl:ml-2 h-4 w-4" />
+                                  {field.value ? (
+                                    format(field.value, "PPP")
+                                  ) : (
+                                    <span>
+                                      {t(
+                                        "playForm.inputs-placeholder.showTime",
+                                        {
+                                          ns: "admin",
+                                        }
+                                      )}
+                                    </span>
+                                  )}
+                                </Button>
+                              </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent className="flex w-auto flex-col space-y-2 p-2">
+                              <Select
+                                disabled={isDisabled}
+                                onValueChange={(value) => {
+                                  form.setValue(
+                                    "showTime",
+                                    addDays(new Date(), parseInt(value))
+                                  );
+                                  form.trigger("showTime");
+                                }}
+                              >
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select" />
+                                </SelectTrigger>
+                                <SelectContent position="popper">
+                                  <SelectItem value="0">Today</SelectItem>
+                                  <SelectItem value="1">Tomorrow</SelectItem>
+                                  <SelectItem value="3">In 3 days</SelectItem>
+                                  <SelectItem value="7">In a week</SelectItem>
+                                </SelectContent>
+                              </Select>
+                              <div className="rounded-md border">
+                                <Calendar
+                                  mode="single"
+                                  selected={field.value}
+                                  onSelect={(value) => {
+                                    field.onChange(value);
+                                    // if (!value) return;
+                                    // if (new Date(value) < new Date()) {
+                                    //   form.setError("showTime", {
+                                    //     message: "The date must be a future date.",
+                                    //   });
+                                    //   return;
+                                    // }
+                                    // form.setValue("showTime", value);
+                                    // form.trigger("showTime");
+                                  }}
+                                />
+                              </div>
+                            </PopoverContent>
+                          </Popover>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </>
+                )}
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem className="w-full md:col-span-2">
+                      <FormLabel>
+                        {t("forms.labels.story", {
+                          ns: "constants",
+                        })}
+                      </FormLabel>
+                      <FormControl>
+                        <Textarea
+                          disabled={isDisabled}
+                          placeholder={t("forms.placeholder.description", {
+                            ns: "constants",
+                          })}
+                          // value={field.value||""}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              {!initialData && <Separator />}
+              <div
+                className={cn(
+                  " shrink basis-full md:basis-auto",
+                  !initialData && "grid gap-6 grid-cols-1 md:grid-cols-3"
+                )}
+              >
+                <FormField
+                  control={form.control}
+                  name="posterImgUrl"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        {t("playForm.inputs-label.poster", {
+                          ns: "admin",
+                        })}
+                      </FormLabel>
+                      <FormControl>
+                        <FileUpload
+                          endpoint="playImage"
+                          value={field.value || ""}
+                          onChange={field.onChange}
+                          className="w-40 h-72"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                {!initialData && (
+                  <div className={cn(!initialData && "md:col-span-2")}>
+                    <FormField
+                      control={form.control}
+                      name="videoUrl"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>
+                            {t("playForm.inputs-label.videoUrl", {
+                              ns: "admin",
+                            })}
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              disabled={isDisabled}
+                              placeholder={t(
+                                "playForm.inputs-placeholder.videoUrl",
+                                {
+                                  ns: "admin",
+                                }
+                              )}
+                              // {...field}
+                              onChange={(e) => {
+                                const { value } = e.target;
+                                const embedLink = extractEmbedLink(value);
+                                form.setValue("videoUrl", embedLink || value);
+                                form.trigger("videoUrl");
+                              }}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    {form.getValues().videoUrl && (
+                      <div className="max-w-full">
+                        <iframe
+                          title="video"
+                          src={form.getValues().videoUrl || ""}
+                        ></iframe>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

@@ -75,12 +75,12 @@ const PlayClient: FC<PlayClientProps> = (props) => {
           executorId: play.director?.id as string,
           showTime: new Date(),
           festivalId: "__",
-          description: play.description,
+          description: play.description || undefined,
           isPublished,
         },
         play.id
       )
-        .then((response) => response.json())
+        // .then((response) => response.json())
         .then(async (data) => {
           // console.log("api success");
           data.isPublished
@@ -100,7 +100,7 @@ const PlayClient: FC<PlayClientProps> = (props) => {
           updatePlay(data);
           router.refresh();
         })
-        .catch((error) => toast.error("something went wrong"));
+        .catch((error) => toast.error(error));
     }
   };
 

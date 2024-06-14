@@ -58,6 +58,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { convertDateTime } from "@/lib/helpers/time-parser";
 import { MultiInput } from "@/components/ui/multi-input";
+import { extractEmbedLink } from "@/lib/helpers/extract-embed-link";
 
 interface LinkActorPlayFormProps extends HtmlHTMLAttributes<HTMLElement> {
   initialData: PlayFestivalType | null;
@@ -145,7 +146,7 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
               form.reset();
             }
           })
-          .catch((error:Error) => toast.error(error.message))
+          .catch((error: Error) => toast.error(error.message))
           .finally(() => setIsLoading(false));
       } else {
         createFestivalPlayRequest(values)
@@ -175,7 +176,7 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
               form.reset();
             }
           })
-          .catch((error:Error) => toast.error(error.message))
+          .catch((error: Error) => toast.error(error.message))
           .finally(() => setIsLoading(false));
       }
     });
@@ -428,7 +429,6 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
                   ref={field.ref}
                   disabled={isDisabled}
                   type="datetime-local"
-                  
                 />
               </FormControl>
               <FormDescription>
@@ -561,6 +561,48 @@ const LinkFestivalPlayForm: FC<LinkActorPlayFormProps> = (props) => {
             )}
           />
         </div>
+
+        {initialData && (
+          <div className={cn("w-full")}>
+            <FormField
+              control={form.control}
+              name="videoUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    {t("playForm.inputs-label.videoUrl", {
+                      ns: "admin",
+                    })}
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isDisabled}
+                      placeholder={t("playForm.inputs-placeholder.videoUrl", {
+                        ns: "admin",
+                      })}
+                      // {...field}
+                      onChange={(e) => {
+                        const { value } = e.target;
+                        const embedLink = extractEmbedLink(value);
+                        form.setValue("videoUrl", embedLink || value);
+                        form.trigger("videoUrl");
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {form.getValues().videoUrl && (
+              <div className="max-w-full">
+                <iframe
+                  title="video"
+                  src={form.getValues().videoUrl || ""}
+                ></iframe>
+              </div>
+            )}
+          </div>
+        )}
 
         <Separator />
         <div className="flex w-full justify-end items-center">
