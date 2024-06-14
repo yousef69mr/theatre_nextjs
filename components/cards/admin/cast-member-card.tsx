@@ -173,7 +173,7 @@ const CastMemberCard: FC<CastMemberCardProps> = (props) => {
         {intervals.length > 0 && (
           <div className="flex flex-col gap-2 mt-2 flex-wrap items-start justify-center">
             {intervals.map((interval, index) => (
-              <Badge variant={"outline"} className="px-2" key={index}>
+              <Badge variant={"outline"} className="p-2" key={index}>
                 <div className="flex gap-x-2 items-center justify-between">
                   {format(interval.startDate, "MMMM do, yyyy")}
                   <Separator className="mx-2 w-5" />

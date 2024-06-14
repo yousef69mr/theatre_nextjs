@@ -259,14 +259,14 @@ const CastMemberForm: FC<CastMemberFormProps> = (props) => {
               render={({ field }) => (
                 <FormItem className="flex-1">
                   <FormLabel>
-                    {t("forms.labels.timeInterval", {
+                    {t("forms.labels.timeIntervals", {
                       ns: "constants",
                     })}
                   </FormLabel>
                   <FormControl>
                     <MultiDateIntervalInput
                       type="date"
-                      // name="timeInterval"
+                      name="timeIntervals"
                       disabled={isDisabled}
                       startName="startDate"
                       endName="endDate"
